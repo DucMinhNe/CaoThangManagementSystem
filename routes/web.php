@@ -19,6 +19,9 @@ Route::get('/logout', [AuthController::class,'logout']);
 Route::get('/dashboard', function () {
     return view('main');
 });
+Route::get('/dashboard/create', function () {
+    return view('main');
+});
 // Route::get('/', function () {
 //     return view('welcome');
 // });
