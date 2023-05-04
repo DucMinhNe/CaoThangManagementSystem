@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StudentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +23,8 @@ Route::get('/dashboard', function () {
 Route::get('/dashboard/create', function () {
     return view('main');
 });
+
+Route::resource("/student", StudentController::class);
 // Route::get('/', function () {
 //     return view('welcome');
 // });
