@@ -14,8 +14,9 @@ class AuthController extends Controller
         return view('auth.login');
     }
     public function AuthLogin(Request $request){
-       //dd($request->all());
-        if (Auth::attempt(['email' => $request->email, 'password'=> $request->password],true))
+      // dd($request->all());
+
+        if (Auth::attempt(['username' => $request->username, 'password'=> $request->password],true))
        {
         return redirect('/dashboard');
        }
