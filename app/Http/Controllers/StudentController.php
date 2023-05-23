@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StudentsExport;
+use App\Imports\StudentsImport;
 class StudentController extends Controller
 {
     /**
@@ -43,8 +46,9 @@ class StudentController extends Controller
         //     'detail' => 'required',
         //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         // ]);
-       // dd($request->all());
+       dd($request->all());
         $input = $request->all();
+
    
         if ($image = $request->file('hinhdaidien')) {
             $destinationPath = 'images/';
@@ -55,7 +59,7 @@ class StudentController extends Controller
      
         Student::create($input);
       
-        return redirect('/students');
+        return redirect('/student');
                      
     }
 
@@ -91,6 +95,21 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function export() 
+    {
+        return Excel::download(new StudentsExport, 'users.xlsx');
+    }
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function import() 
+    {
+        Excel::import(new StudentsImport,request()->file('file'));
+        return back();
     }
 
     /**
