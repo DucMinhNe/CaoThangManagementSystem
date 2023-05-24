@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('tai_khoan_giang_viens', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username');
-            $table->string('password');
+            $table->string('tai_khoan');
+            $table->string('mat_khau');
             $table->unsignedInteger('id_giang_vien');
             $table->rememberToken();
             $table->timestamps();

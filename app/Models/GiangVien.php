@@ -10,20 +10,20 @@ class GiangVien extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'magv',
+        'ma_gv',
         'ten_gv',
         'email',
-        'sodienthoai',
+        'so_dien_thoai',
         'so_cmt',
-        'ngaysinh',
-        'noisinh',
-        'gioitinh',
-        'dantoc',
-        'tongiao',
+        'ngay_sinh',
+        'noi_sinh',
+        'gioi_tinh',
+        'dan_toc',
+        'ton_giao',
         'dia_chi_thuong_tru',
         'dia_chi_tam_tru',
         'quoc_gia',
-        'hinhanhdaidien',
+        'hinh_anh_dai_dien',
         'id_chuc_vu',
     ];
 }

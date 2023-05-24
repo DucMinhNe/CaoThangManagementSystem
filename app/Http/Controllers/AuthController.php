@@ -14,16 +14,22 @@ class AuthController extends Controller
         return view('auth.login');
     }
     public function AuthLogin(Request $request){
-      // dd($request->all());
+     // dd($request->all());
+    //  $request->validate([
+    //     'tai_khoan' => 'required',
+    //     'mat_khau' => 'required',
+    // ]);
 
-        if (Auth::attempt(['username' => $request->username, 'password'=> $request->password],true))
-       {
+    // $credentials = $request->only('tai_khoan', 'mat_khau');
+    // if (Auth::attempt($credentials)) {
+    //     return redirect('/dashboard');
+    // }
+    // return redirect()->back()->with('message', 'Login details are not valid!');    
+    if (Auth::attempt(['tai_khoan' => $request->input('tai_khoan'), 'password' => $request->input('mat_khau')], true)) {
         return redirect('/dashboard');
-       }
-       else 
-       {
-        return redirect()->back()->with('error','email hoac pass ko dung');
-       }
+    } else {
+        return redirect()->back()->with('error', 'Tài khoản hoặc mật khẩu không đúng');
+    }
     }
     public function logout(){
        Auth::logout();

@@ -24,7 +24,15 @@ Route::get('/dashboard/create', function () {
     return view('main');
 });
 
+Route::get('/student/import', function () {
+    return view('students.import');
+});
+
 Route::resource("/student", StudentController::class);
+Route::controller(StudentController::class)->group(function(){
+    Route::get('students-export', 'export')->name('users.export');
+    Route::post('students-import', 'import')->name('users.import');
+});
 // Route::get('/', function () {
 //     return view('welcome');
 // });

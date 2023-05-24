@@ -15,20 +15,20 @@ class GiangVienSeeder extends Seeder
     public function run()
     {
         GiangVien::create([
-            'magv' => 'GV001',
+            'ma_gv' => 'GV001',
             'ten_gv' => 'Lê Đức Minh',
             'email' => 'ducminh@gmail.com',
-            'sodienthoai' => '0123456789',
+            'so_dien_thoai' => '0123456789',
             'so_cmt' => '123456789',
-            'ngaysinh' => '2002-04-04',
-            'noisinh' => 'HCM',
-            'gioitinh' => true,
-            'dantoc' => 'Kinh',
-            'tongiao' => 'Không',
+            'ngay_sinh' => '2002-04-04',
+            'noi_sinh' => 'HCM',
+            'gioi_tinh' => true,
+            'dan_toc' => 'Kinh',
+            'ton_giao' => 'Không',
             'dia_chi_thuong_tru' => 'HCM',
             'dia_chi_tam_tru' => 'HCM',
             'quoc_gia' => 'Việt Nam',
-            'hinhanhdaidien' => 'avatar.png',
+            'hinh_anh_dai_dien' => 'avatar.png',
             'id_chuc_vu' => 1,
         ]);
     }

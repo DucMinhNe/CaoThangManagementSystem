@@ -16,8 +16,8 @@ class TaiKhoanGiangVienSeeder extends Seeder
     public function run()
     {
         TaiKhoanGiangVien::create([
-            'username' => 'ducminh@gmail.com',
-            'password' => Hash::make('123'),
+            'tai_khoan' => 'test',
+            'mat_khau' => Hash::make('123'),
             'id_giang_vien' => 1,
         ]);
 
