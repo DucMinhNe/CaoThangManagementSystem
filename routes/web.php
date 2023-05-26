@@ -17,7 +17,7 @@ use App\Http\Controllers\StudentController;
 |
 */
 Route::get('/', function () {return redirect('/admin/dangnhap');});
-Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('dangnhap');
+Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('login');
 Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);
 Route::get('/admin/dangxuat', [DangNhapController::class,'dangXuat']);
 Route::group(['middleware' => 'auth'], function () {
@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     return view('admin.index');
     });
 	Route::resource("/admin/sinhvien", SinhVienController::class);
+    Route::resource("/admin/giangvien", SinhVienController::class);
 });
 
 // Route::get('/', [AuthController::class,'login']);
