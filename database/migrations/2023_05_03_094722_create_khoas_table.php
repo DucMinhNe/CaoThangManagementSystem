@@ -17,7 +17,6 @@ return new class extends Migration
             $table->increments('id');
             $table->string('ten_khoa');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

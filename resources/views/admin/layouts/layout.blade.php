@@ -1,6 +1,8 @@
 @extends('admin.layouts.header')
-
-@yield('content_index')  
-
+@extends('admin.layouts.sidebar')
+<!-- @yield('content_index') -->
+<!-- @yield('content_index') -->
+<!-- @yield('content_index') -->
+@extends('admin.layouts.script')
 @extends('admin.layouts.footer')
 

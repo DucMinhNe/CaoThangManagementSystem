@@ -1,4 +1,33 @@
-<footer class="main-footer">
+@include('admin.layouts.header')
+@include('admin.layouts.sidebar')
+ <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <!-- <h1 class="m-0">Dashboard</h1> -->
+            <div class="container">
+            @yield('content_chuyennganh')
+            </div>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Cao Thắng</a></li>
+              <li class="breadcrumb-item active">Trang Chủ</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <!-- /.content -->
+  </div>
+    
+  <footer class="main-footer">
     <strong>2023 <a href="/">&nbsp;Cao Thang Management System</a></strong>
     <div class="float-right d-none d-sm-inline-block">
       <!-- <b>Version</b> 3.2.0 -->
@@ -12,7 +41,7 @@
 </div>
 <!-- ./wrapper -->
 <!-- jQuery -->
-<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<!-- <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script> -->
 <!-- jQuery UI 1.11.4 --> 
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

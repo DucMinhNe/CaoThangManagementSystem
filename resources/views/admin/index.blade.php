@@ -1,5 +1,5 @@
-@extends('admin.layouts.layout')
-@section('content_index')
+@include('admin.layouts.header')
+@include('admin.layouts.sidebar')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -18,11 +18,10 @@
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content-header -->
+    <!-- /.content-header --> 
 
     <!-- Main content -->
    
     <!-- /.content -->
   </div>
-  
-@endsection
+@include('admin.layouts.footer')

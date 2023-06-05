@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DangNhapController;
 use App\Http\Controllers\SinhVienController;
+use App\Http\Controllers\KhoaController;
+use App\Http\Controllers\ChuyenNganhController;
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\StudentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,17 +16,28 @@ use App\Http\Controllers\StudentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {return redirect('/admin/dangnhap');});
+// Route::get('/', function () {return redirect('/admin/dangnhap');});
 Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('login');
 Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);
 Route::get('/admin/dangxuat', [DangNhapController::class,'dangXuat']);
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', function () {return redirect('/admin');})->middleware('auth');
-    Route::get('/admin', function () {
-    return view('admin.index');
+
+// Route::group(['middleware' => 'auth'], function () {
+//     Route::get('/', function () {return redirect('/admin');});
+//     Route::get('/admin', function () {return view('admin.index');});
+
+// 	Route::resource("/admin/sinhvien", SinhVienController::class);
+//     Route::resource("/admin/giangvien", GiangVienController::class);
+//     Route::resource('khoa', KhoaController::class);
+// });
+Route::get('/', function () {return redirect('/admin');})->middleware('auth');
+Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+    Route::get('/', function () {
+        return view('admin.index');
     });
-	Route::resource("/admin/sinhvien", SinhVienController::class);
-    Route::resource("/admin/giangvien", SinhVienController::class);
+    Route::resource("sinhvien", SinhVienController::class);
+    Route::resource("giangvien", GiangVienController::class);
+    Route::resource('khoa', KhoaController::class);
+    Route::resource('chuyennganh', ChuyenNganhController::class);
 });
 
 // Route::get('/', [AuthController::class,'login']);
