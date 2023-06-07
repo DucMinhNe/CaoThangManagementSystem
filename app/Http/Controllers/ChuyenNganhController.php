@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ChuyenNganh;
+use App\Models\Khoa;
 use DataTables;
 class ChuyenNganhController extends Controller
 {
@@ -14,10 +15,17 @@ class ChuyenNganhController extends Controller
      */
     public function index(Request $request)
     {
+      
         if ($request->ajax()) {
-  
-            $data = ChuyenNganh::latest()->get();
-  
+              //join null
+        $data = ChuyenNganh::leftJoin('khoas', 'chuyen_nganhs.id_khoa', '=', 'khoas.id')
+         ->select('chuyen_nganhs.*', 'khoas.ten_khoa')
+         ->latest()
+         ->get();
+            // $data = ChuyenNganh::join('khoas', 'chuyen_nganhs.id_khoa', '=', 'khoas.id')
+            //     ->select('chuyen_nganhs.*', 'khoas.ten_khoa')
+            //     ->latest()
+            //     ->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -31,8 +39,8 @@ class ChuyenNganhController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        
-        return view('admin.chuyennganhs.index');
+        $khoas = Khoa::all();
+        return view('admin.chuyennganhs.index', compact('khoas'));
     }
 
     /**
@@ -54,8 +62,10 @@ class ChuyenNganhController extends Controller
     public function store(Request $request)
     {
         ChuyenNganh::updateOrCreate(['id' => $request->id],
-                 ['ten_chuyen_nganh' => $request->ten_chuyen_nganh,
-                 'id_khoa' => $request->id_khoa],
+                 ['ma_chu' => $request->ma_chu,
+                  'ma_so' => $request->ma_so,
+                  'ten_chuyen_nganh' => $request->ten_chuyen_nganh,
+                  'id_khoa' => $request->id_khoa],
         );        
         return response()->json(['success'=>'Lưu Khoa Thành Công.']);
     }
@@ -103,6 +113,7 @@ class ChuyenNganhController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ChuyenNganh::find($id)->delete();
+        return response()->json(['success'=>'Xóa Khoa Thành Công.']);
     }
 }

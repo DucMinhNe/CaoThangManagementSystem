@@ -15,26 +15,36 @@ class KhoaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-  
-            $data = Khoa::latest()->get();
-  
+            $data = Khoa::where('trang_thai', 1)->latest()->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
    
-                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editPost">Sửa</a>';
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editKhoa">Sửa</a>';
    
-                        $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deletePost">Xóa</a>';
+                        $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteKhoa">Xóa</a>';
  
                             return $btn;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        
         return view('admin.khoas.index');
     }
-
+    public function getInactiveData()
+    {
+        $data = Khoa::where('trang_thai', 0)->latest()->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editKhoa">Sửa</a>';
+                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreKhoa">Khôi phục</a>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -89,7 +99,17 @@ class KhoaController extends Controller
      */
     public function destroy($id)
     {
-        Khoa::find($id)->delete();
-        return response()->json(['success'=>'Xóa Khoa Thành Công.']);
+        // Khoa::find($id)->delete();
+        // return response()->json(['success'=>'Xóa Khoa Thành Công.']);
+        Khoa::where('id', $id)->update(['trang_thai' => 0]);
+        return response()->json(['success' => 'Xóa Khoa Thành Công.']);
     }
+    public function restore($id)
+    {
+        Khoa::where('id', $id)->update(['trang_thai' => 1]);
+        return response()->json(['success' => 'Khôi phục Khoa thành công.']);
+    }
+    
+
+   
 }

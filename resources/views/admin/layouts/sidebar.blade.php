@@ -81,6 +81,41 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ url('/admin/quyetdinh') }}" class="nav-link {{ Request::url() == url('/admin/quyetdinh') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-users"></i>
+              <p>Quyết Định</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Quản Lí 
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lớp</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Khoa</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Chuyên Ngành</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
             <a href="/admin/dangxuat" class="nav-link">
             <i class="nav-icon fas fa-right-from-bracket"></i>
               <p>Đăng Xuất</p>

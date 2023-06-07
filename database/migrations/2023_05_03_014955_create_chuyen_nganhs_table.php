@@ -15,10 +15,13 @@ return new class extends Migration
     {
         Schema::create('chuyen_nganhs', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('ma_chu');
+            $table->string('ma_so');
             $table->string('ten_chuyen_nganh');
             $table->unsignedInteger('id_khoa');
+            $table->boolean('trang_thai')->default(true);
             $table->timestamps();
-            $table->softDeletes();
+            $table->foreign('id_khoa')->references('id')->on('khoas');
         });
     }
 

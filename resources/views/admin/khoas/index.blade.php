@@ -2,8 +2,10 @@
 @section('content_khoa')
 <section>
 <div class="container">
+<button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
+
 <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-    <a class="btn btn-info" href="javascript:void(0)" id="createNewPost"> Thêm Khoa</a>
+    <a class="btn btn-info" href="javascript:void(0)" id="createNewKhoa"> Thêm Khoa</a>
 </ul>
     <table class="table table-bordered data-table">
         <thead>
@@ -18,6 +20,7 @@
     </table>
 </div>
 </section>
+
 <div class="modal fade" id="ajaxModelexa" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -25,17 +28,16 @@
                 <h4 class="modal-title" id="modelHeading"></h4>
             </div>
             <div class="modal-body">
-                <form id="postForm" name="postForm" class="form-horizontal">
+                <form id="khoaForm" name="khoaForm" class="form-horizontal">
                    <input type="hidden" name="id" id="id">
                     <div class="form-group">
-                        <label for="ten_khoa" class="col-sm-2 control-label">Tên Khoa</label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" id="ten_khoa" name="ten_khoa" placeholder="Enter Name" value="" required>
+                        <label for="ten_khoa" class="col-sm-2 control-label d-inline">Tên Khoa</label>
+                        <div class="col-sm-12 ">
+                            <input type="text" class="form-control" id="ten_khoa" name="ten_khoa" placeholder="Tên Khoa" value="" required>
                         </div>
                     </div>
-      
                     <div class="col-sm-offset-2 col-sm-10">
-                     <button type="submit" class="btn btn-primary" id="savedata" value="create">Save Post
+                     <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu
                      </button>
                     </div>
                 </form>
@@ -71,20 +73,33 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
-        
-        $('#createNewPost').click(function () {
-            $('#savedata').val("create-post");
+        $('#showInactiveBtn').click(function() {
+    var button = $(this);
+    var buttonText = button.text();
+
+    if (buttonText === 'Hiển thị Trạng thái 0') {
+        button.text('Hiển thị Trạng thái 1');
+        table.ajax.url("{{ route('khoa.getInactiveData') }}").load();
+    } else {
+        button.text('Hiển thị Trạng thái 0');
+        table.ajax.url("{{ route('khoa.index') }}").load();
+    }
+});
+
+
+        $('#createNewKhoa').click(function () {
+            $('#savedata').val("create-khoa");
             $('#id').val('');
-            $('#postForm').trigger("reset");
+            $('#khoaForm').trigger("reset");
             $('#modelHeading').html("Thêm Khoa");
             $('#ajaxModelexa').modal('show');
         });
         
-        $('body').on('click', '.editPost', function () {
+        $('body').on('click', '.editKhoa', function () {
         var id = $(this).data('id');
         $.get("{{ route('khoa.index') }}" +'/' + id +'/edit', function (data) {
             $('#modelHeading').html("Sửa Khoa");
-            $('#savedata').val("edit-user");
+            $('#savedata').val("edit-khoa");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
             $('#ten_khoa').val(data.ten_khoa);
@@ -96,41 +111,56 @@
             $(this).html('Sending..');
         
             $.ajax({
-            data: $('#postForm').serialize(),
+            data: $('#khoaForm').serialize(),
             url: "{{ route('khoa.store') }}",
             type: "POST",
             dataType: 'json',
             success: function (data) {
         
-                $('#postForm').trigger("reset");
+                $('#khoaForm').trigger("reset");
                 $('#ajaxModelexa').modal('hide');
+                $('#savedata').html('Lưu');
                 table.draw();
             
             },
             error: function (data) {
                 console.log('Error:', data);
-                $('#savedata').html('Save Changes');
+                $('#savedata').html('Lưu');
             }
         });
         });
         
-        $('body').on('click', '.deletePost', function () {
-        
-            var id = $(this).data("id");
-            confirm("Are You sure want to delete this Post!");
-        
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('khoa.store') }}"+'/'+id,
-                success: function (data) {
-                    table.draw();
-                },
-                error: function (data) {
-                    console.log('Error:', data);
-                }
-                
+        $('body').on('click', '.deleteKhoa', function () {
+         var id = $(this).data("id");
+         if (confirm("Bạn có muốn xóa?")) {
+        $.ajax({
+            type: "DELETE",
+            url: "{{ route('khoa.destroy', '') }}/" + id,
+            success: function (data) {
+                table.draw();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
             });
+             }
         });
+        $('body').on('click', '.restoreKhoa', function () {
+    var id = $(this).data("id");
+    if (confirm("Bạn có muốn khôi phục?")) {
+        $.ajax({
+            type: "GET",
+            url: "{{ route('khoa.restore', '') }}/" + id,
+            success: function (data) {
+                table.draw();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    }
+});
+
         
     });
 </script>

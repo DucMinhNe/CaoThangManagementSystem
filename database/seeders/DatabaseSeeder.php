@@ -9,6 +9,8 @@ use App\Models\GiangVien;
 use App\Models\TaiKhoanGiangVien;
 use App\Models\SinhVien;
 use App\Models\TaiKhoanSinhVien;
+use App\Models\Khoa;
+use App\Models\ChuyenNganh;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 
@@ -31,8 +33,10 @@ class DatabaseSeeder extends Seeder
            UserSeeder::class,
            GiangVienSeeder::class,
            TaiKhoanGiangVienSeeder::class,
-           SinhVienSeeder::class,
-           TaiKhoanSinhVienSeeder::class,
+           //SinhVienSeeder::class,
+           //TaiKhoanSinhVienSeeder::class,
+          // KhoaSeeder::class,
+         //  ChuyenNganhSeeder::class,
         ]);
     }
 }

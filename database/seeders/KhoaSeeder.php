@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\ChuyenNganh;
-class ChuyenNganhSeeder extends Seeder
+use App\Models\Khoa;
+class KhoaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +14,9 @@ class ChuyenNganhSeeder extends Seeder
      */
     public function run()
     {
-        ChuyenNganh::create([
-            'ten_chuyen_nganh' => 'CNTT',
-            'id_khoa' => 1,
+        Khoa::create([
+            'id' => 1,
+            'ten_khoa' => 'CNTT',
         ]);
     }
 }

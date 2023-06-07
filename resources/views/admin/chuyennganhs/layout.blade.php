@@ -70,6 +70,14 @@
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+  })
+  </script>
 <!-- AdminLTE for demo purposes -->
 <!-- <script src="{{ asset('dist/js/demo.js') }}"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

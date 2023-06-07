@@ -36,6 +36,7 @@ class SinhVienSeeder extends Seeder
             'quoc_gia' => 'Việt Nam',
             'id_lop_hoc' => '1',
             'tinh_trang_hoc' => 'Đang Học',
+            'trang_thai' => 1,
         ]);
     }
 }

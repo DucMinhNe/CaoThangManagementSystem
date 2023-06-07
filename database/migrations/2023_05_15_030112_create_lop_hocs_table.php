@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tai_khoan_sinh_viens', function (Blueprint $table) {
+        Schema::create('lop_hocs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tai_khoan');
-            $table->string('mat_khau');
-            $table->unsignedInteger('id_sinh_vien');
+            $table->string('ten_lop');
+            $table->unsignedInteger('id_chuyen_nganh');
+            $table->unsignedInteger('id_giang_vien_cn');
             $table->timestamps();
-            $table->softDeletes();
-            $table->foreign('id_sinh_vien')->references('id')->on('sinh_viens');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tai_khoan_sinh_viens');
+        Schema::dropIfExists('lop_hocs');
     }
 };

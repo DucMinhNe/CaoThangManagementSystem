@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lop_hocs', function (Blueprint $table) {
+        Schema::create('khoas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ten_lop');
-            $table->unsignedInteger('id_chuyen_nganh');
-            $table->unsignedInteger('id_giang_vien_cn');
+            $table->string('ten_khoa');
+            $table->boolean('trang_thai')->default(true);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lop_hocs');
+        Schema::dropIfExists('khoas');
     }
 };

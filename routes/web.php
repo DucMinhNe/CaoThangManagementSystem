@@ -34,9 +34,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/', function () {
         return view('admin.index');
     });
+    
     Route::resource("sinhvien", SinhVienController::class);
     Route::resource("giangvien", GiangVienController::class);
+    Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
+    Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
     Route::resource('khoa', KhoaController::class);
+   
     Route::resource('chuyennganh', ChuyenNganhController::class);
 });
 
