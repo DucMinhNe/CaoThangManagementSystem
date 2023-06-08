@@ -18,7 +18,7 @@ class TaiKhoanGiangVienSeeder extends Seeder
         TaiKhoanGiangVien::create([
             'tai_khoan' => 'test',
             'mat_khau' => Hash::make('123'),
-            'id_giang_vien' => 1,
+            'ma_gv' => 'GV001',
         ]);
 
         // Thêm các dữ liệu tài khoản giảng viên khác nếu cần

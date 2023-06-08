@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GiangVien extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
+
     protected $table = 'giang_viens';
     protected $fillable = [
         'ma_gv',
-        'ten_giang_vien',
+        'ten_gv',
         'email',
         'so_dien_thoai',
         'so_cmt',
@@ -24,19 +25,7 @@ class GiangVien extends Model
         'dia_chi_thuong_tru',
         'dia_chi_tam_tru',
         'quoc_gia',
-        'id_bo_mon',
         'hinh_anh_dai_dien',
         'id_chuc_vu',
-        'trang_thai_lam_viec',
-        'trang_thai',
     ];
-    public function boMon()
-    {
-        return $this->belongsTo(BoMon::class, 'id_bo_mon', 'id');
-    }
-
-    public function chucVu()
-    {
-        return $this->belongsTo(ChucVuGiangVien::class, 'id_chuc_vu', 'id');
-    }
 }

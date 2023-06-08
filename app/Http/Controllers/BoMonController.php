@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ChuyenNganh;
+use App\Models\BoMon;
 use App\Models\Khoa;
 use DataTables;
-class ChuyenNganhController extends Controller
+class BoMonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class ChuyenNganhController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ChuyenNganh::leftJoin('khoas', 'chuyen_nganhs.id_khoa', '=', 'khoas.id')
-                ->select('chuyen_nganhs.*', 'khoas.ten_khoa')
-                ->where('chuyen_nganhs.trang_thai', 1) // Thêm điều kiện trạng thái bằng 1
+            $data = BoMon::leftJoin('khoas', 'bo_mons.id_khoa', '=', 'khoas.id')
+                ->select('bo_mons.*', 'khoas.ten_khoa')
+                ->where('bo_mons.trang_thai', 1) // Thêm điều kiện trạng thái bằng 1
                 ->latest()
                 ->get();
             return Datatables::of($data)
@@ -35,16 +35,16 @@ class ChuyenNganhController extends Controller
         }
         
         $khoas = Khoa::all();
-        return view('admin.chuyennganhs.index', compact('khoas'));        
+        return view('admin.bomons.index', compact('khoas'));      
     }
     public function getInactiveData()
     {
-        $data = ChuyenNganh::leftJoin('khoas', 'chuyen_nganhs.id_khoa', '=', 'khoas.id')
-        ->select('chuyen_nganhs.*', 'khoas.ten_khoa')
-        ->where('chuyen_nganhs.trang_thai', 0) // Thêm điều kiện trạng thái bằng 1
+        $data = BoMon::leftJoin('khoas', 'bo_mons.id_khoa', '=', 'khoas.id')
+        ->select('bo_mons.*', 'khoas.ten_khoa')
+        ->where('bo_mons.trang_thai', 0) // Thêm điều kiện trạng thái bằng 1
         ->latest()
         ->get();
-        return Datatables::of($data)
+    return Datatables::of($data)
         ->addIndexColumn()
         ->addColumn('action', function ($row) {
 
@@ -74,15 +74,16 @@ class ChuyenNganhController extends Controller
      */
     public function store(Request $request)
     {
-        ChuyenNganh::updateOrCreate(['id' => $request->id],
-                 ['ten_chuyen_nganh' => $request->ten_chuyen_nganh,
-                    'ma_chu' => $request->ma_chu,
-                  'ma_so' => $request->ma_so,
-                  'id_khoa' => $request->id_khoa],
+        BoMon::updateOrCreate(
+            ['id' => $request->id],
+            [
+                'ten_bo_mon' => $request->ten_bo_mon,
+                'id_khoa' => $request->id_khoa
+            ]
         );        
-        return response()->json(['success'=>'Lưu Chuyên Ngành Thành Công.']);
+        return response()->json(['success' => 'Lưu Thành Công.']);
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -102,8 +103,8 @@ class ChuyenNganhController extends Controller
      */
     public function edit($id)
     {
-        $chuyennganh = ChuyenNganh::find($id);
-        return response()->json($chuyennganh);
+        $bomon = BoMon::find($id);
+        return response()->json($bomon);
     }
 
     /**
@@ -126,12 +127,12 @@ class ChuyenNganhController extends Controller
      */
     public function destroy($id)
     {
-        ChuyenNganh::where('id', $id)->update(['trang_thai' => 0]);
-        return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
+        BoMon::where('id', $id)->update(['trang_thai' => 0]);
+        return response()->json(['success' => 'Xóa Thành Công.']);
     }
     public function restore($id)
     {
-        ChuyenNganh::where('id', $id)->update(['trang_thai' => 1]);
-        return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
+        BoMon::where('id', $id)->update(['trang_thai' => 1]);
+        return response()->json(['success' => 'Khôi Phục Thành Công.']);
     }
 }

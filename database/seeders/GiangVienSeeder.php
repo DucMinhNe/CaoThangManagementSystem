@@ -16,7 +16,7 @@ class GiangVienSeeder extends Seeder
     {
         GiangVien::create([
             'ma_gv' => 'GV001',
-            'ten_gv' => 'Lê Đức Minh',
+            'ten_giang_vien' => 'Lê Đức Minh',
             'email' => 'ducminh@gmail.com',
             'so_dien_thoai' => '0123456789',
             'so_cmt' => '123456789',
@@ -27,9 +27,13 @@ class GiangVienSeeder extends Seeder
             'ton_giao' => 'Không',
             'dia_chi_thuong_tru' => 'HCM',
             'dia_chi_tam_tru' => 'HCM',
+            'id_bo_mon' => null,
             'quoc_gia' => 'Việt Nam',
             'hinh_anh_dai_dien' => 'avatar.png',
-            'id_chuc_vu' => 1,
+            'id_chuc_vu' => null,
+            'id_chuc_vu' => null,
+            'trang_thai_lam_viec' => 1,
+            'trang_thai' => 1,
         ]);
     }
 }

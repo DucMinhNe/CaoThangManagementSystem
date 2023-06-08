@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('giang_viens', function (Blueprint $table) {
-            $table->string('ma_gv')->primary();
-            $table->string('ten_giang_vien');
+            $table->increments('id');
+            $table->string('ma_gv')->nullable();
+            $table->string('ten_gv');
             $table->string('email');
             $table->string('so_dien_thoai');
             $table->string('so_cmt');
@@ -27,14 +28,10 @@ return new class extends Migration
             $table->string('dia_chi_thuong_tru');
             $table->string('dia_chi_tam_tru');
             $table->string('quoc_gia');
-            $table->unsignedInteger('id_bo_mon')->nullable();
-            $table->string('hinh_anh_dai_dien')->nullable();
-            $table->unsignedInteger('id_chuc_vu')->nullable();
-            $table->boolean('trang_thai_lam_viec')->default(true);
-            $table->boolean('trang_thai')->default(true);
+            $table->string('hinh_anh_dai_dien');
+            $table->unsignedInteger('id_chuc_vu');
             $table->timestamps();
-            $table->foreign('id_bo_mon')->references('id')->on('bo_mons');
-            $table->foreign('id_chuc_vu')->references('id')->on('chuc_vu_giang_viens');
+            $table->softDeletes();
         });
     }
 

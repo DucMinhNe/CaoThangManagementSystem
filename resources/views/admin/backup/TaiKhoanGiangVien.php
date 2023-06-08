@@ -2,57 +2,47 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-// use Auth;
-// use Hash;
+use Auth;
+use Hash;
 class TaiKhoanGiangVien extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
-    protected $table = 'tai_khoan_giang_viens';
     protected $fillable = [
         'tai_khoan',
         'mat_khau',
-        'ma_gv',
+        'id_giang_vien',
     ];
-
     /**
-     * Get the custom password field for the user.
-     *
-     * @return string
-     */
+ * Get the custom password field for the user.
+ *
+ * @return string
+ */
     public function getAuthPassword()
     {
-        return $this->mat_khau;
+    return $this->mat_khau;
     }
-
-    /**
+     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
+        'mat_khau',
         'remember_token',
-        // 'mat_khau',
-        
     ];
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['mat_khau'] = bcrypt($password);
-    }
-    /**
-     * Get the associated GiangVien for the TaiKhoanGiangVien.
-     */
     public function giangVien()
     {
-        return $this->belongsTo(GiangVien::class, 'ma_gv', 'ma_gv');
+        return $this->belongsTo(GiangVien::class, 'id_giang_vien', 'id');
     }
 }

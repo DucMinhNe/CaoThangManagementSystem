@@ -1,4 +1,4 @@
-@extends('admin.chuyennganhs.layout')
+@extends('admin.taikhoangiangviens.layout')
 <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
@@ -27,10 +27,9 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Tên Chuyên Ngành</th>
-                <th>Mã Chữ</th>
-                <th>Mã Số</th>
-                <th>Khoa</th>
+                <th>Tài Khoản</th>
+                <th>Mật Khẩu</th>
+                <th>Giảng Viên</th>
                 <th width="280px">Hành Động</th>
             </tr>
         </thead>
@@ -39,10 +38,9 @@
         <tfoot>
         <tr>
                 <th>No</th>
-                <th>Tên Chuyên Ngành</th>
-                <th>Mã Chữ</th>
-                <th>Mã Số</th>
-                <th>Khoa</th>
+                <th>Tài Khoản</th>
+                <th>Mật Khẩu</th>
+                <th>Giảng Viên</th>
                 <th width="280px">Hành Động</th>
             </tr>
         </tfoot>
@@ -61,23 +59,19 @@
                 <input type="hidden" name="id" id="id">
                 <div class="card-body">
                     <div class="form-group">
-                    <label for="ten_khoa">Tên Chuyên Ngành</label>
-                    <input type="text" class="form-control" id="ten_chuyen_nganh" name="ten_chuyen_nganh" placeholder="Tên Khoa" value="" required>
+                    <label for="tai_khoan">Tài Khoản</label>
+                    <input type="text" class="form-control" id="tai_khoan" name="tai_khoan" placeholder="Tên Khoa" value="" required>
                     </div>
                     <div class="form-group">
-                    <label for="ten_khoa">Mã Chữ</label>
-                    <input type="text" class="form-control" id="ma_chu" name="ma_chu" placeholder="Tên Khoa" value="" required>
-                    </div>
-                    <div class="form-group">
-                    <label for="ten_khoa">Mã Số</label>
-                    <input type="text" class="form-control" id="ma_so" name="ma_so" placeholder="Tên Khoa" value="" required>
+                    <label for="mat_khau">Mật Khẩu</label>
+                    <input type="text" class="form-control" id="mat_khau" name="mat_khau" placeholder="Tên Khoa" value="" required>
                     </div>
                     <div class="form-group" >
-                        <label for="id_khoa" >Khoa</label>
-                        <select name="id_khoa" id="id_khoa" class="form-control select2" style="width: 100%;">
-                                @foreach ($khoas as $khoa)
-                                     @if ($khoa->trang_thai == 1)
-                                    <option value="{{ $khoa->id }}">{{ $khoa->ten_khoa }}</option>
+                        <label for="ma_gv" >Giảng Viên </label>
+                        <select name="ma_gv" id="ma_gv" class="form-control select2" style="width: 100%;">
+                                @foreach ($giangviens as $giangvien)
+                                     @if ($giangvien->trang_thai == 1)
+                                    <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien}}</option>
                                       @endif
                                 @endforeach
                         </select>
@@ -105,13 +99,12 @@
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('chuyennganh.index') }}",
+            ajax: "{{ route('taikhoangiangvien.index') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'ten_chuyen_nganh', name: 'ten_chuyen_nganh'},
-                {data: 'ma_chu', name: 'ma_chu'},
-                {data: 'ma_so', name: 'ma_so'},
-                {data: 'ten_khoa', name: 'ten_khoa'},
+                {data: 'tai_khoan', name: 'tai_khoan'},
+                {data: 'mat_khau', name: 'mat_khau'},
+                {data: 'ten_giang_vien', name: 'ten_giang_vien'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             language: {
@@ -171,10 +164,10 @@
 
     if (buttonText === 'Hiển thị Trạng thái 0') {
         button.text('Hiển thị Trạng thái 1');
-        table.ajax.url("{{ route('chuyennganh.getInactiveData') }}").load();
+        table.ajax.url("{{ route('taikhoangiangvien.getInactiveData') }}").load();
     } else {
         button.text('Hiển thị Trạng thái 0');
-        table.ajax.url("{{ route('chuyennganh.index') }}").load();
+        table.ajax.url("{{ route('taikhoangiangvien.index') }}").load();
     }
 });
         $('#createNewBtn').click(function () {
@@ -187,15 +180,15 @@
     
         $('body').on('click', '.editBtn', function() {
             var id = $(this).data('id');
-            $.get("{{ route('chuyennganh.index') }}" + '/' + id + '/edit', function(data) {
+            $.get("{{ route('taikhoangiangvien.index') }}" + '/' + id + '/edit', function(data) {
                 $('#modelHeading').html("Sửa");
                 $('#savedata').val("edit-Btn");
                 $('#ajaxModelexa').modal('show');
                 $('#id').val(data.id);
-                $('#ten_chuyen_nganh').val(data.ten_chuyen_nganh);
-                $('#ma_chu').val(data.ma_chu);
-                $('#ma_so').val(data.ma_so);
-                $('#id_khoa').val(data.id_khoa);
+                $('#tai_khoan').val(data.tai_khoan);
+                $('#mat_khau').val(data.mat_khau);
+                $('#ma_gv').val(data.ma_gv);
+            
             })
         });
 
@@ -204,7 +197,7 @@
             $(this).html('Sending..');
             $.ajax({
             data: $('#modalForm').serialize(),
-            url: "{{ route('chuyennganh.store') }}",
+            url: "{{ route('taikhoangiangvien.store') }}",
             type: "POST",
             dataType: 'json',
             success: function (data) {
@@ -215,7 +208,7 @@
             },
             error: function (data) {
                 console.log('Error:', data);
-                $('#savedata').html('Lưu');
+                 $('#savedata').html('Lưu');
             }
         });
         });
@@ -225,7 +218,7 @@
          if (confirm("Bạn có muốn xóa?")) {
         $.ajax({
             type: "DELETE",
-            url: "{{ route('chuyennganh.destroy', '') }}/" + id,
+            url: "{{ route('taikhoangiangvien.destroy', '') }}/" + id,
             success: function (data) {
                 table.draw();
             },
@@ -240,7 +233,7 @@
     if (confirm("Bạn có muốn khôi phục?")) {
         $.ajax({
             type: "GET",
-            url: "{{ route('chuyennganh.restore', '') }}/" + id,
+            url: "{{ route('taikhoangiangvien.restore', '') }}/" + id,
             success: function (data) {
                 table.draw();
             },

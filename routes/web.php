@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DangNhapController;
 use App\Http\Controllers\SinhVienController;
 use App\Http\Controllers\KhoaController;
+use App\Http\Controllers\TaiKhoanGiangVienController;
+use App\Http\Controllers\ChucVuGiangVienController;
+use App\Http\Controllers\BoMonController;
 use App\Http\Controllers\ChuyenNganhController;
 
 /*
@@ -37,10 +40,25 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     
     Route::resource("sinhvien", SinhVienController::class);
     Route::resource("giangvien", GiangVienController::class);
+    
     Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
     Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
     Route::resource('khoa', KhoaController::class);
-   
+    
+    Route::get('/bomon/getInactiveData', [BoMonController::class, 'getInactiveData'])->name('bomon.getInactiveData');
+    Route::get('/bomon/restore/{id}', [BoMonController::class, 'restore'])->name('bomon.restore');
+    Route::resource('bomon', BoMonController::class);
+
+    Route::get('/chucvugiangvien/getInactiveData', [ChucVuGiangVienController::class, 'getInactiveData'])->name('chucvugiangvien.getInactiveData');
+    Route::get('/chucvugiangvien/restore/{id}', [ChucVuGiangVienController::class, 'restore'])->name('chucvugiangvien.restore');
+    Route::resource('chucvugiangvien', ChucVuGiangVienController::class);
+
+    Route::get('/taikhoangiangvien/getInactiveData', [TaiKhoanGiangVienController::class, 'getInactiveData'])->name('taikhoangiangvien.getInactiveData');
+    Route::get('/taikhoangiangvien/restore/{id}', [TaiKhoanGiangVienController::class, 'restore'])->name('taikhoangiangvien.restore');
+    Route::resource('taikhoangiangvien', TaiKhoanGiangVienController::class);
+
+    Route::get('/chuyennganh/getInactiveData', [ChuyenNganhController::class, 'getInactiveData'])->name('chuyennganh.getInactiveData');
+    Route::get('/chuyennganh/restore/{id}', [ChuyenNganhController::class, 'restore'])->name('chuyennganh.restore');
     Route::resource('chuyennganh', ChuyenNganhController::class);
 });
 

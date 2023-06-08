@@ -11,7 +11,6 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-  
           <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
@@ -21,7 +20,7 @@
       <!-- SidebarSearch Form -->
       <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Tìm Kiếm" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -36,13 +35,33 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="/dashboard" class="nav-link  ">
+            <a href="" class="nav-link  ">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Dashboard
+                Lớp Học
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Test 1</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Test 2</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Test 3</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="/admin" class="nav-link {{ Request::is('admin') ? 'active' :''}}" >
@@ -63,9 +82,27 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ url('/admin/taikhoangiangvien') }}" class="nav-link {{ Request::url() == url('/admin/taikhoangiangvien') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-users"></i>
+              <p>Tài Khoản Giảng Viên</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/chucvugiangvien') }}" class="nav-link {{ Request::url() == url('/admin/chucvugiangvien') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-users"></i>
+              <p>Chức Vụ</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ url('/admin/khoa') }}" class="nav-link {{ Request::url() == url('/admin/khoa') ? 'active' : '' }}" >
               <i class="nav-icon fas fa-users"></i>
               <p>Khoa</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/bomon') }}" class="nav-link {{ Request::url() == url('/admin/bomon') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-users"></i>
+              <p>Bộ Môn</p>
             </a>
           </li>
           <li class="nav-item">

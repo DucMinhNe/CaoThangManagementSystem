@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Khoa;
+use App\Models\ChucVuGiangVien;
 use DataTables;
-class KhoaController extends Controller
+class ChucVuGiangVienController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class KhoaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Khoa::where('trang_thai', 1)->latest()->get();
+            $data = ChucVuGiangVien::where('trang_thai', 1)->latest()->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -29,22 +29,24 @@ class KhoaController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('admin.khoas.index');
+        return view('admin.chucvugiangviens.index');
     }
     public function getInactiveData()
     {
-        $data = Khoa::where('trang_thai', 0)->latest()->get();
+        $data = ChucVuGiangVien::where('trang_thai', 0)->latest()->get();
         return Datatables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function($row){
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
-                return $btn;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
+
+                        return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
     }
-    
     /**
      * Show the form for creating a new resource.
      *
@@ -63,10 +65,13 @@ class KhoaController extends Controller
      */
     public function store(Request $request)
     {
-        Khoa::updateOrCreate(['id' => $request->id],
-                ['ten_khoa' => $request->ten_khoa]);        
-   
-        return response()->json(['success'=>'Lưu Khoa Thành Công.']);
+        ChucVuGiangVien::updateOrCreate(
+            ['id' => $request->id],
+            [
+                'ten_chuc_vu' => $request->ten_chuc_vu,
+            ]
+        );        
+        return response()->json(['success' => 'Lưu Thành Công.']);
     }
 
     /**
@@ -77,7 +82,7 @@ class KhoaController extends Controller
      */
     public function show($id)
     {
-      //
+        //
     }
 
     /**
@@ -88,9 +93,22 @@ class KhoaController extends Controller
      */
     public function edit($id)
     {
-        $khoa = Khoa::find($id);
-        return response()->json($khoa);
+        $chucvugiangvien = ChucVuGiangVien::find($id);
+        return response()->json($chucvugiangvien);
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -99,17 +117,12 @@ class KhoaController extends Controller
      */
     public function destroy($id)
     {
-        // Khoa::find($id)->delete();
-        // return response()->json(['success'=>'Xóa Khoa Thành Công.']);
-        Khoa::where('id', $id)->update(['trang_thai' => 0]);
-        return response()->json(['success' => 'Xóa Khoa Thành Công.']);
+        ChucVuGiangVien::where('id', $id)->update(['trang_thai' => 0]);
+        return response()->json(['success' => 'Xóa Thành Công.']);
     }
     public function restore($id)
     {
-        Khoa::where('id', $id)->update(['trang_thai' => 1]);
-        return response()->json(['success' => 'Khôi phục Khoa thành công.']);
+        ChucVuGiangVien::where('id', $id)->update(['trang_thai' => 1]);
+        return response()->json(['success' => 'Khôi phục thành công.']);
     }
-    
-
-   
 }

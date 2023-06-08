@@ -13,7 +13,10 @@ class Authenticate extends Middleware
      * @return string|null
      */
     protected function redirectTo($request)
-    {
+    {   
+        if (auth()->check() && auth()->user()->trang_thai == 0) {
+            return route('login');
+        }
         if (! $request->expectsJson()) {
             return route('login');
         }

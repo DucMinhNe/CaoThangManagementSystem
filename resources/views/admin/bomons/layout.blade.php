@@ -15,7 +15,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Cao Thắng</a></li>
-              <li class="breadcrumb-item active">Chuyên Ngành</li>
+              <li class="breadcrumb-item active">Bộ Môn</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
