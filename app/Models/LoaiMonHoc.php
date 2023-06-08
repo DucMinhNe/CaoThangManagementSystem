@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class Khoa extends Model
+
+class LoaiMonHoc extends Model
 {
     use HasFactory;
-    protected $table = 'khoas';
-    protected $primaryKey = 'id';
+    protected $table = 'loai_mon_hocs';
     protected $fillable = [
-        'id','ten_khoa','trang_thai'
+        'ten_loai_mon_hoc','trang_thai'
     ];
 }

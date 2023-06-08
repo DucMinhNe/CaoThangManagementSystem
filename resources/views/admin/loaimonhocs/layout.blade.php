@@ -15,7 +15,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Cao Thắng</a></li>
-              <li class="breadcrumb-item active">Chuyên Ngành</li>
+              <li class="breadcrumb-item active">Trang Chủ</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -44,9 +44,6 @@
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<!-- Select2 -->
-<script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-
 <!-- DataTables  & Plugins -->
 <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
 
@@ -76,12 +73,7 @@
 <!-- AdminLTE for demo purposes -->
 <!-- <script src="../../dist/js/demo.js"></script> -->
 <!-- Page specific script -->
-<script>
-$(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-  })
-  </script>
+
 </body>
 </html>
 

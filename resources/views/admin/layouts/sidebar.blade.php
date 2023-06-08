@@ -94,6 +94,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ url('/admin/danhsachchucvugiangvien') }}" class="nav-link {{ Request::url() == url('/admin/danhsachchucvugiangvien') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-users"></i>
+              <p>DS Chức Vụ Giảng Viên</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ url('/admin/khoa') }}" class="nav-link {{ Request::url() == url('/admin/khoa') ? 'active' : '' }}" >
               <i class="nav-icon fas fa-users"></i>
               <p>Khoa</p>
@@ -103,6 +109,18 @@
             <a href="{{ url('/admin/bomon') }}" class="nav-link {{ Request::url() == url('/admin/bomon') ? 'active' : '' }}" >
               <i class="nav-icon fas fa-users"></i>
               <p>Bộ Môn</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/loaimonhoc') }}" class="nav-link {{ Request::url() == url('/admin/loaimonhoc') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-users"></i>
+              <p>Loại Môn Học</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/monhoc') }}" class="nav-link {{ Request::url() == url('/admin/monhoc') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-users"></i>
+              <p>Môn Học</p>
             </a>
           </li>
           <li class="nav-item">
