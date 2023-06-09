@@ -11,7 +11,7 @@ class MonHoc extends Model
     protected $table = 'mon_hocs';
     protected $fillable = [
         'ten_mon_hoc','id_bo_mon','id_loai_mon_hoc','trang_thai'
-    ];
+    ];  
     public function boMon()
     {
         return $this->belongsTo(BoMon::class, 'id_bo_mon');

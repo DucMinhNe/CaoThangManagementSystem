@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class SinhVien extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
 
     protected $table = 'sinh_viens';
     protected $fillable = [
-    'mssv',
-    'ho_ten',
+    'ma_sv',
+    'ten_sinh_vien',
     'ngay_sinh',
     'noi_sinh',
     'gioi_tinh',

@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lop_hocs', function (Blueprint $table) {
+        Schema::create('phongs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ten_lop');
-            $table->unsignedInteger('id_chuyen_nganh');
-            $table->string('ma_gv_chu_nhiem')->nullable();
+            $table->string('ten_phong');
+            $table->string('mo_ta')->nullable();
+            $table->integer('suc_chua');
+            $table->unsignedInteger('id_loai_phong');
             $table->boolean('trang_thai')->default(true);
             $table->timestamps();
-            $table->foreign('id_chuyen_nganh')->references('id')->on('chuyen_nganhs');
-            $table->foreign('ma_gv_chu_nhiem')->references('ma_gv')->on('giang_viens');
+            $table->foreign('id_loai_phong')->references('id')->on('loai_phongs');
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lop_hocs');
+        Schema::dropIfExists('phongs');
     }
 };

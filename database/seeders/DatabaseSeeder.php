@@ -4,7 +4,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-
 use App\Models\GiangVien;
 use App\Models\TaiKhoanGiangVien;
 use App\Models\SinhVien;
@@ -35,8 +34,8 @@ class DatabaseSeeder extends Seeder
            TaiKhoanGiangVienSeeder::class,
            //SinhVienSeeder::class,
            //TaiKhoanSinhVienSeeder::class,
-          // KhoaSeeder::class,
-         //  ChuyenNganhSeeder::class,
+           KhoaSeeder::class,
+           ChuyenNganhSeeder::class,
         ]);
     }
 }

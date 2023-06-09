@@ -1,15 +1,14 @@
 @include('admin.layouts.header')
-
-
-<!-- Content Wrapper. Contains page content -->
+@include('admin.layouts.sidebar')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <!-- <h1 class="m-0">Dashboard</h1> -->
-            @yield('content_sinhvien')
+          <div class="container">
+            @yield('content')
+          </div>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -21,9 +20,9 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
     <!-- Main content -->
-   
     <!-- /.content -->
   </div>
+<!-- /.content-wrapper -->
 @include('admin.layouts.footer')
+

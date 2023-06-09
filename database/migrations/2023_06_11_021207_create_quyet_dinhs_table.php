@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lop_hocs', function (Blueprint $table) {
+        Schema::create('quyet_dinhs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ten_lop');
-            $table->unsignedInteger('id_chuyen_nganh');
-            $table->string('ma_gv_chu_nhiem')->nullable();
+            $table->string('ma_gv_ra_quyet_dinh');
+            $table->datetime('ngay_ra_quyet_dinh');
+            $table->text('noi_dung');
+            $table->datetime('hieu_luc_bat_dau');
+            $table->datetime('hieu_luc_ket_thuc')->nullable();
             $table->boolean('trang_thai')->default(true);
             $table->timestamps();
-            $table->foreign('id_chuyen_nganh')->references('id')->on('chuyen_nganhs');
-            $table->foreign('ma_gv_chu_nhiem')->references('ma_gv')->on('giang_viens');
+            $table->foreign('ma_gv_ra_quyet_dinh')->references('ma_gv')->on('giang_viens');
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lop_hocs');
+        Schema::dropIfExists('quyet_dinhs');
     }
 };

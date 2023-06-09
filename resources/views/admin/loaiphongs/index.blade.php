@@ -1,20 +1,21 @@
-@extends('admin.khoas.layout')
+@extends('admin.loaiphongs.layout')
+<link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 @section('content')
 <section>
 <div class="container">
 <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
-<button type="button" class="btn btn-success swalDefaultSuccess">
-                  Launch Success Toast
-</button>
+
 <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-    <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm Khoa</a>
+    <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
 </ul>
 <div class="card-body">
     <table id="example1" class="table table-bordered table-striped data-table">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Tên Khoa</th>
+                <th>Tên Loại Phòng</th>
                 <th width="280px">Hành Động</th>
             </tr>
         </thead>
@@ -23,7 +24,7 @@
         <tfoot>
                   <tr>
                   <th>No</th>
-                <th>Tên Khoa</th>
+                  <th>Tên Loại Phòng</th>
                 <th width="280px">Hành Động</th>
                   </tr>
                   </tfoot>
@@ -41,8 +42,8 @@
             <input type="hidden" name="id" id="id">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="ten_khoa">Tên Khoa</label>
-                    <input type="text" class="form-control" id="ten_khoa" name="ten_khoa" placeholder="Tên Khoa" value="" required>
+                    <label for="ten_loai_phong">Tên Loại Phòng</label>
+                    <input type="text" class="form-control" id="ten_loai_phong" name="ten_loai_phong" placeholder="Tên Loại Phòng" value="" required>
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -68,10 +69,10 @@
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('khoa.index') }}",
+            ajax: "{{ route('loaiphong.index') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'ten_khoa', name: 'ten_khoa'},
+                {data: 'ten_loai_phong', name: 'ten_loai_phong'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             language: {
@@ -132,28 +133,28 @@
 
     if (buttonText === 'Hiển thị Trạng thái 0') {
         button.text('Hiển thị Trạng thái 1');
-        table.ajax.url("{{ route('khoa.getInactiveData') }}").load();
+        table.ajax.url("{{ route('loaiphong.getInactiveData') }}").load();
     } else {
         button.text('Hiển thị Trạng thái 0');
-        table.ajax.url("{{ route('khoa.index') }}").load();
+        table.ajax.url("{{ route('loaiphong.index') }}").load();
     }
 });
         $('#createNewBtn').click(function () {
             $('#savedata').val("create-Btn");
             $('#id').val('');
             $('#modalForm').trigger("reset");
-            $('#modelHeading').html("Thêm Khoa");
+            $('#modelHeading').html("Thêm");
             $('#ajaxModelexa').modal('show');
         });
         
         $('body').on('click', '.editBtn', function () {
         var id = $(this).data('id');
-        $.get("{{ route('khoa.index') }}" +'/' + id +'/edit', function (data) {
-            $('#modelHeading').html("Sửa Khoa");
+        $.get("{{ route('loaimonhoc.index') }}" +'/' + id +'/edit', function (data) {
+            $('#modelHeading').html("Sửa ");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
-            $('#ten_khoa').val(data.ten_khoa);
+            $('#ten_loai_phong').val(data.ten_loai_phong);
         })
     });
         
@@ -162,22 +163,13 @@
             $(this).html('Sending..');
             $.ajax({
             data: $('#modalForm').serialize(),
-            url: "{{ route('khoa.store') }}",
+            url: "{{ route('loaiphong.store') }}",
             type: "POST",
             dataType: 'json',
             success: function (data) {
                 $('#modalForm').trigger("reset");
                 $('#ajaxModelexa').modal('hide');
                 $('#savedata').html('Lưu');
-                Swal.fire({
-                toast: true,
-                position: 'top-end',
-                timerProgressBar: true,
-                icon: 'success',
-                title: 'Thành Công',
-                showConfirmButton: false,
-                timer: 1500
-                })
                 table.draw();
             },
             error: function (data) {
@@ -189,64 +181,26 @@
         
         $('body').on('click', '.deleteBtn', function () {
          var id = $(this).data("id");
-         Swal.fire({
-        title: 'Bạn Có Muốn Xóa',
-        text: "",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Hủy',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Xác Nhận'
-        }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
+         if (confirm("Bạn có muốn xóa?")) {
+        $.ajax({
             type: "DELETE",
-            url: "{{ route('khoa.destroy', '') }}/" + id,
+            url: "{{ route('loaiphong.destroy', '') }}/" + id,
             success: function (data) {
-                Swal.fire(
-                {
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Xóa Thành Công',
-                showConfirmButton: false,
-                timer: 1000
-                })
                 table.draw();
             },
             error: function (data) {
                 console.log('Error:', data);
             }
-        });
-        }
-        })
+            });
+             }
         });
         $('body').on('click', '.restoreBtn', function () {
-        var id = $(this).data("id");
-        Swal.fire({
-        title: 'Bạn Có Muốn Khôi Phục',
-        text: "",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Hủy',
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Xác Nhận'
-        }).then((result) => {
-        if (result.isConfirmed) {
+    var id = $(this).data("id");
+    if (confirm("Bạn có muốn khôi phục?")) {
         $.ajax({
             type: "GET",
-            url: "{{ route('khoa.restore', '') }}/" + id,
+            url: "{{ route('loaiphong.restore', '') }}/" + id,
             success: function (data) {
-                Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Khôi Phục Thành Công',
-                showConfirmButton: false,
-                timer: 1000
-                })
                 table.draw();
             },
             error: function (data) {
@@ -254,8 +208,8 @@
             }
         });
     }
-        })
     });
     });
 </script> 
+
 @endsection     
