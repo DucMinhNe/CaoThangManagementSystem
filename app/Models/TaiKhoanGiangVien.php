@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 // use Auth;
-// use Hash;
+use Hash;
 class TaiKhoanGiangVien extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -18,6 +18,8 @@ class TaiKhoanGiangVien extends Authenticatable
      * @var array
      */
     protected $table = 'tai_khoan_giang_viens';
+    public $timestamps = false;
+    protected $rememberTokenName = false;
     protected $fillable = [
         'tai_khoan',
         'mat_khau',
@@ -40,9 +42,8 @@ class TaiKhoanGiangVien extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'remember_token',
+        // 'remember_token',
         // 'mat_khau',
-        
     ];
     public function setPasswordAttribute($password)
     {

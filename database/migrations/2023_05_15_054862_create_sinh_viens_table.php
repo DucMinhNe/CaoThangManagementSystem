@@ -13,28 +13,29 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('giang_viens', function (Blueprint $table) {
-            $table->string('ma_gv')->primary();
-            $table->string('ten_giang_vien')->nullable();
+        Schema::create('sinh_viens', function (Blueprint $table) {
+            $table->string('ma_sv')->primary();
+            $table->string('ten_sinh_vien')->nullable();
             $table->string('email')->nullable();
             $table->string('so_dien_thoai')->nullable();
             $table->string('so_cmt')->nullable();
+            $table->boolean('gioi_tinh')->nullable();
             $table->date('ngay_sinh')->nullable();
             $table->string('noi_sinh')->nullable();
-            $table->boolean('gioi_tinh')->nullable();
             $table->string('dan_toc')->nullable();
             $table->string('ton_giao')->nullable();
             $table->string('dia_chi_thuong_tru')->nullable();
             $table->string('dia_chi_tam_tru')->nullable();
-            $table->string('quoc_gia')->nullable();
-            $table->unsignedInteger('id_bo_mon')->nullable();
             $table->string('hinh_anh_dai_dien')->nullable();
-            $table->unsignedInteger('id_chuc_vu')->nullable();
-            $table->boolean('trang_thai_lam_viec')->default(true)->nullable();
+            $table->string('tai_khoan')->nullable();
+            $table->string('mat_khau')->nullable();
+            $table->string('khoa_hoc')->nullable();
+            $table->unsignedInteger('bac_dao_tao')->nullable();
+            $table->unsignedInteger('he_dao_tao')->nullable();
+            $table->unsignedInteger('id_lop_hoc')->nullable();
+            $table->unsignedInteger('tinh_trang_hoc')->nullable();
             $table->boolean('trang_thai')->default(true);
-            $table->timestamps();
-            $table->foreign('id_bo_mon')->references('id')->on('bo_mons');
-            $table->foreign('id_chuc_vu')->references('id')->on('chuc_vu_giang_viens');
+            $table->foreign('id_lop_hoc')->references('id')->on('lop_hocs');
         });
     }
 
@@ -45,6 +46,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('giang_viens');
+        Schema::dropIfExists('sinh_viens');
     }
 };

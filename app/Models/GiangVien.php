@@ -11,6 +11,7 @@ class GiangVien extends Model
     use HasFactory;
     protected $table = 'giang_viens';
     protected $primaryKey = 'ma_gv';
+    public $incrementing = false;
     protected $fillable = [
         'ma_gv',
         'ten_giang_vien',
@@ -31,7 +32,7 @@ class GiangVien extends Model
         'trang_thai_lam_viec',
         'trang_thai',
     ];
-    public $incrementing = false;
+    
     public function boMon()
     {
         return $this->belongsTo(BoMon::class, 'id_bo_mon', 'id');

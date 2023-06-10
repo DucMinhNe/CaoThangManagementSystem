@@ -2,14 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DangNhapController;
-use App\Http\Controllers\SinhVienController;
+
 use App\Http\Controllers\KhoaController;
+
 use App\Http\Controllers\TaiKhoanGiangVienController;
 
 use App\Http\Controllers\LoaiMonHocController;
 use App\Http\Controllers\LoaiPhongController;
 use App\Http\Controllers\PhongController;
 use App\Http\Controllers\MonHocController;
+use App\Http\Controllers\LopHocController;
 use App\Http\Controllers\BoMonController;
 use App\Http\Controllers\ChuyenNganhController;
 use App\Http\Controllers\GiangVienController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\GiangVienController;
 use App\Http\Controllers\ChucVuGiangVienController;
 use App\Http\Controllers\DanhSachChucVuGiangVienController;
 
+use App\Http\Controllers\SinhVienController;
 use App\Http\Controllers\ChucVuSinhVienController;
 use App\Http\Controllers\DanhSachChucVuSinhVienController;
 
@@ -58,7 +61,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/bomon/restore/{id}', [BoMonController::class, 'restore'])->name('bomon.restore');
     Route::resource('bomon', BoMonController::class);
 
-    
+    Route::get('/lophoc/getInactiveData', [LopHocController::class, 'getInactiveData'])->name('lophoc.getInactiveData');
+    Route::get('/lophoc/restore/{id}', [LopHocController::class, 'restore'])->name('lophoc.restore');
+    Route::resource('lophoc', LopHocController::class);
 
     Route::get('/loaiphong/getInactiveData', [LoaiPhongController::class, 'getInactiveData'])->name('loaiphong.getInactiveData');
     Route::get('/loaiphong/restore/{id}', [LoaiPhongController::class, 'restore'])->name('loaiphong.restore');
@@ -95,7 +100,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
 
 
-
+    Route::get('/sinhvien/getInactiveData', [SinhVienController::class, 'getInactiveData'])->name('sinhvien.getInactiveData');
+    Route::get('/sinhvien/restore/{id}', [SinhVienController::class, 'restore'])->name('sinhvien.restore');
+    Route::resource('sinhvien', SinhVienController::class);
 
     Route::get('/chucvusinhvien/getInactiveData', [ChucVuSinhVienController::class, 'getInactiveData'])->name('chucvusinhvien.getInactiveData');
     Route::get('/chucvusinhvien/restore/{id}', [ChucVuSinhVienController::class, 'restore'])->name('chucvusinhvien.restore');

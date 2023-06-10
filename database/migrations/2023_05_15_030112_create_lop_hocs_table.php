@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('lop_hocs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ten_lop');
+            $table->string('ten_lop_hoc');
             $table->unsignedInteger('id_chuyen_nganh');
             $table->string('ma_gv_chu_nhiem')->nullable();
             $table->boolean('trang_thai')->default(true);

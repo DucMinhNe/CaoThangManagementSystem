@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('mat_khau');
             $table->string('ma_gv');
             $table->boolean('trang_thai')->default(true);
-            $table->rememberToken();
             $table->timestamps();
             $table->foreign('ma_gv')->references('ma_gv')->on('giang_viens');
         });

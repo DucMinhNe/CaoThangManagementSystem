@@ -73,6 +73,13 @@
                                   <p>DS Chức Vụ Sinh Viên</p>
                               </a>
                           </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/lophoc') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/lophoc') ? 'active' : '' }}">
+                                  <i class="nav-icon fas fa-users"></i>
+                                  <p>Lớp Học</p>
+                              </a>
+                          </li>
                       </ul>
                   </li>
                   <li class="nav-item">
@@ -112,6 +119,7 @@
                                   <p>DS Chức Vụ Giảng Viên</p>
                               </a>
                           </li>
+
                       </ul>
                   </li>
                   <li class="nav-item">
@@ -149,13 +157,7 @@
                           <p>Chuyên Ngành</p>
                       </a>
                   </li>
-                  <li class="nav-item">
-                      <a href="{{ url('/admin/lophoc') }}"
-                          class="nav-link {{ Request::url() == url('/admin/lophoc') ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
-                          <p>Lớp Học</p>
-                      </a>
-                  </li>
+
                   <li class="nav-item">
                       <a href="{{ url('/admin/loaiphong') }}"
                           class="nav-link {{ Request::url() == url('/admin/loaiphong') ? 'active' : '' }}">
