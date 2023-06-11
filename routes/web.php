@@ -2,10 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DangNhapController;
-
+use App\Http\Controllers\ThongTinCaNhanController;
 use App\Http\Controllers\KhoaController;
 
-use App\Http\Controllers\TaiKhoanGiangVienController;
 
 use App\Http\Controllers\LoaiMonHocController;
 use App\Http\Controllers\LoaiPhongController;
@@ -14,15 +13,16 @@ use App\Http\Controllers\MonHocController;
 use App\Http\Controllers\LopHocController;
 use App\Http\Controllers\BoMonController;
 use App\Http\Controllers\ChuyenNganhController;
-use App\Http\Controllers\GiangVienController;
 
+
+use App\Http\Controllers\GiangVienController;
 use App\Http\Controllers\ChucVuGiangVienController;
 use App\Http\Controllers\DanhSachChucVuGiangVienController;
+
 
 use App\Http\Controllers\SinhVienController;
 use App\Http\Controllers\ChucVuSinhVienController;
 use App\Http\Controllers\DanhSachChucVuSinhVienController;
-
 use App\Http\Controllers\QuyetDinhController;
 
 /*
@@ -44,7 +44,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/', function () {
         return view('admin.index');
     });
-    
+    Route::resource('thongtincanhan', ThongTinCaNhanController::class);
+
     Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
     Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
     Route::resource('khoa', KhoaController::class);
@@ -77,17 +78,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/giangvien/restore/{id}', [GiangVienController::class, 'restore'])->name('giangvien.restore');
     Route::resource('giangvien', GiangVienController::class);
 
-    Route::get('/chucvugiangvien/getInactiveData', [ChucVuGiangVienController::class, 'getInactiveData'])->name('chucvugiangvien.getInactiveData');
-    Route::get('/chucvugiangvien/restore/{id}', [ChucVuGiangVienController::class, 'restore'])->name('chucvugiangvien.restore');
-    Route::resource('chucvugiangvien', ChucVuGiangVienController::class);
-
     Route::get('/danhsachchucvugiangvien/getInactiveData', [DanhSachChucVuGiangVienController::class, 'getInactiveData'])->name('danhsachchucvugiangvien.getInactiveData');
     Route::get('/danhsachchucvugiangvien/restore/{id}', [DanhSachChucVuGiangVienController::class, 'restore'])->name('danhsachchucvugiangvien.restore');
     Route::resource('danhsachchucvugiangvien', DanhSachChucVuGiangVienController::class);
-
-    Route::get('/taikhoangiangvien/getInactiveData', [TaiKhoanGiangVienController::class, 'getInactiveData'])->name('taikhoangiangvien.getInactiveData');
-    Route::get('/taikhoangiangvien/restore/{id}', [TaiKhoanGiangVienController::class, 'restore'])->name('taikhoangiangvien.restore');
-    Route::resource('taikhoangiangvien', TaiKhoanGiangVienController::class);
 
     Route::get('/chuyennganh/getInactiveData', [ChuyenNganhController::class, 'getInactiveData'])->name('chuyennganh.getInactiveData');
     Route::get('/chuyennganh/restore/{id}', [ChuyenNganhController::class, 'restore'])->name('chuyennganh.restore');
@@ -97,8 +90,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/quyetdinh/restore/{id}', [QuyetDinhController::class, 'restore'])->name('quyetdinh.restore');
     Route::resource('quyetdinh', QuyetDinhController::class);
 
-
-
+    Route::get('/chucvugiangvien/getInactiveData', [ChucVuGiangVienController::class, 'getInactiveData'])->name('chucvugiangvien.getInactiveData');
+    Route::get('/chucvugiangvien/restore/{id}', [ChucVuGiangVienController::class, 'restore'])->name('chucvugiangvien.restore');
+    Route::resource('chucvugiangvien', ChucVuGiangVienController::class);
 
     Route::get('/sinhvien/getInactiveData', [SinhVienController::class, 'getInactiveData'])->name('sinhvien.getInactiveData');
     Route::get('/sinhvien/restore/{id}', [SinhVienController::class, 'restore'])->name('sinhvien.restore');
@@ -112,3 +106,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/danhsachchucvusinhvien/restore/{id}', [DanhSachChucVuSinhVienController::class, 'restore'])->name('danhsachchucvusinhvien.restore');
     Route::resource('danhsachchucvusinhvien', DanhSachChucVuSinhVienController::class);
 });
+
+// use App\Http\Controllers\TaiKhoanGiangVienController;
+// Route::get('/taikhoangiangvien/getInactiveData', [TaiKhoanGiangVienController::class, 'getInactiveData'])->name('taikhoangiangvien.getInactiveData');
+// Route::get('/taikhoangiangvien/restore/{id}', [TaiKhoanGiangVienController::class, 'restore'])->name('taikhoangiangvien.restore');
+// Route::resource('taikhoangiangvien', TaiKhoanGiangVienController::class);

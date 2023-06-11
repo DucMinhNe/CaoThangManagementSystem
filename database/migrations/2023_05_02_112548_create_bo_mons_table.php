@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('ten_bo_mon');
             $table->unsignedInteger('id_khoa');
             $table->boolean('trang_thai')->default(true);
-            $table->timestamps();
             $table->foreign('id_khoa')->references('id')->on('khoas');
+            $table->timestamps();
         });
     }
 

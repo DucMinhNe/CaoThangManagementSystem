@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SinhVien;
-use App\Models\Lop;
+use App\Models\LopHoc;
 use DataTables;
 use File;
 class SinhVienController extends Controller
@@ -37,7 +37,7 @@ class SinhVienController extends Controller
                 ->make(true);
         }
         
-        $lophocs = SinhVien::all();
+        $lophocs = LopHoc::all();
         return view('admin.sinhviens.index', compact('lophocs'));      
     }
     public function getInactiveData()
@@ -51,8 +51,8 @@ class SinhVienController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
         
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ma_sv.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
         
                     return $btn;
                 })
@@ -183,12 +183,12 @@ class SinhVienController extends Controller
      */
     public function destroy($id)
     {
-        SinhVien::where('id', $id)->update(['trang_thai' => 0]);
+        SinhVien::where('ma_sv', $id)->update(['trang_thai' => 0]);
         return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
     }
     public function restore($id)
     {
-        SinhVien::where('id', $id)->update(['trang_thai' => 1]);
+        SinhVien::where('ma_sv', $id)->update(['trang_thai' => 1]);
         return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
     }
 }

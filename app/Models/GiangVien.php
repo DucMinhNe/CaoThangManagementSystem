@@ -4,42 +4,47 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-
-class GiangVien extends Model
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+// use Auth;
+use Hash;
+class GiangVien extends Authenticatable
 {
     use HasFactory;
     protected $table = 'giang_viens';
     protected $primaryKey = 'ma_gv';
     public $incrementing = false;
+    protected $keyType = 'string';
+    protected $rememberTokenName = false;
     protected $fillable = [
         'ma_gv',
         'ten_giang_vien',
         'email',
         'so_dien_thoai',
         'so_cmt',
+        'gioi_tinh',
         'ngay_sinh',
         'noi_sinh',
-        'gioi_tinh',
-        'dan_toc',
+        'dan_toc',  
         'ton_giao',
         'dia_chi_thuong_tru',
         'dia_chi_tam_tru',
-        'quoc_gia',
-        'id_bo_mon',
         'hinh_anh_dai_dien',
+        'tai_khoan',
+        'mat_khau',
+        'id_bo_mon',
         'id_chuc_vu',
-        'trang_thai_lam_viec',
+        'tinh_trang_lam_viec',
         'trang_thai',
     ];
-    
-    public function boMon()
+    public function getAuthPassword()
     {
-        return $this->belongsTo(BoMon::class, 'id_bo_mon', 'id');
+        return $this->mat_khau;
     }
-
-    public function chucVu()
+    public function setPasswordAttribute($password)
     {
-        return $this->belongsTo(ChucVuGiangVien::class, 'id_chuc_vu', 'id');
+        $this->attributes['mat_khau'] = bcrypt($password);
     }
 }

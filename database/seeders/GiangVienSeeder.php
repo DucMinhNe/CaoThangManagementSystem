@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\GiangVien;
+use Hash;
 class GiangVienSeeder extends Seeder
 {
     /**
@@ -15,7 +16,7 @@ class GiangVienSeeder extends Seeder
     public function run()
     {
         GiangVien::create([
-            'ma_gv' => 'GV001',
+            'ma_gv' => '123',
             'ten_giang_vien' => 'Lê Đức Minh',
             'email' => 'ducminh@gmail.com',
             'so_dien_thoai' => '0123456789',
@@ -27,12 +28,12 @@ class GiangVienSeeder extends Seeder
             'ton_giao' => 'Không',
             'dia_chi_thuong_tru' => 'HCM',
             'dia_chi_tam_tru' => 'HCM',
+            'tai_khoan' => 'test',
+            'mat_khau' => Hash::make('123'),
+            'hinh_anh_dai_dien' => '123.jpg',
+            'id_chuc_vu' => null,
             'id_bo_mon' => null,
-            'quoc_gia' => 'Việt Nam',
-            'hinh_anh_dai_dien' => 'avatar.png',
-            'id_chuc_vu' => null,
-            'id_chuc_vu' => null,
-            'trang_thai_lam_viec' => 1,
+            'tinh_trang_lam_viec' => 1,
             'trang_thai' => 1,
         ]);
     }

@@ -36,7 +36,25 @@ class PhongController extends Controller
         $loaiphongs = LoaiPhong::all();
         return view('admin.phongs.index', compact('loaiphongs'));        
     }
+    public function getInactiveData()
+    {
+        $data = Phong::leftJoin('loai_phongs', 'phongs.id_loai_phong', '=', 'loai_phongs.id')
+        ->select('phongs.*', 'loai_phongs.ten_loai_phong')
+        ->where('phongs.trang_thai', 1) // Thêm điều kiện trạng thái bằng 1
+        ->latest()
+        ->get();
+    return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
 
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
+
+            return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

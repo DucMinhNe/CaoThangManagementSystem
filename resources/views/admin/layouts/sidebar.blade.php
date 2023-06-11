@@ -12,10 +12,18 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
-                  <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                  @php
+                  $hinhAnhDaiDien = auth()->user()->hinh_anh_dai_dien ? asset('giangvien_img/' .
+                  auth()->user()->hinh_anh_dai_dien) : asset('dist/img/user2-160x160.jpg');
+                  @endphp
+                  <img src="{{ $hinhAnhDaiDien }}" class="img-circle elevation-2" alt="User Image">
+
+                  <!-- <img src="{{ asset('giangvien_img/' . auth()->user()->hinh_anh_dai_dien) }}"
+                      class="img-circle elevation-2" alt="User Image"> -->
+                  <!-- <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image"> -->
               </div>
               <div class="info">
-                  <a href="#" class="d-block"> {{auth()->user()->tai_khoan}}</a>
+                  <a href="/admin/thongtincanhan" class="d-block"> {{auth()->user()->ten_giang_vien}}</a>
               </div>
           </div>
           <!-- SidebarSearch Form -->
@@ -91,13 +99,7 @@
                           </p>
                       </a>
                       <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="{{ url('/admin/taikhoangiangvien') }}"
-                                  class="nav-link {{ Request::url() == url('/admin/taikhoangiangvien') ? 'active' : '' }}">
-                                  <i class="nav-icon fas fa-users"></i>
-                                  <p>Tài Khoản Giảng Viên</p>
-                              </a>
-                          </li>
+
                           <li class="nav-item">
                               <a href="{{ url('/admin/giangvien') }}"
                                   class="nav-link {{ Request::url() == url('/admin/giangvien') ? 'active' : '' }}">

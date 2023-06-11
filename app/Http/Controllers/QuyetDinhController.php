@@ -37,7 +37,25 @@ class QuyetDinhController extends Controller
         $giangviens = GiangVien::all();
         return view('admin.quyetdinhs.index', compact('giangviens'));    
     }
+    public function getInactiveData()
+    {
+        $data = QuyetDinh::leftJoin('giang_viens', 'quyet_dinhs.ma_gv_ra_quyet_dinh', '=', 'giang_viens.ma_gv')
+        ->select('quyet_dinhs.*', 'giang_viens.ten_giang_vien')
+        ->where('quyet_dinhs.trang_thai', 0) // Thêm điều kiện trạng thái bằng 1
+        ->latest()
+        ->get();
+    return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
 
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
+
+            return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

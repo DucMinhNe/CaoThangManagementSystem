@@ -5,4 +5,3 @@
 <!-- @yield('content_index') -->
 @extends('admin.layouts.script')
 @extends('admin.layouts.footer')
-

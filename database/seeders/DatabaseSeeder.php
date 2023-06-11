@@ -5,7 +5,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\GiangVien;
-use App\Models\TaiKhoanGiangVien;
 use App\Models\SinhVien;
 use App\Models\Khoa;
 use App\Models\ChuyenNganh;
@@ -28,9 +27,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call([
-           UserSeeder::class,
+           //UserSeeder::class,
            GiangVienSeeder::class,
-           TaiKhoanGiangVienSeeder::class,
         //    SinhVienSeeder::class,
            KhoaSeeder::class,
            ChuyenNganhSeeder::class,

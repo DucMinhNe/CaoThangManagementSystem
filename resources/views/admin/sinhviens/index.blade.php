@@ -1,17 +1,4 @@
 @extends('admin.sinhviens.layout')
-<!-- <style>
-.select2-selection__rendered {
-    line-height: 31px !important;
-}
-
-.select2-container .select2-selection--single {
-    height: 38px !important;
-}
-
-.select2-selection__arrow {
-    height: 34px !important;
-}
-</style> -->
 @section('content')
 <section>
     <div class="container">
@@ -77,7 +64,7 @@
         </div>
 </section>
 <div class="modal fade" id="ajaxModelexa" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modelHeading"></h4>
@@ -90,14 +77,13 @@
                                 <div class="form-group">
                                     <label for="ma_sv">Mã Sinh Viên</label>
                                     <input type="text" class="form-control" id="ma_sv" name="ma_sv"
-                                        placeholder="Mã Sinh Viên" value="" required>
+                                        placeholder="Mã Sinh Viên" value="" required pattern="[0-9]{10}">
                                 </div>
                                 <div class="form-group">
                                     <label for="ten_sinh_vien">Tên Sinh Viên</label>
                                     <input type="text" class="form-control" id="ten_sinh_vien" name="ten_sinh_vien"
                                         placeholder="Tên Sinh Viên" value="" required>
                                 </div>
-
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -110,7 +96,6 @@
                                     <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai"
                                         placeholder="Số Điện Thoại" value="" required>
                                 </div>
-
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -120,15 +105,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="gioi_tinh">Giới Tính</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
-                                        </div>
-                                        <select class="form-control select2" id="gioi_tinh" name="gioi_tinh" required>
-                                            <option value="0">Nam</option>
-                                            <option value="1">Nữ</option>
-                                        </select>
-                                    </div>
+                                    <select class="form-control" id="gioi_tinh" name="gioi_tinh" required>
+                                        <option value="1">Nam</option>
+                                        <option value="0">Nữ</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -182,7 +162,6 @@
                                     <input type="password" class="form-control" id="mat_khau" name="mat_khau"
                                         placeholder="Mật Khẩu" value="" required>
                                 </div>
-
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -229,8 +208,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <img id="hinh_anh_dai_dien_preview" width="90" height="90"
-                                        alt="{{ asset('img/warning.jpg') }}" />
+                                    <img id="hinh_anh_dai_dien_preview" width="90" height="90" alt="" />
                                 </div>
                             </div>
                         </div>
@@ -284,7 +262,13 @@ $(function() {
         }],
         columns: [{
                 data: 'ma_sv',
-                name: 'ma_sv'
+                name: 'ma_sv',
+                render: function(data, type, full, meta) {
+                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
+                        data + '" data-original-title="Edit" class="editBtn">' + data +
+                        '</a>';
+                    return btn;
+                }
             },
             {
                 data: 'ten_sinh_vien',
@@ -455,6 +439,11 @@ $(function() {
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm ");
         $('#ajaxModelexa').modal('show');
+        // Đặt giá trị của input ẩn về null
+        $('#hinh_anh_dai_dien_hidden').val('');
+        // Đặt giá trị của thẻ <img> về đường dẫn mặc định
+        $('#hinh_anh_dai_dien_preview').attr('src', '{{ asset("img/warning.jpg") }}');
+        $('#hinh_anh_dai_dien_preview').attr('alt', 'Warning');
     });
     $('body').on('click', '.editBtn', function() {
         $('#ma_sv').attr('readonly', 'readonly');
@@ -468,7 +457,7 @@ $(function() {
             $('#email').val(data.email);
             $('#so_dien_thoai').val(data.so_dien_thoai);
             $('#so_cmt').val(data.so_cmt);
-            $('#gioi_tinh').val(data.gioi_tinh);
+            $('#gioi_tinh option[value="' + data.gioi_tinh + '"]').prop('selected', true);
             $('#ngay_sinh').val(data.ngay_sinh);
             $('#noi_sinh').val(data.noi_sinh);
             $('#dan_toc').val(data.dan_toc);
@@ -478,13 +467,15 @@ $(function() {
             if (data.hinh_anh_dai_dien) {
                 var imageSrc = '{{ asset("sinhvien_img") }}/' + data.hinh_anh_dai_dien;
                 $('#hinh_anh_dai_dien_preview').attr('src', imageSrc);
+                $('#hinh_anh_dai_dien_preview').attr('alt', 'Hình ảnh');
                 $('#hinh_anh_dai_dien_hidden').val(data.hinh_anh_dai_dien);
             } else {
-                $('#hinh_anh_dai_dien_preview').attr('src', '');
+                $('#hinh_anh_dai_dien_preview').attr('src', '{{ asset("img/warning.jpg") }}');
+                $('#hinh_anh_dai_dien_preview').attr('alt', 'Warning');
                 $('#hinh_anh_dai_dien_hidden').val('');
             }
             $('#tai_khoan').val(data.tai_khoan);
-            $('#mat_khau').val(data.tai_khoan);
+            // $('#mat_khau').val(data.mat_khau);
             $('#mat_khau').attr('placeholder', '******');
             $('#khoa_hoc').val(data.khoa_hoc);
             $('#bac_dao_tao').val(data.bac_dao_tao);

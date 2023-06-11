@@ -16,7 +16,8 @@ return [
     'defaults' => [
         'guard' => 'web',
        // 'passwords' => 'users',
-        'passwords' => 'tai_khoan_giang_viens',
+        // 'passwords' => 'tai_khoan_giang_viens',
+        'passwords' => 'giang_viens',
     ],
 
     /*
@@ -40,7 +41,8 @@ return [
         'web' => [
             'driver' => 'session',
             //'provider' => 'users',
-            'provider' => 'tai_khoan_giang_viens',
+            // 'provider' => 'tai_khoan_giang_viens',
+            'provider' => 'giang_viens',
         ],
     ],
 
@@ -66,9 +68,13 @@ return [
         //     'driver' => 'eloquent',
         //     'model' => App\Models\User::class,
         // ],
-        'tai_khoan_giang_viens' => [
+        // 'tai_khoan_giang_viens' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\TaiKhoanGiangVien::class,
+        // ],
+        'giang_viens' => [
             'driver' => 'eloquent',
-            'model' => App\Models\TaiKhoanGiangVien::class,
+            'model' => App\Models\GiangVien::class,
         ],
         // 'users' => [
         //     'driver' => 'database',
@@ -98,8 +104,14 @@ return [
         //     'expire' => 60,
         //     'throttle' => 60,
         // ],
-        'tai_khoan_giang_viens' => [
-            'provider' => 'tai_khoan_giang_viens',
+        // 'tai_khoan_giang_viens' => [
+        //     'provider' => 'tai_khoan_giang_viens',
+        //     'table' => 'password_resets',
+        //     'expire' => 60,
+        //     'throttle' => 60,
+        // ],
+        'giang_viens' => [
+            'provider' => 'giang_viens',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

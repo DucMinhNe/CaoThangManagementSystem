@@ -17,10 +17,10 @@ return new class extends Migration
             $table->increments('id');
             $table->string('tai_khoan');
             $table->string('mat_khau');
-            $table->string('ma_gv');
+            $table->string('ma_gv')->nullable();
             $table->boolean('trang_thai')->default(true);
             $table->timestamps();
-            $table->foreign('ma_gv')->references('ma_gv')->on('giang_viens');
+            // $table->foreign('ma_gv')->references('ma_gv')->on('giang_viens');
         });
     }
 
