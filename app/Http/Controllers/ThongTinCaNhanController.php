@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Hash;
+use App\Models\GiangVien;
+use App\Models\BoMon;
+use App\Models\ChucVuGiangVien;
 class ThongTinCaNhanController extends Controller
 {
     /**
@@ -14,7 +18,20 @@ class ThongTinCaNhanController extends Controller
     public function index()
     {
         $giangviens = Auth::user();
-        return view('admin.thongtincanhans.index', compact('giangviens'));   
+
+        $bomons = null;
+        $chucvus = null;
+        if ($giangviens->id_bo_mon !== null) {
+            $bomons = BoMon::find($giangviens->id_bo_mon);
+        }
+        
+        if ($giangviens->id_chuc_vu !== null) {
+            $chucvus = ChucVuGiangVien::find($giangviens->id_chuc_vu);
+        }
+        // $bomons = BoMon::find($giangviens->id_bo_mon);
+        // $chucvus = ChucVuGiangVien::find($giangviens->id_chuc_vu);
+
+        return view('admin.thongtincanhans.index', compact('giangviens','bomons','chucvus'));  
     }
 
     /**
@@ -35,7 +52,32 @@ class ThongTinCaNhanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        # Validation
+        $request->validate([
+            'mat_khau_cu' => 'required',
+            'mat_khau_moi' => 'required',
+            'nhap_lai_mat_khau' => 'required|same:mat_khau_moi',
+        ], [
+            'mat_khau_cu.required' => 'Vui lòng nhập Mật khẩu cũ.',
+            'mat_khau_moi.required' => 'Vui lòng nhập Mật khẩu mới.',
+            'nhap_lai_mat_khau.required' => 'Vui lòng nhập lại Mật khẩu.',
+            'nhap_lai_mat_khau.same' => 'Mật khẩu nhập lại không khớp với Mật khẩu mới.',
+        ]);
+        
+      
+        if(!Hash::check($request->mat_khau_cu, auth()->user()->mat_khau)){
+            return response()->json(['success' => false, 'message' => 'Mật Khẩu Không Khớp'], 422);
+
+        }
+
+        #Update the new Password
+        GiangVien::where('ma_gv', auth()->user()->ma_gv)->update([
+            'mat_khau' => Hash::make($request->mat_khau_moi)
+        ]);
+        
+
+        return response()->json(['success' => true, 'message' => 'Cập Nhật Thành Công']);
+
     }
 
     /**

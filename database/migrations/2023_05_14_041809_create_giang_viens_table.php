@@ -33,9 +33,9 @@ return new class extends Migration
             $table->unsignedInteger('id_chuc_vu')->nullable();
             $table->unsignedInteger('tinh_trang_lam_viec')->nullable();
             $table->boolean('trang_thai')->default(true);
-            $table->foreign('id_bo_mon')->references('id')->on('bo_mons');
             $table->timestamps();
-            // $table->foreign('id_chuc_vu')->references('id')->on('chuc_vu_giang_viens');
+            $table->foreign('id_bo_mon')->references('id')->on('bo_mons');
+            $table->foreign('id_chuc_vu')->references('id')->on('chuc_vu_giang_viens');
         });
     }
 

@@ -1,11 +1,11 @@
-@extends('admin.quyetdinhs.layout')
+@extends('admin.ctlophocphans.layout')
 <!-- <style>
 .select2-selection__rendered {
     line-height: 31px !important;
 }
 
 .select2-container .select2-selection--single {
-    height: 38px !important;
+    height: 35px !important;
 }
 
 .select2-selection__arrow {
@@ -26,11 +26,14 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
+                        <th>Tên Lớp Học Phần</th>
+                        <th>Tên Sinh Viên</th>
+                        <th>Chuyên Cần</th>
+                        <th>TBKT</th>
+                        <th>Thi 1</th>
+                        <th>Thi 2</th>
+                        <th>Tổng Kết 1</th>
+                        <th>Tổng Kết 2</th>
                         <th width="100px">Hành Động</th>
                     </tr>
                 </thead>
@@ -39,17 +42,19 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
+                        <th>Tên Lớp Học Phần</th>
+                        <th>Tên Sinh Viên</th>
+                        <th>Chuyên Cần</th>
+                        <th>TBKT</th>
+                        <th>Thi 1</th>
+                        <th>Thi 2</th>
+                        <th>Tổng Kết 1</th>
+                        <th>Tổng Kết 2</th>
                         <th width="100px">Hành Động</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
-    </div>
 </section>
 
 <div class="modal fade" id="ajaxModelexa" aria-hidden="true">
@@ -63,36 +68,57 @@
                     <input type="hidden" name="id" id="id">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="ma_gv_ra_quyet_dinh">Người Ra Quyết Định</label>
-                            <select name="ma_gv_ra_quyet_dinh" id="ma_gv_ra_quyet_dinh" class="form-control select2"
+                            <label for="id_lop_hoc_phan">Lớp Học Phần</label>
+                            <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2"
                                 style="width: 100%;">
-                                @foreach ($giangviens as $giangvien)
-                                @if ($giangvien->trang_thai == 1)
-                                <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
+                                @foreach ($lophocphans as $lophocphan)
+                                @if ($lophocphan->trang_thai == 1)
+                                <option value="{{ $lophocphan->id }}">{{ $lophocphan->ten_lop_hoc_phan }}</option>
                                 @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="ngay_ra_quyet_dinh">Ngày Ra Quyết Định</label>
-                            <input type="date" class="form-control" id="ngay_ra_quyet_dinh" name="ngay_ra_quyet_dinh"
-                                placeholder="" value="" required>
+                            <label for="ma_sv">Sinh Viên</label>
+                            <select name="ma_sv" id="ma_sv" class="form-control select2" style="width: 100%;">
+                                @foreach ($sinhviens as $sinhvien)
+                                @if ($sinhvien->trang_thai == 1)
+                                <option value="{{ $sinhvien->ma_sv }}">{{ $sinhvien->ten_sinh_vien }}</option>
+                                @endif
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="noi_dung">Nội Dung</label>
-                            <input type="text" class="form-control" id="noi_dung" name="noi_dung" placeholder="Nội Dung"
-                                value="" required>
+                            <label for="chuyen_can">Chuyên Cần</label>
+                            <input type="text" class="form-control" id="chuyen_can" name="chuyen_can"
+                                placeholder="Chuyên Cần" value="" required>
                         </div>
                         <div class="form-group">
-                            <label for="hieu_luc_bat_dau">Hiệu Lực Bắt Đầu</label>
-                            <input type="date" class="form-control" id="hieu_luc_bat_dau" name="hieu_luc_bat_dau"
-                                placeholder="" value="" required>
+                            <label for="tbkt">TBKT</label>
+                            <input type="text" class="form-control" id="tbkt" name="tbkt" placeholder="TBKT" value=""
+                                required>
                         </div>
                         <div class="form-group">
-                            <label for="hieu_luc_ket_thuc">Hiệu Lực Đến</label>
-                            <input type="date" class="form-control" id="hieu_luc_ket_thuc" name="hieu_luc_ket_thuc"
-                                placeholder="" value="" required>
+                            <label for="thi_1">Thi 1</label>
+                            <input type="text" class="form-control" id="thi_1" name="thi_1" placeholder="Thi 1" value=""
+                                required>
                         </div>
+                        <div class="form-group">
+                            <label for="thi_2">Thi 2</label>
+                            <input type="text" class="form-control" id="thi_2" name="thi_2" placeholder="Thi 2" value=""
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tong_ket_1">Tổng Kết 1</label>
+                            <input type="text" class="form-control" id="tong_ket_1" name="tong_ket_1"
+                                placeholder="Tổng Kết 1" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tong_ket_2">Tổng Kết 2</label>
+                            <input type="text" class="form-control" id="tong_ket_2" name="tong_ket_2"
+                                placeholder="Tổng Kết 2" value="" required>
+                        </div>
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
@@ -116,36 +142,42 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('quyetdinh.index') }}",
+        ajax: "{{ route('ctlophocphan.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id',
-                render: function(data, type, full, meta) {
-                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
-                        data + '" data-original-title="Edit" class="editBtn">' + data +
-                        '</a>';
-                    return btn;
-                }
+                name: 'id'
             },
             {
-                data: 'ten_giang_vien',
-                name: 'ten_giang_vien'
+                data: 'ten_lop_hoc_phan',
+                name: 'ten_lop_hoc_phan'
             },
             {
-                data: 'ngay_ra_quyet_dinh',
-                name: 'ngay_ra_quyet_dinh'
+                data: 'ten_sinh_vien',
+                name: 'ten_sinh_vien'
             },
             {
-                data: 'noi_dung',
-                name: 'noi_dung'
+                data: 'chuyen_can',
+                name: 'chuyen_can'
             },
             {
-                data: 'hieu_luc_bat_dau',
-                name: 'hieu_luc_bat_dau'
+                data: 'tbkt',
+                name: 'tbkt'
             },
             {
-                data: 'hieu_luc_ket_thuc',
-                name: 'hieu_luc_ket_thuc'
+                data: 'thi_1',
+                name: 'thi_1'
+            },
+            {
+                data: 'thi_2',
+                name: 'thi_2'
+            },
+            {
+                data: 'tong_ket_1',
+                name: 'tong_ket_1'
+            },
+            {
+                data: 'tong_ket_2',
+                name: 'tong_ket_2'
             },
             {
                 data: 'action',
@@ -210,10 +242,10 @@ $(function() {
 
         if (buttonText === 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
-            table.ajax.url("{{ route('quyetdinh.getInactiveData') }}").load();
+            table.ajax.url("{{ route('ctlophocphan.getInactiveData') }}").load();
         } else {
             button.text('Hiển thị Trạng thái 0');
-            table.ajax.url("{{ route('quyetdinh.index') }}").load();
+            table.ajax.url("{{ route('ctlophocphan.index') }}").load();
         }
     });
     $('#createNewBtn').click(function() {
@@ -226,25 +258,28 @@ $(function() {
 
     $('body').on('click', '.editBtn', function() {
         var id = $(this).data('id');
-        $.get("{{ route('quyetdinh.index') }}" + '/' + id + '/edit', function(data) {
+        $.get("{{ route('ctlophocphan.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
-
-            $('#ma_gv_ra_quyet_dinh').val(data.ma_gv_ra_quyet_dinh);
-            $('#ngay_ra_quyet_dinh').val(data.ngay_ra_quyet_dinh);
-            $('#noi_dung').val(data.noi_dung);
-            $('#hieu_luc_bat_dau').val(data.hieu_luc_bat_dau);
-            $('#hieu_luc_ket_thuc').val(data.hieu_luc_ket_thuc);
+            $('#id_lop_hoc_phan').val(data.id_lop_hoc_phan);
+            $('#ma_sv').val(data.ma_sv);
+            $('#chuyen_can').val(data.chuyen_can);
+            $('#tbkt').val(data.tbkt);
+            $('#thi_1').val(data.thi_1);
+            $('#thi_2').val(data.thi_2);
+            $('#tong_ket_1').val(data.tong_ket_1);
+            $('#tong_ket_2').val(data.tong_ket_2);
         })
     });
+
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Sending..');
         $.ajax({
             data: $('#modalForm').serialize(),
-            url: "{{ route('quyetdinh.store') }}",
+            url: "{{ route('ctlophocphan.store') }}",
             type: "POST",
             dataType: 'json',
             success: function(data) {
@@ -265,7 +300,7 @@ $(function() {
         if (confirm("Bạn có muốn xóa?")) {
             $.ajax({
                 type: "DELETE",
-                url: "{{ route('quyetdinh.destroy', '') }}/" + id,
+                url: "{{ route('ctlophocphan.destroy', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },
@@ -280,7 +315,7 @@ $(function() {
         if (confirm("Bạn có muốn khôi phục?")) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('quyetdinh.restore', '') }}/" + id,
+                url: "{{ route('ctlophocphan.restore', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },

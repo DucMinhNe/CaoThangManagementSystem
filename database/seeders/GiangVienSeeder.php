@@ -31,7 +31,7 @@ class GiangVienSeeder extends Seeder
             'tai_khoan' => 'test',
             'mat_khau' => Hash::make('123'),
             'hinh_anh_dai_dien' => '123.jpg',
-            'id_chuc_vu' => null,
+            'id_chuc_vu' => 1,
             'id_bo_mon' => null,
             'tinh_trang_lam_viec' => 1,
             'trang_thai' => 1,

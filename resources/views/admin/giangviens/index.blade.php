@@ -28,7 +28,7 @@
                         <th>Bộ Môn</th>
                         <th>Chức Vụ</th>
                         <th>Tình Trạng Làm Việc</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="100px">Hành Động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,7 +53,7 @@
                         <th>Bộ Môn</th>
                         <th>Chức Vụ</th>
                         <th>Tình Trạng Làm Việc</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="100px">Hành Động</th>
                     </tr>
                 </tfoot>
             </table>
@@ -322,8 +322,8 @@ $(function() {
                 name: 'ten_bo_mon'
             },
             {
-                data: 'id_chuc_vu',
-                name: 'id_chuc_vu'
+                data: 'ten_chuc_vu',
+                name: 'ten_chuc_vu'
             },
             {
                 data: 'tinh_trang_lam_viec',

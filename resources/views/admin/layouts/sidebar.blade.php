@@ -67,6 +67,7 @@
                                   <p>Sinh Viên</p>
                               </a>
                           </li>
+                          @if (!auth()->user()->id_chuc_vu == 1)
                           <li class="nav-item">
                               <a href="{{ url('/admin/chucvusinhvien') }}"
                                   class="nav-link {{ Request::url() == url('/admin/chucvusinhvien') ? 'active' : '' }}">
@@ -74,6 +75,7 @@
                                   <p>Chức Vụ Sinh Viên</p>
                               </a>
                           </li>
+                          @endif
                           <li class="nav-item">
                               <a href="{{ url('/admin/danhsachchucvusinhvien') }}"
                                   class="nav-link {{ Request::url() == url('/admin/danhsachchucvusinhvien') ? 'active' : '' }}">
@@ -179,6 +181,34 @@
                           class="nav-link {{ Request::url() == url('/admin/quyetdinh') ? 'active' : '' }}">
                           <i class="nav-icon fas fa-users"></i>
                           <p>Quyết Định</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/chuongtrinhdaotao') }}"
+                          class="nav-link {{ Request::url() == url('/admin/chuongtrinhdaotao') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>Chương Trình Đào Tạo</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/ctchuongtrinhdaotao') }}"
+                          class="nav-link {{ Request::url() == url('/admin/ctchuongtrinhdaotao') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>CT Chương Trình Đạo Tạo</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/lophocphan') }}"
+                          class="nav-link {{ Request::url() == url('/admin/lophocphan') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>Lớp Học Phần</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/ctlophocphan') }}"
+                          class="nav-link {{ Request::url() == url('/admin/ctlophocphan') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>CT Lớp Học Phần</p>
                       </a>
                   </li>
                   <li class="nav-item">

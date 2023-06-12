@@ -1,5 +1,5 @@
-@extends('admin.quyetdinhs.layout')
-<!-- <style>
+@extends('admin.chuongtrinhdaotaos.layout')
+<style>
 .select2-selection__rendered {
     line-height: 31px !important;
 }
@@ -11,26 +11,22 @@
 .select2-selection__arrow {
     height: 34px !important;
 }
-</style> -->
-
+</style>
 @section('content')
 <section>
     <div class="container">
         <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
 
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
+                        <th>Khóa Học</th>
+                        <th>Chuyên Ngành</th>
                         <th width="100px">Hành Động</th>
                     </tr>
                 </thead>
@@ -38,18 +34,16 @@
                 </tbody>
                 <tfoot>
                     <tr>
+                    <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
+                        <th>Khóa Học</th>
+                        <th>Chuyên Ngành</th>
                         <th width="100px">Hành Động</th>
+                    </tr>
                     </tr>
                 </tfoot>
             </table>
         </div>
-    </div>
 </section>
 
 <div class="modal fade" id="ajaxModelexa" aria-hidden="true">
@@ -63,35 +57,20 @@
                     <input type="hidden" name="id" id="id">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="ma_gv_ra_quyet_dinh">Người Ra Quyết Định</label>
-                            <select name="ma_gv_ra_quyet_dinh" id="ma_gv_ra_quyet_dinh" class="form-control select2"
-                                style="width: 100%;">
-                                @foreach ($giangviens as $giangvien)
-                                @if ($giangvien->trang_thai == 1)
-                                <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
-                                @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="ngay_ra_quyet_dinh">Ngày Ra Quyết Định</label>
-                            <input type="date" class="form-control" id="ngay_ra_quyet_dinh" name="ngay_ra_quyet_dinh"
-                                placeholder="" value="" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="noi_dung">Nội Dung</label>
-                            <input type="text" class="form-control" id="noi_dung" name="noi_dung" placeholder="Nội Dung"
+                            <label for="khoa_hoc">Khóa Học</label>
+                            <input type="text" class="form-control" id="khoa_hoc" name="khoa_hoc" placeholder="Khóa Học"
                                 value="" required>
                         </div>
                         <div class="form-group">
-                            <label for="hieu_luc_bat_dau">Hiệu Lực Bắt Đầu</label>
-                            <input type="date" class="form-control" id="hieu_luc_bat_dau" name="hieu_luc_bat_dau"
-                                placeholder="" value="" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="hieu_luc_ket_thuc">Hiệu Lực Đến</label>
-                            <input type="date" class="form-control" id="hieu_luc_ket_thuc" name="hieu_luc_ket_thuc"
-                                placeholder="" value="" required>
+                            <label for="id_chuyen_nganh">Chuyên Ngành</label>
+                            <select name="id_chuyen_nganh" id="id_chuyen_nganh" class="form-control select2"
+                                style="width: 100%;">
+                                @foreach ($chuyennganhs as $chuyennganh)
+                                @if ($chuyennganh->trang_thai == 1)
+                                <option value="{{ $chuyennganh->id }}">{{ $chuyennganh->ten_chuyen_nganh }}</option>
+                                @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -116,36 +95,18 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('quyetdinh.index') }}",
+        ajax: "{{ route('chuongtrinhdaotao.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id',
-                render: function(data, type, full, meta) {
-                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
-                        data + '" data-original-title="Edit" class="editBtn">' + data +
-                        '</a>';
-                    return btn;
-                }
+                name: 'id'
             },
             {
-                data: 'ten_giang_vien',
-                name: 'ten_giang_vien'
+                data: 'khoa_hoc',
+                name: 'khoa_hoc'
             },
             {
-                data: 'ngay_ra_quyet_dinh',
-                name: 'ngay_ra_quyet_dinh'
-            },
-            {
-                data: 'noi_dung',
-                name: 'noi_dung'
-            },
-            {
-                data: 'hieu_luc_bat_dau',
-                name: 'hieu_luc_bat_dau'
-            },
-            {
-                data: 'hieu_luc_ket_thuc',
-                name: 'hieu_luc_ket_thuc'
+                data: 'ten_chuyen_nganh',
+                name: 'ten_chuyen_nganh'
             },
             {
                 data: 'action',
@@ -210,41 +171,38 @@ $(function() {
 
         if (buttonText === 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
-            table.ajax.url("{{ route('quyetdinh.getInactiveData') }}").load();
+            table.ajax.url("{{ route('chuongtrinhdaotao.getInactiveData') }}").load();
         } else {
             button.text('Hiển thị Trạng thái 0');
-            table.ajax.url("{{ route('quyetdinh.index') }}").load();
+            table.ajax.url("{{ route('chuongtrinhdaotao.index') }}").load();
         }
     });
     $('#createNewBtn').click(function() {
         $('#savedata').val("create-Btn");
         $('#id').val('');
         $('#modalForm').trigger("reset");
-        $('#modelHeading').html("Thêm");
+        $('#modelHeading').html("Thêm Chuyên Ngành");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
         var id = $(this).data('id');
-        $.get("{{ route('quyetdinh.index') }}" + '/' + id + '/edit', function(data) {
+        $.get("{{ route('chuongtrinhdaotao.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
-
-            $('#ma_gv_ra_quyet_dinh').val(data.ma_gv_ra_quyet_dinh);
-            $('#ngay_ra_quyet_dinh').val(data.ngay_ra_quyet_dinh);
-            $('#noi_dung').val(data.noi_dung);
-            $('#hieu_luc_bat_dau').val(data.hieu_luc_bat_dau);
-            $('#hieu_luc_ket_thuc').val(data.hieu_luc_ket_thuc);
+            $('#khoa_hoc').val(data.khoa_hoc);
+            $('#id_chuyen_nganh').val(data.id_chuyen_nganh);
         })
     });
+
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Sending..');
         $.ajax({
             data: $('#modalForm').serialize(),
-            url: "{{ route('quyetdinh.store') }}",
+            url: "{{ route('chuongtrinhdaotao.store') }}",
             type: "POST",
             dataType: 'json',
             success: function(data) {
@@ -259,13 +217,12 @@ $(function() {
             }
         });
     });
-
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
         if (confirm("Bạn có muốn xóa?")) {
             $.ajax({
                 type: "DELETE",
-                url: "{{ route('quyetdinh.destroy', '') }}/" + id,
+                url: "{{ route('chuongtrinhdaotao.destroy', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },
@@ -280,7 +237,7 @@ $(function() {
         if (confirm("Bạn có muốn khôi phục?")) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('quyetdinh.restore', '') }}/" + id,
+                url: "{{ route('chuongtrinhdaotao.restore', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },

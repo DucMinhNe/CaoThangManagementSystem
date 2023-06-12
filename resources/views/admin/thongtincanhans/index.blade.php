@@ -1,5 +1,5 @@
-@extends('admin.thongtincanhans.layout')
-@section('content')
+@include('admin.layouts.header')
+@include('admin.layouts.sidebar')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -77,8 +77,8 @@
                                                         Viên</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->ma_gv}}" placeholder="Name"
-                                                            readonly>
+                                                            value="{{auth()->user()->ma_gv}}"
+                                                            placeholder="Mã Giảng Viên" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -87,7 +87,7 @@
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ten_giang_vien}}"
-                                                            placeholder="Name" readonly>
+                                                            placeholder="Tên Giảng Viên" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -95,7 +95,7 @@
                                                         class="col-sm-3 col-form-label">Email</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->email}}" placeholder="Name"
+                                                            value="{{auth()->user()->email}}" placeholder="Email"
                                                             readonly>
                                                     </div>
                                                 </div>
@@ -104,8 +104,8 @@
                                                         Thoại</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->so_dien_thoai}}" placeholder="Name"
-                                                            readonly>
+                                                            value="{{auth()->user()->so_dien_thoai}}"
+                                                            placeholder="Số Điện Thoại" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -113,7 +113,7 @@
                                                         class="col-sm-3 col-form-label">CMND/CCCD</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->so_cmt}}" placeholder="Name"
+                                                            value="{{auth()->user()->so_cmt}}" placeholder="CMND/CCCD"
                                                             readonly>
                                                     </div>
                                                 </div>
@@ -123,7 +123,7 @@
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dia_chi_thuong_tru}}"
-                                                            placeholder="Name" readonly>
+                                                            placeholder="Đ/C Thường Trú" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -131,8 +131,8 @@
                                                         Môn</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->id_bo_mon}}" placeholder="Name"
-                                                            readonly>
+                                                            value="{{ $bomons ? $bomons->ten_bo_mon : '' }}"
+                                                            placeholder="Bộ Môn" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,8 +142,8 @@
                                                         Tính</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->gioi_tinh}}" placeholder="Name"
-                                                            readonly>
+                                                            value="{{auth()->user()->gioi_tinh}}"
+                                                            placeholder="Giới Tính" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -151,8 +151,8 @@
                                                         Sinh</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->ngay_sinh}}" placeholder="Name"
-                                                            readonly>
+                                                            value="{{auth()->user()->ngay_sinh}}"
+                                                            placeholder="Ngày Sinh" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -160,7 +160,7 @@
                                                         Sinh</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->noi_sinh}}" placeholder="Name"
+                                                            value="{{auth()->user()->noi_sinh}}" placeholder="Nơi Sinh"
                                                             readonly>
                                                     </div>
                                                 </div>
@@ -169,7 +169,7 @@
                                                         Tộc</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->dan_toc}}" placeholder="Name"
+                                                            value="{{auth()->user()->dan_toc}}" placeholder="Dân Tộc"
                                                             readonly>
                                                     </div>
                                                 </div>
@@ -178,7 +178,7 @@
                                                         Giáo</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->ton_giao}}" placeholder="Name"
+                                                            value="{{auth()->user()->ton_giao}}" placeholder="Tôn Giáo"
                                                             readonly>
                                                     </div>
                                                 </div>
@@ -188,7 +188,7 @@
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dia_chi_tam_tru}}"
-                                                            placeholder="Name" readonly>
+                                                            placeholder="Đ/C Tạm Trú" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -196,8 +196,8 @@
                                                         Vụ</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->id_chuc_vu}}" placeholder="Name"
-                                                            readonly>
+                                                            value="{{ $chucvus ? $chucvus->ten_chuc_vu : '' }}"
+                                                            placeholder="Chức Vụ" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,31 +208,48 @@
                                 <!-- /.tab-content -->
                                 <div class="tab-pane" id="timeline">
                                     <div class="card-body">
-                                        <form class="form-horizontal">
+                                        <form class="form-horizontal" id="doimatkhauForm" name="doimatkhauForm">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="inputName" class="col-sm-3 col-form-label">Mật Khẩu
+                                                        <label for="mat_khau_cu" class="col-sm-3 col-form-label">Mật
+                                                            Khẩu
                                                             Cũ</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" class="form-control" value=""
-                                                                placeholder="Name">
+                                                            <input type="password" class="form-control password-field"
+                                                                value="" id="mat_khau_cu" name="mat_khau_cu"
+                                                                placeholder="Mật Khẩu">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="inputEmail" class="col-sm-3 col-form-label">Mật
+                                                        <label for="mat_khau_moi" class="col-sm-3 col-form-label">Mật
                                                             Khẩu Mới</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" class="form-control" value=""
-                                                                placeholder="Name">
+                                                            <input type="password" class="form-control password-field"
+                                                                value="" id="mat_khau_moi" name="mat_khau_moi"
+                                                                placeholder="Mật Khẩu Mới">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="inputEmail" class="col-sm-3 col-form-label">Nhập Lại
+                                                        <label for="nhap_lai_mat_khau"
+                                                            class="col-sm-3 col-form-label">Nhập Lại
                                                             Mật Khẩu</label>
                                                         <div class="col-sm-6">
-                                                            <input type="text" class="form-control" value=""
-                                                                placeholder="Name">
+                                                            <input type="password" class="form-control password-field"
+                                                                value="" id="nhap_lai_mat_khau" name="nhap_lai_mat_khau"
+                                                                placeholder="Nhập Lại Mật Khẩu">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="show_password">
+                                                                <label class="form-check-label" for="show_password">
+                                                                    Hiển thị mật khẩu
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,4 +276,59 @@
     </section>
     <!-- /.content -->
 </div>
-@endsection
+<script src="{{ asset('plugins/jquery/jquery.js') }}"></script>
+<script type="text/javascript">
+$(function() {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $(document).ready(function() {
+        $('#show_password').change(function() {
+            var passwordFields = $('.password-field');
+            if ($(this).is(':checked')) {
+                passwordFields.attr('type', 'text');
+            } else {
+                passwordFields.attr('type', 'password');
+            }
+        });
+    });
+    $('#savedata').click(function(e) {
+        e.preventDefault();
+        $(this).html('Sending..');
+        $.ajax({
+            data: $('#doimatkhauForm').serialize(),
+            url: "{{ route('thongtincanhan.store') }}",
+            type: "POST",
+            dataType: 'json',
+            success: function(data) {
+                $('#savedata').html('Lưu');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            },
+            error: function(data) {
+                $('#savedata').html('Lưu');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'error',
+                    title: data.responseJSON.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    });
+});
+</script>
+@include('admin.layouts.footer')

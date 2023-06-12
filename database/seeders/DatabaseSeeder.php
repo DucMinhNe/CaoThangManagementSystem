@@ -4,6 +4,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\ChucVuGiangVien;
 use App\Models\GiangVien;
 use App\Models\SinhVien;
 use App\Models\Khoa;
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
            //UserSeeder::class,
+           ChucVuGiangVienSeeder::class,
            GiangVienSeeder::class,
         //    SinhVienSeeder::class,
            KhoaSeeder::class,

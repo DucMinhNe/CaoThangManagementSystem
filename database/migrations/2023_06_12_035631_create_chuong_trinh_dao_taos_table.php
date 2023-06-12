@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chi_tiet_quyet_dinhs', function (Blueprint $table) {
+        Schema::create('chuong_trinh_dao_taos', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('id_quyet_dinh');
-            $table->string('ma_sv_nhan_quyet_dinh');
+            $table->string('khoa_hoc');
+            $table->unsignedInteger('id_chuyen_nganh');    
             $table->timestamps();
-            $table->foreign('id_quyet_dinh')->references('id')->on('quyet_dinhs');
+            $table->boolean('trang_thai')->default(true);
+            $table->foreign('id_chuyen_nganh')->references('id')->on('chuyen_nganhs');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chi_tiet_quyet_dinhs');
+        Schema::dropIfExists('chuong_trinh_dao_taos');
     }
 };

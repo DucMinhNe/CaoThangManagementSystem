@@ -1,4 +1,4 @@
-@extends('admin.quyetdinhs.layout')
+@extends('admin.lophocphans.layout')
 <!-- <style>
 .select2-selection__rendered {
     line-height: 31px !important;
@@ -19,18 +19,20 @@
         <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
 
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
+                        <th>Tên Lớp Học Phần</th>
+                        <th>Lớp </th>
+                        <th>Giảng Viên 1</th>
+                        <th>Giảng Viên 2</th>
+                        <th>Giảng Viên 3</th>
+                        <th>Tên Môn</th>
+                        <th>Mở Lớp</th>
                         <th width="100px">Hành Động</th>
                     </tr>
                 </thead>
@@ -39,17 +41,18 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
+                        <th>Tên Lớp Học Phần</th>
+                        <th>Lớp </th>
+                        <th>Giảng Viên 1</th>
+                        <th>Giảng Viên 2</th>
+                        <th>Giảng Viên 3</th>
+                        <th>Tên Môn</th>
+                        <th>Mở Lớp</th>
                         <th width="100px">Hành Động</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
-    </div>
 </section>
 
 <div class="modal fade" id="ajaxModelexa" aria-hidden="true">
@@ -63,9 +66,24 @@
                     <input type="hidden" name="id" id="id">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="ma_gv_ra_quyet_dinh">Người Ra Quyết Định</label>
-                            <select name="ma_gv_ra_quyet_dinh" id="ma_gv_ra_quyet_dinh" class="form-control select2"
-                                style="width: 100%;">
+                            <label for="ten_lop_hoc_phan">Tên Lớp Học Phần</label>
+                            <input type="text" class="form-control" id="ten_lop_hoc_phan" name="ten_lop_hoc_phan"
+                                placeholder="Tên Lớp Học Phần" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_lop_hoc">Lớp</label>
+                            <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2" style="width: 100%;">
+                                @foreach ($lophocs as $lophoc)
+                                @if ($lophoc->trang_thai == 1)
+                                <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ma_gv_1">Giảng Viên 1</label>
+                            <select name="ma_gv_1" id="ma_gv_1" class="form-control select2" style="width: 100%;">
                                 @foreach ($giangviens as $giangvien)
                                 @if ($giangvien->trang_thai == 1)
                                 <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
@@ -74,24 +92,42 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="ngay_ra_quyet_dinh">Ngày Ra Quyết Định</label>
-                            <input type="date" class="form-control" id="ngay_ra_quyet_dinh" name="ngay_ra_quyet_dinh"
-                                placeholder="" value="" required>
+                            <label for="ma_gv_2">Giảng Viên 2</label>
+                            <select name="ma_gv_2" id="ma_gv_2" class="form-control select2" style="width: 100%;">
+                                @foreach ($giangviens as $giangvien)
+                                @if ($giangvien->trang_thai == 1)
+                                <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
+                                @endif
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="noi_dung">Nội Dung</label>
-                            <input type="text" class="form-control" id="noi_dung" name="noi_dung" placeholder="Nội Dung"
+                            <label for="ma_gv_3">Giảng Viên 3</label>
+                            <select name="ma_gv_3" id="ma_gv_3" class="form-control select2" style="width: 100%;">
+                                @foreach ($giangviens as $giangvien)
+                                @if ($giangvien->trang_thai == 1)
+                                <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_ct_chuong_trinh_dao_tao">Tên Môn Học</label>
+                            <select name="id_ct_chuong_trinh_dao_tao" id="id_ct_chuong_trinh_dao_tao"
+                                class="form-control select2" style="width: 100%;">
+                                @foreach ($ctchuongtrinhdaotaos as $ctchuongtrinhdaotao)
+                                @if ($ctchuongtrinhdaotao->trang_thai == 1)
+                                <option value="{{ $ctchuongtrinhdaotao->id }}">
+                                    {{ $ctchuongtrinhdaotao->ten_mon_hoc_khoa_hoc }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="mo_lop">Mở Lớp</label>
+                            <input type="text" class="form-control" id="mo_lop" name="mo_lop" placeholder="Mở Lớp"
                                 value="" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="hieu_luc_bat_dau">Hiệu Lực Bắt Đầu</label>
-                            <input type="date" class="form-control" id="hieu_luc_bat_dau" name="hieu_luc_bat_dau"
-                                placeholder="" value="" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="hieu_luc_ket_thuc">Hiệu Lực Đến</label>
-                            <input type="date" class="form-control" id="hieu_luc_ket_thuc" name="hieu_luc_ket_thuc"
-                                placeholder="" value="" required>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -116,36 +152,38 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('quyetdinh.index') }}",
+        ajax: "{{ route('lophocphan.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id',
-                render: function(data, type, full, meta) {
-                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
-                        data + '" data-original-title="Edit" class="editBtn">' + data +
-                        '</a>';
-                    return btn;
-                }
+                name: 'id'
             },
             {
-                data: 'ten_giang_vien',
-                name: 'ten_giang_vien'
+                data: 'ten_lop_hoc_phan',
+                name: 'ten_lop_hoc_phan'
             },
             {
-                data: 'ngay_ra_quyet_dinh',
-                name: 'ngay_ra_quyet_dinh'
+                data: 'ten_lop_hoc',
+                name: 'ten_lop_hoc'
             },
             {
-                data: 'noi_dung',
-                name: 'noi_dung'
+                data: 'ten_gv_1',
+                name: 'ten_gv_1'
             },
             {
-                data: 'hieu_luc_bat_dau',
-                name: 'hieu_luc_bat_dau'
+                data: 'ten_gv_2',
+                name: 'ten_gv_2'
             },
             {
-                data: 'hieu_luc_ket_thuc',
-                name: 'hieu_luc_ket_thuc'
+                data: 'ten_gv_3',
+                name: 'ten_gv_3'
+            },
+            {
+                data: 'ten_mon_hoc_khoa_hoc',
+                name: 'ten_mon_hoc_khoa_hoc'
+            },
+            {
+                data: 'mo_lop',
+                name: 'mo_lop'
             },
             {
                 data: 'action',
@@ -210,10 +248,10 @@ $(function() {
 
         if (buttonText === 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
-            table.ajax.url("{{ route('quyetdinh.getInactiveData') }}").load();
+            table.ajax.url("{{ route('lophocphan.getInactiveData') }}").load();
         } else {
             button.text('Hiển thị Trạng thái 0');
-            table.ajax.url("{{ route('quyetdinh.index') }}").load();
+            table.ajax.url("{{ route('lophocphan.index') }}").load();
         }
     });
     $('#createNewBtn').click(function() {
@@ -226,25 +264,28 @@ $(function() {
 
     $('body').on('click', '.editBtn', function() {
         var id = $(this).data('id');
-        $.get("{{ route('quyetdinh.index') }}" + '/' + id + '/edit', function(data) {
+        $.get("{{ route('lophocphan.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
+            $('#ten_lop_hoc_phan').val(data.ten_lop_hoc_phan);
+            $('#id_lop_hoc').val(data.id_lop_hoc);
+            $('#ma_gv_1').val(data.ma_gv_1);
+            $('#ma_gv_2').val(data.ma_gv_2);
+            $('#ma_gv_3').val(data.ma_gv_3);
+            $('#id_ct_chuong_trinh_dao_tao').val(data.id_ct_chuong_trinh_dao_tao);
+            $('#mo_lop').val(data.mo_lop);
 
-            $('#ma_gv_ra_quyet_dinh').val(data.ma_gv_ra_quyet_dinh);
-            $('#ngay_ra_quyet_dinh').val(data.ngay_ra_quyet_dinh);
-            $('#noi_dung').val(data.noi_dung);
-            $('#hieu_luc_bat_dau').val(data.hieu_luc_bat_dau);
-            $('#hieu_luc_ket_thuc').val(data.hieu_luc_ket_thuc);
         })
     });
+
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Sending..');
         $.ajax({
             data: $('#modalForm').serialize(),
-            url: "{{ route('quyetdinh.store') }}",
+            url: "{{ route('lophocphan.store') }}",
             type: "POST",
             dataType: 'json',
             success: function(data) {
@@ -265,7 +306,7 @@ $(function() {
         if (confirm("Bạn có muốn xóa?")) {
             $.ajax({
                 type: "DELETE",
-                url: "{{ route('quyetdinh.destroy', '') }}/" + id,
+                url: "{{ route('lophocphan.destroy', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },
@@ -280,7 +321,7 @@ $(function() {
         if (confirm("Bạn có muốn khôi phục?")) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('quyetdinh.restore', '') }}/" + id,
+                url: "{{ route('lophocphan.restore', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },

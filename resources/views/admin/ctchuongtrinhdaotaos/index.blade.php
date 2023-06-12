@@ -1,5 +1,5 @@
-@extends('admin.quyetdinhs.layout')
-<!-- <style>
+@extends('admin.ctchuongtrinhdaotaos.layout')
+<style>
 .select2-selection__rendered {
     line-height: 31px !important;
 }
@@ -11,27 +11,25 @@
 .select2-selection__arrow {
     height: 34px !important;
 }
-</style> -->
-
+</style>
 @section('content')
 <section>
     <div class="container">
         <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
 
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm</a>
+            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
-                        <th width="100px">Hành Động</th>
+                        <th>Chương Trinh Đào Tạo</th>
+                        <th>Học Kỳ</th>
+                        <th>Môn Học</th>
+                        <th>Số Tín Chỉ</th>
+                        <th width="280px">Hành Động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,17 +37,15 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Người Ra Quyết Định</th>
-                        <th>Ngày Ra Quyết Định</th>
-                        <th>Nội Dung</th>
-                        <th>Hiệu Lực Bắt Đầu</th>
-                        <th>Hiệu Lực Đến</th>
-                        <th width="100px">Hành Động</th>
+                        <th>Chương Trinh Đào Tạo</th>
+                        <th>Học Kỳ</th>
+                        <th>Môn Học</th>
+                        <th>Số Tín Chỉ</th>
+                        <th width="280px">Hành Động</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
-    </div>
 </section>
 
 <div class="modal fade" id="ajaxModelexa" aria-hidden="true">
@@ -63,35 +59,37 @@
                     <input type="hidden" name="id" id="id">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="ma_gv_ra_quyet_dinh">Người Ra Quyết Định</label>
-                            <select name="ma_gv_ra_quyet_dinh" id="ma_gv_ra_quyet_dinh" class="form-control select2"
-                                style="width: 100%;">
-                                @foreach ($giangviens as $giangvien)
-                                @if ($giangvien->trang_thai == 1)
-                                <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
+                            <label for="id_chuong_trinh_dao_tao">Chương Trình Đạo Tạo</label>
+                            <select name="id_chuong_trinh_dao_tao" id="id_chuong_trinh_dao_tao"
+                                class="form-control select2" style="width: 100%;">
+                                @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
+                                @if ($chuongtrinhdaotao->trang_thai == 1)
+                                <option value="{{ $chuongtrinhdaotao->id }}">
+                                    {{ $chuongtrinhdaotao->khoa_hoc_chuyen_nganh }}
+                                </option>
                                 @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="ngay_ra_quyet_dinh">Ngày Ra Quyết Định</label>
-                            <input type="date" class="form-control" id="ngay_ra_quyet_dinh" name="ngay_ra_quyet_dinh"
-                                placeholder="" value="" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="noi_dung">Nội Dung</label>
-                            <input type="text" class="form-control" id="noi_dung" name="noi_dung" placeholder="Nội Dung"
+                            <label for="hoc_ky">Học Kỳ</label>
+                            <input type="text" class="form-control" id="hoc_ky" name="hoc_ky" placeholder="Học Kỳ"
                                 value="" required>
                         </div>
                         <div class="form-group">
-                            <label for="hieu_luc_bat_dau">Hiệu Lực Bắt Đầu</label>
-                            <input type="date" class="form-control" id="hieu_luc_bat_dau" name="hieu_luc_bat_dau"
-                                placeholder="" value="" required>
+                            <label for="id_mon_hoc">Môn Học</label>
+                            <select name="id_mon_hoc" id="id_mon_hoc" class="form-control select2" style="width: 100%;">
+                                @foreach ($monhocs as $monhoc)
+                                @if ($monhoc->trang_thai == 1)
+                                <option value="{{ $monhoc->id }}">{{ $monhoc->ten_mon_hoc }}</option>
+                                @endif
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="hieu_luc_ket_thuc">Hiệu Lực Đến</label>
-                            <input type="date" class="form-control" id="hieu_luc_ket_thuc" name="hieu_luc_ket_thuc"
-                                placeholder="" value="" required>
+                            <label for="so_tin_chi">Số Tín Chỉ</label>
+                            <input type="text" class="form-control" id="so_tin_chi" name="so_tin_chi"
+                                placeholder="Số Tín Chỉ" value="" required>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -116,36 +114,26 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('quyetdinh.index') }}",
+        ajax: "{{ route('ctchuongtrinhdaotao.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id',
-                render: function(data, type, full, meta) {
-                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
-                        data + '" data-original-title="Edit" class="editBtn">' + data +
-                        '</a>';
-                    return btn;
-                }
+                name: 'id'
             },
             {
-                data: 'ten_giang_vien',
-                name: 'ten_giang_vien'
+                data: 'khoa_hoc_chuyen_nganh',
+                name: 'khoa_hoc_chuyen_nganh'
             },
             {
-                data: 'ngay_ra_quyet_dinh',
-                name: 'ngay_ra_quyet_dinh'
+                data: 'hoc_ky',
+                name: 'hoc_ky'
             },
             {
-                data: 'noi_dung',
-                name: 'noi_dung'
+                data: 'ten_mon_hoc',
+                name: 'ten_mon_hoc'
             },
             {
-                data: 'hieu_luc_bat_dau',
-                name: 'hieu_luc_bat_dau'
-            },
-            {
-                data: 'hieu_luc_ket_thuc',
-                name: 'hieu_luc_ket_thuc'
+                data: 'so_tin_chi',
+                name: 'so_tin_chi'
             },
             {
                 data: 'action',
@@ -210,10 +198,10 @@ $(function() {
 
         if (buttonText === 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
-            table.ajax.url("{{ route('quyetdinh.getInactiveData') }}").load();
+            table.ajax.url("{{ route('ctchuongtrinhdaotao.getInactiveData') }}").load();
         } else {
             button.text('Hiển thị Trạng thái 0');
-            table.ajax.url("{{ route('quyetdinh.index') }}").load();
+            table.ajax.url("{{ route('ctchuongtrinhdaotao.index') }}").load();
         }
     });
     $('#createNewBtn').click(function() {
@@ -226,25 +214,24 @@ $(function() {
 
     $('body').on('click', '.editBtn', function() {
         var id = $(this).data('id');
-        $.get("{{ route('quyetdinh.index') }}" + '/' + id + '/edit', function(data) {
+        $.get("{{ route('ctchuongtrinhdaotao.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
-
-            $('#ma_gv_ra_quyet_dinh').val(data.ma_gv_ra_quyet_dinh);
-            $('#ngay_ra_quyet_dinh').val(data.ngay_ra_quyet_dinh);
-            $('#noi_dung').val(data.noi_dung);
-            $('#hieu_luc_bat_dau').val(data.hieu_luc_bat_dau);
-            $('#hieu_luc_ket_thuc').val(data.hieu_luc_ket_thuc);
+            $('#id_chuong_trinh_dao_tao').val(data.id_chuong_trinh_dao_tao);
+            $('#hoc_ky').val(data.hoc_ky);
+            $('#id_mon_hoc').val(data.id_mon_hoc);
+            $('#so_tin_chi').val(data.so_tin_chi);
         })
     });
+
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Sending..');
         $.ajax({
             data: $('#modalForm').serialize(),
-            url: "{{ route('quyetdinh.store') }}",
+            url: "{{ route('ctchuongtrinhdaotao.store') }}",
             type: "POST",
             dataType: 'json',
             success: function(data) {
@@ -265,7 +252,7 @@ $(function() {
         if (confirm("Bạn có muốn xóa?")) {
             $.ajax({
                 type: "DELETE",
-                url: "{{ route('quyetdinh.destroy', '') }}/" + id,
+                url: "{{ route('ctchuongtrinhdaotao.destroy', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },
@@ -280,7 +267,7 @@ $(function() {
         if (confirm("Bạn có muốn khôi phục?")) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('quyetdinh.restore', '') }}/" + id,
+                url: "{{ route('ctchuongtrinhdaotao.restore', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },
