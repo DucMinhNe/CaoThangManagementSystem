@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamps();
             $table->boolean('trang_thai')->default(true);
             $table->foreign('id_quyet_dinh')->references('id')->on('quyet_dinhs');
+            $table->foreign('ma_sv_nhan_quyet_dinh')->references('ma_sv')->on('sinh_viens');
         });
     }
 

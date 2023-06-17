@@ -191,4 +191,16 @@ class SinhVienController extends Controller
         SinhVien::where('ma_sv', $id)->update(['trang_thai' => 1]);
         return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
     }
+    public function laySinhVienTheoLopHoc(Request $request)
+    {
+    $lopId = $request->get('lopId');
+    $sinhviens = SinhVien::where('id_lop_hoc', $lopId)->get();
+
+    $options = '';
+    foreach ($sinhviens as $sinhvien) {
+        $options .= '<option value="' . $sinhvien->ma_sv . '">' . $sinhvien->ten_sinh_vien . '</option>';
+    }
+
+    return $options;
+    }
 }

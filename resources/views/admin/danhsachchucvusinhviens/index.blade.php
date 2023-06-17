@@ -31,6 +31,7 @@
                         <th>No</th>
                         <th>Tên Sinh Viên</th>
                         <th>Chức Vụ</th>
+                        <th>Lớp Học</th>
                         <th width="280px">Hành Động</th>
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@
                         <th>No</th>
                         <th>Tên Sinh Viên</th>
                         <th>Chức Vụ</th>
+                        <th>Lớp Học</th>
                         <th width="280px">Hành Động</th>
                     </tr>
                 </tfoot>
@@ -58,6 +60,16 @@
                 <form id="modalForm" name="modalForm" class="form-horizontal">
                     <input type="hidden" name="id" id="id">
                     <div class="card-body">
+                        <div class="form-group">
+                            <label for="id_lop_hoc">Lớp học</label>
+                            <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2" style="width: 100%;"
+                                onchange="loadSinhVienByLop(this.value)">
+                                <option value="">-- Chọn lớp học --</option>
+                                @foreach ($lophocs as $lophoc)
+                                <option value="{{ $lophoc->id }}">{{ $lophoc->ten_lop_hoc }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label for="ma_sv">Tên Sinh Viên</label>
                             <select name="ma_sv" id="ma_sv" class="form-control select2" style="width: 100%;">
@@ -92,7 +104,6 @@
 <script src="{{ asset('plugins/jquery/jquery.js') }}"></script>
 <script type="text/javascript">
 $(function() {
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -113,6 +124,10 @@ $(function() {
             {
                 data: 'ten_chuc_vu',
                 name: 'ten_chuc_vu'
+            },
+            {
+                data: 'ten_lop_hoc',
+                name: 'ten_lop_hoc'
             },
             {
                 data: 'action',
@@ -255,5 +270,23 @@ $(function() {
         }
     });
 });
+
+function loadSinhVienByLop(lopId) {
+    if (lopId) {
+        $.ajax({
+            url: '{{ route("lay-sinhvien-theo-lophoc") }}',
+            type: 'GET',
+            data: {
+                lopId: lopId
+            },
+            success: function(data) {
+                $('#ma_sv').html(data);
+            },
+            error: function() {}
+        });
+    } else {
+        $('#ma_sv').empty();
+    }
+}
 </script>
 @endsection

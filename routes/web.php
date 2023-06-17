@@ -7,8 +7,7 @@ use App\Http\Controllers\KhoaController;
 
 
 use App\Http\Controllers\LoaiMonHocController;
-use App\Http\Controllers\LoaiPhongController;
-use App\Http\Controllers\PhongController;
+
 use App\Http\Controllers\MonHocController;
 use App\Http\Controllers\LopHocController;
 use App\Http\Controllers\LopHocPhanController;
@@ -28,7 +27,11 @@ use App\Http\Controllers\SinhVienController;
 use App\Http\Controllers\ChucVuSinhVienController;
 use App\Http\Controllers\DanhSachChucVuSinhVienController;
 use App\Http\Controllers\QuyetDinhController;
+use App\Http\Controllers\CTQuyetDinhController;
 
+
+use App\Http\Controllers\LoaiPhongController;
+use App\Http\Controllers\PhongController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -103,6 +106,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/quyetdinh/restore/{id}', [QuyetDinhController::class, 'restore'])->name('quyetdinh.restore');
     Route::resource('quyetdinh', QuyetDinhController::class);
 
+    Route::get('/ctquyetdinh/getInactiveData', [CTQuyetDinhController::class, 'getInactiveData'])->name('ctquyetdinh.getInactiveData');
+    Route::get('/ctquyetdinh/restore/{id}', [CTQuyetDinhController::class, 'restore'])->name('ctquyetdinh.restore');
+    Route::resource('ctquyetdinh', CTQuyetDinhController::class);
+
+
     Route::get('/chuongtrinhdaotao/getInactiveData', [ChuongTrinhDaoTaoController::class, 'getInactiveData'])->name('chuongtrinhdaotao.getInactiveData');
     Route::get('/chuongtrinhdaotao/restore/{id}', [ChuongTrinhDaoTaoController::class, 'restore'])->name('chuongtrinhdaotao.restore');
     Route::resource('chuongtrinhdaotao', ChuongTrinhDaoTaoController::class);
@@ -126,6 +134,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/danhsachchucvusinhvien/getInactiveData', [DanhSachChucVuSinhVienController::class, 'getInactiveData'])->name('danhsachchucvusinhvien.getInactiveData');
     Route::get('/danhsachchucvusinhvien/restore/{id}', [DanhSachChucVuSinhVienController::class, 'restore'])->name('danhsachchucvusinhvien.restore');
     Route::resource('danhsachchucvusinhvien', DanhSachChucVuSinhVienController::class);
+
+ 
+    Route::get('/lay-sinhvien-theo-lophoc', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
+
 });
 
 // use App\Http\Controllers\TaiKhoanGiangVienController;

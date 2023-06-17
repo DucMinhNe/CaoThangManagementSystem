@@ -1,4 +1,4 @@
-@extends('admin.monhocs.layout')
+@extends('admin.ctquyetdinhs.layout')
 <!-- <style>
 .select2-selection__rendered {
     line-height: 31px !important;
@@ -26,10 +26,9 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Tên Môn Học</th>
-                        <th>Bô Môn</th>
-                        <th>Loại Môn Học</th>
-                        <th width="280px">Hành Động</th>
+                        <th>Quyết định</th>
+                        <th>Sinh Viên Nhân Quyết Định</th>
+                        <th width="100px">Hành Động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,10 +36,9 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Tên Môn Học</th>
-                        <th>Bô Môn</th>
-                        <th>Loại Môn Học</th>
-                        <th width="280px">Hành Động</th>
+                        <th>Quyết định</th>
+                        <th>Sinh Viên Nhân Quyết Định</th>
+                        <th width="100px">Hành Động</th>
                     </tr>
                 </tfoot>
             </table>
@@ -58,27 +56,23 @@
                     <input type="hidden" name="id" id="id">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="ten_mon_hoc">Tên Môn Học</label>
-                            <input type="text" class="form-control" id="ten_mon_hoc" name="ten_mon_hoc"
-                                placeholder="Tên Khoa" value="" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_bo_mon">Bộ Môn</label>
-                            <select name="id_bo_mon" id="id_bo_mon" class="form-control select2" style="width: 100%;">
-                                @foreach ($bomons as $bomon)
-                                @if ($bomon->trang_thai == 1)
-                                <option value="{{ $bomon->id }}">{{ $bomon->ten_bo_mon }}</option>
+                            <label for="id_quyet_dinh">Quyết Định</label>
+                            <select name="id_quyet_dinh" id="id_quyet_dinh" class="form-control select2"
+                                style="width: 100%;">
+                                @foreach ($quyetdinhs as $quyetdinh)
+                                @if ($quyetdinh->trang_thai == 1)
+                                <option value="{{ $quyetdinh->id }}">{{ $quyetdinh->noi_dung }}</option>
                                 @endif
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="id_loai_mon_hoc">Loại Môn Học</label>
-                            <select name="id_loai_mon_hoc" id="id_loai_mon_hoc" class="form-control select2"
+                            <label for="ma_sv_nhan_quyet_dinh">Sinh Viên</label>
+                            <select name="ma_sv_nhan_quyet_dinh" id="ma_sv_nhan_quyet_dinh" class="form-control select2"
                                 style="width: 100%;">
-                                @foreach ($loaimonhocs as $loaimonhoc)
-                                @if ($loaimonhoc->trang_thai == 1)
-                                <option value="{{ $loaimonhoc->id }}">{{ $loaimonhoc->ten_loai_mon_hoc }}</option>
+                                @foreach ($sinhviens as $sinhvien)
+                                @if ($sinhvien->trang_thai == 1)
+                                <option value="{{ $sinhvien->ma_sv }}">{{ $sinhvien->ten_sinh_vien }}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -106,22 +100,18 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('monhoc.index') }}",
+        ajax: "{{ route('ctquyetdinh.index') }}",
         columns: [{
                 data: 'id',
                 name: 'id'
             },
             {
-                data: 'ten_mon_hoc',
-                name: 'ten_mon_hoc'
+                data: 'id_quyet_dinh',
+                name: 'id_quyet_dinh'
             },
             {
-                data: 'ten_bo_mon',
-                name: 'ten_bo_mon'
-            },
-            {
-                data: 'ten_loai_mon_hoc',
-                name: 'ten_loai_mon_hoc'
+                data: 'ma_sv_nhan_quyet_dinh',
+                name: 'ma_sv_nhan_quyet_dinh'
             },
             {
                 data: 'action',
@@ -186,10 +176,10 @@ $(function() {
 
         if (buttonText === 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
-            table.ajax.url("{{ route('monhoc.getInactiveData') }}").load();
+            table.ajax.url("{{ route('ctquyetdinh.getInactiveData') }}").load();
         } else {
             button.text('Hiển thị Trạng thái 0');
-            table.ajax.url("{{ route('monhoc.index') }}").load();
+            table.ajax.url("{{ route('ctquyetdinh.index') }}").load();
         }
     });
     $('#createNewBtn').click(function() {
@@ -202,14 +192,14 @@ $(function() {
 
     $('body').on('click', '.editBtn', function() {
         var id = $(this).data('id');
-        $.get("{{ route('monhoc.index') }}" + '/' + id + '/edit', function(data) {
+        $.get("{{ route('ctquyetdinh.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
-            $('#ten_mon_hoc').val(data.ten_mon_hoc);
-            $('#id_bo_mon').val(data.id_bo_mon);
-            $('#id_loai_mon_hoc').val(data.id_loai_mon_hoc);
+            $('#id_quyet_dinh').val(data.id_quyet_dinh);
+            $('#ma_sv_nhan_quyet_dinh').val(data.ma_sv_nhan_quyet_dinh);
+
         })
     });
 
@@ -218,7 +208,7 @@ $(function() {
         $(this).html('Sending..');
         $.ajax({
             data: $('#modalForm').serialize(),
-            url: "{{ route('monhoc.store') }}",
+            url: "{{ route('ctquyetdinh.store') }}",
             type: "POST",
             dataType: 'json',
             success: function(data) {
@@ -239,7 +229,7 @@ $(function() {
         if (confirm("Bạn có muốn xóa?")) {
             $.ajax({
                 type: "DELETE",
-                url: "{{ route('monhoc.destroy', '') }}/" + id,
+                url: "{{ route('ctquyetdinh.destroy', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },
@@ -254,7 +244,7 @@ $(function() {
         if (confirm("Bạn có muốn khôi phục?")) {
             $.ajax({
                 type: "GET",
-                url: "{{ route('monhoc.restore', '') }}/" + id,
+                url: "{{ route('ctquyetdinh.restore', '') }}/" + id,
                 success: function(data) {
                     table.draw();
                 },

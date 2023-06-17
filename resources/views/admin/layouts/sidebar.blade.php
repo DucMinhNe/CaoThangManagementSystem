@@ -67,7 +67,7 @@
                                   <p>Sinh Viên</p>
                               </a>
                           </li>
-                          @if (!auth()->user()->id_chuc_vu == 1)
+                          @if (!auth()->user()->id_chuc_vu != 1)
                           <li class="nav-item">
                               <a href="{{ url('/admin/chucvusinhvien') }}"
                                   class="nav-link {{ Request::url() == url('/admin/chucvusinhvien') ? 'active' : '' }}">
@@ -181,6 +181,13 @@
                           class="nav-link {{ Request::url() == url('/admin/quyetdinh') ? 'active' : '' }}">
                           <i class="nav-icon fas fa-users"></i>
                           <p>Quyết Định</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/ctquyetdinh') }}"
+                          class="nav-link {{ Request::url() == url('/admin/ctquyetdinh') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>CT Quyết Định</p>
                       </a>
                   </li>
                   <li class="nav-item">
