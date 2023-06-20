@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404</title>
+    <title>403</title>
     <style>
     body {
         background-color: #f8f9fa;
@@ -50,9 +50,8 @@
 
 <body>
     <div class="container">
-        <h1>404 </h1>
-        <h1> Không Tìm Thấy Trang </h1>
-        <p>Không Tìm Thấy Trang Bạn Yêu Cầu.</p>
+        <h1>403 </h1>
+        <h1> Bạn Không Có Quyền Để Truy Cập Trang Này</h1>
         <a href="/">Trở Về Trang Chính</a>
     </div>
 </body>

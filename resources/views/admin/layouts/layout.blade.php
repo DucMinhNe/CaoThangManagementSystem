@@ -1,7 +1,13 @@
-@extends('admin.layouts.header')
-@extends('admin.layouts.sidebar')
-<!-- @yield('content_index') -->
-<!-- @yield('content_index') -->
-<!-- @yield('content_index') -->
-@extends('admin.layouts.script')
-@extends('admin.layouts.footer')
+@include('admin.layouts.header')
+
+@if(auth()->user()->id_chuc_vu == 1)
+@include('admin.layouts.sidebar1')
+@elseif(auth()->user()->id_chuc_vu == 2)
+@include('admin.layouts.sidebar2')
+@endif
+
+
+@yield('content')
+
+
+@include('admin.layouts.footer')

@@ -16,7 +16,20 @@ class DangNhapController extends Controller
        // if (Auth::attempt($credentials)) {
        //     return redirect('/dashboard');
        // }
-       // return redirect()->back()->with('message', 'Login details are not valid!');   
+       // return redirect()->back()->with('message', 'Login details are not valid!'); 
+         //    if (Auth::attempt(['tai_khoan' => $request->input('tai_khoan'), 'password' => $request->input('mat_khau')], true)) {
+    //        return redirect('/admin');
+    //    } else {
+    //        return redirect()->back()->with('error', 'Tài khoản hoặc mật khẩu không đúng');
+    //    }  
+
+          // else {
+        //     if ($user->id_chuc_vu == 1) {
+        //         return redirect('/admin');
+        //     } elseif ($user->id_chuc_vu == 2) {
+        //         return redirect('/teacher');
+        //     }
+        // }
     public function dangNhap(){
         if(!empty(Auth::check()))
         {
@@ -25,11 +38,6 @@ class DangNhapController extends Controller
         return view('admin.dangnhaps.dangnhap');
     }
     public function kiemTraDangNhap(Request $request){
-    //    if (Auth::attempt(['tai_khoan' => $request->input('tai_khoan'), 'password' => $request->input('mat_khau')], true)) {
-    //        return redirect('/admin');
-    //    } else {
-    //        return redirect()->back()->with('error', 'Tài khoản hoặc mật khẩu không đúng');
-    //    }
        $credentials = [
         'tai_khoan' => $request->input('tai_khoan'),
         'password' => $request->input('mat_khau')
@@ -43,8 +51,8 @@ class DangNhapController extends Controller
         return redirect('/admin');
     } else {
         return redirect()->back()->with('error', 'Tài khoản hoặc mật khẩu không đúng');
+        }
     }
-       }
     public function dangXuat(){
         Auth::logout();
         return redirect(url('/admin/dangnhap'));

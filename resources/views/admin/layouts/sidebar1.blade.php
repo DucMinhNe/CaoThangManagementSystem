@@ -237,8 +237,6 @@
 
                       </ul>
                   </li>
-
-
                   <li class="nav-item">
                       <a href="{{ url('/admin/loaiphong') }}"
                           class="nav-link {{ Request::url() == url('/admin/loaiphong') ? 'active' : '' }}">

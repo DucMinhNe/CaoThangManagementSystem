@@ -203,4 +203,12 @@ class SinhVienController extends Controller
 
     return $options;
     }
+    public function layTongSinhVien()
+    {
+        $tongSinhViens = SinhVien::where('trang_thai', 1)->count();
+
+        return response()->json(['tongSinhViens' => $tongSinhViens]);
+    }
+
+
 }

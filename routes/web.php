@@ -1,5 +1,6 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\GiangVien;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DangNhapController;
 use App\Http\Controllers\ThongTinCaNhanController;
@@ -43,14 +44,26 @@ use App\Http\Controllers\PhongController;
 |
 */
 
+
+
+
+
+Route::get('khongcoquyen', function () {
+    Auth::logout();
+    return view('errors.403');
+})->name('khongcoquyen');
+
 Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('login');
 Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);
 Route::get('/admin/dangxuat', [DangNhapController::class,'dangXuat']);
 Route::get('/', function () {return redirect('/admin');})->middleware('auth');
+// Route::group(['middleware' => ['auth', 'checkchucvu:1'], 'prefix' => 'admin'], function () {
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+  
     Route::get('/', function () {
         return view('admin.index');
     });
+
     Route::resource('thongtincanhan', ThongTinCaNhanController::class);
 
     Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
@@ -81,7 +94,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/ctlophocphan/restore/{id}', [CTLopHocPhanController::class, 'restore'])->name('ctlophocphan.restore');
     Route::resource('ctlophocphan', CTLopHocPhanController::class);
 
-
     Route::get('/loaiphong/getInactiveData', [LoaiPhongController::class, 'getInactiveData'])->name('loaiphong.getInactiveData');
     Route::get('/loaiphong/restore/{id}', [LoaiPhongController::class, 'restore'])->name('loaiphong.restore');
     Route::resource('loaiphong', LoaiPhongController::class);
@@ -110,7 +122,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::get('/ctquyetdinh/restore/{id}', [CTQuyetDinhController::class, 'restore'])->name('ctquyetdinh.restore');
     Route::resource('ctquyetdinh', CTQuyetDinhController::class);
 
-
     Route::get('/chuongtrinhdaotao/getInactiveData', [ChuongTrinhDaoTaoController::class, 'getInactiveData'])->name('chuongtrinhdaotao.getInactiveData');
     Route::get('/chuongtrinhdaotao/restore/{id}', [ChuongTrinhDaoTaoController::class, 'restore'])->name('chuongtrinhdaotao.restore');
     Route::resource('chuongtrinhdaotao', ChuongTrinhDaoTaoController::class);
@@ -137,9 +148,22 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
  
     Route::get('/lay-sinhvien-theo-lophoc', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
-
+    Route::get('/lay-tong-sinh-vien', [SinhVienController::class, 'layTongSinhVien'])->name('lay-tong-sinh-vien');
+    Route::get('/lay-tong-giang-vien', [GiangVienController::class, 'layTongGiangVien'])->name('lay-tong-giang-vien');
 });
+// Route::group(['middleware' => ['auth', 'checkchucvu:2'], 'prefix' => 'teacher'], function () {
+//     Route::get('/', function () {
+//         return view('admin.index');
+//     });
+//     Route::resource('thongtincanhan', ThongTinCaNhanController::class);
+//     Route::get('/lay-sinhvien-theo-lophoc', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
+//     Route::get('/lay-tong-sinh-vien', [SinhVienController::class, 'layTongSinhVien'])->name('lay-tong-sinh-vien');
+//     Route::get('/lay-tong-giang-vien', [GiangVienController::class, 'layTongGiangVien'])->name('lay-tong-giang-vien');
 
+//     Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
+//     Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
+//     Route::resource('khoa', KhoaController::class);
+// });
 // use App\Http\Controllers\TaiKhoanGiangVienController;
 // Route::get('/taikhoangiangvien/getInactiveData', [TaiKhoanGiangVienController::class, 'getInactiveData'])->name('taikhoangiangvien.getInactiveData');
 // Route::get('/taikhoangiangvien/restore/{id}', [TaiKhoanGiangVienController::class, 'restore'])->name('taikhoangiangvien.restore');

@@ -168,4 +168,10 @@ class GiangVienController extends Controller
         GiangVien::where('ma_gv', $id)->update(['trang_thai' => 1]);
         return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
     }
+    public function layTongGiangVien()
+    {
+        $tongGiangViens = GiangVien::where('trang_thai', 1)->count();
+
+        return response()->json(['tongGiangViens' => $tongGiangViens]);
+    }
 }

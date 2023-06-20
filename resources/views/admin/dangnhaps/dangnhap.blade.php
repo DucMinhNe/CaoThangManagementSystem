@@ -13,10 +13,11 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="{{ asset('/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 </head>
+<!-- style="background-image: url('{{ asset('dist/img/caothang.png') }}');" -->
 
 <body class="hold-transition login-page">
     <div class="login-box">
@@ -25,8 +26,13 @@
             <div class="card-header text-center">
                 <a href="/" class="h1"><b>Cao Thắng</b></a>
             </div>
+            <div style="text-align: center;margin:1rem">
+                <img src="{{ asset('dist/img/caothang.png') }}" alt=""
+                    style="display: block; margin: auto; width: 120px; height: 120px">
+            </div>
+
             <div class="card-body">
-                <p class="login-box-msg">Đăng Nhập</p>
+                <!-- <p class="login-box-msg"> <a href="/" class="h1"><b>Đăng Nhập</b></a></p> -->
                 @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
@@ -43,7 +49,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" name="mat_khau" placeholder="Mật Khẩu" required>
+                        <input type="password" class="form-control" name="mat_khau" id="mat_khau"
+                            placeholder="Mật Khẩu">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -53,9 +60,9 @@
                     <div class="row">
                         <div class="col-7">
                             <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Ghi Nhớ
+                                <input type="checkbox" id="showpass" onclick="myFunction()">
+                                <label for="showpass">
+                                    Hiện Mật Khẩu
                                 </label>
                             </div>
                         </div>
@@ -66,7 +73,6 @@
                         <!-- /.col -->
                     </div>
                 </form>
-
 
                 <!-- /.social-auth-links -->
 
@@ -89,6 +95,16 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+    <script>
+    function myFunction() {
+        var x = document.getElementById("mat_khau");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+    </script>
 </body>
 
 </html>

@@ -30,6 +30,8 @@
         <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="{{ asset('plugins/bootstrap/summernote-bs4.min.css') }}">
 
     </head>
 
@@ -60,25 +62,9 @@
                 <ul class="navbar-nav ml-auto">
                     <!-- Navbar Search -->
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                            <i class="fas fa-search"></i>
+                        <a href="/admin/dangxuat" class="nav-link">
+                            <i class="nav-icon fas fa-right-from-bracket"></i>
                         </a>
-                        <div class="navbar-search-block">
-                            <form class="form-inline">
-                                <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                        aria-label="Search">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-navbar" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                        <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </li>
                     <!-- Messages Dropdown Menu -->
 

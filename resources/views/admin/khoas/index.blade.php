@@ -2,26 +2,29 @@
 @section('content')
 <section>
     <div class="container">
-        <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm Khoa</a>
+
+        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
+            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
+                <i class="fa-solid fa-circle-plus"></i> Thêm
+            </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Tên Khoa</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Tên Khoa</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </tfoot>
             </table>
@@ -45,7 +48,10 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>
@@ -68,7 +74,13 @@ $(function() {
         ajax: "{{ route('khoa.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id'
+                name: 'id',
+                render: function(data, type, full, meta) {
+                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
+                        data + '" data-original-title="Edit" class="editBtn">' + data +
+                        '</a>';
+                    return btn;
+                }
             },
             {
                 data: 'ten_khoa',
@@ -83,7 +95,9 @@ $(function() {
         ],
         language: {
             "sEmptyTable": "Không có dữ liệu",
-            "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+            // "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+            "sInfo": "_START_ -> _END_ dòng của _TOTAL_ mục",
+            // "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
             "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
             "sInfoFiltered": "(được lọc từ _MAX_ tổng số bản ghi)",
             "sInfoPostFix": "",
@@ -94,10 +108,10 @@ $(function() {
             "sSearch": "Tìm kiếm:",
             "sZeroRecords": "Không tìm thấy kết quả nào phù hợp",
             "oPaginate": {
-                "sFirst": "Đầu",
-                "sLast": "Cuối",
-                "sNext": "Tiếp",
-                "sPrevious": "Trước"
+                "sFirst": "<<<",
+                "sLast": ">>>",
+                "sNext": ">",
+                "sPrevious": "<"
             },
             "oAria": {
                 "sSortAscending": ": Sắp xếp tăng dần",
@@ -127,7 +141,7 @@ $(function() {
             },
             {
                 extend: 'pageLength',
-                text: 'Số bản ghi trên trang'
+                text: 'Số dòng trên trang'
             }
         ],
     });
@@ -148,14 +162,14 @@ $(function() {
         $('#savedata').val("create-Btn");
         $('#id').val('');
         $('#modalForm').trigger("reset");
-        $('#modelHeading').html("Thêm Khoa");
+        $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
         var id = $(this).data('id');
         $.get("{{ route('khoa.index') }}" + '/' + id + '/edit', function(data) {
-            $('#modelHeading').html("Sửa Khoa");
+            $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
