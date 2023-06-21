@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('ma_gv_1')->references('ma_gv')->on('giang_viens');
             $table->foreign('ma_gv_2')->references('ma_gv')->on('giang_viens');
             $table->foreign('ma_gv_3')->references('ma_gv')->on('giang_viens');
-            $table->foreign('id_ct_chuong_trinh_dao_tao')->references('id')->on('chuong_trinh_dao_taos');
+            $table->foreign('id_ct_chuong_trinh_dao_tao')->references('id')->on('ct_chuong_trinh_dao_taos');
             $table->timestamps();
         });
     }

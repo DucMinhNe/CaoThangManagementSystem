@@ -97,7 +97,11 @@
                           </li>
                       </ul>
                   </li>
-                  <li class="nav-item">
+                  @php
+                  $isOpen = Request::is('admin/giangvien') || Request::is('admin/chucvugiangvien') ||
+                  Request::is('admin/danhsachchucvugiangvien');
+                  @endphp
+                  <li class="nav-item {{ $isOpen ? 'menu-open' : '' }}">
                       <a href="#" class="nav-link">
                           <i class="nav-icon fas fa-person-chalkboard"></i>
                           <p>
@@ -133,7 +137,13 @@
 
                       </ul>
                   </li>
-                  <li class="nav-item">
+                  @php
+                  $isOpen = Request::is('admin/khoa') || Request::is('admin/chuyennganh') ||
+                  Request::is('admin/chuongtrinhdaotao') || Request::is('admin/ctchuongtrinhdaotao')||
+                  Request::is('admin/lophocphan')|| Request::is('admin/ctlophocphan')||
+                  Request::is('admin/bomon') || Request::is('admin/loaimonhoc')|| Request::is('admin/monhoc');
+                  @endphp
+                  <li class="nav-item {{ $isOpen ? 'menu-open' : '' }}">
                       <a href="#" class="nav-link">
                           <i class="nav-icon fas fa-school"></i>
                           <p>
@@ -251,10 +261,11 @@
                           <p>Phòng</p>
                       </a>
                   </li>
+
                   <li class="nav-item">
                       <a href="{{ url('/admin/nhapdiem') }}"
                           class="nav-link {{ Request::url() == url('/admin/nhapdiem') ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
+                          <i class="nav-icon fas fa-award"></i>
                           <p>Nhập Điểm</p>
                       </a>
                   </li>

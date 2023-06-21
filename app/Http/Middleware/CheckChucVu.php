@@ -16,9 +16,11 @@ class CheckChucVu
      */
     public function handle($request, Closure $next, $chucvu)
     {
-    
-        // Kiểm tra quyền truy cập dựa trên chức vụ
-        if ($request->user() && $request->user()->id_chuc_vu != $chucvu) {
+        $chucvuArray = explode('|', $chucvu);
+        $userChucVu = $request->user()->id_chuc_vu;
+
+        // Kiểm tra xem chức vụ của người dùng có trong danh sách chức vụ được cho phép không
+        if (!in_array($userChucVu, $chucvuArray)) {
             return redirect()->route('khongcoquyen');
         }
         return $next($request);

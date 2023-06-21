@@ -1,5 +1,10 @@
 @include('admin.layouts.header')
-@include('admin.layouts.sidebar')
+
+@if(auth()->user()->id_chuc_vu == 1)
+@include('admin.layouts.sidebar1')
+@elseif(auth()->user()->id_chuc_vu == 2)
+@include('admin.layouts.sidebar2')
+@endif
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -29,7 +34,7 @@
                             </div>
                             <h3 class="profile-username text-center">{{auth()->user()->ten_giang_vien}}</h3>
 
-                            <p class="text-muted text-center">{{auth()->user()->id_chuc_vu}}</p>
+                            <p class="text-muted text-center"> {{ $chucvus ? $chucvus->ten_chuc_vu : '' }}</p>
 
                             <!-- <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">

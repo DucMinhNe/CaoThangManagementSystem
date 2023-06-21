@@ -1,33 +1,21 @@
-@extends('admin.chuongtrinhdaotaos.layout')
-<style>
-.select2-selection__rendered {
-    line-height: 31px !important;
-}
-
-.select2-container .select2-selection--single {
-    height: 38px !important;
-}
-
-.select2-selection__arrow {
-    height: 34px !important;
-}
-</style>
+@extends('admin.layouts.layout')
 @section('content')
 <section>
     <div class="container">
-        <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
-
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
+        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
+            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
+                <i class="fa-solid fa-circle-plus"></i> Thêm
+            </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Khóa Học</th>
                         <th>Chuyên Ngành</th>
-                        <th width="100px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,10 +23,10 @@
                 <tfoot>
                     <tr>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Khóa Học</th>
                         <th>Chuyên Ngành</th>
-                        <th width="100px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                     </tr>
                 </tfoot>
@@ -98,7 +86,13 @@ $(function() {
         ajax: "{{ route('chuongtrinhdaotao.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id'
+                name: 'id',
+                render: function(data, type, full, meta) {
+                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
+                        data + '" data-original-title="Edit" class="editBtn">' + data +
+                        '</a>';
+                    return btn;
+                }
             },
             {
                 data: 'khoa_hoc',
@@ -161,7 +155,7 @@ $(function() {
             },
             {
                 extend: 'pageLength',
-                text: 'Số bản ghi trên trang'
+                text: 'Số dòng trên trang'
             }
         ],
     });
@@ -209,6 +203,15 @@ $(function() {
                 $('#modalForm').trigger("reset");
                 $('#ajaxModelexa').modal('hide');
                 $('#savedata').html('Lưu');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Thành Công',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 table.draw();
             },
             error: function(data) {
@@ -219,33 +222,71 @@ $(function() {
     });
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn xóa?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('chuongtrinhdaotao.destroy', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('chuongtrinhdaotao.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
     $('body').on('click', '.restoreBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn khôi phục?")) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('chuongtrinhdaotao.restore', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Khôi Phục',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('chuongtrinhdaotao.restore', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Khôi Phục Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
 });
 </script>

@@ -1,4 +1,4 @@
-@extends('admin.sinhviens.layout')
+@extends('admin.layouts.layout')
 @section('content')
 <section>
     <div class="container">

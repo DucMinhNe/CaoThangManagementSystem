@@ -15,34 +15,22 @@ class LoaiMonHocSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('khoas')->insert([
+        DB::table('loai_mon_hocs')->insert([
             [
                 'id' => '1',
-                'ten_khoa' => 'Công Nghệ Thông Tin',
+                'ten_loai_mon_hoc' => 'Lý Thuyết',
             ],
             [
                 'id' => '2',
-                'ten_khoa' => 'Cơ Khí',
+                'ten_loai_mon_hoc' => 'Thực Hành',
             ],
             [
                 'id' => '3',
-                'ten_khoa' => 'Cơ Khí Động Lực',
+                'ten_loai_mon_hoc' => 'Đồ Án',
             ],
             [
                 'id' => '4',
-                'ten_khoa' => 'Điện - Điện Tử',
-            ],
-            [
-                'id' => '5',
-                'ten_khoa' => 'Công Nghệ Nhiệt - Lạnh',
-            ],
-            [
-                'id' => '6',
-                'ten_khoa' => 'Giáo Dục Đại Cương',
-            ],
-            [
-                'id' => '7',
-                'ten_khoa' => 'Bộ Môn Kinh Tế',
+                'ten_loai_mon_hoc' => 'Mođun',
             ]
         ]);
     }

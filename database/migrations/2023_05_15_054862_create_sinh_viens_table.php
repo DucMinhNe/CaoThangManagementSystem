@@ -30,11 +30,12 @@ return new class extends Migration
             $table->string('tai_khoan')->nullable();
             $table->string('mat_khau')->nullable();
             $table->string('khoa_hoc')->nullable();
-            $table->unsignedInteger('bac_dao_tao')->nullable();
-            $table->unsignedInteger('he_dao_tao')->nullable();
+            $table->string('bac_dao_tao')->nullable();
+            $table->string('he_dao_tao')->nullable();
             $table->unsignedInteger('id_lop_hoc')->nullable();
             $table->unsignedInteger('tinh_trang_hoc')->nullable();
             $table->boolean('trang_thai')->default(true);
+            $table->timestamps();
             $table->foreign('id_lop_hoc')->references('id')->on('lop_hocs');
         });
     }

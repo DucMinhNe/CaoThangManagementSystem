@@ -17,6 +17,7 @@ class GiangVien extends Authenticatable
     protected $primaryKey = 'ma_gv';
     public $incrementing = false;
     protected $keyType = 'string';
+    public $timestamps = false;
     protected $rememberTokenName = false;
     protected $fillable = [
         'ma_gv',

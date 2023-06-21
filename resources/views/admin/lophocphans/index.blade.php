@@ -1,18 +1,4 @@
-@extends('admin.lophocphans.layout')
-<!-- <style>
-.select2-selection__rendered {
-    line-height: 31px !important;
-}
-
-.select2-container .select2-selection--single {
-    height: 38px !important;
-}
-
-.select2-selection__arrow {
-    height: 34px !important;
-}
-</style> -->
-
+@extends('admin.layouts.layout')
 @section('content')
 <section>
     <div class="container">

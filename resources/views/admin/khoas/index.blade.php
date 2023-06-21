@@ -1,8 +1,7 @@
-@extends('admin.khoas.layout')
+@extends('admin.layouts.layout')
 @section('content')
 <section>
     <div class="container">
-
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
             <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
             <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
@@ -96,7 +95,7 @@ $(function() {
         language: {
             "sEmptyTable": "Không có dữ liệu",
             // "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
-            "sInfo": "_START_ -> _END_ dòng của _TOTAL_ mục",
+            "sInfo": "(_START_ - _END_) dòng của _TOTAL_ mục",
             // "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
             "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
             "sInfoFiltered": "(được lọc từ _MAX_ tổng số bản ghi)",

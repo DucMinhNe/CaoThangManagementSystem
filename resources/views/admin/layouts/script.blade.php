@@ -20,8 +20,6 @@ $(function() {
 $.widget.bridge('uibutton', $.ui.button)
 </script>
 
-<!-- Summernote -->
-<script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
 <!-- overlayScrollbars -->
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- AdminLTE App -->

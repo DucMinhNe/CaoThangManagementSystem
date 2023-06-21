@@ -3,12 +3,7 @@
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\User;
-use App\Models\ChucVuGiangVien;
-use App\Models\GiangVien;
-use App\Models\SinhVien;
-use App\Models\Khoa;
-use App\Models\ChuyenNganh;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 
@@ -31,9 +26,15 @@ class DatabaseSeeder extends Seeder
            //UserSeeder::class,
            ChucVuGiangVienSeeder::class,
            GiangVienSeeder::class,
-        //    SinhVienSeeder::class,
            KhoaSeeder::class,
            ChuyenNganhSeeder::class,
+           LoaiMonHocSeeder::class,
+           BoMonSeeder::class,
+           MonHocSeeder::class,
+           LopHocSeeder::class,
+           SinhVienSeeder::class,
+           ChuongTrinhDaoTaoSeeder::class,
+           CTChuongTrinhDaoTaoSeeder::class,
         ]);
     }
 }

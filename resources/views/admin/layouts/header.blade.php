@@ -22,16 +22,12 @@
         <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
         <!-- overlayScrollbars -->
         <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-        <!-- summernote -->
-        <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
         <!-- SweetAlert2 -->
         <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
         <!-- Datatables -->
         <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-        <!-- Bootstrap 4 -->
-        <link rel="stylesheet" href="{{ asset('plugins/bootstrap/summernote-bs4.min.css') }}">
 
     </head>
 
