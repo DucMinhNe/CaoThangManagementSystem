@@ -1,8 +1,23 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
+
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="saoChepChuongTrinhDaoTaoBtn" class="btn btn-primary" href="javascript:void(0)">Sao Chép CTĐT</a>
             <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
             <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
                 <i class="fa-solid fa-circle-plus"></i> Thêm
@@ -13,7 +28,7 @@
                 <thead>
                     <tr>
                         <th width="30px">STT</th>
-                        <th>Khóa Học</th>
+                        <th width="110px">Khóa Học</th>
                         <th>Chuyên Ngành</th>
                         <th width="72px"></th>
                     </tr>
@@ -24,7 +39,7 @@
                     <tr>
                     <tr>
                         <th width="30px">STT</th>
-                        <th>Khóa Học</th>
+                        <th width="110px">Khóa Học</th>
                         <th>Chuyên Ngành</th>
                         <th width="72px"></th>
                     </tr>
@@ -69,7 +84,51 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="saoChepModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modelHeading"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm" name="modalForm" class="form-horizontal">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="id_chuong_trinh_dao_tao_1">Chương Trình Đạo Tạo</label>
+                            <select name="id_chuong_trinh_dao_tao_1" id="id_chuong_trinh_dao_tao_1"
+                                class="form-control select2" style="width: 100%;">
+                                @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
+                                @if ($chuongtrinhdaotao->trang_thai == 1)
+                                <option value="{{ $chuongtrinhdaotao->id }}">
+                                    {{ $chuongtrinhdaotao->id }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_chuong_trinh_dao_tao_2">Chương Trình Đạo Tạo</label>
+                            <select name="id_chuong_trinh_dao_tao_2" id="id_chuong_trinh_dao_tao_2"
+                                class="form-control select2" style="width: 100%;">
+                                @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
+                                @if ($chuongtrinhdaotao->trang_thai == 1)
+                                <option value="{{ $chuongtrinhdaotao->id }}">
+                                    {{ $chuongtrinhdaotao->id }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary" id="saoChepChiTiet">Sao
+                            chép</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="{{ asset('plugins/jquery/jquery.js') }}"></script>
 <script type="text/javascript">
@@ -159,6 +218,41 @@ $(function() {
             }
         ],
     });
+    $('#saoChepChuongTrinhDaoTaoBtn').click(function() {
+        // Hiển thị modal
+        $('#saoChepModal').modal('show');
+    });
+    $('#saoChepChiTiet').click(function(e) {
+        e.preventDefault(); // Ngăn chặn sự kiện mặc định của form
+
+        // Lấy giá trị của các select
+        var idChuongTrinhDaoTao1 = $('#id_chuong_trinh_dao_tao_1').val();
+        var idChuongTrinhDaoTao2 = $('#id_chuong_trinh_dao_tao_2').val();
+
+        // Gọi AJAX để gửi yêu cầu sao chép
+        $.ajax({
+            url: "{{ route('chuongtrinhdaotao.index') }}" + '/saochep/' + idChuongTrinhDaoTao1 +
+                '/' +
+                idChuongTrinhDaoTao2,
+            type: 'GET',
+            success: function(response) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: response.success,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                console.log(response.success);
+            },
+            error: function(xhr, status, error) {
+                // Xử lý kết quả lỗi
+                console.log(xhr.responseText);
+            }
+        });
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
@@ -175,7 +269,7 @@ $(function() {
         $('#savedata').val("create-Btn");
         $('#id').val('');
         $('#modalForm').trigger("reset");
-        $('#modelHeading').html("Thêm Chuyên Ngành");
+        $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
@@ -187,7 +281,7 @@ $(function() {
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
             $('#khoa_hoc').val(data.khoa_hoc);
-            $('#id_chuyen_nganh').val(data.id_chuyen_nganh);
+            $('#id_chuyen_nganh').val(data.id_chuyen_nganh).trigger('change');
         })
     });
 

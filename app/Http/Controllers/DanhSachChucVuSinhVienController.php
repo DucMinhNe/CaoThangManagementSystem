@@ -29,9 +29,9 @@ class DanhSachChucVuSinhVienController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
         
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
-        
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -45,18 +45,19 @@ class DanhSachChucVuSinhVienController extends Controller
     public function getInactiveData()
     {
         $data = DanhSachChucVuSinhVien::leftJoin('sinh_viens', 'danh_sach_chuc_vu_sinh_viens.ma_sv', '=', 'sinh_viens.ma_sv')
+        ->leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
         ->leftJoin('chuc_vu_sinh_viens', 'danh_sach_chuc_vu_sinh_viens.id_chuc_vu', '=', 'chuc_vu_sinh_viens.id')
-        ->select('danh_sach_chuc_vu_sinh_viens.*', 'sinh_viens.ten_sinh_vien', 'chuc_vu_sinh_viens.ten_chuc_vu')
+        ->select('danh_sach_chuc_vu_sinh_viens.*', 'sinh_viens.ten_sinh_vien', 'chuc_vu_sinh_viens.ten_chuc_vu', 'lop_hocs.ten_lop_hoc')
         ->where('danh_sach_chuc_vu_sinh_viens.trang_thai', 0)
         ->latest()
-        ->get();          
+        ->get();        
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
     
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
-    
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+              
                 return $btn;
             })
             ->rawColumns(['action'])

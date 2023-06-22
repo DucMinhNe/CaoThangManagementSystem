@@ -1,5 +1,18 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
@@ -184,7 +197,7 @@ $(function() {
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
             $('#ten_bo_mon').val(data.ten_bo_mon);
-            $('#id_khoa').val(data.id_khoa);
+            $('#id_khoa').val(data.id_khoa).trigger('change');
         })
     });
 

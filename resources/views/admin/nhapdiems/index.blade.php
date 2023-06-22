@@ -1,5 +1,18 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <div class="form-group">
     <label for="id_lop_hoc_phan">Lớp Học Phần</label>
     <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2" style="width: 100%;">
@@ -19,7 +32,7 @@
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Tên Lớp Học Phần</th>
                         <th>Tên Sinh Viên</th>
                         <th>Chuyên Cần</th>
@@ -28,7 +41,6 @@
                         <th>Thi 2</th>
                         <th>Tổng Kết 1</th>
                         <th>Tổng Kết 2</th>
-                        <!-- <th width="100px">Hành Động</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -60,7 +72,15 @@ $(function() {
             ajax: "{{ route('nhapdiem.index') }}?id_lop_hoc_phan=" + selectedLopHocPhanId,
             columns: [{
                     data: 'id',
-                    name: 'id'
+                    name: 'id',
+                    render: function(data, type, full, meta) {
+                        var btn =
+                            '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
+                            data + '" data-original-title="Edit" class="editBtn">' +
+                            data +
+                            '</a>';
+                        return btn;
+                    }
                 },
                 {
                     data: 'ten_lop_hoc_phan',

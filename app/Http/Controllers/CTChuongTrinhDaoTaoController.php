@@ -30,9 +30,9 @@ class CTChuongTrinhDaoTaoController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
         
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
-        
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -47,18 +47,18 @@ class CTChuongTrinhDaoTaoController extends Controller
     public function getInactiveData()
     {
         $data = CTChuongTrinhDaoTao::leftJoin('chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', '=', 'chuong_trinh_dao_taos.id')
-            ->leftJoin('mon_hocs', 'ct_chuong_trinh_dao_taos.id_mon_hoc', '=', 'mon_hocs.id')
-            ->leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
-            ->selectRaw('ct_chuong_trinh_dao_taos.*, CONCAT(chuong_trinh_dao_taos.khoa_hoc, ".", chuyen_nganhs.ten_chuyen_nganh) AS khoa_hoc_chuyen_nganh', 'mon_hocs.ten_mon_hoc')
-            ->where('ct_chuong_trinh_dao_taos.trang_thai', 0)
-            ->latest()
-            ->get();      
+        ->leftJoin('mon_hocs', 'ct_chuong_trinh_dao_taos.id_mon_hoc', '=', 'mon_hocs.id')
+        ->leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
+        ->select('ct_chuong_trinh_dao_taos.*', 'mon_hocs.ten_mon_hoc', DB::raw('CONCAT(chuong_trinh_dao_taos.khoa_hoc, ".", chuyen_nganhs.ten_chuyen_nganh) AS khoa_hoc_chuyen_nganh'))
+        ->where('ct_chuong_trinh_dao_taos.trang_thai', 0)
+        ->latest()
+        ->get();       
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
     
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
     
                 return $btn;
             })

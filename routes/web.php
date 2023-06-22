@@ -58,7 +58,6 @@ Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('log
 Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);
 Route::get('/admin/dangxuat', [DangNhapController::class,'dangXuat']);
 Route::get('/', function () {return redirect('/admin');})->middleware('auth');
-// Route::group(['middleware' => ['auth', 'checkchucvu:1'], 'prefix' => 'admin'], function () {
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   
     Route::get('/', function () {
@@ -115,6 +114,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/ctquyetdinh/restore/{id}', [CTQuyetDinhController::class, 'restore'])->name('ctquyetdinh.restore');
         Route::resource('ctquyetdinh', CTQuyetDinhController::class);
 
+
+        Route::get('/chuongtrinhdaotao/saochep/{idChuongTrinhDaoTao1}/{idChuongTrinhDaoTao2}', [ChuongTrinhDaoTaoController::class, 'saoChepChiTiet']);
         Route::get('/chuongtrinhdaotao/getInactiveData', [ChuongTrinhDaoTaoController::class, 'getInactiveData'])->name('chuongtrinhdaotao.getInactiveData');
         Route::get('/chuongtrinhdaotao/restore/{id}', [ChuongTrinhDaoTaoController::class, 'restore'])->name('chuongtrinhdaotao.restore');
         Route::resource('chuongtrinhdaotao', ChuongTrinhDaoTaoController::class);

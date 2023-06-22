@@ -1,17 +1,31 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <section>
     <div class="container">
-        <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
-
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
+        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
+            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
+                <i class="fa-solid fa-circle-plus"></i> Thêm
+            </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Tên Lớp Học Phần</th>
                         <th>Lớp </th>
                         <th>Giảng Viên 1</th>
@@ -19,14 +33,14 @@
                         <th>Giảng Viên 3</th>
                         <th>Tên Môn</th>
                         <th>Mở Lớp</th>
-                        <th width="100px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Tên Lớp Học Phần</th>
                         <th>Lớp </th>
                         <th>Giảng Viên 1</th>
@@ -34,7 +48,7 @@
                         <th>Giảng Viên 3</th>
                         <th>Tên Môn</th>
                         <th>Mở Lớp</th>
-                        <th width="100px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </tfoot>
             </table>
@@ -59,6 +73,7 @@
                         <div class="form-group">
                             <label for="id_lop_hoc">Lớp</label>
                             <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn lớp --</option>
                                 @foreach ($lophocs as $lophoc)
                                 @if ($lophoc->trang_thai == 1)
                                 <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
@@ -70,6 +85,7 @@
                         <div class="form-group">
                             <label for="ma_gv_1">Giảng Viên 1</label>
                             <select name="ma_gv_1" id="ma_gv_1" class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn giảng viên --</option>
                                 @foreach ($giangviens as $giangvien)
                                 @if ($giangvien->trang_thai == 1)
                                 <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
@@ -80,6 +96,7 @@
                         <div class="form-group">
                             <label for="ma_gv_2">Giảng Viên 2</label>
                             <select name="ma_gv_2" id="ma_gv_2" class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn giảng viên --</option>
                                 @foreach ($giangviens as $giangvien)
                                 @if ($giangvien->trang_thai == 1)
                                 <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
@@ -90,6 +107,7 @@
                         <div class="form-group">
                             <label for="ma_gv_3">Giảng Viên 3</label>
                             <select name="ma_gv_3" id="ma_gv_3" class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn giảng viên --</option>
                                 @foreach ($giangviens as $giangvien)
                                 @if ($giangvien->trang_thai == 1)
                                 <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
@@ -141,7 +159,13 @@ $(function() {
         ajax: "{{ route('lophocphan.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id'
+                name: 'id',
+                render: function(data, type, full, meta) {
+                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
+                        data + '" data-original-title="Edit" class="editBtn">' + data +
+                        '</a>';
+                    return btn;
+                }
             },
             {
                 data: 'ten_lop_hoc_phan',
@@ -246,6 +270,9 @@ $(function() {
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
+        $('#ma_gv_1').val('').trigger('change');
+        $('#ma_gv_2').val('').trigger('change');
+        $('#ma_gv_3').val('').trigger('change');
     });
 
     $('body').on('click', '.editBtn', function() {
@@ -256,11 +283,12 @@ $(function() {
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
             $('#ten_lop_hoc_phan').val(data.ten_lop_hoc_phan);
-            $('#id_lop_hoc').val(data.id_lop_hoc);
-            $('#ma_gv_1').val(data.ma_gv_1);
-            $('#ma_gv_2').val(data.ma_gv_2);
-            $('#ma_gv_3').val(data.ma_gv_3);
-            $('#id_ct_chuong_trinh_dao_tao').val(data.id_ct_chuong_trinh_dao_tao);
+            $('#id_lop_hoc').val(data.id_lop_hoc).trigger('change');
+            $('#ma_gv_1').val(data.ma_gv_1).trigger('change');
+            $('#ma_gv_2').val(data.ma_gv_2).trigger('change');
+            $('#ma_gv_3').val(data.ma_gv_3).trigger('change');
+            $('#id_ct_chuong_trinh_dao_tao').val(data.id_ct_chuong_trinh_dao_tao).trigger(
+                'change');
             $('#mo_lop').val(data.mo_lop);
 
         })
@@ -278,6 +306,15 @@ $(function() {
                 $('#modalForm').trigger("reset");
                 $('#ajaxModelexa').modal('hide');
                 $('#savedata').html('Lưu');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Thành Công',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 table.draw();
             },
             error: function(data) {
@@ -289,33 +326,71 @@ $(function() {
 
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn xóa?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('lophocphan.destroy', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('lophocphan.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
     $('body').on('click', '.restoreBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn khôi phục?")) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('lophocphan.restore', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Khôi Phục',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('lophocphan.restore', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Khôi Phục Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
 });
 </script>

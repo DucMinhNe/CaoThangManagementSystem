@@ -29,13 +29,6 @@ class NhapDiemController extends Controller
     
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
-    
-                    return $btn;
-                })
-                ->rawColumns(['action'])
                 ->make(true);
         }
     
@@ -73,9 +66,7 @@ class NhapDiemController extends Controller
             $id = $input['id'];
             $column = $input['column'];
             $value = ($input['value'] === 'null') ? null : $input['value'];
-    
             $lopHocPhan = CTLopHocPhan::updateOrCreate(['id' => $id], [$column => $value]);
-    
             return response()->json(['success' => 'Lưu thành công.']);
         }
     }

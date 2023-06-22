@@ -1,16 +1,31 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <section>
     <div class="container">
-        <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm</a>
+        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
+            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
+                <i class="fa-solid fa-circle-plus"></i> Thêm
+            </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>Mã Sinh Viên</th>
+                        <th width="50px">Mã Giảng Viên</th>
                         <th>Tên Giảng Viên</th>
                         <th>Email</th>
                         <th>Số Điện Thoại</th>
@@ -28,14 +43,14 @@
                         <th>Bộ Môn</th>
                         <th>Chức Vụ</th>
                         <th>Tình Trạng Làm Việc</th>
-                        <th width="100px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Mã Sinh Viên</th>
+                        <th width="50px">Mã Giảng Viên</th>
                         <th>Tên Giảng Viên</th>
                         <th>Email</th>
                         <th>Số Điện Thoại</th>
@@ -53,7 +68,7 @@
                         <th>Bộ Môn</th>
                         <th>Chức Vụ</th>
                         <th>Tình Trạng Làm Việc</th>
-                        <th width="100px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </tfoot>
             </table>
@@ -160,20 +175,37 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="tinh_trang_lam_viec">Tình Trạng Làm Việc</label>
-                                    <input type="text" class="form-control" id="tinh_trang_lam_viec"
-                                        name="tinh_trang_lam_viec" placeholder="Tình Trạng Làm Việc" value="" required>
+                                    <select class="form-control select2" id="tinh_trang_lam_viec"
+                                        name="tinh_trang_lam_viec" style="width: 100%;">
+                                        <option selected="selected" value="1">Đang Làm Việc</option>
+                                        <option value="0">Ngưng Làm Việc</option>
+
+                                    </select>
                                 </div>
+
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_bo_mon">Bộ Môn</label>
-                                    <input type="text" class="form-control" id="id_bo_mon" name="id_bo_mon"
-                                        placeholder="Bộ Môn" value="" required>
+                                    <select name="id_bo_mon" id="id_bo_mon" class="form-control select2"
+                                        style="width: 100%;">
+                                        @foreach ($bomons as $bomon)
+                                        @if ($bomon->trang_thai == 1)
+                                        <option value="{{ $bomon->id }}">{{ $bomon->ten_bo_mon }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_chuc_vu">Chức Vụ</label>
-                                    <input type="text" class="form-control" id="id_chuc_vu" name="id_chuc_vu"
-                                        placeholder="Chức Vụ" value="" required>
+                                    <select name="id_chuc_vu" id="id_chuc_vu" class="form-control select2"
+                                        style="width: 100%;">
+                                        @foreach ($chucvus as $chucvu)
+                                        @if ($chucvu->trang_thai == 1)
+                                        <option value="{{ $chucvu->id }}">{{ $chucvu->ten_chuc_vu }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="hinh_anh_dai_dien">Hình Ảnh Đại Diện</label>
@@ -268,7 +300,14 @@ $(function() {
             },
             {
                 data: 'gioi_tinh',
-                name: 'gioi_tinh'
+                name: 'gioi_tinh',
+                render: function(data, type, full, meta) {
+                    if (data === 1) {
+                        return 'Nam';
+                    } else {
+                        return 'Nữ';
+                    }
+                }
             },
             {
                 data: 'ngay_sinh',
@@ -327,7 +366,14 @@ $(function() {
             },
             {
                 data: 'tinh_trang_lam_viec',
-                name: 'tinh_trang_lam_viec'
+                name: 'tinh_trang_lam_viec',
+                render: function(data, type, full, meta) {
+                    if (data === 1) {
+                        return 'Đang làm việc';
+                    } else {
+                        return 'Ngừng làm việc';
+                    }
+                }
             },
             {
                 data: 'action',
@@ -367,8 +413,8 @@ $(function() {
             {
                 extend: 'excel',
                 text: 'Xuất Excel',
-                sheetName: 'Sinh Viên',
-                title: 'Sinh Viên',
+                sheetName: 'Giảng Viên',
+                title: 'Giảng Viên',
                 exportOptions: {
                     modifier: {
                         page: 'current'
@@ -429,7 +475,8 @@ $(function() {
             $('#email').val(data.email);
             $('#so_dien_thoai').val(data.so_dien_thoai);
             $('#so_cmt').val(data.so_cmt);
-            $('#gioi_tinh option[value="' + data.gioi_tinh + '"]').prop('selected', true);
+            $('#gioi_tinh').val(data.gioi_tinh).trigger('change');
+            // $('#gioi_tinh option[value="' + data.gioi_tinh + '"]').prop('selected', true);
             $('#ngay_sinh').val(data.ngay_sinh);
             $('#noi_sinh').val(data.noi_sinh);
             $('#dan_toc').val(data.dan_toc);
@@ -449,9 +496,9 @@ $(function() {
             $('#tai_khoan').val(data.tai_khoan);
             //$('#mat_khau').val(data.mat_khau);
             $('#mat_khau').attr('placeholder', '******');
-            $('#id_bo_mon').val(data.id_bo_mon);
-            $('#id_chuc_vu').val(data.id_chuc_vu);
-            $('#tinh_trang_lam_viec').val(data.tinh_trang_lam_viec);
+            $('#id_bo_mon').val(data.id_bo_mon).trigger('change');
+            $('#id_chuc_vu').val(data.id_chuc_vu).trigger('change');
+            $('#tinh_trang_lam_viec').val(data.tinh_trang_lam_viec).trigger('change');
 
         })
     });
@@ -481,6 +528,15 @@ $(function() {
                 $('#modalForm').trigger("reset");
                 $('#ajaxModelexa').modal('hide');
                 $('#savedata').html('Lưu');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Thành Công',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 table.draw();
             },
             error: function(data) {
@@ -492,33 +548,71 @@ $(function() {
 
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn xóa?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('giangvien.destroy', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('giangvien.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
     $('body').on('click', '.restoreBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn khôi phục?")) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('giangvien.restore', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Khôi Phục',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('giangvien.restore', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Khôi Phục Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
 });
 </script>

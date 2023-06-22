@@ -1,16 +1,31 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <section>
     <div class="container">
-        <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm</a>
+        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
+            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
+                <i class="fa-solid fa-circle-plus"></i> Thêm
+            </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>Mã Sinh Viên</th>
+                        <th width="80px">Mã Sinh Viên</th>
                         <th>Tên Sinh Viên</th>
                         <th>Email</th>
                         <th>Số Điện Thoại</th>
@@ -30,14 +45,14 @@
                         <th>Hệ Đào Tạo</th>
                         <th>Lớp Học</th>
                         <th>Tình Trạng Học</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Mã Sinh Viên</th>
+                        <th width="80px">Mã Sinh Viên</th>
                         <th>Tên Sinh Viên</th>
                         <th>Email</th>
                         <th>Số Điện Thoại</th>
@@ -57,7 +72,7 @@
                         <th>Hệ Đào Tạo</th>
                         <th>Lớp Học</th>
                         <th>Tình Trạng Học</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </tfoot>
             </table>
@@ -182,9 +197,16 @@
                                         placeholder="Hệ Đào Tạo" value="" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_lop_hoc">Lớp </label>
-                                    <input type="text" class="form-control" id="id_lop_hoc" name="id_lop_hoc"
-                                        placeholder="ID Lớp Học" value="" required>
+                                    <label for="id_lop_hoc">Lớp</label>
+                                    <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2"
+                                        style="width: 100%;">
+                                        @foreach ($lophocs as $lophoc)
+                                        @if ($lophoc->trang_thai == 1)
+                                        <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
+                                        </option>
+                                        @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -288,7 +310,14 @@ $(function() {
             },
             {
                 data: 'gioi_tinh',
-                name: 'gioi_tinh'
+                name: 'gioi_tinh',
+                render: function(data, type, full, meta) {
+                    if (data === 1) {
+                        return 'Nam';
+                    } else {
+                        return 'Nữ';
+                    }
+                }
             },
             {
                 data: 'ngay_sinh',
@@ -457,7 +486,8 @@ $(function() {
             $('#email').val(data.email);
             $('#so_dien_thoai').val(data.so_dien_thoai);
             $('#so_cmt').val(data.so_cmt);
-            $('#gioi_tinh option[value="' + data.gioi_tinh + '"]').prop('selected', true);
+            $('#gioi_tinh').val(data.gioi_tinh).trigger('change');
+            // $('#gioi_tinh option[value="' + data.gioi_tinh + '"]').prop('selected', true);
             $('#ngay_sinh').val(data.ngay_sinh);
             $('#noi_sinh').val(data.noi_sinh);
             $('#dan_toc').val(data.dan_toc);
@@ -480,8 +510,8 @@ $(function() {
             $('#khoa_hoc').val(data.khoa_hoc);
             $('#bac_dao_tao').val(data.bac_dao_tao);
             $('#he_dao_tao').val(data.he_dao_tao);
-            $('#id_lop_hoc').val(data.id_lop_hoc);
-            $('#tinh_trang_hoc').val(data.tinh_trang_hoc);
+            $('#id_lop_hoc').val(data.id_lop_hoc).trigger('change');
+            $('#tinh_trang_hoc').val(data.tinh_trang_hoc).trigger('change');
 
         })
     });
@@ -511,6 +541,15 @@ $(function() {
                 $('#modalForm').trigger("reset");
                 $('#ajaxModelexa').modal('hide');
                 $('#savedata').html('Lưu');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Thành Công',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 table.draw();
             },
             error: function(data) {
@@ -522,33 +561,71 @@ $(function() {
 
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn xóa?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('sinhvien.destroy', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('sinhvien.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
     $('body').on('click', '.restoreBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn khôi phục?")) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('sinhvien.restore', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Khôi Phục',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('sinhvien.restore', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Khôi Phục Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
 });
 </script>

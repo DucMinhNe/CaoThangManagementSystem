@@ -78,8 +78,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="inputName" class="col-sm-3 col-form-label">Mã Giảng
-                                                        Viên</label>
+                                                    <label class="col-sm-4 col-form-label">Mã Giảng Viên</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ma_gv}}"
@@ -87,7 +86,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputEmail" class="col-sm-3 col-form-label">Tên Giảng
+                                                    <label class="col-sm-4 col-form-label">Tên Giảng
                                                         Viên</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -96,8 +95,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputName2"
-                                                        class="col-sm-3 col-form-label">Email</label>
+                                                    <label class="col-sm-4 col-form-label">Email</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->email}}" placeholder="Email"
@@ -105,7 +103,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputExperience" class="col-sm-3 col-form-label">Số Điện
+                                                    <label class="col-sm-4 col-form-label">Số Điện
                                                         Thoại</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -114,8 +112,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputSkills"
-                                                        class="col-sm-3 col-form-label">CMND/CCCD</label>
+                                                    <label class="col-sm-4 col-form-label">CMND/CCCD</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->so_cmt}}" placeholder="CMND/CCCD"
@@ -123,7 +120,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputSkills" class="col-sm-3 col-form-label">Đ/C Thường
+                                                    <label class="col-sm-4 col-form-label">Đ/C Thường
                                                         Trú</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -132,7 +129,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputSkills" class="col-sm-3 col-form-label">Bộ
+                                                    <label class="col-sm-4 col-form-label">Bộ
                                                         Môn</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -143,7 +140,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="inputName" class="col-sm-3 col-form-label">Giới
+                                                    <label class="col-sm-3 col-form-label">Giới
                                                         Tính</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -152,7 +149,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputEmail" class="col-sm-3 col-form-label">Ngày
+                                                    <label class="col-sm-3 col-form-label">Ngày
                                                         Sinh</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -161,7 +158,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputName2" class="col-sm-3 col-form-label">Nơi
+                                                    <label class="col-sm-3 col-form-label">Nơi
                                                         Sinh</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -170,7 +167,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputExperience" class="col-sm-3 col-form-label">Dân
+                                                    <label class="col-sm-3 col-form-label">Dân
                                                         Tộc</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -179,7 +176,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputSkills" class="col-sm-3 col-form-label">Tôn
+                                                    <label class="col-sm-3 col-form-label">Tôn
                                                         Giáo</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -188,7 +185,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputSkills" class="col-sm-3 col-form-label">Đ/C Tạm
+                                                    <label class="col-sm-3 col-form-label">Đ/C Tạm
                                                         Trú</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -197,7 +194,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputSkills" class="col-sm-3 col-form-label">Chức
+                                                    <label class="col-sm-3 col-form-label">Chức
                                                         Vụ</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"

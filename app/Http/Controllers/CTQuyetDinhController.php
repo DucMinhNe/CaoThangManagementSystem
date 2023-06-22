@@ -26,9 +26,9 @@ class CTQuyetDinhController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
         
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
-        
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -40,7 +40,22 @@ class CTQuyetDinhController extends Controller
     }
     public function getInactiveData()
     {
+        $data = CTQuyetDinh::leftJoin('quyet_dinhs', 'ct_quyet_dinhs.id_quyet_dinh', '=', 'quyet_dinhs.id')
+            ->leftJoin('sinh_viens', 'ct_quyet_dinhs.ma_sv_nhan_quyet_dinh', '=', 'sinh_viens.ma_sv')
+            ->select('ct_quyet_dinhs.*', 'quyet_dinhs.noi_dung', 'sinh_viens.ten_sinh_vien')
+            ->where('ct_quyet_dinhs.trang_thai', 0)
+            ->get();        
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+        
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
 
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true); 
     }
     /**
      * Show the form for creating a new resource.

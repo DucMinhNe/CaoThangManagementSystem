@@ -1,34 +1,48 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <section>
     <div class="container">
-        <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
-
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
+        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
+            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
+                <i class="fa-solid fa-circle-plus"></i> Thêm
+            </a>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Tên Phòng</th>
                         <th>Mô Tả</th>
                         <th>Sức Chứa</th>
                         <th>Loại Phòng</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>No</th>
+                        <th width="30px">STT</th>
                         <th>Tên Phòng</th>
                         <th>Mô Tả</th>
                         <th>Sức Chứa</th>
                         <th>Loại Phòng</th>
-                        <th width="280px">Hành Động</th>
+                        <th width="72px"></th>
                     </tr>
                 </tfoot>
             </table>
@@ -97,7 +111,13 @@ $(function() {
         ajax: "{{ route('phong.index') }}",
         columns: [{
                 data: 'id',
-                name: 'id'
+                name: 'id',
+                render: function(data, type, full, meta) {
+                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
+                        data + '" data-original-title="Edit" class="editBtn">' + data +
+                        '</a>';
+                    return btn;
+                }
             },
             {
                 data: 'ten_phong',
@@ -188,7 +208,7 @@ $(function() {
         $('#savedata').val("create-Btn");
         $('#id').val('');
         $('#modalForm').trigger("reset");
-        $('#modelHeading').html("Thêm ");
+        $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
@@ -202,7 +222,7 @@ $(function() {
             $('#ten_phong').val(data.ten_phong);
             $('#mo_ta').val(data.mo_ta);
             $('#suc_chua').val(data.suc_chua);
-            $('#id_loai_phong').val(data.id_loai_phong);
+            $('#id_loai_phong').val(data.id_loai_phong).trigger('change');
         })
     });
 
@@ -238,33 +258,71 @@ $(function() {
 
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn xóa?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('phong.destroy', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('phong.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
     $('body').on('click', '.restoreBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn khôi phục?")) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('phong.restore', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Khôi Phục',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('phong.restore', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Khôi Phục Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
 });
 </script>

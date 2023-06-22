@@ -41,17 +41,18 @@ class GiangVienController extends Controller
     public function getInactiveData()
     {
         $data = GiangVien::leftJoin('bo_mons', 'giang_viens.id_bo_mon', '=', 'bo_mons.id')
-                ->select('giang_viens.*', 'bo_mons.ten_bo_mon')
-                ->where('giang_viens.trang_thai', 0) 
-                ->latest()
-                ->get();
+        ->leftJoin('chuc_vu_giang_viens', 'giang_viens.id_chuc_vu', '=', 'chuc_vu_giang_viens.id')
+        ->select('giang_viens.*', 'bo_mons.ten_bo_mon', 'chuc_vu_giang_viens.ten_chuc_vu')
+        ->where('giang_viens.trang_thai', 0) 
+        ->latest()
+        ->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
         
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_gv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ma_gv.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
-        
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ma_gv.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ma_gv.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+                  
                     return $btn;
                 })
                 ->rawColumns(['action'])

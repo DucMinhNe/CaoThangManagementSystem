@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ChuongTrinhDaoTao;
+use App\Models\CTChuongTrinhDaoTao;
 use App\Models\ChuyenNganh;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 class ChuongTrinhDaoTaoController extends Controller
 {
@@ -25,17 +27,17 @@ class ChuongTrinhDaoTaoController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
         
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
-        
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        
+        $chuongtrinhdaotaos = ChuongTrinhDaoTao::all();
         $chuyennganhs = ChuyenNganh::all();
-        return view('admin.chuongtrinhdaotaos.index', compact('chuyennganhs'));        
+        return view('admin.chuongtrinhdaotaos.index', compact('chuyennganhs','chuongtrinhdaotaos'));    
     }
     public function getInactiveData()
     {
@@ -48,13 +50,41 @@ class ChuongTrinhDaoTaoController extends Controller
         ->addIndexColumn()
         ->addColumn('action', function ($row) {
 
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
 
             return $btn;
         })
         ->rawColumns(['action'])
         ->make(true);
+    }
+    public function saoChepChiTiet($idChuongTrinhDaoTao1, $idChuongTrinhDaoTao2)
+    {
+        DB::beginTransaction();
+        
+        try {
+            // Lấy danh sách các chi tiết chương trình đào tạo từ Chương trình đào tạo 1
+            $chiTietDaoTao1 = CTChuongTrinhDaoTao::where('id_chuong_trinh_dao_tao', $idChuongTrinhDaoTao1)->get();
+            
+            foreach ($chiTietDaoTao1 as $chiTiet) {
+                // Tạo mới một chi tiết chương trình đào tạo cho Chương trình đào tạo 2
+                $chiTietDaoTao2 = new CTChuongTrinhDaoTao();
+                $chiTietDaoTao2->id_chuong_trinh_dao_tao = $idChuongTrinhDaoTao2;
+                $chiTietDaoTao2->hoc_ky = $chiTiet->hoc_ky;
+                $chiTietDaoTao2->id_mon_hoc = $chiTiet->id_mon_hoc;
+                $chiTietDaoTao2->so_tin_chi = $chiTiet->so_tin_chi;
+                $chiTietDaoTao2->trang_thai = $chiTiet->trang_thai;
+                $chiTietDaoTao2->save();
+            }
+            
+            DB::commit();
+            
+            return response()->json(['success' => 'Sao chép chi tiết chương trình đào tạo thành công.']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response()->json(['error' => 'Đã xảy ra lỗi khi sao chép chi tiết chương trình đào tạo.']);
+        }
     }
     /**
      * Show the form for creating a new resource.
