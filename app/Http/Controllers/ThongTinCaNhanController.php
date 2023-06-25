@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Hash;
 use App\Models\GiangVien;
 use App\Models\BoMon;
+use App\Models\LopHoc;
 use App\Models\ChucVuGiangVien;
+use App\Models\LopHocPhan;
 class ThongTinCaNhanController extends Controller
 {
     /**
@@ -18,7 +20,8 @@ class ThongTinCaNhanController extends Controller
     public function index()
     {
         $giangviens = Auth::user();
-
+       
+        
         $bomons = null;
         $chucvus = null;
         if ($giangviens->id_bo_mon !== null) {
@@ -30,8 +33,12 @@ class ThongTinCaNhanController extends Controller
         }
         // $bomons = BoMon::find($giangviens->id_bo_mon);
         // $chucvus = ChucVuGiangVien::find($giangviens->id_chuc_vu);
-
-        return view('admin.thongtincanhans.index', compact('giangviens','bomons','chucvus'));  
+        $chunhiems = LopHoc::where('ma_gv_chu_nhiem', $giangviens->ma_gv)->get();
+        $lophocphans = LopHocPhan::where('ma_gv_1', $giangviens->ma_gv)
+        ->orWhere('ma_gv_2', $giangviens->ma_gv)
+        ->orWhere('ma_gv_3', $giangviens->ma_gv)
+        ->get();
+        return view('admin.thongtincanhans.index', compact('giangviens','bomons','chucvus','chunhiems','lophocphans'));  
     }
 
     /**

@@ -13,21 +13,83 @@
     height: 35px !important;
 }
 </style>
-<div class="form-group">
-    <label for="id_lop_hoc_phan">Lớp Học Phần</label>
-    <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2" style="width: 100%;">
-        @foreach ($lophocphans as $lophocphan)
-        @if ($lophocphan->trang_thai == 1)
-        <option value="{{ $lophocphan->id }}">{{ $lophocphan->ten_lop_hoc_phan }}</option>
-        @endif
-        @endforeach
-    </select>
+<div class="form-group row">
+    <label for="id_lop_hoc_phan" class="col-sm-2 col-form-label">Lớp Học Phần</label>
+    <div class="col-sm-5">
+        <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2" style="width: 100%;">
+            @foreach ($lophocphans as $lophocphan)
+            @if ($lophocphan->trang_thai == 1)
+            <option value="{{ $lophocphan->id }}">{{ $lophocphan->ten_lop_hoc_phan }}</option>
+            @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="col-sm-2">
+        <a class="btn btn-info" href="javascript:void(0)" id="xemBtn">Xem</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Lớp: </label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="lop" value="" placeholder="" readonly>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Môn: </label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="mon" value="" placeholder="" readonly>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Giáo Viên</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="gv1" value="" placeholder="" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Học Kỳ</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="hocky" value="" placeholder="" readonly>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label">Số Tín Chỉ</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="sotinchi" value="" placeholder="" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label">Số Tiết</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="sotiet" value="" placeholder="" readonly>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Loại</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" value="" id="loaimonhoc" placeholder="" readonly>
+            </div>
+        </div>
+    </div>
 </div>
 <section>
     <div class="container">
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-            <a class="btn btn-info" href="javascript:void(0)" id="xemBtn">Xem</a>
-        </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
@@ -63,6 +125,32 @@ $(function() {
     $("#xemBtn").click(function() {
         var selectedLopHocPhanId = $("#id_lop_hoc_phan").val();
 
+        $.ajax({
+            url: 'get-thong-tin-lop-hoc-phan',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                id_lop_hoc_phan: selectedLopHocPhanId
+            },
+            success: function(response) {
+                $('#lop').val(response.ten_lop_hoc);
+                $('#mon').val(response.ten_mon_hoc);
+                $('#gv1').val(response.ten_gv_1 + ' - ' + response.ten_gv_2 + ' - ' +
+                    response.ten_gv_3);
+                $('#hocky').val(response.hoc_ky);
+                $('#sotinchi').val(response.so_tin_chi);
+                $('#sotiet').val(response.so_tin_chi * 15);
+
+
+                $('#loaimonhoc').val(response.ten_loai_mon_hoc);
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi nếu có
+                console.log(xhr.responseText);
+            }
+        });
+
+
         var table = $(".data-table").DataTable();
         table.destroy();
 
@@ -70,6 +158,10 @@ $(function() {
             processing: true,
             serverSide: true,
             ajax: "{{ route('nhapdiem.index') }}?id_lop_hoc_phan=" + selectedLopHocPhanId,
+            columnDefs: [{
+                "visible": false,
+                "targets": 1
+            }],
             columns: [{
                     data: 'id',
                     name: 'id',

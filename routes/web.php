@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         return view('admin.index');
     });
     Route::group(['middleware' => 'checkchucvu:1|2'], function () {
-        Route::resource('thongtincanhan', ThongTinCaNhanController::class);
+      
 
         Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
         Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/lophoc/restore/{id}', [LopHocController::class, 'restore'])->name('lophoc.restore');
         Route::resource('lophoc', LopHocController::class);
     
+        Route::get('/lophocphan/saochep/{idLopHoc}/{idLopHocPhan}', [LopHocPhanController::class, 'themSinhVienVaoLopHocPhan']);
         Route::get('/lophocphan/getInactiveData', [LopHocPhanController::class, 'getInactiveData'])->name('lophocphan.getInactiveData');
         Route::get('/lophocphan/restore/{id}', [LopHocPhanController::class, 'restore'])->name('lophocphan.restore');
         Route::resource('lophocphan', LopHocPhanController::class);
@@ -124,6 +125,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/ctchuongtrinhdaotao/restore/{id}', [CTChuongTrinhDaoTaoController::class, 'restore'])->name('ctchuongtrinhdaotao.restore');
         Route::resource('ctchuongtrinhdaotao', CTChuongTrinhDaoTaoController::class);
 
+        Route::post('/sinhvien/import', [SinhVienController::class, 'import'])->name('sinhvien.import');
         Route::get('/sinhvien/getInactiveData', [SinhVienController::class, 'getInactiveData'])->name('sinhvien.getInactiveData');
         Route::get('/sinhvien/restore/{id}', [SinhVienController::class, 'restore'])->name('sinhvien.restore');
         Route::resource('sinhvien', SinhVienController::class);
@@ -150,9 +152,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::resource('danhsachchucvugiangvien', DanhSachChucVuGiangVienController::class);
     });   
     
+    Route::resource('thongtincanhan', ThongTinCaNhanController::class);
+    
 
-    Route::get('/nhapdiem/getInactiveData', [NhapDiemController::class, 'getInactiveData'])->name('nhapdiem.getInactiveData');
-    Route::get('/nhapdiem/restore/{id}', [NhapDiemController::class, 'restore'])->name('nhapdiem.restore');
+    Route::get('/get-thong-tin-lop-hoc-phan', [NhapDiemController::class, 'getThongTinLopHocPhan']);
     Route::resource('nhapdiem', NhapDiemController::class);
     Route::get('/lay-sinhvien-theo-lophoc', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
     Route::get('/lay-tong-sinh-vien', [SinhVienController::class, 'layTongSinhVien'])->name('lay-tong-sinh-vien');

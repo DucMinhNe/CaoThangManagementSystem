@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SinhVien;
+use App\Imports\SinhViensImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\LopHoc;
 use DataTables;
 use File;
@@ -68,7 +70,14 @@ class SinhVienController extends Controller
     {
         //
     }
-
+    public function import() 
+    {   
+        $idLopHocExcel = request('id_lop_hoc_excel');
+    
+        Excel::import(new SinhViensImport($idLopHocExcel), request()->file('fileExcel'));
+        // Excel::import(new SinhViensImport,request()->file('fileExcel'));
+        return back();
+    }
     /**
      * Store a newly created resource in storage.
      *

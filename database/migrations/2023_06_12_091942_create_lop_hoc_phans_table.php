@@ -17,9 +17,9 @@ return new class extends Migration
             $table->increments('id');
             $table->string('ten_lop_hoc_phan');
             $table->unsignedInteger('id_lop_hoc');    
-            $table->string('ma_gv_1');
-            $table->string('ma_gv_2');
-            $table->string('ma_gv_3');
+            $table->string('ma_gv_1')->nullable();
+            $table->string('ma_gv_2')->nullable();
+            $table->string('ma_gv_3')->nullable();
             $table->unsignedInteger('id_ct_chuong_trinh_dao_tao');    
             $table->boolean('mo_lop')->default(true);
             $table->boolean('trang_thai')->default(true);

@@ -99,9 +99,12 @@
                                 class="form-control select2" style="width: 100%;">
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
                                 @if ($chuongtrinhdaotao->trang_thai == 1)
+                                <?php $chuyennganh = App\Models\ChuyenNganh::find($chuongtrinhdaotao->id_chuyen_nganh); ?>
+                                @if ($chuyennganh)
                                 <option value="{{ $chuongtrinhdaotao->id }}">
-                                    {{ $chuongtrinhdaotao->id }}
+                                    {{ $chuongtrinhdaotao->khoa_hoc }}. {{ $chuyennganh->ten_chuyen_nganh }}
                                 </option>
+                                @endif
                                 @endif
                                 @endforeach
                             </select>
@@ -112,9 +115,12 @@
                                 class="form-control select2" style="width: 100%;">
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
                                 @if ($chuongtrinhdaotao->trang_thai == 1)
+                                <?php $chuyennganh = App\Models\ChuyenNganh::find($chuongtrinhdaotao->id_chuyen_nganh); ?>
+                                @if ($chuyennganh)
                                 <option value="{{ $chuongtrinhdaotao->id }}">
-                                    {{ $chuongtrinhdaotao->id }}
+                                    {{ $chuongtrinhdaotao->khoa_hoc }}. {{ $chuyennganh->ten_chuyen_nganh }}
                                 </option>
+                                @endif
                                 @endif
                                 @endforeach
                             </select>

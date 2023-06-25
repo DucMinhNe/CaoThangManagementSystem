@@ -16,6 +16,8 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="themSinhVienVaoLopHocPhanBtn" class="btn btn-primary" href="javascript:void(0)">Nhập SV Từ Lớp -> Lớp
+                Học Phần</a>
             <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
             <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
                 <i class="fa-solid fa-circle-plus"></i> Thêm
@@ -130,8 +132,10 @@
                         </div>
                         <div class="form-group">
                             <label for="mo_lop">Mở Lớp</label>
-                            <input type="text" class="form-control" id="mo_lop" name="mo_lop" placeholder="Mở Lớp"
-                                value="" required>
+                            <select class="form-control select2" id="mo_lop" name="mo_lop" required>
+                                <option value="1">Đang Mở</option>
+                                <option value="0">Đã Đóng</option>
+                            </select>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -142,7 +146,51 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="saoChepModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modelHeading">Nhập Sinh Viên</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm" name="modalForm" class="form-horizontal">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="id_lop_hoc_saochep">Lớp Học</label>
+                            <select name="id_lop_hoc_saochep" id="id_lop_hoc_saochep" class="form-control select2"
+                                style="width: 100%;">
+                                <option value="">-- Chọn lớp --</option>
+                                @foreach ($lophocs as $lophoc)
+                                @if ($lophoc->trang_thai == 1)
+                                <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_lop_hoc_phan_saochep">Lớp Học Phần</label>
+                            <select name="id_lop_hoc_phan_saochep" id="id_lop_hoc_phan_saochep"
+                                class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn lớp học phần--</option>
+                                @foreach ($lophocphans as $lophocphan)
+                                @if ($lophocphan->trang_thai == 1)
+                                <option value="{{ $lophocphan->id}}">{{ $lophocphan->ten_lop_hoc_phan }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary" id="saoChepSinhVien">Sao
+                            chép</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="{{ asset('plugins/jquery/jquery.js') }}"></script>
 <script type="text/javascript">
@@ -193,7 +241,14 @@ $(function() {
             },
             {
                 data: 'mo_lop',
-                name: 'mo_lop'
+                name: 'mo_lop',
+                render: function(data, type, full, meta) {
+                    if (data === 1) {
+                        return 'Đang Mở';
+                    } else {
+                        return 'Đã Đóng';
+                    }
+                }
             },
             {
                 data: 'action',
@@ -252,6 +307,45 @@ $(function() {
             }
         ],
     });
+    $('#id_lop_hoc, #id_ct_chuong_trinh_dao_tao').change(function() {
+        var selectedLop = $('#id_lop_hoc').find('option:selected').text().trim();
+        var selectedMonHoc = $('#id_ct_chuong_trinh_dao_tao').find('option:selected').text().trim();
+        var tenLopHocPhan = selectedLop + ' - ' + selectedMonHoc;
+        $('#ten_lop_hoc_phan').val(tenLopHocPhan);
+    });
+    $('#themSinhVienVaoLopHocPhanBtn').click(function() {
+        // Hiển thị modal
+        $('#saoChepModal').modal('show');
+    });
+    $('#saoChepSinhVien').click(function(e) {
+        e.preventDefault();
+
+        var idLopHoc = $('#id_lop_hoc_saochep').val();
+        var idLopHocPhan = $('#id_lop_hoc_phan_saochep').val();
+
+        $.ajax({
+            url: "{{ route('lophocphan.index') }}" + '/saochep/' + idLopHoc + '/' +
+                idLopHocPhan,
+            type: 'GET',
+            success: function(response) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Thành Công',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                console.log(response.success);
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi
+                console.log(xhr.responseText);
+            }
+        });
+    });
+
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
@@ -289,7 +383,7 @@ $(function() {
             $('#ma_gv_3').val(data.ma_gv_3).trigger('change');
             $('#id_ct_chuong_trinh_dao_tao').val(data.id_ct_chuong_trinh_dao_tao).trigger(
                 'change');
-            $('#mo_lop').val(data.mo_lop);
+            $('#mo_lop').val(data.mo_lop).trigger('change');
 
         })
     });

@@ -260,6 +260,7 @@ $(function() {
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
+        $('#ma_sv').val('').trigger('change');
     });
 
     $('body').on('click', '.editBtn', function() {

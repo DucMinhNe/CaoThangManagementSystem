@@ -7,6 +7,13 @@ use App\Models\CTLopHocPhan;
 use App\Models\LopHocPhan;
 use App\Models\SinhVien;
 
+use App\Models\LopHoc;
+use App\Models\MonHoc;
+use App\Models\GiangVien;
+use App\Models\CTChuongTrinhDaoTao;
+use App\Models\ChuongTrinhDaoTao;
+use App\Models\LoaiMonHoc;
+
 use DataTables;
 class NhapDiemController extends Controller
 {
@@ -42,7 +49,81 @@ class NhapDiemController extends Controller
         return view('admin.nhapdiems.index', compact('lophocphans', 'sinhviens'));
     }
     
+    public function getThongTinLopHocPhan(Request $request)
+{
+    $idLopHocPhan = $request->input('id_lop_hoc_phan');
+    
+    try {
+        // Lấy thông tin lớp học phần
+        $lopHocPhan = LopHocPhan::find($idLopHocPhan);
+        
+        if (!$lopHocPhan) {
+            return response()->json(['error' => 'Lớp học phần không tồn tại'], 404);
+        }
+        
+        // Lấy thông tin lớp học
+        $lopHoc = LopHoc::find($lopHocPhan->id_lop_hoc);
+        
+        if (!$lopHoc) {
+            return response()->json(['error' => 'Lớp học không tồn tại'], 404);
+        }
+        
+        // Lấy thông tin chương trình đào tạo
+        $ctDaoTao = CTChuongTrinhDaoTao::find($lopHocPhan->id_ct_chuong_trinh_dao_tao);
+        
+        if (!$ctDaoTao) {
+            return response()->json(['error' => 'Chương trình đào tạo không tồn tại'], 404);
+        }
+        
+        // Lấy thông tin môn học
+        $monHoc = MonHoc::find($ctDaoTao->id_mon_hoc);
+        
+        if (!$monHoc) {
+            return response()->json(['error' => 'Môn học không tồn tại'], 404);
+        }
+        
+        // Lấy thông tin giảng viên 1
+        $giangVien1 = GiangVien::find($lopHocPhan->ma_gv_1);
+        
+        // Lấy thông tin giảng viên 2
+        $giangVien2 = GiangVien::find($lopHocPhan->ma_gv_2);
+        
+        // Lấy thông tin giảng viên 3
+        $giangVien3 = GiangVien::find($lopHocPhan->ma_gv_3);
+        
+        // Lấy thông tin chương trình đào tạo
+        $chuongTrinhDaoTao = ChuongTrinhDaoTao::find($ctDaoTao->id_chuong_trinh_dao_tao);
+        
+        if (!$chuongTrinhDaoTao) {
+            return response()->json(['error' => 'Chương trình đào tạo không tồn tại'], 404);
+        }
+        
+        // Lấy thông tin loại môn học
+        $loaiMonHoc = LoaiMonHoc::find($monHoc->id_loai_mon_hoc);
+        
+        if (!$loaiMonHoc) {
+            return response()->json(['error' => 'Loại môn học không tồn tại'], 404);
+        }
+        
+        $thongTin = [
+            'ten_lop_hoc' => $lopHoc->ten_lop_hoc,
+            'ten_mon_hoc' => $monHoc->ten_mon_hoc,
+            'ten_gv_1' => $giangVien1 ? $giangVien1->ten_giang_vien : '',
+            'ten_gv_2' => $giangVien2 ? $giangVien2->ten_giang_vien : '',
+            'ten_gv_3' => $giangVien3 ? $giangVien3->ten_giang_vien : '',
+            'hoc_ky' => $ctDaoTao->hoc_ky,
+            'so_tin_chi' => $ctDaoTao->so_tin_chi,
+            'ten_loai_mon_hoc' => $loaiMonHoc->ten_loai_mon_hoc,
+        ];
 
+        return response()->json($thongTin);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+    
+    
     /**
      * Show the form for creating a new resource.
      *

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LopHocPhan;
+use App\Models\CTLopHocPhan;
 use App\Models\LopHoc;
 use App\Models\GiangVien;
+use App\Models\SinhVien;
 use App\Models\CTChuongTrinhDaoTao;
 use DataTables;
 class LopHocPhanController extends Controller
@@ -17,8 +19,6 @@ class LopHocPhanController extends Controller
      */
     public function index(Request $request)
     {
-       
-       
         if ($request->ajax()) {
             $data = LopHocPhan::leftJoin('lop_hocs', 'lop_hoc_phans.id_lop_hoc', '=', 'lop_hocs.id')
         ->leftJoin('giang_viens as gv1', 'lop_hoc_phans.ma_gv_1', '=', 'gv1.ma_gv')
@@ -45,6 +45,7 @@ class LopHocPhanController extends Controller
         }
         $lophocs = LopHoc::all();
         $giangviens = GiangVien::all();
+      
         $ctchuongtrinhdaotaos = CTChuongTrinhDaoTao::leftJoin('chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', '=', 'chuong_trinh_dao_taos.id')
         ->leftJoin('mon_hocs', 'ct_chuong_trinh_dao_taos.id_mon_hoc', '=', 'mon_hocs.id')
         ->leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
@@ -52,9 +53,9 @@ class LopHocPhanController extends Controller
         ->where('ct_chuong_trinh_dao_taos.trang_thai', 1)
         ->latest()
         ->get();
+        $lophocphans = LopHocPhan::all();
     
-    
-        return view('admin.lophocphans.index', compact('lophocs', 'giangviens', 'ctchuongtrinhdaotaos'));
+        return view('admin.lophocphans.index', compact('lophocs', 'giangviens', 'ctchuongtrinhdaotaos','lophocphans'));
 
     }
     public function getInactiveData()
@@ -81,6 +82,18 @@ class LopHocPhanController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
+    }
+    public function themSinhVienVaoLopHocPhan($idLopHoc,$idLopHocPhan)
+    {
+        $sinhViens = SinhVien::where('id_lop_hoc', $idLopHoc)->get();
+        $lopHocPhan = LopHocPhan::find($idLopHocPhan);
+
+        foreach ($sinhViens as $sinhVien) {
+        $ctLopHocPhan = new CTLopHocPhan();
+        $ctLopHocPhan->id_lop_hoc_phan = $lopHocPhan->id;
+        $ctLopHocPhan->ma_sv = $sinhVien->ma_sv;
+        $ctLopHocPhan->save();
+        }
     }
     /**
      * Show the form for creating a new resource.

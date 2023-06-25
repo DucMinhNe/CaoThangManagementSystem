@@ -6,6 +6,19 @@
 @include('admin.layouts.sidebar2')
 @endif
 <!-- Content Wrapper. Contains page content -->
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -36,17 +49,32 @@
 
                             <p class="text-muted text-center"> {{ $chucvus ? $chucvus->ten_chuc_vu : '' }}</p>
 
-                            <!-- <ul class="list-group list-group-unbordered mb-3">
+                            <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
-                                    <b>Followers</b> <a class="float-right">1,322</a>
+                                    <b>Chủ Nhiệm Lớp</b> <a class="float-right">@foreach($chunhiems as $chunhiem)
+                                        <p>{{ $chunhiem->ten_lop_hoc }}</p>
+                                        @endforeach
+                                    </a>
                                 </li>
-                                <li class="list-group-item">
+                                <!-- <div class="form-group">
+                                    <label for="id_lop_hoc_phan">Chủ Nhiệm Lớp</label>
+                                    <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2"
+                                        style="width: 100%;">
+                                        @foreach ($chunhiems as $chunhiem)
+                                        @if ($chunhiem->trang_thai == 1)
+                                        <option value="{{ $chunhiem->id }}">{{ $chunhiem->ten_lop_hoc}}
+                                        </option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div> -->
+                                <!-- <li class="list-group-item">
                                     <b>Following</b> <a class="float-right">543</a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Friends</b> <a class="float-right">13,287</a>
-                                </li>
-                            </ul> -->
+                                </li> -->
+                            </ul>
 
                             <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
                         </div>
@@ -63,17 +91,21 @@
                     <div class="card">
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
-                                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông
+                                <li class="nav-item"><a class="nav-link active" href="#thongtincanhan"
+                                        data-toggle="tab">Thông
                                         Tin Cá Nhân</a>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Đỗi Mật
+                                <li class="nav-item"><a class="nav-link" href="#doimatkhau" data-toggle="tab">Đỗi Mật
                                         Khẩu</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="#cacmongiangday" data-toggle="tab">Các
+                                        Môn Giảng Dạy</a>
                                 </li>
                             </ul>
                         </div><!-- /.card-header -->
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="tab-pane active" id="activity">
+                                <div class="tab-pane active" id="thongtincanhan">
                                     <form class="form-horizontal">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -140,7 +172,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label">Giới
+                                                    <label class="col-sm-4 col-form-label">Giới
                                                         Tính</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -149,7 +181,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label">Ngày
+                                                    <label class="col-sm-4 col-form-label">Ngày
                                                         Sinh</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -158,7 +190,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label">Nơi
+                                                    <label class="col-sm-4 col-form-label">Nơi
                                                         Sinh</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -167,7 +199,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label">Dân
+                                                    <label class="col-sm-4 col-form-label">Dân
                                                         Tộc</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -176,7 +208,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label">Tôn
+                                                    <label class="col-sm-4 col-form-label">Tôn
                                                         Giáo</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -185,7 +217,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label">Đ/C Tạm
+                                                    <label class="col-sm-4 col-form-label">Đ/C Tạm
                                                         Trú</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -194,7 +226,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label">Chức
+                                                    <label class="col-sm-4 col-form-label">Chức
                                                         Vụ</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control"
@@ -208,7 +240,7 @@
                                     <!-- /.tab-pane -->
                                 </div>
                                 <!-- /.tab-content -->
-                                <div class="tab-pane" id="timeline">
+                                <div class="tab-pane" id="doimatkhau">
                                     <div class="card-body">
                                         <form class="form-horizontal" id="doimatkhauForm" name="doimatkhauForm">
                                             <div class="row">
@@ -263,6 +295,22 @@
                                             </div>
                                         </form>
                                         <!-- /.tab-pane -->
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="cacmongiangday">
+
+                                    <div class="col-md-12">
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <b>Các Môn Giảng Dạy: </b>
+                                            @foreach($lophocphans
+                                            as $lophocphan)
+                                            <li class="list-group-item">
+                                                <a class="float-left">
+                                                    {{ $lophocphan->ten_lop_hoc_phan }}
+                                                </a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
                                     </div>
 
                                 </div>

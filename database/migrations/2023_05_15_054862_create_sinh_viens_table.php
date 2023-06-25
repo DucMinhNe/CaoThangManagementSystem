@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('bac_dao_tao')->nullable();
             $table->string('he_dao_tao')->nullable();
             $table->unsignedInteger('id_lop_hoc')->nullable();
-            $table->unsignedInteger('tinh_trang_hoc')->nullable();
+            $table->unsignedInteger('tinh_trang_hoc')->nullable()->default(1);
             $table->boolean('trang_thai')->default(true);
             $table->timestamps();
             $table->foreign('id_lop_hoc')->references('id')->on('lop_hocs');

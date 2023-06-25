@@ -16,6 +16,8 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+            <a id="themSinhVienExcelBtn" class="btn btn-primary" href="javascript:void(0)">Thêm Bằng File
+                Excel</a>
             <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
             <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
                 <i class="fa-solid fa-circle-plus"></i> Thêm
@@ -120,7 +122,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="gioi_tinh">Giới Tính</label>
-                                    <select class="form-control" id="gioi_tinh" name="gioi_tinh" required>
+                                    <select class="form-control select2" id="gioi_tinh" name="gioi_tinh" required>
                                         <option value="1">Nam</option>
                                         <option value="0">Nữ</option>
                                     </select>
@@ -186,20 +188,24 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="bac_dao_tao">Bậc Đào Tạo</label>
-                                    <input type="text" class="form-control" id="bac_dao_tao" name="bac_dao_tao"
-                                        placeholder="Bậc Đào Tạo" value="" required>
+                                    <select class="form-control select2" id="bac_dao_tao" name="bac_dao_tao" required>
+                                        <option value="Cao đẳng ngành">Cao đẳng ngành</option>
+                                        <option value="Cao đẳng nghề">Cao đẳng nghề</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="he_dao_tao">Hệ Đào Tạo</label>
-                                    <input type="text" class="form-control" id="he_dao_tao" name="he_dao_tao"
-                                        placeholder="Hệ Đào Tạo" value="" required>
+                                    <select class="form-control select2" id="he_dao_tao" name="he_dao_tao" required>
+                                        <option value="Chính quy">Chính quy</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="id_lop_hoc">Lớp</label>
                                     <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2"
                                         style="width: 100%;">
+                                        <option value="">-- Chọn lớp --</option>
                                         @foreach ($lophocs as $lophoc)
                                         @if ($lophoc->trang_thai == 1)
                                         <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
@@ -214,10 +220,12 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="tinh_trang_hoc">Tình Trạng Học</label>
-                                    <input type="text" class="form-control" id="tinh_trang_hoc" name="tinh_trang_hoc"
-                                        placeholder="Tình Trạng Học" value="" required>
+                                    <select class="form-control select2" id="tinh_trang_hoc" name="tinh_trang_hoc"
+                                        required>
+                                        <option value="1">Đang Học</option>
+                                        <option value="0">Bảo Lưu</option>
+                                    </select>
                                 </div>
-
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -237,6 +245,42 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="themSinhVienExcelModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modelHeading">Thêm Sinh Viên Bằng File Excel</h4>
+            </div>
+            <div class="modal-body">
+                <form id="sinhVienExcelForm" name="sinhVienExcelForm" class="form-horizontal"
+                    enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="id_lop_hoc_excel">Lớp Học</label>
+                            <select name="id_lop_hoc_excel" id="id_lop_hoc_excel" class="form-control select2"
+                                style="width: 100%;">
+                                <option value="">-- Chọn lớp --</option>
+                                @foreach ($lophocs as $lophoc)
+                                @if ($lophoc->trang_thai == 1)
+                                <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="file" name="fileExcel" class="form-control">
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary" id="themSinhVienExcelSubmit">Xác Nhận</button>
+                        <a id="taiMauExcelBtn" class="btn btn-info" href="{{ asset('file/mau_excel.xlsx') }}">Tải Mẫu
+                            Excel</a>
+
                     </div>
                 </form>
             </div>
@@ -384,7 +428,14 @@ $(function() {
             },
             {
                 data: 'tinh_trang_hoc',
-                name: 'tinh_trang_hoc'
+                name: 'tinh_trang_hoc',
+                render: function(data, type, full, meta) {
+                    if (data === 1) {
+                        return 'Đang Học';
+                    } else {
+                        return 'Bảo Lưu';
+                    }
+                }
             },
             {
                 data: 'action',
@@ -450,7 +501,35 @@ $(function() {
             }
         ],
     });
+    $('#themSinhVienExcelBtn').click(function() {
+        // Hiển thị modal
+        $('#themSinhVienExcelModal').modal('show');
+    });
+    $('#themSinhVienExcelSubmit').click(function(e) {
+        e.preventDefault(); // Ngăn chặn hành vi mặc định khi click nút submit
 
+        // Lấy dữ liệu từ form
+        var formData = new FormData($('#sinhVienExcelForm')[0]);
+
+        // Gửi Ajax request
+        $.ajax({
+            url: '{{ route("sinhvien.import") }}',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                // Xử lý phản hồi thành công
+                alert('Import thành công!');
+                location.reload(); // Tải lại trang
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi
+                console.log('Error:', xhr.responseText);
+                // alert('Đã xảy ra lỗi: ' + xhr.responseText);
+            }
+        });
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
@@ -508,8 +587,8 @@ $(function() {
             // $('#mat_khau').val(data.mat_khau);
             $('#mat_khau').attr('placeholder', '******');
             $('#khoa_hoc').val(data.khoa_hoc);
-            $('#bac_dao_tao').val(data.bac_dao_tao);
-            $('#he_dao_tao').val(data.he_dao_tao);
+            $('#bac_dao_tao').val(data.bac_dao_tao).trigger('change');
+            $('#he_dao_tao').val(data.he_dao_tao).trigger('change');
             $('#id_lop_hoc').val(data.id_lop_hoc).trigger('change');
             $('#tinh_trang_hoc').val(data.tinh_trang_hoc).trigger('change');
 
