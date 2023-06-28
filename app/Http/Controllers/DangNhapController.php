@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Hash;
+use App\Models\GiangVien;
 class DangNhapController extends Controller
 {// dd($request->all());
        //  $request->validate([

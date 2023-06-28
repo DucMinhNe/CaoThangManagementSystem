@@ -27,7 +27,7 @@ class LopHocPhanController extends Controller
         ->leftJoin('ct_chuong_trinh_dao_taos', 'lop_hoc_phans.id_ct_chuong_trinh_dao_tao', '=', 'ct_chuong_trinh_dao_taos.id')
         ->leftJoin('chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', '=', 'chuong_trinh_dao_taos.id')
         ->leftJoin('mon_hocs', 'ct_chuong_trinh_dao_taos.id_mon_hoc', '=', 'mon_hocs.id')
-        ->select('lop_hoc_phans.*', 'lop_hocs.ten_lop_hoc', 'gv1.ten_giang_vien as ten_gv_1', 'gv2.ten_giang_vien as ten_gv_2', 'gv3.ten_giang_vien as ten_gv_3', 'ct_chuong_trinh_dao_taos.hoc_ky', 'mon_hocs.ten_mon_hoc', 'ct_chuong_trinh_dao_taos.so_tin_chi')
+        ->select('lop_hoc_phans.*', 'lop_hocs.ten_lop_hoc', 'gv1.ten_giang_vien as ten_gv_1', 'gv2.ten_giang_vien as ten_gv_2', 'gv3.ten_giang_vien as ten_gv_3', 'ct_chuong_trinh_dao_taos.hoc_ky', 'mon_hocs.ten_mon_hoc')
         ->selectRaw('CONCAT(mon_hocs.ten_mon_hoc, ".", chuong_trinh_dao_taos.khoa_hoc) AS ten_mon_hoc_khoa_hoc')
         ->where('lop_hoc_phans.trang_thai', 1)
         ->get();
@@ -67,7 +67,7 @@ class LopHocPhanController extends Controller
         ->leftJoin('ct_chuong_trinh_dao_taos', 'lop_hoc_phans.id_ct_chuong_trinh_dao_tao', '=', 'ct_chuong_trinh_dao_taos.id')
         ->leftJoin('chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', '=', 'chuong_trinh_dao_taos.id')
         ->leftJoin('mon_hocs', 'ct_chuong_trinh_dao_taos.id_mon_hoc', '=', 'mon_hocs.id')
-        ->select('lop_hoc_phans.*', 'lop_hocs.ten_lop_hoc', 'gv1.ten_giang_vien as ten_gv_1', 'gv2.ten_giang_vien as ten_gv_2', 'gv3.ten_giang_vien as ten_gv_3', 'ct_chuong_trinh_dao_taos.hoc_ky', 'mon_hocs.ten_mon_hoc', 'ct_chuong_trinh_dao_taos.so_tin_chi')
+        ->select('lop_hoc_phans.*', 'lop_hocs.ten_lop_hoc', 'gv1.ten_giang_vien as ten_gv_1', 'gv2.ten_giang_vien as ten_gv_2', 'gv3.ten_giang_vien as ten_gv_3', 'ct_chuong_trinh_dao_taos.hoc_ky', 'mon_hocs.ten_mon_hoc')
         ->selectRaw('CONCAT(mon_hocs.ten_mon_hoc, ".", chuong_trinh_dao_taos.khoa_hoc) AS ten_mon_hoc_khoa_hoc')
         ->where('lop_hoc_phans.trang_thai', 0)
         ->get();
@@ -120,7 +120,8 @@ class LopHocPhanController extends Controller
                     'ma_gv_2' => $request->ma_gv_2,
                     'ma_gv_3' => $request->ma_gv_3,
                     'id_ct_chuong_trinh_dao_tao' => $request->id_ct_chuong_trinh_dao_tao,
-                    'mo_lop' => $request->mo_lop,
+                    'mo_dang_ky' => $request->mo_dang_ky,
+                    'trang_thai_hoan_thanh' => $request->trang_thai_hoan_thanh,
              ],
         );        
         return response()->json(['success'=>'Lưu Chuyên Ngành Thành Công.']);

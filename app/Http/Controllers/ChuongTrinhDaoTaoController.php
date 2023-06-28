@@ -73,6 +73,7 @@ class ChuongTrinhDaoTaoController extends Controller
                 $chiTietDaoTao2->hoc_ky = $chiTiet->hoc_ky;
                 $chiTietDaoTao2->id_mon_hoc = $chiTiet->id_mon_hoc;
                 $chiTietDaoTao2->so_tin_chi = $chiTiet->so_tin_chi;
+                $chiTietDaoTao2->so_tiet = $chiTiet->so_tiet;
                 $chiTietDaoTao2->trang_thai = $chiTiet->trang_thai;
                 $chiTietDaoTao2->save();
             }

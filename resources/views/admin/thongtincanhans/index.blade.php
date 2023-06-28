@@ -4,6 +4,8 @@
 @include('admin.layouts.sidebar1')
 @elseif(auth()->user()->id_chuc_vu == 2)
 @include('admin.layouts.sidebar2')
+@elseif(auth()->user()->id_chuc_vu == 3)
+@include('admin.layouts.sidebar3')
 @endif
 <!-- Content Wrapper. Contains page content -->
 <style>
@@ -347,7 +349,7 @@ $(function() {
     });
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
+        $(this).html('Đang gửi ...');
         $.ajax({
             data: $('#doimatkhauForm').serialize(),
             url: "{{ route('thongtincanhan.store') }}",

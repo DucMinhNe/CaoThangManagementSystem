@@ -14,6 +14,7 @@ class CTChuongTrinhDaoTao extends Model
         'hoc_ky',
         'id_mon_hoc',
         'so_tin_chi',
+        'so_tiet',
         'trang_thai',
     ];
 }

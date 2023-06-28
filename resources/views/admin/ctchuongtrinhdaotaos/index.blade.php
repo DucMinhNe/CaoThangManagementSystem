@@ -16,10 +16,14 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
-            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
-                <i class="fa-solid fa-circle-plus"></i> Thêm
-            </a>
+            <li class="nav-item mr-1">
+                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-success" type="button" id="createNewBtn">
+                    <i class="fa-solid fa-circle-plus"></i> Thêm
+                </button>
+            </li>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
@@ -30,6 +34,7 @@
                         <th>Học Kỳ</th>
                         <th>Môn Học</th>
                         <th>Số Tín Chỉ</th>
+                        <th>Số Tiết</th>
                         <th width="72px"></th>
                     </tr>
                 </thead>
@@ -42,6 +47,7 @@
                         <th>Học Kỳ</th>
                         <th>Môn Học</th>
                         <th>Số Tín Chỉ</th>
+                        <th>Số Tiết</th>
                         <th width="72px"></th>
                     </tr>
                 </tfoot>
@@ -92,6 +98,11 @@
                             <input type="text" class="form-control" id="so_tin_chi" name="so_tin_chi"
                                 placeholder="Số Tín Chỉ" value="" required>
                         </div>
+                        <div class="form-group">
+                            <label for="so_tiet">Số Tiết</label>
+                            <input type="text" class="form-control" id="so_tiet" name="so_tiet" placeholder="Số Tiết"
+                                value="" required>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
@@ -141,6 +152,10 @@ $(function() {
             {
                 data: 'so_tin_chi',
                 name: 'so_tin_chi'
+            },
+            {
+                data: 'so_tiet',
+                name: 'so_tiet'
             },
             {
                 data: 'action',
@@ -203,11 +218,11 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
-            button.text('Hiển thị Trạng thái 1');
+        if (buttonText === 'Hiển thị danh sách đã xóa') {
+            button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('ctchuongtrinhdaotao.getInactiveData') }}").load();
         } else {
-            button.text('Hiển thị Trạng thái 0');
+            button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('ctchuongtrinhdaotao.index') }}").load();
         }
     });
@@ -230,12 +245,13 @@ $(function() {
             $('#hoc_ky').val(data.hoc_ky);
             $('#id_mon_hoc').val(data.id_mon_hoc).trigger('change');
             $('#so_tin_chi').val(data.so_tin_chi);
+            $('#so_tiet').val(data.so_tiet);
         })
     });
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
+        $(this).html('Đang gửi ...');
         $.ajax({
             data: $('#modalForm').serialize(),
             url: "{{ route('ctchuongtrinhdaotao.store') }}",

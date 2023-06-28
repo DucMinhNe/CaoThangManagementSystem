@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('ma_gv_2')->nullable();
             $table->string('ma_gv_3')->nullable();
             $table->unsignedInteger('id_ct_chuong_trinh_dao_tao');    
-            $table->boolean('mo_lop')->default(true);
+            $table->boolean('mo_dang_ky')->default(true);
+            $table->boolean('trang_thai_hoan_thanh')->default(true);
             $table->boolean('trang_thai')->default(true);
             $table->foreign('id_lop_hoc')->references('id')->on('lop_hocs');
             $table->foreign('ma_gv_1')->references('ma_gv')->on('giang_viens');

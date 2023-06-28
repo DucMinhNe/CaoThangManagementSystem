@@ -63,13 +63,15 @@
                         <label class="col-form-label">Số Tín Chỉ</label>
                     </div>
                     <div class="col-sm-4">
+                    </div>
+                    <div class="col-sm-4">
                         <input type="text" class="form-control" id="sotinchi" value="" placeholder="" readonly>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-lg-right">
                         <label class="col-form-label">Số Tiết</label>
                     </div>
                     <div class="col-sm-4">
@@ -139,7 +141,7 @@ $(function() {
                     response.ten_gv_3);
                 $('#hocky').val(response.hoc_ky);
                 $('#sotinchi').val(response.so_tin_chi);
-                $('#sotiet').val(response.so_tin_chi * 15);
+                $('#sotiet').val(response.so_tiet);
 
 
                 $('#loaimonhoc').val(response.ten_loai_mon_hoc);

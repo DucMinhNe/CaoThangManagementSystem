@@ -40,7 +40,7 @@ class PhongController extends Controller
     {
         $data = Phong::leftJoin('loai_phongs', 'phongs.id_loai_phong', '=', 'loai_phongs.id')
         ->select('phongs.*', 'loai_phongs.ten_loai_phong')
-        ->where('phongs.trang_thai', 1) // Thêm điều kiện trạng thái bằng 1
+        ->where('phongs.trang_thai', 0) // Thêm điều kiện trạng thái bằng 1
         ->latest()
         ->get();
     return Datatables::of($data)

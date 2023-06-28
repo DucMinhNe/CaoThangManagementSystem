@@ -8,8 +8,9 @@
     <link rel="icon" type="image/png" href="{{ asset('dist/img/caothang.png') }}" style="width: 64px" />
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback') }}">
+    <!-- <link rel="stylesheet"
+        href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback') }}"> -->
+    <link rel="stylesheet" href="{{ asset('dist/css/fontgoogle.css') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- icheck bootstrap -->
@@ -77,7 +78,10 @@
                 <!-- /.social-auth-links -->
 
                 <p class="mb-1">
-                    <a href="">Quên Mật Khẩu</a>
+                    <a data-toggle="modal" data-target="#modal-lg" href="">Quên Mật Khẩu ?</a>
+                    <!-- <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg">
+                        Quên Mật Khẩu ?
+                    </button> -->
                 </p>
                 <!-- <p class="mb-0">
         <a href="" class="text-center">Register a new membership</a>
@@ -88,7 +92,62 @@
         <!-- /.card -->
     </div>
     <!-- /.login-box -->
-
+    <div class="modal fade" id="modal-lg">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="text-center">Hãy liên hệ các siêu quản trị viên để nhận được sử trợ giúp</h3>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-12 d-flex align-items-stretch flex-column ">
+                            <div class="card bg-light d-flex flex-fill border border-danger">
+                                <div class="card-header text-muted border-bottom-0">
+                                    Siêu Quản Trị Viên
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        <div class="col-7 d-flex flex-column">
+                                            <h2 class="lead"><b>Lê Đức Minh</b></h2>
+                                            <div class="mt-auto">
+                                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                    <li class=""><span class="fa-li"><i
+                                                                class="fas fa-lg fa-phone"></i></span> SĐT : 0905913419
+                                                    </li>
+                                                    <li class=""><span class="fa-li"><i
+                                                                class="fas fa-lg fa-envelope"></i></span> Email :
+                                                        ducminh@gmail.com</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-5 text-center">
+                                            <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar"
+                                                class="img-circle img-fluid">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="text-right">
+                                        <a href="tel:0905913419" class="btn btn-sm bg-teal">
+                                            <i class="fas fa-phone-volume"></i>
+                                            Gọi ngay
+                                        </a>
+                                        <a href="mailto:ducminhldm@gmail.com" class="btn btn-sm btn-primary">
+                                            <i class="fa-solid fa-envelope"></i>
+                                            Email
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->

@@ -16,12 +16,18 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <a id="themSinhVienExcelBtn" class="btn btn-primary" href="javascript:void(0)">Thêm Bằng File
-                Excel</a>
-            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
-            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
-                <i class="fa-solid fa-circle-plus"></i> Thêm
-            </a>
+            <li class="nav-item mr-1">
+                <button id="themSinhVienExcelBtn" class="btn btn-primary" type="button">Thêm Bằng File
+                    Excel</button>
+            </li>
+            <li class="nav-item mr-1">
+                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-success" type="button" id="createNewBtn">
+                    <i class="fa-solid fa-circle-plus"></i> Thêm
+                </button>
+            </li>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
@@ -302,30 +308,41 @@ $(function() {
         serverSide: true,
         ajax: "{{ route('sinhvien.index') }}",
         columnDefs: [{
-            "visible": false,
-            "targets": 1
-        }, {
-            "visible": false,
-            "targets": 2
-        }, {
-            "visible": false,
-            "targets": 3
-        }, {
-            "visible": false,
-            "targets": 4
-        }, {
-            "visible": false,
-            "targets": 5
-        }, {
-            "visible": false,
-            "targets": 6
-        }, {
-            "visible": false,
-            "targets": 7
-        }, {
-            "visible": false,
-            "targets": 8
-        }],
+                "visible": false,
+                "targets": 2
+            }, {
+                "visible": false,
+                "targets": 3
+            }, {
+                "visible": false,
+                "targets": 4
+            }, {
+                "visible": false,
+                "targets": 5
+            }, {
+                "visible": false,
+                "targets": 7
+            }, {
+                "visible": false,
+                "targets": 8
+            }, {
+                "visible": false,
+                "targets": 9
+            }, {
+                "visible": false,
+                "targets": 10
+            }, {
+                "visible": false,
+                "targets": 11
+            }, {
+                "visible": false,
+                "targets": 13
+            }, {
+                "visible": false,
+                "targets": 14
+            }
+
+        ],
         columns: [{
                 data: 'ma_sv',
                 name: 'ma_sv',
@@ -356,7 +373,7 @@ $(function() {
                 data: 'gioi_tinh',
                 name: 'gioi_tinh',
                 render: function(data, type, full, meta) {
-                    if (data === 1) {
+                    if (data == 1) {
                         return 'Nam';
                     } else {
                         return 'Nữ';
@@ -393,7 +410,7 @@ $(function() {
                 render: function(data, type, full, meta) {
                     if (data) {
                         return '<img src="{{ asset("sinhvien_img") }}/' + data +
-                            '" width="50" height="50">';
+                            '" width="70" height="70">';
                     } else {
                         return '';
                     }
@@ -430,7 +447,7 @@ $(function() {
                 data: 'tinh_trang_hoc',
                 name: 'tinh_trang_hoc',
                 render: function(data, type, full, meta) {
-                    if (data === 1) {
+                    if (data == 1) {
                         return 'Đang Học';
                     } else {
                         return 'Bảo Lưu';
@@ -533,11 +550,11 @@ $(function() {
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
-        if (buttonText === 'Hiển thị Trạng thái 0') {
-            button.text('Hiển thị Trạng thái 1');
+        if (buttonText === 'Hiển thị danh sách đã xóa') {
+            button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('sinhvien.getInactiveData') }}").load();
         } else {
-            button.text('Hiển thị Trạng thái 0');
+            button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('sinhvien.index') }}").load();
         }
     });
@@ -607,7 +624,7 @@ $(function() {
     });
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
+        $(this).html('Đang gửi ...');
         var formData = new FormData($('#modalForm')[0]);
         $.ajax({
             data: formData,

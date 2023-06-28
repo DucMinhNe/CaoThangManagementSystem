@@ -21,6 +21,7 @@ class CTChuongTrinhDaoTaoSeeder extends Seeder
                 'hoc_ky' => 1,
                 'id_mon_hoc' => 1,
                 'so_tin_chi' => 3,
+                'so_tiet' => 45,
             ],
             [
                 'id' => '2',
@@ -28,6 +29,7 @@ class CTChuongTrinhDaoTaoSeeder extends Seeder
                 'hoc_ky' => 1,
                 'id_mon_hoc' => 2,
                 'so_tin_chi' => 3,
+                'so_tiet' => 45,
             ],
             [
                 'id' => '3',
@@ -35,6 +37,7 @@ class CTChuongTrinhDaoTaoSeeder extends Seeder
                 'hoc_ky' => 1,
                 'id_mon_hoc' => 3,
                 'so_tin_chi' => 5,
+                'so_tiet' => 75,
             ],
         ]);
     }

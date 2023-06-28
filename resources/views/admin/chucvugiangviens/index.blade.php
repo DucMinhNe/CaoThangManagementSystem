@@ -3,10 +3,14 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
-            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
-                <i class="fa-solid fa-circle-plus"></i> Thêm
-            </a>
+            <li class="nav-item mr-1">
+                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-success" type="button" id="createNewBtn">
+                    <i class="fa-solid fa-circle-plus"></i> Thêm
+                </button>
+            </li>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
@@ -47,7 +51,10 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>
@@ -144,11 +151,11 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
-            button.text('Hiển thị Trạng thái 1');
+        if (buttonText === 'Hiển thị danh sách đã xóa') {
+            button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('chucvugiangvien.getInactiveData') }}").load();
         } else {
-            button.text('Hiển thị Trạng thái 0');
+            button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('chucvugiangvien.index') }}").load();
         }
     });
@@ -173,7 +180,7 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
+        $(this).html('Đang gửi ...');
         $.ajax({
             data: $('#modalForm').serialize(),
             url: "{{ route('chucvugiangvien.store') }}",

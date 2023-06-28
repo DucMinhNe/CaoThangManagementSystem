@@ -19,8 +19,5 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content-header -->
-    <!-- Main content -->
-    <!-- /.content -->
 </div>
 @include('admin.layouts.footer')

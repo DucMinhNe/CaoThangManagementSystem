@@ -88,6 +88,7 @@ class CTChuongTrinhDaoTaoController extends Controller
            'hoc_ky' => $request->hoc_ky,
            'id_mon_hoc' => $request->id_mon_hoc,
            'so_tin_chi' => $request->so_tin_chi,
+           'so_tiet' => $request->so_tiet,
         ],
         );        
         return response()->json(['success'=>'Lưu  Thành Công.']);

@@ -16,10 +16,14 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
-            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
-                <i class="fa-solid fa-circle-plus"></i> Thêm
-            </a>
+            <li class="nav-item mr-1">
+                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-success" type="button" id="createNewBtn">
+                    <i class="fa-solid fa-circle-plus"></i> Thêm
+                </button>
+            </li>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
@@ -60,7 +64,7 @@
                         <div class="form-group">
                             <label for="ten_lop_hoc">Tên Lớp Học</label>
                             <input type="text" class="form-control" id="ten_lop_hoc" name="ten_lop_hoc"
-                                placeholder="Tên Khoa" value="" required>
+                                placeholder="Tên Lớp Học" value="" required>
                         </div>
                         <div class="form-group">
                             <label for="id_chuyen_nganh">Chuyên Ngành</label>
@@ -78,6 +82,7 @@
                             <label for="ma_gv_chu_nhiem">Giáo Viên Chủ Nhiệm</label>
                             <select name="ma_gv_chu_nhiem" id="ma_gv_chu_nhiem" class="form-control select2"
                                 style="width: 100%;">
+                                <option value="">-- Chọn giảng viên --</option>
                                 @foreach ($giangviens as $giangvien)
                                 @if ($giangvien->trang_thai == 1)
                                 <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
@@ -192,11 +197,11 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
-            button.text('Hiển thị Trạng thái 1');
+        if (buttonText === 'Hiển thị danh sách đã xóa') {
+            button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('lophoc.getInactiveData') }}").load();
         } else {
-            button.text('Hiển thị Trạng thái 0');
+            button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('lophoc.index') }}").load();
         }
     });
@@ -223,7 +228,7 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
+        $(this).html('Đang gửi ...');
         $.ajax({
             data: $('#modalForm').serialize(),
             url: "{{ route('lophoc.store') }}",

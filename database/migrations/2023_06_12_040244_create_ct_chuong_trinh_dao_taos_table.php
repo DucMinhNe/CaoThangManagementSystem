@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('hoc_ky');  
             $table->unsignedInteger('id_mon_hoc');  
             $table->unsignedInteger('so_tin_chi');
+            $table->unsignedInteger('so_tiet');
             $table->boolean('trang_thai')->default(true);
             $table->foreign('id_chuong_trinh_dao_tao')->references('id')->on('chuong_trinh_dao_taos');
             $table->foreign('id_mon_hoc')->references('id')->on('mon_hocs');

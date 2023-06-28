@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('mat_khau')->nullable();
             $table->unsignedInteger('id_bo_mon')->nullable();
             $table->unsignedInteger('id_chuc_vu')->nullable();
-            $table->unsignedInteger('tinh_trang_lam_viec')->nullable();
+            $table->unsignedInteger('tinh_trang_lam_viec')->nullable()->default(true);
             $table->boolean('trang_thai')->default(true);
             $table->timestamps();
             $table->foreign('id_bo_mon')->references('id')->on('bo_mons');

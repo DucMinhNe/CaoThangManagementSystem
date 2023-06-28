@@ -113,6 +113,7 @@ class NhapDiemController extends Controller
             'ten_gv_3' => $giangVien3 ? $giangVien3->ten_giang_vien : '',
             'hoc_ky' => $ctDaoTao->hoc_ky,
             'so_tin_chi' => $ctDaoTao->so_tin_chi,
+            'so_tiet' => $ctDaoTao->so_tiet,
             'ten_loai_mon_hoc' => $loaiMonHoc->ten_loai_mon_hoc,
         ];
 

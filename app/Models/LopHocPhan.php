@@ -10,6 +10,6 @@ class LopHocPhan extends Model
     use HasFactory;
     protected $table = 'lop_hoc_phans';
     protected $fillable = [
-        'ten_lop_hoc_phan','id_lop_hoc','ma_gv_1','ma_gv_2','ma_gv_3','id_ct_chuong_trinh_dao_tao','mo_lop','trang_thai'
+        'ten_lop_hoc_phan','id_lop_hoc','ma_gv_1','ma_gv_2','ma_gv_3','id_ct_chuong_trinh_dao_tao','mo_dang_ky','trang_thai_hoan_thanh','trang_thai'
     ];  
 }

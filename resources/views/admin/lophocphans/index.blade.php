@@ -16,13 +16,21 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <a id="themSinhVienVaoLopHocPhanBtn" class="btn btn-primary" href="javascript:void(0)">Nhập SV Từ Lớp -> Lớp
-                Học Phần</a>
-            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
-            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
-                <i class="fa-solid fa-circle-plus"></i> Thêm
-            </a>
+            <li class="nav-item mr-1">
+                <button id="themSinhVienVaoLopHocPhanBtn" class="btn btn-primary" type="button">Nhập SV Từ Lớp ->
+                    Lớp
+                    Học Phần</button>
+            </li>
+            <li class="nav-item mr-1">
+                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-success" type="button" id="createNewBtn">
+                    <i class="fa-solid fa-circle-plus"></i> Thêm
+                </button>
+            </li>
         </ul>
+
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
@@ -34,7 +42,8 @@
                         <th>Giảng Viên 2</th>
                         <th>Giảng Viên 3</th>
                         <th>Tên Môn</th>
-                        <th>Mở Lớp</th>
+                        <th>Mở Đăng Ký</th>
+                        <th>Trạng Thái Hoàn Thành</th>
                         <th width="72px"></th>
                     </tr>
                 </thead>
@@ -49,7 +58,8 @@
                         <th>Giảng Viên 2</th>
                         <th>Giảng Viên 3</th>
                         <th>Tên Môn</th>
-                        <th>Mở Lớp</th>
+                        <th>Mở Đăng Ký</th>
+                        <th>Trạng Thái Hoàn Thành</th>
                         <th width="72px"></th>
                     </tr>
                 </tfoot>
@@ -131,10 +141,18 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="mo_lop">Mở Lớp</label>
-                            <select class="form-control select2" id="mo_lop" name="mo_lop" required>
+                            <label for="mo_dang_ky">Mở Đăng Ký</label>
+                            <select class="form-control select2" id="mo_dang_ky" name="mo_dang_ky" required>
                                 <option value="1">Đang Mở</option>
                                 <option value="0">Đã Đóng</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trang_thai_hoan_thanh">Trạng Thái Hoàn Thành</label>
+                            <select class="form-control select2" id="trang_thai_hoan_thanh" name="trang_thai_hoan_thanh"
+                                required>
+                                <option value="1">Hoàn Thành</option>
+                                <option value="0">Chưa Hoàn Thành</option>
                             </select>
                         </div>
                     </div>
@@ -240,13 +258,24 @@ $(function() {
                 name: 'ten_mon_hoc_khoa_hoc'
             },
             {
-                data: 'mo_lop',
-                name: 'mo_lop',
+                data: 'mo_dang_ky',
+                name: 'mo_dang_ky',
                 render: function(data, type, full, meta) {
-                    if (data === 1) {
+                    if (data == 1) {
                         return 'Đang Mở';
                     } else {
                         return 'Đã Đóng';
+                    }
+                }
+            },
+            {
+                data: 'trang_thai_hoan_thanh',
+                name: 'trang_thai_hoan_thanh',
+                render: function(data, type, full, meta) {
+                    if (data == 1) {
+                        return 'Hoàn Thành';
+                    } else {
+                        return 'Chưa Hoàn Thành';
                     }
                 }
             },
@@ -350,11 +379,11 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
-            button.text('Hiển thị Trạng thái 1');
+        if (buttonText === 'Hiển thị danh sách đã xóa') {
+            button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('lophocphan.getInactiveData') }}").load();
         } else {
-            button.text('Hiển thị Trạng thái 0');
+            button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('lophocphan.index') }}").load();
         }
     });
@@ -383,14 +412,15 @@ $(function() {
             $('#ma_gv_3').val(data.ma_gv_3).trigger('change');
             $('#id_ct_chuong_trinh_dao_tao').val(data.id_ct_chuong_trinh_dao_tao).trigger(
                 'change');
-            $('#mo_lop').val(data.mo_lop).trigger('change');
+            $('#mo_dang_ky').val(data.mo_dang_ky).trigger('change');
+            $('#trang_thai_hoan_thanh').val(data.trang_thai_hoan_thanh).trigger('change');
 
         })
     });
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
+        $(this).html('Đang gửi ...');
         $.ajax({
             data: $('#modalForm').serialize(),
             url: "{{ route('lophocphan.store') }}",

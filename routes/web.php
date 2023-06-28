@@ -54,6 +54,8 @@ Route::get('khongcoquyen', function () {
     return view('errors.403');
 })->name('khongcoquyen');
 
+
+
 Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('login');
 Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);
 Route::get('/admin/dangxuat', [DangNhapController::class,'dangXuat']);
@@ -65,7 +67,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     });
     Route::group(['middleware' => 'checkchucvu:1|2'], function () {
       
-
+        Route::get('/diem-trung-binh-hoc-ky-by-lop-xet-tot-nghiep/{id_lop_hoc}', [SinhVienController::class, 'getDiemTrungBinhHocKyByLop_xettotnghiep']);
+        Route::get('/diem-trung-binh-hoc-ky-by-lop/{id_lop_hoc}', [SinhVienController::class, 'getDiemTrungBinhHocKyByLop']);
+        Route::get('/diem-trung-binh-hoc-ky', [SinhVienController::class, 'getDiemTrungBinhHocKy']);
+      
         Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
         Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
         Route::resource('khoa', KhoaController::class);

@@ -16,10 +16,14 @@
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <a id="showInactiveBtn" class="btn btn-primary" href="javascript:void(0)">Hiển thị Trạng thái 0</a>
-            <a class="btn btn-success" href="javascript:void(0)" id="createNewBtn">
-                <i class="fa-solid fa-circle-plus"></i> Thêm
-            </a>
+            <li class="nav-item mr-1">
+                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-success" type="button" id="createNewBtn">
+                    <i class="fa-solid fa-circle-plus"></i> Thêm
+                </button>
+            </li>
         </ul>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
@@ -116,7 +120,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="gioi_tinh">Giới Tính</label>
-                                    <select class="form-control" id="gioi_tinh" name="gioi_tinh" required>
+                                    <select class="form-control select2" id="gioi_tinh" name="gioi_tinh" required>
                                         <option value="1">Nam</option>
                                         <option value="0">Nữ</option>
                                     </select>
@@ -189,6 +193,7 @@
                                     <label for="id_bo_mon">Bộ Môn</label>
                                     <select name="id_bo_mon" id="id_bo_mon" class="form-control select2"
                                         style="width: 100%;">
+                                        <option value="">-- Chọn Bộ Môn --</option>
                                         @foreach ($bomons as $bomon)
                                         @if ($bomon->trang_thai == 1)
                                         <option value="{{ $bomon->id }}">{{ $bomon->ten_bo_mon }}</option>
@@ -223,7 +228,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
                 <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
@@ -249,9 +257,6 @@ $(function() {
         ajax: "{{ route('giangvien.index') }}",
         columnDefs: [{
             "visible": false,
-            "targets": 1
-        }, {
-            "visible": false,
             "targets": 2
         }, {
             "visible": false,
@@ -261,16 +266,25 @@ $(function() {
             "targets": 4
         }, {
             "visible": false,
-            "targets": 5
-        }, {
-            "visible": false,
-            "targets": 6
-        }, {
-            "visible": false,
             "targets": 7
         }, {
             "visible": false,
             "targets": 8
+        }, {
+            "visible": false,
+            "targets": 9
+        }, {
+            "visible": false,
+            "targets": 10
+        }, {
+            "visible": false,
+            "targets": 11
+        }, {
+            "visible": false,
+            "targets": 13
+        }, {
+            "visible": false,
+            "targets": 14
         }],
         columns: [{
                 data: 'ma_gv',
@@ -302,7 +316,7 @@ $(function() {
                 data: 'gioi_tinh',
                 name: 'gioi_tinh',
                 render: function(data, type, full, meta) {
-                    if (data === 1) {
+                    if (data == 1) {
                         return 'Nam';
                     } else {
                         return 'Nữ';
@@ -368,7 +382,7 @@ $(function() {
                 data: 'tinh_trang_lam_viec',
                 name: 'tinh_trang_lam_viec',
                 render: function(data, type, full, meta) {
-                    if (data === 1) {
+                    if (data == 1) {
                         return 'Đang làm việc';
                     } else {
                         return 'Ngừng làm việc';
@@ -443,11 +457,11 @@ $(function() {
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
-        if (buttonText === 'Hiển thị Trạng thái 0') {
-            button.text('Hiển thị Trạng thái 1');
+        if (buttonText === 'Hiển thị danh sách đã xóa') {
+            button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('giangvien.getInactiveData') }}").load();
         } else {
-            button.text('Hiển thị Trạng thái 0');
+            button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('giangvien.index') }}").load();
         }
     });
