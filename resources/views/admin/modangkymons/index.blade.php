@@ -9,9 +9,90 @@
             <a class="btn btn-info" href="javascript:void(0)" id="btnMoDangKyMon"> Mở đăng ký môn theo khóa theo ngành </a>
         </ul>
         <div class="modal fade bd-example-modal-lg" id="formthemmodangkymon"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
               <div class="modal-content">
-                ...
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modelHeading-them">Thêm</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modalFormThem" name="modalForm" class="form-horizontal">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div >
+                                        <input type="hidden" name="id" id="id">
+                                        <div class="form-group">
+                                            <label for="ten_lop_hoc_phan">Khóa</label>
+                                            <input type="text" class="form-control" id="ten_lop_hoc_phan" name="ten_lop_hoc_phan"
+                                                value="" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ten_mon_hoc">Chuyên ngành</label>
+                                            <input type="text" class="form-control" id="ten_mon_hoc" name="ten_mon_hoc"
+                                                 value="" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="chon_ngay_bat_dau">Ngày bắt đầu</label>
+                                            <input type="datetime-local" class="form-control" name="chon_ngay_bat_dau" id="chon_ngay_bat_dau" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="chon_ngay_ket_thuc">Ngày kết thúc</label>
+                                            <input type="datetime-local" class="form-control" name="chon_ngay_ket_thuc" id="chon_ngay_ket_thuc" />
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div>
+                                       Danh sách môn
+                                    </div>
+                                    <table class="table table-success table-striped" id="table-mo-dang-ky-mon">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Tên môn học</th>
+                                            <th>Ngày bắt đầu</th>
+                                            <th>Ngày kết thúc</th>
+                                            <th>Xác nhận</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr >
+                                                <td>1</td>
+                                                <td>Môn a</td>
+                                                <td>
+                                                    <input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" />
+                                                </td>
+                                                <td>
+                                                    <input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" />
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox" class="chon_mo_lop" data-id-mon-hoc="1" >
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td>2</td>
+                                                <td>Môn b</td>
+                                                <td>
+                                                    <input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" />
+                                                </td>
+                                                <td>
+                                                    <input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" />
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox" class="chon_mo_lop" data-id-mon-hoc="2">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        </div>
+                    </form>
+                </div>
               </div>
             </div>
           </div>
@@ -175,6 +256,14 @@ $(function() {
             }
         ],
     });
+    $('#chon_ngay_bat_dau').change(function(){
+        var newDate=$('#chon_ngay_bat_dau').val()
+        $('.ngay_mo_dang_ky_mon').val(newDate);
+    })
+    $('#chon_ngay_ket_thuc').change(function(){
+        var newDate=$('#chon_ngay_ket_thuc').val()
+        $('.ngay_dong_dang_ky_mon').val(newDate);
+    })
 
     $('#showInactiveBtn').click(function() {
         var button = $(this);
@@ -214,26 +303,46 @@ $(function() {
             $('#dong_dang_ky').val(data.dong_dang_ky);
         })
     });
-
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('modangkymon.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
+
+        var JsonArray={
+            'danh_sach_mon_hoc':[]
+        }
+        $('#table-mo-dang-ky-mon tbody tr').each(function() {
+            var checkbox = $(this).find('.chon_mo_lop');
+
+            if (checkbox.is(':checked')) {
+                var idMonHoc=checkbox.attr('data-id-mon-hoc')
+                var ngaybatdau=$(this).find('.ngay_mo_dang_ky_mon').val();
+                var ngayketthuc=$(this).find('.ngay_dong_dang_ky_mon').val();
+
+                var JsonObject={
+                    'id_mon_hoc':idMonHoc,
+                    'ngay_bat_dau':ngaybatdau,
+                    'ngay_ket_thuc':ngayketthuc,
+                }
+                JsonArray.danh_sach_mon_hoc.push(JsonObject);
             }
         });
+        console.log(JsonArray);
+        // $(this).html('Sending..');
+        // $.ajax({
+        //     data: $('#modalForm').serialize(),
+        //     url: "{{ route('modangkymon.store') }}",
+        //     type: "POST",
+        //     dataType: 'json',
+        //     success: function(data) {
+        //         $('#modalForm').trigger("reset");
+        //         $('#ajaxModelexa').modal('hide');
+        //         $('#savedata').html('Lưu');
+        //         table.draw();
+        //     },
+        //     error: function(data) {
+        //         console.log('Error:', data);
+        //         $('#savedata').html('Lưu');
+        //     }
+        // });
     });
 
     $('body').on('click', '.deleteBtn', function() {

@@ -291,7 +291,7 @@ class APIThoiKhoaBieuController extends Controller
             ->orWhere('lop_hoc_phans.ma_gv_3',$ma_giang_vien);
         })
 
-        ->where('lop_hoc_phans.mo_lop',1)
+        ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
         ->where('thoi_khoa_bieus.trang_thai',1);
 
         //    dd($thoiKhoaBieu->get());
