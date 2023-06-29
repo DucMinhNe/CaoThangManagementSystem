@@ -161,7 +161,7 @@ class APILopHocPhanController extends Controller
                 $dataThoiKhoaBieu[]=array(
                     'id_lop_hoc_phan'=>$item->id,
                     'ten_lop_hoc_phan'=>$item->ten_lop_hoc_phan,
-                    'phong_hoc'=>$phongHoc->ten_phong_hoc,
+                    'phong_hoc'=>$phongHoc->ten_phong,
                     'thu'=>$tkb->thu_trong_tuan,
                     'tiet_bat_dau'=>$tietBatDau->stt,
                     'thoi_gian_bat_dau'=>$tietBatDau->thoi_gian_bat_dau,

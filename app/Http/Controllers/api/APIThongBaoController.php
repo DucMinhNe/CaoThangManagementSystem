@@ -130,9 +130,9 @@ class APIThongBaoController extends Controller
     {
 
 
-             $data =$request->all();
+            $data =$request->all();
 
-           $js_e = json_encode($data);
+            $js_e = json_encode($data);
             $js_d =json_decode($js_e);
                 $thongbao = null;
 

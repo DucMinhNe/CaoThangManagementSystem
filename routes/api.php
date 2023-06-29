@@ -62,7 +62,7 @@ Route::post('/login-sinh-vien',[APIAuthController::class,'loginSinhVien']);
 Route::group(['middleware'=>'auth:sanctum'],function(){
     Route::post('/logout',[APIAuthController::class,'logoutSinhVien']);
     Route::get('/check-login',[APIAuthController::class,'checkLogin']);
-
+    
     Route::get('/thoi-khoa-bieu',[APIThoiKhoaBieuController::class,'index']);
     Route::get('/phong-hoc/{id}',[APIPhongHocController::class,'show']);
     Route::get('/thoi-gian-bieu/{id}',[APIThoiGianBieuController::class,'show']);
@@ -72,7 +72,8 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
     Route::get('/thoi-khoa-bieu/{id}',[APIThoiKhoaBieuController::class,'getLichHoc']);
     Route::get('/danh-sach-thong-bao/{id}',[APIThongBaoController::class,'layDanhSachThongBaoCuaSinhVien']);
     Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}',[APISinhVienController::class,'layBangDiemCuaSinhVien']);
-    Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}/hoc-ky/{hocky}',[APISinhVienController::class,'layBangDiemCuaSinhVienTheoHocKy']);
+Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}/hoc-ky/{hocky}',[APISinhVienController::class,'layBangDiemCuaSinhVienTheoHocKy']);
+
 
     Route::get('/sinh-vien-duoc-phep-vao-trang-dang-ky-mon',[APIMoDangKyMonController::class,'choPhepTruyCapDangKyMonHoc']);
 
