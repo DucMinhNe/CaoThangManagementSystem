@@ -46,7 +46,7 @@
                         <th>Mật Khẩu</th>
                         <th>Bộ Môn</th>
                         <th>Chức Vụ</th>
-                        <th>Tình Trạng Làm Việc</th>
+                        <th width="100px">Tình Trạng Làm Việc</th>
                         <th width="72px"></th>
                     </tr>
                 </thead>
@@ -71,7 +71,7 @@
                         <th>Mật Khẩu</th>
                         <th>Bộ Môn</th>
                         <th>Chức Vụ</th>
-                        <th>Tình Trạng Làm Việc</th>
+                        <th width="100px">Tình Trạng Làm Việc</th>
                         <th width="72px"></th>
                     </tr>
                 </tfoot>
@@ -234,9 +234,9 @@
                                 class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
-                <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
+                <!-- <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
                     <a class="btn btn-info" href="javascript:void(0)" id="clearImg"> Xóa Hình</a>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </div>
@@ -280,6 +280,9 @@ $(function() {
             "visible": false,
             "targets": 11
         }, {
+            "targets": 12,
+            className: 'dt-body-center'
+        },{
             "visible": false,
             "targets": 13
         }, {
@@ -353,7 +356,7 @@ $(function() {
                 render: function(data, type, full, meta) {
                     if (data) {
                         return '<img src="{{ asset("giangvien_img") }}/' + data +
-                            '" width="50" height="50">';
+                            '" width="80" height="80">';
                     } else {
                         return '';
                     }

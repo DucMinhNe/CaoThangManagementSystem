@@ -335,12 +335,15 @@ $(function() {
                 "visible": false,
                 "targets": 11
             }, {
+                "targets": 12,
+                className: 'dt-body-center'
+            },{
                 "visible": false,
                 "targets": 13
             }, {
                 "visible": false,
                 "targets": 14
-            }
+            },
 
         ],
         columns: [{
@@ -410,7 +413,7 @@ $(function() {
                 render: function(data, type, full, meta) {
                     if (data) {
                         return '<img src="{{ asset("sinhvien_img") }}/' + data +
-                            '" width="70" height="70">';
+                            '" width="80" height="80">';
                     } else {
                         return '';
                     }
