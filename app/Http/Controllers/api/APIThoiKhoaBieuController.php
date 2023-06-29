@@ -109,7 +109,7 @@ class APIThoiKhoaBieuController extends Controller
                 'id'=>$ThoiKhoaBieu->id,
                 'id_phong_hoc'=>$PhongHoc->id,
                 'id_lop_hoc_phan'=>$LopHocPhan->id,
-                'ten_phong_hoc'=>$PhongHoc->ten_phong_hoc,
+                'ten_phong_hoc'=>$PhongHoc->ten_phong,
                 'id_mon_hoc'=>$MonHoc->id,
                 'ten_mon_hoc'=>$MonHoc->ten_mon_hoc,
                 'id_giang_vien'=>$GiangVien->id,
@@ -285,10 +285,13 @@ class APIThoiKhoaBieuController extends Controller
         ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
         ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
         ->join('phong_hocs','phong_hocs.id','thoi_khoa_bieus.id_phong_hoc')
-        ->where('lop_hoc_phans.ma_gv_1',$ma_giang_vien)
-        ->orWhere('lop_hoc_phans.ma_gv_2',$ma_giang_vien)
-        ->orWhere('lop_hoc_phans.ma_gv_3',$ma_giang_vien)
-        ->where('lop_hoc_phans.mo_lop',1)
+        
+        ->where(function( $query) use  ($ma_giang_vien){
+           $query->where('lop_hoc_phans.ma_gv_1',$ma_giang_vien) ->orWhere('lop_hoc_phans.ma_gv_2',$ma_giang_vien)
+            ->orWhere('lop_hoc_phans.ma_gv_3',$ma_giang_vien);
+        })
+        
+        ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
         ->where('thoi_khoa_bieus.trang_thai',1);
 
         //    dd($thoiKhoaBieu->get());

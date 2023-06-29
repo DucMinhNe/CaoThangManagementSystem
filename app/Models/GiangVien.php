@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Hash;
 class GiangVien extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory,Notifiable,HasApiTokens;
     protected $table = 'giang_viens';
     protected $primaryKey = 'ma_gv';
     public $incrementing = false;

@@ -104,7 +104,7 @@ class APILopHocPhanController extends Controller
                 'id_lop_hoc_phan'=>$lopHocPhan->id,
                 'giang_vien_chinh'=>$lopHocPhan->giangVienChinh,
                 'giang_vien_phu'=>$lopHocPhan->giangVienPhu,
-                'mon_hoc'=>$lopHocPhan->ctChuongTrinhDaoTao->monHoc,
+                'mon_hoc'=>$lopHocPhan->chiTietChuongTrinhDaoTao->monHoc,
                 'lop_hoc'=>$lopHocPhan->lopHoc,
                 'danh_sach_sinh_vien'=>$danhSachSinhVien
                 ]
@@ -112,7 +112,7 @@ class APILopHocPhanController extends Controller
 
         }else{
             $danhSachlopHocPhan=LopHocPhan::where('ma_gv_1',$ma_gv)->where('trang_thai',1)
-                              ->orWhere('ma_gv_2',$ma_gv)
+                        
                               ->get();
                               //return $danhSachlopHocPhan;
         $data=array();
@@ -161,7 +161,7 @@ class APILopHocPhanController extends Controller
                 $dataThoiKhoaBieu[]=array(
                     'id_lop_hoc_phan'=>$item->id,
                     'ten_lop_hoc_phan'=>$item->ten_lop_hoc_phan,
-                    'phong_hoc'=>$phongHoc->ten_phong_hoc,
+                    'phong_hoc'=>$phongHoc->ten_phong,
                     'thu'=>$tkb->thu_trong_tuan,
                     'tiet_bat_dau'=>$tietBatDau->stt,
                     'thoi_gian_bat_dau'=>$tietBatDau->thoi_gian_bat_dau,
