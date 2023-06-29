@@ -14,7 +14,7 @@ class LopHocPhan extends Model
     ];
     public function chiTietLopHocPhan()
     {
-        return $this->hasMany(ChiTietLopHocPhan::class,'id_lop_hoc_phan','id');
+        return $this->hasMany(CTLopHocPhan::class,'id_lop_hoc_phan','id');
     }
     public function lopHoc(){
         return $this->hasOne(LopHoc::class,'id','id_lop_hoc');

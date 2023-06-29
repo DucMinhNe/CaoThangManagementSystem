@@ -82,11 +82,11 @@ class APIDangKyLopHocPhanController extends Controller
         //dd($currenDateTime);
 
         $monHocRot=CTChuongTrinhDaoTao::join('lop_hoc_phans','lop_hoc_phans.id_ct_chuong_trinh_dao_tao','ct_chuong_trinh_dao_taos.id')
-                                      ->join('chi_tiet_lop_hoc_phans','chi_tiet_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
+                                      ->join('ct_lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
                                       ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$request->id_mon_hoc)
-                                      ->where('chi_tiet_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
+                                      ->where('ct_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
                                       ->where('ct_chuong_trinh_dao_taos.trang_thai',1)
-                                      ->orderBy('chi_tiet_lop_hoc_phans.created_at','desc')
+                                      ->orderBy('ct_lop_hoc_phans.created_at','desc')
                                     //   ->get();
                                       ->first();
 

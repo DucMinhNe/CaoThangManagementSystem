@@ -9,7 +9,7 @@ use App\Models\ChuyenNganh;
 use App\Models\SinhVien;
 use App\Models\MonHoc;
 use App\Models\LoaiMonHoc;
-use App\Models\ChiTietLopHocPhan;
+use App\Models\CTLopHocPhan;
 
 use Illuminate\Http\Request;
 use DataTables;
@@ -206,7 +206,7 @@ class DangKyLopHocPhanController extends Controller
     {
         DangKyLopHocPhan::where('id', $id)->update(['duyet' => 1]);
         $dangkylophocphan=DangKyLopHocPhan::where('id',$id)->where('trang_thai',1)->first();
-        ChiTietLopHocPhan::create([
+        CTLopHocPhan::create([
             'id_lop_hoc_phan'=>$dangkylophocphan->id_lop_hoc_phan,
             'ma_sv'=>$dangkylophocphan->ma_sv,
         ]);

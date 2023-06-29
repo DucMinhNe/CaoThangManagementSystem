@@ -113,11 +113,11 @@ class APISinhVienController extends Controller
         $data=array();
         foreach ($ctChuongTrinhDaoTaos as $item) {
             $monHoc=MonHoc::find($item->id_mon_hoc);
-            $chiTietLopHocPhans=CTLopHocPhan::join('lop_hoc_phans','chi_tiet_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
+            $chiTietLopHocPhans=CTLopHocPhan::join('lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
                                                     ->join('ct_chuong_trinh_dao_taos','lop_hoc_phans.id_ct_chuong_trinh_dao_tao','ct_chuong_trinh_dao_taos.id')
                                                     ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$monHoc->id)
-                                                    ->where('chi_tiet_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
-                                                    ->where('chi_tiet_lop_hoc_phans.trang_thai',1)
+                                                    ->where('ct_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
+                                                    ->where('ct_lop_hoc_phans.trang_thai',1)
                                                     ->get();
 
             if($chiTietLopHocPhans->count()>1){
@@ -171,18 +171,18 @@ class APISinhVienController extends Controller
         if($ctChuongTrinhDaoTaos->count()>0){
             foreach ($ctChuongTrinhDaoTaos as $item) {
                 $monHoc=MonHoc::where('id',$item->id_mon_hoc)->where('trang_thai',1)->first();
-                $chiTietLopHocPhans=CTLopHocPhan::join('lop_hoc_phans','chi_tiet_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
+                $chiTietLopHocPhans=CTLopHocPhan::join('lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
                                                         ->join('ct_chuong_trinh_dao_taos','lop_hoc_phans.id_ct_chuong_trinh_dao_tao','ct_chuong_trinh_dao_taos.id')
                                                         ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$monHoc->id)
-                                                        ->where('chi_tiet_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
-                                                        ->where('chi_tiet_lop_hoc_phans.trang_thai',1)
+                                                        ->where('ct_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
+                                                        ->where('ct_lop_hoc_phans.trang_thai',1)
                                                         ->get();
                 if($chiTietLopHocPhans->count()>1){
-                    $temp=CTLopHocPhan::join('lop_hoc_phans','chi_tiet_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
+                    $temp=CTLopHocPhan::join('lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
                                             ->join('ct_chuong_trinh_dao_taos','lop_hoc_phans.id_ct_chuong_trinh_dao_tao','ct_chuong_trinh_dao_taos.id')
                                             ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$monHoc->id)
-                                            ->where('chi_tiet_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
-                                            ->where('chi_tiet_lop_hoc_phans.trang_thai',1)
+                                            ->where('ct_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
+                                            ->where('ct_lop_hoc_phans.trang_thai',1)
                                             // ->whereNotNull('chi_tiet_lop_hoc_phans.tong_ket_1')->whereNotNull('chi_tiet_lop_hoc_phans.tong_ket_2')
                                             ->orderBy('tong_ket_1','desc')->orderBy('tong_ket_2','desc')->first();
                     //$temp=$chiTietLopHocPhans->orderBy('tong_ket_1')->orderBy('tong_ket_2')->first();

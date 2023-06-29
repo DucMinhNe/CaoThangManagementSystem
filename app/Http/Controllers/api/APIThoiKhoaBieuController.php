@@ -82,10 +82,10 @@ class APIThoiKhoaBieuController extends Controller
 
     // }
     public function layHocKyHienTaiCuaSinhVien($ma_sv){
-        $hocKyHienTai=LopHocPhan::join('chi_tiet_lop_hoc_phans','lop_hoc_phans.id','chi_tiet_lop_hoc_phans.id_lop_hoc_phan')
+        $hocKyHienTai=LopHocPhan::join('ct_lop_hoc_phans','lop_hoc_phans.id','ct_lop_hoc_phans.id_lop_hoc_phan')
                               ->join('thoi_khoa_bieus','thoi_khoa_bieus.id_lop_hoc_phan','lop_hoc_phans.id')
-                              ->where('chi_tiet_lop_hoc_phans.ma_sv',$ma_sv)
-                              ->where('chi_tiet_lop_hoc_phans.trang_thai',1)
+                              ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
+                              ->where('ct_lop_hoc_phans.trang_thai',1)
                               ->where('lop_hoc_phans.trang_thai',1)
                               ->where('thoi_khoa_bieus.trang_thai',1)
                               ->orderBy('thoi_khoa_bieus.hoc_ky','desc')
@@ -177,11 +177,11 @@ class APIThoiKhoaBieuController extends Controller
     public function danhSachLichHocCuaSinhVienTheoChuongTrinh($ma_sv){
         $sinhVien=SinhVien::where('ma_sv',$ma_sv)->where('trang_thai',1)->first();
         $thoiKhoaBieu= ThoiKhoaBieu::join('lop_hoc_phans','thoi_khoa_bieus.id_lop_hoc_phan','lop_hoc_phans.id')
-                                ->join('chi_tiet_lop_hoc_phans','chi_tiet_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
+                                ->join('ct_lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
                                 ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
                                 ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
                                 ->join('phong_hocs','phong_hocs.id','thoi_khoa_bieus.id_phong_hoc')
-                                ->where('chi_tiet_lop_hoc_phans.ma_sv',$ma_sv)
+                                ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
                                 ->where('id_lop_hoc',$sinhVien->id_lop_hoc)
                                 ->where('thoi_khoa_bieus.trang_thai',1);
 
