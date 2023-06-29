@@ -15,7 +15,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $expiredTokens = DB::table('personal_access_tokens')
+                ->where('expires_at', '<=', Carbon::now())
+                ->delete();
+        })->daily();
     }
 
     /**

@@ -17,4 +17,11 @@ class CTChuongTrinhDaoTao extends Model
         'so_tiet',
         'trang_thai',
     ];
+    public function chuongTrinhDaoTao(){
+        return $this->hasOne(ChuongTrinhDaoTao::class,'id','id_chuong_trinh_dao_tao');
+    }
+    public function monHoc(){
+        return $this->hasOne(MonHoc::class,'id','id_mon_hoc');
+    }
+
 }

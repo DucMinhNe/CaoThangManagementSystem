@@ -36,6 +36,14 @@ use App\Http\Controllers\LoaiPhongController;
 use App\Http\Controllers\PhongController;
 
 use App\Http\Controllers\NhapDiemController;
+
+use App\Http\Controllers\DangKyLopHocPhanController;
+use App\Http\Controllers\ThoiKhoaBieuController;
+use App\Http\Controllers\ThoiGianBieuController;
+use App\Http\Controllers\MoDangKyMonController;
+use App\Http\Controllers\HocPhiController;
+use App\Http\Controllers\ThanhToanHocPhiController;
+use App\Http\Controllers\ThanhToanDangKyLopHocPhan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,49 +69,49 @@ Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);
 Route::get('/admin/dangxuat', [DangNhapController::class,'dangXuat']);
 Route::get('/', function () {return redirect('/admin');})->middleware('auth');
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
-  
+
     Route::get('/', function () {
         return view('admin.index');
     });
     Route::group(['middleware' => 'checkchucvu:1|2'], function () {
-      
+
         Route::get('/diem-trung-binh-hoc-ky-by-lop-xet-tot-nghiep/{id_lop_hoc}', [SinhVienController::class, 'getDiemTrungBinhHocKyByLop_xettotnghiep']);
         Route::get('/diem-trung-binh-hoc-ky-by-lop/{id_lop_hoc}', [SinhVienController::class, 'getDiemTrungBinhHocKyByLop']);
         Route::get('/diem-trung-binh-hoc-ky', [SinhVienController::class, 'getDiemTrungBinhHocKy']);
-      
+
         Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
         Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
         Route::resource('khoa', KhoaController::class);
-        
+
         Route::get('/loaimonhoc/getInactiveData', [LoaiMonHocController::class, 'getInactiveData'])->name('loaimonhoc.getInactiveData');
         Route::get('/loaimonhoc/restore/{id}', [LoaiMonHocController::class, 'restore'])->name('loaimonhoc.restore');
         Route::resource('loaimonhoc', LoaiMonHocController::class);
-    
+
         Route::get('/monhoc/getInactiveData', [MonHocController::class, 'getInactiveData'])->name('monhoc.getInactiveData');
         Route::get('/monhoc/restore/{id}', [MonHocController::class, 'restore'])->name('monhoc.restore');
         Route::resource('monhoc', MonHocController::class);
-    
+
         Route::get('/bomon/getInactiveData', [BoMonController::class, 'getInactiveData'])->name('bomon.getInactiveData');
         Route::get('/bomon/restore/{id}', [BoMonController::class, 'restore'])->name('bomon.restore');
         Route::resource('bomon', BoMonController::class);
-    
+
         Route::get('/lophoc/getInactiveData', [LopHocController::class, 'getInactiveData'])->name('lophoc.getInactiveData');
         Route::get('/lophoc/restore/{id}', [LopHocController::class, 'restore'])->name('lophoc.restore');
         Route::resource('lophoc', LopHocController::class);
-    
+
         Route::get('/lophocphan/saochep/{idLopHoc}/{idLopHocPhan}', [LopHocPhanController::class, 'themSinhVienVaoLopHocPhan']);
         Route::get('/lophocphan/getInactiveData', [LopHocPhanController::class, 'getInactiveData'])->name('lophocphan.getInactiveData');
         Route::get('/lophocphan/restore/{id}', [LopHocPhanController::class, 'restore'])->name('lophocphan.restore');
         Route::resource('lophocphan', LopHocPhanController::class);
-    
+
         Route::get('/ctlophocphan/getInactiveData', [CTLopHocPhanController::class, 'getInactiveData'])->name('ctlophocphan.getInactiveData');
         Route::get('/ctlophocphan/restore/{id}', [CTLopHocPhanController::class, 'restore'])->name('ctlophocphan.restore');
         Route::resource('ctlophocphan', CTLopHocPhanController::class);
-    
+
         Route::get('/loaiphong/getInactiveData', [LoaiPhongController::class, 'getInactiveData'])->name('loaiphong.getInactiveData');
         Route::get('/loaiphong/restore/{id}', [LoaiPhongController::class, 'restore'])->name('loaiphong.restore');
         Route::resource('loaiphong', LoaiPhongController::class);
-        
+
         Route::get('/phong/getInactiveData', [PhongController::class, 'getInactiveData'])->name('phong.getInactiveData');
         Route::get('/phong/restore/{id}', [PhongController::class, 'restore'])->name('phong.restore');
         Route::resource('phong', PhongController::class);
@@ -142,12 +150,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/danhsachchucvusinhvien/getInactiveData', [DanhSachChucVuSinhVienController::class, 'getInactiveData'])->name('danhsachchucvusinhvien.getInactiveData');
         Route::get('/danhsachchucvusinhvien/restore/{id}', [DanhSachChucVuSinhVienController::class, 'restore'])->name('danhsachchucvusinhvien.restore');
         Route::resource('danhsachchucvusinhvien', DanhSachChucVuSinhVienController::class);
-    });            
+    });
     Route::group(['middleware' => 'checkchucvu:1'], function () {
         Route::get('/giangvien/getInactiveData', [GiangVienController::class, 'getInactiveData'])->name('giangvien.getInactiveData');
         Route::get('/giangvien/restore/{id}', [GiangVienController::class, 'restore'])->name('giangvien.restore');
         Route::resource('giangvien', GiangVienController::class);
-        
+
         Route::get('/chucvugiangvien/getInactiveData', [ChucVuGiangVienController::class, 'getInactiveData'])->name('chucvugiangvien.getInactiveData');
         Route::get('/chucvugiangvien/restore/{id}', [ChucVuGiangVienController::class, 'restore'])->name('chucvugiangvien.restore');
         Route::resource('chucvugiangvien', ChucVuGiangVienController::class);
@@ -155,10 +163,39 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/danhsachchucvugiangvien/getInactiveData', [DanhSachChucVuGiangVienController::class, 'getInactiveData'])->name('danhsachchucvugiangvien.getInactiveData');
         Route::get('/danhsachchucvugiangvien/restore/{id}', [DanhSachChucVuGiangVienController::class, 'restore'])->name('danhsachchucvugiangvien.restore');
         Route::resource('danhsachchucvugiangvien', DanhSachChucVuGiangVienController::class);
-    });   
-    
+
+        Route::get('/dangkylophocphan/getInactiveData',[DangKyLopHocPhanController::class,'getInactiveData'])->name('dangkylophocphan.getInactiveData');
+
+
+        Route::get('/dangkylophocphan/restore/{id}', [DanhSachChucVuSinhVienController::class, 'restore'])->name('dangkylophocphan.restore');
+        Route::get('/dangkylophocphan/review/{id}', [DangKyLopHocPhanController::class, 'review'])->name('dangkylophocphan.review');
+
+        Route::resource('dangkylophocphan',DangKyLopHocPhanController::class);
+
+        Route::get('/thoikhoabieu/getInactiveData', [ThoiKhoaBieuController::class, 'getInactiveData'])->name('thoikhoabieu.getInactiveData');
+        Route::get('/thoikhoabieu/restore/{id}', [ThoiKhoaBieuController::class, 'restore'])->name('thoikhoabieu.restore');
+        Route::resource('thoikhoabieu',ThoiKhoaBieuController::class);
+
+        Route::get('/thoigianbieu/getInactiveData', [ThoiGianBieuController::class, 'getInactiveData'])->name('thoigianbieu.getInactiveData');
+        Route::get('/thoigianbieu/restore/{id}', [ThoiGianBieuController::class, 'restore'])->name('thoigianbieu.restore');
+        Route::resource('thoigianbieu',ThoiGianBieuController::class);
+
+        Route::get('/modangkymon/getInactiveData', [MoDangKyMonController::class, 'getInactiveData'])->name('modangkymon.getInactiveData');
+        Route::get('/modangkymon/restore/{id}', [MoDangKyMonController::class, 'restore'])->name('modangkymon.restore');
+        Route::resource('modangkymon',MoDangKyMonController::class);
+
+        Route::get('/hocphi/getInactiveData', [HocPhiController::class, 'getInactiveData'])->name('hocphi.getInactiveData');
+        Route::get('/hocphi/restore/{id}', [HocPhiController::class, 'restore'])->name('hocphi.restore');
+        Route::resource('hocphi',HocPhiController::class);
+
+        Route::get('/thanhtoanhocphi/getInactiveData', [ThanhToanHocPhiController::class, 'getInactiveData'])->name('thanhtoanhocphi.getInactiveData');
+        Route::get('/thanhtoanhocphi/restore/{id}', [ThanhToanHocPhiController::class, 'restore'])->name('thanhtoanhocphi.restore');
+        Route::post('/thanhtoanhocphi/huy',[ThanhToanHocPhiController::class,'huyDongHocPhi'])->name('thanhtoanhocphi.huydonghocphi');
+        Route::resource('thanhtoanhocphi',ThanhToanHocPhiController::class);
+    });
+
     Route::resource('thongtincanhan', ThongTinCaNhanController::class);
-    
+
 
     Route::get('/get-thong-tin-lop-hoc-phan', [NhapDiemController::class, 'getThongTinLopHocPhan']);
     Route::resource('nhapdiem', NhapDiemController::class);
