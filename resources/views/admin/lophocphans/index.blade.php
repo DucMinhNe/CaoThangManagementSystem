@@ -44,7 +44,23 @@
                         <th>Tên Môn</th>
                         <th>Mở Đăng Ký</th>
                         <th>Trạng Thái Hoàn Thành</th>
-                        <th width="72px"></th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th width="30px"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,7 +173,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>
@@ -222,6 +241,30 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+                if (column.index() !== 0 && column.index() !== 9) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--Chọn--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                }
+            });
+        },
         ajax: "{{ route('lophocphan.index') }}",
         columns: [{
                 data: 'id',
@@ -335,6 +378,15 @@ $(function() {
                 text: 'Số bản ghi trên trang'
             }
         ],
+    });
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+    });
+    $('#filterToggle').trigger('click');
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
     });
     $('#id_lop_hoc, #id_ct_chuong_trinh_dao_tao').change(function() {
         var selectedLop = $('#id_lop_hoc').find('option:selected').text().trim();

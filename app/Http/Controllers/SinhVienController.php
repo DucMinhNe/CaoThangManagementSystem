@@ -79,6 +79,26 @@ class SinhVienController extends Controller
         // Excel::import(new SinhViensImport,request()->file('fileExcel'));
         return back();
     }
+    public function getSinhVienByIdLop($id_lop)
+    {
+        $data = SinhVien::leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
+        ->select('sinh_viens.*', 'lop_hocs.ten_lop_hoc')
+        ->where('id_lop_hoc', $id_lop)
+        ->where('sinh_viens.trang_thai', 1) 
+        ->latest()
+        ->get();
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ma_sv.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+
+            return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
     public function getDiemTrungBinhHocKy()
     {
         $result = SinhVien::leftJoin('ct_lop_hoc_phans', 'sinh_viens.ma_sv', '=', 'ct_lop_hoc_phans.ma_sv')

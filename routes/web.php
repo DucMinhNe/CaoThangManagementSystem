@@ -130,6 +130,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/ctchuongtrinhdaotao/restore/{id}', [CTChuongTrinhDaoTaoController::class, 'restore'])->name('ctchuongtrinhdaotao.restore');
         Route::resource('ctchuongtrinhdaotao', CTChuongTrinhDaoTaoController::class);
 
+        Route::get('/sinhvien/getSinhVienByIdLop/{id_lop_hoc}', [SinhVienController::class, 'getSinhVienByIdLop'])->name('sinhvien.getSinhVienByIdLop');
         Route::post('/sinhvien/import', [SinhVienController::class, 'import'])->name('sinhvien.import');
         Route::get('/sinhvien/getInactiveData', [SinhVienController::class, 'getInactiveData'])->name('sinhvien.getInactiveData');
         Route::get('/sinhvien/restore/{id}', [SinhVienController::class, 'restore'])->name('sinhvien.restore');

@@ -13,6 +13,24 @@
     height: 35px !important;
 }
 </style>
+<div class="form-group row">
+    <label for="id_lop_hoc_filter" class="col-sm-1 col-form-label">Lớp Học</label>
+    <div class="col-sm-2">
+        <select name="id_lop_hoc_filter" id="id_lop_hoc_filter" class="form-control select2" style="width: 100%;">
+            <option value="0">-- Chọn lớp --</option>
+            @foreach ($lophocs as $lophoc)
+            @if ($lophoc->trang_thai == 1)
+            <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
+            </option>
+            @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="col-sm-2">
+        <button id="xemBtn" class="btn btn-info" type="button">Xem</button>
+
+    </div>
+</div>
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
@@ -250,7 +268,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>
@@ -286,7 +307,6 @@
                         <button type="submit" class="btn btn-primary" id="themSinhVienExcelSubmit">Xác Nhận</button>
                         <a id="taiMauExcelBtn" class="btn btn-info" href="{{ asset('file/mau_excel.xlsx') }}">Tải Mẫu
                             Excel</a>
-
                     </div>
                 </form>
             </div>
@@ -306,6 +326,7 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        scrollX: true,
         ajax: "{{ route('sinhvien.index') }}",
         columnDefs: [{
                 "visible": false,
@@ -337,7 +358,7 @@ $(function() {
             }, {
                 "targets": 12,
                 className: 'dt-body-center'
-            },{
+            }, {
                 "visible": false,
                 "targets": 13
             }, {
@@ -393,11 +414,13 @@ $(function() {
             },
             {
                 data: 'dan_toc',
-                name: 'dan_toc'
+                name: 'dan_toc',
+
             },
             {
                 data: 'ton_giao',
                 name: 'ton_giao'
+
             },
             {
                 data: 'dia_chi_thuong_tru',
@@ -559,6 +582,14 @@ $(function() {
         } else {
             button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('sinhvien.index') }}").load();
+        }
+    });
+    $('#xemBtn').click(function() {
+        var selectedLopHocId = $("#id_lop_hoc_filter").val();
+        if (selectedLopHocId == 0) {
+            table.ajax.url("{{ route('sinhvien.index') }}").load();
+        } else {
+            table.ajax.url("{{ route('sinhvien.getSinhVienByIdLop', '') }}/" + selectedLopHocId).load();
         }
     });
     $('#createNewBtn').click(function() {

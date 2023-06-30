@@ -11,7 +11,7 @@
         <!-- <link rel="stylesheet"
             href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback') }}"> -->
         <link rel="stylesheet" href="{{ asset('dist/css/fontgoogle.css') }}">
-            <!-- Font Awesome -->
+        <!-- Font Awesome -->
         <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
         <!-- Ionicons -->
         <!-- <link rel="stylesheet"
@@ -49,12 +49,6 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
                                 class="fas fa-bars"></i></a>
                     </li>
-                    <!-- <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li> -->
                 </ul>
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto">
@@ -64,13 +58,6 @@
                             <i class="nav-icon fas fa-right-from-bracket"></i>
                         </a>
                     </li>
-                    <!-- Messages Dropdown Menu -->
-
-                    <!-- <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li> -->
                 </ul>
             </nav>
             <!-- /.navbar -->

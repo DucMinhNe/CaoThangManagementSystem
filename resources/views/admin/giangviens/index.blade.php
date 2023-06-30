@@ -282,7 +282,7 @@ $(function() {
         }, {
             "targets": 12,
             className: 'dt-body-center'
-        },{
+        }, {
             "visible": false,
             "targets": 13
         }, {

@@ -1,5 +1,18 @@
 @extends('admin.layouts.layout')
 @section('content')
+<style>
+.select2-selection__rendered {
+    line-height: 29px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow {
+    height: 35px !important;
+}
+</style>
 <section>
     <div class="container">
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
@@ -19,7 +32,16 @@
                     <tr>
                         <th width="30px">STT</th>
                         <th>Tên Khoa</th>
-                        <th width="72px"></th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th width="30px"></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +97,30 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+                if (column.index() !== 0 && column.index() !== 2) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--Chọn--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                }
+            });
+        },
         ajax: "{{ route('khoa.index') }}",
         columns: [{
                 data: 'id',
@@ -149,7 +195,14 @@ $(function() {
             }
         ],
     });
-
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+    });
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
