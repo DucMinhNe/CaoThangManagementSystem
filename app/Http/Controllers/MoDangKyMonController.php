@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MonHoc;
 use App\Models\MoDangKyMon;
+use App\Models\ChuongTrinhDaoTao;
+use App\Models\ChuyenNganh;
 use DataTables;
 class MoDangKyMonController extends Controller
 {
@@ -12,34 +14,45 @@ class MoDangKyMonController extends Controller
     {
         if ($request->ajax()) {
             $data = MoDangKyMon::join('mon_hocs','mo_dang_ky_mons.id_mon_hoc','mon_hocs.id')
-            ->select('mo_dang_ky_mons.*','mon_hocs.ten_mon_hoc')
+
+            ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id_mon_hoc','mon_hocs.id')
+
+            ->join('chuong_trinh_dao_taos',function($join){
+                $join->on('chuong_trinh_dao_taos.id','ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao');
+                $join->on('chuong_trinh_dao_taos.khoa_hoc','mo_dang_ky_mons.khoa_hoc');
+            })
+            ->select('mo_dang_ky_mons.*','mon_hocs.ten_mon_hoc','chuong_trinh_dao_taos.id_chuyen_nganh')
             ->where('mo_dang_ky_mons.trang_thai', 1)->latest()->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
 
-                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
-
-                        $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
-
-                            return $btn;
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-id-chuyen-nganh="'.$row->id_chuyen_nganh.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+                        if($row->da_dong==0){
+                            $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Close" class="btn btn-danger btn-sm closeBtn">Đóng</a>';
+                        }
+                        return $btn;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
         }
         $monhocs=MonHoc::where('trang_thai',1)->get();
-        return view('admin.modangkymons.index',compact('monhocs'));
+        $khoahocs=ChuongTrinhDaoTao::select('khoa_hoc')->where('trang_thai',1)->distinct()->get();
+        $chuyennganhs=ChuyenNganh::where('trang_thai',1)->get();
+        return view('admin.modangkymons.index',compact('khoahocs','chuyennganhs','monhocs'));
     }
     public function getInactiveData()
     {
         $data = MoDangKyMon::join('mon_hocs','mo_dang_ky_mons.id_mon_hoc','mon_hocs.id')
-        ->select('mo_dang_ky_mons.*','mon_hocs.ten_mon_hoc')
+        ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id_mon_hoc','mon_hocs.id')
+        ->join('chuong_trinh_dao_taos','chuong_trinh_dao_taos.id','ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao')
+        ->select('mo_dang_ky_mons.*','mon_hocs.ten_mon_hoc','chuong_trinh_dao_taos.khoa_hoc')
         ->where('mo_dang_ky_mons.trang_thai', 0)->latest()->get();
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
 
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
 
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
 
@@ -128,5 +141,56 @@ class MoDangKyMonController extends Controller
     {
         MoDangKyMon::where('id', $id)->update(['trang_thai' => 1]);
         return response()->json(['success' => 'Khôi phục thành công.']);
+    }
+    public function moDangKyMon(Request $request){
+        //dd($request->danh_sach_mon_hoc[5]['da_dong']);
+        foreach ($request->danh_sach_mon_hoc as $monhoc) {
+            MoDangKyMon::updateOrCreate(
+                [
+                    'khoa_hoc'=>$request->khoa_hoc,
+                    'id_mon_hoc'=>$monhoc['id_mon_hoc']
+                ],
+                [
+                    'mo_dang_ky'=>$monhoc['ngay_bat_dau'],
+                    'dong_dang_ky'=>$monhoc['ngay_ket_thuc'],
+                    'da_dong'=>$monhoc['da_dong'],
+                ]
+            );
+        }
+        return response()->json([
+            'message'=>"Lưu thành công",
+            'status'=>1,
+        ],201);
+    }
+    public function close($id){
+        MoDangKyMon::where('id',$id)->update(['da_dong'=>1]);
+        return response()->json(['success' => 'Đóng Thành Công.']);
+    }
+    public function danhSachMonHocMoDangKyMon(Request $request){
+        $chuongtrinhdaotao=ChuongTrinhDaoTao::where('khoa_hoc',$request->khoa_hoc)->where('id_chuyen_nganh',$request->id_chuyen_nganh)->where('trang_thai',1)->first();
+        //dd($chuongtrinhdaotao->ctChuongTrinhDaoTao);
+        $data=array();
+        foreach ($chuongtrinhdaotao->ctChuongTrinhDaoTao as $ctchuongtrinhdaotao) {
+           $modangkymon=MoDangKyMon::where('khoa_hoc',$request->khoa_hoc)->where('id_mon_hoc',$ctchuongtrinhdaotao->id_mon_hoc)->where('trang_thai',1)->first();
+
+           if($modangkymon!=null){
+                $data[]=array(
+                    'mon_hoc'=>$ctchuongtrinhdaotao->monHoc,
+                    'mo_dang_ky'=>$modangkymon->mo_dang_ky,
+                    'dong_dang_ky'=>$modangkymon->dong_dang_ky,
+                    'da_dong'=>$modangkymon->da_dong,
+                );
+           }
+           else{
+                $data[]=array(
+                    'mon_hoc'=>$ctchuongtrinhdaotao->monHoc,
+                    'mo_dang_ky'=>null,
+                    'dong_dang_ky'=>null,
+                    'da_dong'=>1,
+                );
+           }
+        }
+        return $data;
+
     }
 }

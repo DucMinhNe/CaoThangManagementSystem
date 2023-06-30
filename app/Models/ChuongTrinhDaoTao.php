@@ -16,6 +16,6 @@ class ChuongTrinhDaoTao extends Model
     ];
     public function ctChuongTrinhDaoTao()
     {
-        return $this->hasMany(CTChuongTrinhDaoTao::class,'id_chuong_trinh_dao_tao','id');
+        return $this->hasMany(CTChuongTrinhDaoTao::class,'id_chuong_trinh_dao_tao','id')->orderBy('hoc_ky','asc');
     }
 }

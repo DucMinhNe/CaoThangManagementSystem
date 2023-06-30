@@ -182,6 +182,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
         Route::get('/modangkymon/getInactiveData', [MoDangKyMonController::class, 'getInactiveData'])->name('modangkymon.getInactiveData');
         Route::get('/modangkymon/restore/{id}', [MoDangKyMonController::class, 'restore'])->name('modangkymon.restore');
+        Route::post('/modangkymon/close/{id}', [MoDangKyMonController::class, 'close'])->name('modangkymon.close');
+        Route::post('/modangkymon/modangky',[MoDangKyMonController::class,'moDangKyMon'])->name('modangkymon.modangky');
+        Route::get('/modangkymon/danhsachmonhocmodangky',[MoDangKyMonController::class,'danhSachMonHocMoDangKyMon'])->name('modangkymon.danhsachmonhocmodangky');
         Route::resource('modangkymon',MoDangKyMonController::class);
 
         Route::get('/hocphi/getInactiveData', [HocPhiController::class, 'getInactiveData'])->name('hocphi.getInactiveData');

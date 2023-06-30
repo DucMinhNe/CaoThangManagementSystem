@@ -137,7 +137,7 @@ class APIHocPhiController extends Controller
         //dd($danhSachDangKyLopHocPhan);
         $data=array();
         foreach($danhSachDangKyLopHocPhan as $dangKyLopHocPhan){
-            $hanDongHocPhi=MoDangKyMon::where('id_mon_hoc',$dangKyLopHocPhan->lopHocPhan->ctChuongTrinhDaoTao->monHoc->id)
+            $hanDongHocPhi=MoDangKyMon::where('id_mon_hoc',$dangKyLopHocPhan->lopHocPhan->chiTietChuongTrinhDaoTao->monHoc->id)
             ->where('mo_dang_ky','<',$currenDateTime)
             ->where('dong_dang_ky','>',$currenDateTime)
             ->first();
@@ -146,8 +146,8 @@ class APIHocPhiController extends Controller
                     $data[]=array(
                         'dang_ky_lop_hoc_phan'=>$dangKyLopHocPhan,
                         'mon_hoc'=>[
-                            'mon_hoc'=>$dangKyLopHocPhan->lopHocPhan->ctChuongTrinhDaoTao->monHoc,
-                            'loai_mon_hoc'=>$dangKyLopHocPhan->lopHocPhan->ctChuongTrinhDaoTao->monHoc->loaiMonHoc,
+                            'mon_hoc'=>$dangKyLopHocPhan->lopHocPhan->chiTietChuongTrinhDaoTao->monHoc,
+                            'loai_mon_hoc'=>$dangKyLopHocPhan->lopHocPhan->chiTietChuongTrinhDaoTao->monHoc->loaiMonHoc,
                         ],
                         'lop_hoc_phan'=>$dangKyLopHocPhan->lopHocPhan,
                         'ngay_mo'=>$hanDongHocPhi->mo_dang_ky,
@@ -175,5 +175,23 @@ class APIHocPhiController extends Controller
             'danh_sach_hoc_phi_mon'=>$data,
             'danh_sach_hoc_phi_hoc_ky'=>$dataHocPhiHocKy
         ],201);
+    }
+    public function thongTinHocPhi($id,Request $request){
+
+        $hocphi=null;
+        if($request->type=="hoc_phi_hoc_ky"){
+            $hocphi=array(
+                'thong_tin_hoc_phi'=>HocPhi::find($id),
+            );
+        }
+        if($request->type=="hoc_phi_mon"){
+            $hocphi=array(
+                'thong_tin_hoc_phi'=>DangKyLopHocPhan::find($id),
+                'mon_hoc'=>DangKyLopHocPhan::find($id)->lopHocPhan->chiTietChuongTrinhDaoTao->monHoc,
+            );
+        }
+        return $hocphi;
+
+
     }
 }

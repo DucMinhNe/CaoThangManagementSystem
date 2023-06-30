@@ -30,7 +30,19 @@
         <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <style>
+            .select2-selection__rendered {
+                line-height: 29px !important;
+            }
 
+            .select2-container .select2-selection--single {
+                height: 38px !important;
+            }
+
+            .select2-selection__arrow {
+                height: 35px !important;
+            }
+            </style>
     </head>
 
     <body class="hold-transition sidebar-mini layout-fixed">
