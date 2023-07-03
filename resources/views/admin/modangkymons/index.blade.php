@@ -12,7 +12,7 @@
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modelHeading-them">Thêm</h4>
+                    <h4 class="modal-title" id="modelHeading-them">Mở đăng ký môn theo khóa theo ngành</h4>
                 </div>
                 <div class="modal-body">
                     <form id="modalFormThem" name="modalForm" class="form-horizontal">
@@ -112,6 +112,7 @@
                         <th>Khóa học</th>
                         <th>Thời gian bắt đầu</th>
                         <th>Thời gian kết thúc</th>
+                        <th>Trạng thái mở</th>
                         <th width="280px">Hành Động</th>
                     </tr>
                 </thead>
@@ -124,6 +125,7 @@
                         <th>Khóa học</th>
                         <th>Thời gian bắt đầu</th>
                         <th>Thời gian kết thúc</th>
+                        <th>Trạng thái mở</th>
                         <th width="280px">Hành Động</th>
                     </tr>
                 </tfoot>
@@ -206,6 +208,17 @@ $(function() {
             {
                 data: 'dong_dang_ky',
                 name: 'dong_dang_ky'
+            },
+            {
+                data: 'da_dong',
+                name: 'da_dong',
+                render: function(data, type, full, meta) {
+                    if (data==0) {
+                        return '<span class="badge bg-success">Đang mở</span>';
+                    } else {
+                        return '<span class="badge bg-danger">Đã đóng</span>';
+                    }
+                }
             },
             {
                 data: 'action',

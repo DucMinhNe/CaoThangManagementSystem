@@ -82,7 +82,7 @@ class DangKyLopHocPhanController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn="";
-                    if($row->da_dong_tien==0){
+                    if($row->da_dong_tien==1){
                         $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="review" class="btn btn-success btn-sm reviewBtn">Duyệt</a>';
                     }
                     $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';

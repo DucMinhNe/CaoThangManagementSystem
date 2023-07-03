@@ -94,6 +94,7 @@ Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}/hoc-ky/{hocky}',[APISinhVienCo
     Route::get('/danh-sach-lop-dang-ky/{ma_sv}',[APIDangKyLopHocPhanController::class,'layDanhSachLopDangKyCuaSinhVien']);
     Route::get('/danh-sach-lop-hoc-phan-theo-mon-con-mo/{id}',[APILopHocPhanController::class,'danhSachLopHocPhanConMoThuocMonHoc']);
     Route::get('/hoc-phi/thong-tin-hoc-phi/{id}',[APIHocPhiController::class,'thongTinHocPhi']);
+    Route::post('/sinh-vien/doi-mat-khau/{ma_sv}',[APISinhVienController::class,'doiMatKhau']);
 });
 
 
