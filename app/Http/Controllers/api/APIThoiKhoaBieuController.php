@@ -110,6 +110,7 @@ class APIThoiKhoaBieuController extends Controller
                 'id_phong_hoc'=>$PhongHoc->id,
                 'id_lop_hoc_phan'=>$LopHocPhan->id,
                 'ten_phong_hoc'=>$PhongHoc->ten_phong,
+                'ten_phong_hoc'=>$PhongHoc->ten_phong,
                 'id_mon_hoc'=>$MonHoc->id,
                 'ten_mon_hoc'=>$MonHoc->ten_mon_hoc,
                 'id_giang_vien'=>$GiangVien->id,
@@ -180,14 +181,14 @@ class APIThoiKhoaBieuController extends Controller
                                 ->join('ct_lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
                                 ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
                                 ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
-                                ->join('phong_hocs','phong_hocs.id','thoi_khoa_bieus.id_phong_hoc')
+                                ->join('phongs','phongs.id','thoi_khoa_bieus.id_phong_hoc')
                                 ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
                                 ->where('id_lop_hoc',$sinhVien->id_lop_hoc)
                                 ->where('thoi_khoa_bieus.trang_thai',1);
 
         //dd($thoiKhoaBieu->get());
         $phongHoc= clone $thoiKhoaBieu;
-        $phongHoc=$phongHoc->select('ten_phong_hoc','id_phong_hoc')->distinct()->get();
+        $phongHoc=$phongHoc->select('ten_phong','id_phong_hoc')->distinct()->get();
         //dd($phongHoc);
         $data=array();
         foreach($phongHoc as $p){
@@ -219,7 +220,7 @@ class APIThoiKhoaBieuController extends Controller
             }
             $data[]=array(
                 'id_phong_hoc'=>$p->id_phong_hoc,
-                'ten_phong_hoc'=>$p->ten_phong_hoc,
+                'ten_phong_hoc'=>$p->ten_phong,
                 'lich'=>$lichThuocPhong
             );
         }
@@ -284,19 +285,19 @@ class APIThoiKhoaBieuController extends Controller
         $thoiKhoaBieu= ThoiKhoaBieu::join('lop_hoc_phans','thoi_khoa_bieus.id_lop_hoc_phan','lop_hoc_phans.id')
         ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
         ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
-        ->join('phong_hocs','phong_hocs.id','thoi_khoa_bieus.id_phong_hoc')
-        
-        ->where(function( $query) use  ($ma_giang_vien){
-           $query->where('lop_hoc_phans.ma_gv_1',$ma_giang_vien) ->orWhere('lop_hoc_phans.ma_gv_2',$ma_giang_vien)
+        ->join('phongs','phongs.id','thoi_khoa_bieus.id_phong_hoc')
+        ->where(function($query) use ($ma_giang_vien){
+            $query->where('lop_hoc_phans.ma_gv_1',$ma_giang_vien)
+            ->orWhere('lop_hoc_phans.ma_gv_2',$ma_giang_vien)
             ->orWhere('lop_hoc_phans.ma_gv_3',$ma_giang_vien);
         })
-        
+
         ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
         ->where('thoi_khoa_bieus.trang_thai',1);
 
         //    dd($thoiKhoaBieu->get());
         $phongHoc= clone $thoiKhoaBieu;
-        $phongHoc=$phongHoc->select('ten_phong_hoc','id_phong_hoc')->distinct()->get();
+        $phongHoc=$phongHoc->select('ten_phong','id_phong_hoc')->distinct()->get();
         //dd($phongHoc);
         $data=array();
         foreach($phongHoc as $p){
@@ -322,7 +323,7 @@ class APIThoiKhoaBieuController extends Controller
         }
         $data[]=array(
                 'id_phong_hoc'=>$p->id_phong_hoc,
-                'ten_phong_hoc'=>$p->ten_phong_hoc,
+                'ten_phong_hoc'=>$p->ten_phong,
                 'lich'=>$lichThuocPhong
         );
         }

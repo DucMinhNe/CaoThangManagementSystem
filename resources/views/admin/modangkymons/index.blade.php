@@ -6,7 +6,15 @@
 
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
             <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a>
+            <a class="btn btn-info" href="javascript:void(0)" id="btnMoDangKyMon"> Mở đăng ký môn theo khóa theo ngành </a>
         </ul>
+        <div class="modal fade bd-example-modal-lg" id="formthemmodangkymon"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                ...
+              </div>
+            </div>
+          </div>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
@@ -180,6 +188,11 @@ $(function() {
             table.ajax.url("{{ route('modangkymon.index') }}").load();
         }
     });
+    $('#btnMoDangKyMon').click(function(){
+        $('#id').val('');
+        $('#modalForm').trigger("reset");
+        $('#formthemmodangkymon').modal('show');
+    })
     $('#createNewBtn').click(function() {
         $('#savedata').val("create-Btn");
         $('#id').val('');
