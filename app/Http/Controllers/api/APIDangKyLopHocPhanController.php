@@ -144,6 +144,8 @@ class APIDangKyLopHocPhanController extends Controller
         $sinhvien=SinhVien::where('ma_sv',$ma_sv)->where('trang_thai',1)->first();
         $lopDangKy=LopHocPhan::join('dang_ky_lop_hoc_phans','dang_ky_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
                              ->where('dang_ky_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
+                             ->where('mo_dang_ky',1)
+                             ->where('trang_thai_hoan_thanh',0)
                              ->where('dang_ky_lop_hoc_phans.trang_thai',1)
                              ->where('duyet',0)
                              ->get();

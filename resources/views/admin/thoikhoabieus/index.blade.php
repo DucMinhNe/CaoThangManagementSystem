@@ -115,7 +115,7 @@
                                         <label for="id_phong_hoc">Phòng học</label>
                                         <select name="id_phong_hoc" id="id_phong_hoc" class="form-control select2" style="width: 100%;">
                                             @foreach ($phonghocs as $phonghoc)
-                                            <option value="{{ $phonghoc->id }}">{{$phonghoc->ten_phong_hoc}}</option>
+                                            <option value="{{ $phonghoc->id }}">{{$phonghoc->ten_phong}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -283,7 +283,7 @@ $('body').on('click', '.editBtn', function() {
         $dataOld=$dataNew= data.lich_hoc;
         data.lich_hoc.forEach(element => {
             row=row+1;
-            text=text+'<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+element.thu_trong_tuan+'">'+$arrayThu[element.thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+element.tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+element.tiet_ket_thuc.id+'">'+element.tiet_bat_dau.stt+' -> '+element.tiet_ket_thuc.stt+'</td><td >'+element.tiet_bat_dau.thoi_gian_bat_dau+' -> '+element.tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+element.phong_hoc.id+'">'+element.phong_hoc.ten_phong_hoc+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
+            text=text+'<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+element.thu_trong_tuan+'">'+$arrayThu[element.thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+element.tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+element.tiet_ket_thuc.id+'">'+element.tiet_bat_dau.stt+' -> '+element.tiet_ket_thuc.stt+'</td><td >'+element.tiet_bat_dau.thoi_gian_bat_dau+' -> '+element.tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+element.phong_hoc.id+'">'+element.phong_hoc.ten_phong+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
         });
         $('#table-thoi-khoa-bieu tbody').empty();
         $('#table-thoi-khoa-bieu tbody').append(text);
@@ -380,7 +380,7 @@ $('#add-row-tkb').click(function(){
             data:jsonOject
         }).done(function(response){
             if(response.status==1){
-                text='<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+thu_trong_tuan+'">'+$arrayThu[thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+tiet_ket_thuc.id+'">'+tiet_bat_dau.stt+' -> '+tiet_ket_thuc.stt+'</td><td >'+tiet_bat_dau.thoi_gian_bat_dau+' -> '+tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+phong_hoc.id+'">'+phong_hoc.ten_phong_hoc+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
+                text='<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+thu_trong_tuan+'">'+$arrayThu[thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+tiet_ket_thuc.id+'">'+tiet_bat_dau.stt+' -> '+tiet_ket_thuc.stt+'</td><td >'+tiet_bat_dau.thoi_gian_bat_dau+' -> '+tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+phong_hoc.id+'">'+phong_hoc.ten_phong+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
                 jsonOject={
                     'thu_trong_tuan':thu_trong_tuan,
                     'tiet_bat_dau':tiet_bat_dau,

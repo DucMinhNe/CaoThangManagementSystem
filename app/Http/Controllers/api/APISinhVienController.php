@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\api;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\SinhVien;
 use App\Models\Khoa;
@@ -227,5 +228,21 @@ class APISinhVienController extends Controller
             ]
             , 404);
 
+    }
+    public function doiMatKhau($ma_sv,Request $request){
+        $sinhvien=SinhVien::find($ma_sv);
+        if(Hash::check($request->mat_khau_cu,$sinhvien->mat_khau)){
+            $sinhvien->update([
+                'mat_khau'=>Hash::make($request->mat_khau_moi),
+            ]);
+            return response()->json([
+                'message'=>"Thay đổi mật khẩu thành công",
+                'status'=>1,
+            ],201);
+        }
+        return response()->json([
+            'message'=>"Mật khẩu cũ không khớp với mật khẩu hiện tại",
+            'status'=>0,
+        ],401);
     }
 }

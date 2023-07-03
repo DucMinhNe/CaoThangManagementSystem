@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Cao Thắng</title>
-        <link rel="icon" type="image/png" href="{{ asset('dist/img/caothang.png') }}" />
+            
         <!-- Google Font: Source Sans Pro -->
         <!-- <link rel="stylesheet"
             href="{{ asset('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback') }}"> -->
@@ -30,7 +30,19 @@
         <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <style>
+            .select2-selection__rendered {
+                line-height: 29px !important;
+            }
 
+            .select2-container .select2-selection--single {
+                height: 38px !important;
+            }
+
+            .select2-selection__arrow {
+                height: 35px !important;
+            }
+            </style>
     </head>
 
     <body class="hold-transition sidebar-mini layout-fixed">

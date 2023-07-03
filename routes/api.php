@@ -63,7 +63,7 @@ Route::post('/login-sinh-vien',[APIAuthController::class,'loginSinhVien']);
 Route::group(['middleware'=>'auth:sanctum'],function(){
     Route::post('/logout',[APIAuthController::class,'logoutSinhVien']);
     Route::get('/check-login',[APIAuthController::class,'checkLogin']);
-    
+
     Route::get('/thoi-khoa-bieu',[APIThoiKhoaBieuController::class,'index']);
     Route::get('/phong-hoc/{id}',[APIPhongHocController::class,'show']);
     Route::get('/thoi-gian-bieu/{id}',[APIThoiGianBieuController::class,'show']);
@@ -89,15 +89,18 @@ Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}/hoc-ky/{hocky}',[APISinhVienCo
     Route::post('/huy-dang-ky-lop-hoc-phan',[APIDangKyLopHocPhanController::class,'huyDangKyLopHocPhan']);
     Route::get('/kiem-tra-mon-hoc-cua-lop-hoc-phan-dang-ky',[APIDangKyLopHocPhanController::class,'kiemTraLopHocPhanCoMonDangKy']);
     Route::post('/cap-nhat-trang-thai-da-doc-cua-thong-bao/{id}',[APIThongBaoController::class,'capNhatTrangThaiThongBao']);
-
+    Route::get('/thoi-khoa-bieu-cua-sinh-vien-dang-ky-lop-hoc-phan/{ma_sv}',[APIThoiKhoaBieuController::class,'danhSachLichHocCuaSinhVienDangKyHocPhan']);
+    Route::get('/thoi-khoa-bieu-cua-sinh-vien/{ma_sv}',[APIThoiKhoaBieuController::class,'danhSachLichHocCuaSinhVienTheoChuongTrinh']);
+    Route::get('/hoc-ky-hien-tai-cua-sinh-vien/{ma_sv}',[APIThoiKhoaBieuController::class,'layHocKyHienTaiCuaSinhVien']);
+    Route::get('/danh-sach-lop-dang-ky/{ma_sv}',[APIDangKyLopHocPhanController::class,'layDanhSachLopDangKyCuaSinhVien']);
+    Route::get('/danh-sach-lop-hoc-phan-theo-mon-con-mo/{id}',[APILopHocPhanController::class,'danhSachLopHocPhanConMoThuocMonHoc']);
+    Route::get('/hoc-phi/thong-tin-hoc-phi/{id}',[APIHocPhiController::class,'thongTinHocPhi']);
+    Route::post('/sinh-vien/doi-mat-khau/{ma_sv}',[APISinhVienController::class,'doiMatKhau']);
 });
 
-Route::get('/thoi-khoa-bieu-cua-sinh-vien-dang-ky-lop-hoc-phan/{ma_sv}',[APIThoiKhoaBieuController::class,'danhSachLichHocCuaSinhVienDangKyHocPhan']);
-Route::get('/thoi-khoa-bieu-cua-sinh-vien/{ma_sv}',[APIThoiKhoaBieuController::class,'danhSachLichHocCuaSinhVienTheoChuongTrinh']);
-Route::get('/hoc-ky-hien-tai-cua-sinh-vien/{ma_sv}',[APIThoiKhoaBieuController::class,'layHocKyHienTaiCuaSinhVien']);
-Route::get('/danh-sach-lop-dang-ky/{ma_sv}',[APIDangKyLopHocPhanController::class,'layDanhSachLopDangKyCuaSinhVien']);
+
 // Route::get('/lich-hoc-cua-cac-lop-hoc-phan-dang-ky/{ma_sv}',[APIThoiKhoaBieuController::class,'lichHocCuaCacLopHocPhanDangDangKy']);
-Route::get('/danh-sach-lop-hoc-phan-theo-mon-con-mo/{id}',[APILopHocPhanController::class,'danhSachLopHocPhanConMoThuocMonHoc']);
+
 // Route::post('/xu-li-dong-hoc-phi',[FEClientController::class,'luuThongTinDangKy'])->name('cam-on-dong-hoc-phi');
 Route::get('/test-array',function(Request $request){
     dd($request);
@@ -168,6 +171,8 @@ Route::get('/giang-vien/thong-bao/danh-sach-thong-bao-lop-hoc-phan',[APIThongBao
      Route::get('/giang-vien/{id}',[APIGiangVienController::class,'show']);
  });
 
+
+
 Route::get('/thoikhoabieu/kiemtratrungphongtrungtiet',[ThoiKhoaBieuController::class,'kiemTraTrungPhongTrungTiet'])->name('thoikhoabieu.kiemtratrungphongtrungtiet');
 Route::get('/chuyennganh/laymonhoctheokhoahocvanganh',[DangKyLopHocPhanController::class,'searchMonTheoChuyenNganh'])->name('chuyennganh.laymonhoctheokhoahocvanganh');
 Route::get('/lophoc/danhsachlophocphantheomon',[DangKyLopHocPhanController::class,'danhSachLopHocPhanTheoMon'])->name('lophocphan.danhsachlophocphantheomon');
@@ -176,3 +181,4 @@ Route::get('/thanhtoanhocphi/getvnpaypaymentdetail',[ThanhToanHocPhiController::
 Route::get('/thanhtoanhocphi/getpaypalorderdetail',[ThanhToanHocPhiController::class,'getPaypalOrderDetail'])->name('thanhtoanhocphi.getPaypalOrderDetail');
 Route::get('/chuyennganh/lopthuocchuyennganh/{id_chuyen_nganh}',[ThanhToanHocPhiController::class,'lopThuocChuyenNganh'])->name('chuyennganh.lopthuocchuyennganh');
 Route::get('/sinhvien/sinhvientheolophoc/{id_lop_hoc}/{id_hoc_phi}',[ThanhToanHocPhiController::class,'sinhVienDongHocPhiTheoLopHoc'])->name('sinhvien.sinhvientheolophoc');
+
