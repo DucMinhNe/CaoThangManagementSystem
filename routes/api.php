@@ -148,5 +148,5 @@ Route::get('/sinhvien/danhsachsinhvientheokhoahocvachuyennganh',[DangKyLopHocPha
 Route::get('/thanhtoanhocphi/getvnpaypaymentdetail',[ThanhToanHocPhiController::class,'getVNPayPaymentDetail'])->name('thanhtoanhocphi.getVNPayPaymentDetail');
 Route::get('/thanhtoanhocphi/getpaypalorderdetail',[ThanhToanHocPhiController::class,'getPaypalOrderDetail'])->name('thanhtoanhocphi.getPaypalOrderDetail');
 Route::get('/chuyennganh/lopthuocchuyennganh/{id_chuyen_nganh}',[ThanhToanHocPhiController::class,'lopThuocChuyenNganh'])->name('chuyennganh.lopthuocchuyennganh');
-Route::get('/sinhvien/sinhvientheolophoc/{id_lop_hoc}/{id_hoc_phi}',[ThanhToanHocPhiController::class,'sinhVienDongHocPhiTheoLopHoc'])->name('sinhvien.sinhvientheolophoc');
-
+Route::get('/sinhvien/sinhvientheolophoc/{id_lop_hoc}/{hoc_ky}/{khoa_hoc}',[ThanhToanHocPhiController::class,'sinhVienDongHocPhiTheoLopHoc'])->name('sinhvien.sinhvientheolophoc');
+Route::get('/hocphi/danhsachsinhviendonghocphihocky/{hoc_ky}/{khoa_hoc}',[ThanhToanHocPhiController::class,'danhSachSinhVienDongHocPhiTheoHocKy'])->name('hocphi.danhsachsinhviendonghocphihocky');
