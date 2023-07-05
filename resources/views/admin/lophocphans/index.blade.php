@@ -167,8 +167,8 @@
                             <label for="trang_thai_hoan_thanh">Trạng Thái Hoàn Thành</label>
                             <select class="form-control select2" id="trang_thai_hoan_thanh" name="trang_thai_hoan_thanh"
                                 required>
-                                <option value="1">Hoàn Thành</option>
                                 <option value="0">Chưa Hoàn Thành</option>
+                                <option value="1">Hoàn Thành</option>
                             </select>
                         </div>
                     </div>
@@ -220,8 +220,11 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="saoChepSinhVien">Sao
+                        <button type="submit" class="btn btn-primary" id="saoChepSinhVien"> <i
+                                class="fa-solid fa-copy"></i> Sao
                             chép</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>

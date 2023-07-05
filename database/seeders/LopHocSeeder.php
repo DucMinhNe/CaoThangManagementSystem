@@ -18,25 +18,25 @@ class LopHocSeeder extends Seeder
             [
                 'id' => '1',
                 'ten_lop_hoc' => 'CDTH20B',
-                'id_chuyen_nganh' => 1,
+                'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],
             [
                 'id' => '2',
                 'ten_lop_hoc' => 'CDTH21A',
-                'id_chuyen_nganh' => 1,
+                'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],
             [
                 'id' => '3',
                 'ten_lop_hoc' => 'CDTH22C',
-                'id_chuyen_nganh' => 1,
+                'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],
             [
                 'id' => '4',
                 'ten_lop_hoc' => 'CDTH23D',
-                'id_chuyen_nganh' => 1,
+                'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],
         ]);

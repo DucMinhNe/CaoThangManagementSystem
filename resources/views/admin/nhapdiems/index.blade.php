@@ -18,7 +18,7 @@
     <div class="col-sm-5">
         <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2" style="width: 100%;">
             @foreach ($lophocphans as $lophocphan)
-            @if ($lophocphan->trang_thai == 1)
+            @if ($lophocphan->trang_thai == 1 && $lophocphan->trang_thai_hoan_thanh == 0)
             <option value="{{ $lophocphan->id }}">{{ $lophocphan->ten_lop_hoc_phan }}</option>
             @endif
             @endforeach

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SinhVien;
+use App\Models\Khoa;
+use App\Models\ChuyenNganh;
 use App\Imports\SinhViensImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\LopHoc;
@@ -39,9 +41,10 @@ class SinhVienController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        
+        $khoas = Khoa::all();
+        $chuyennganhs = ChuyenNganh::all();
         $lophocs = LopHoc::all();
-        return view('admin.sinhviens.index', compact('lophocs'));      
+        return view('admin.sinhviens.index', compact('khoas','chuyennganhs','lophocs'));    
     }
     public function getInactiveData()
     {
@@ -79,6 +82,70 @@ class SinhVienController extends Controller
         // Excel::import(new SinhViensImport,request()->file('fileExcel'));
         return back();
     }
+    public function getChuyenNganhByKhoa($id_khoa)
+    {
+        $chuyenNganhs = ChuyenNganh::where('id_khoa', $id_khoa)
+        ->where('trang_thai', 1)
+        ->get();
+
+        return response()->json($chuyenNganhs);
+    }
+    public function getLopByChuyenNganh($id_chuyen_nganh)
+    {
+        $lops = LopHoc::where('id_chuyen_nganh', $id_chuyen_nganh)
+        ->where('trang_thai', 1)
+        ->get();
+        return response()->json($lops);
+    }
+    public function getLopByKhoa($id_khoa)
+    {
+        $lops = LopHoc::join('chuyen_nganhs', 'lop_hocs.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
+        ->where('chuyen_nganhs.id_khoa', $id_khoa)
+        ->where('lop_hocs.trang_thai', 1)
+        ->select('lop_hocs.*')
+        ->get();
+
+        return response()->json($lops);
+    }
+    public function getSinhVienByIdKhoa($id_khoa)
+    {
+        $data = SinhVien::leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
+        ->leftJoin('chuyen_nganhs', 'lop_hocs.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
+        ->select('sinh_viens.*', 'lop_hocs.ten_lop_hoc')
+        ->where('chuyen_nganhs.id_khoa', $id_khoa)
+        ->where('sinh_viens.trang_thai', 1)
+        ->latest()
+        ->get();
+
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></a>';
+            $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash"></i></a>';
+
+            return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }   
+    public function getSinhVienByIdChuyenNganh($id_chuyen_nganh)
+    {
+        $data = SinhVien::leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
+        ->select('sinh_viens.*', 'lop_hocs.ten_lop_hoc')
+        ->where('lop_hocs.id_chuyen_nganh', $id_chuyen_nganh)
+        ->where('sinh_viens.trang_thai', 1)
+        ->latest()
+        ->get();
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></a>';
+            $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash"></i></a>';
+            return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
     public function getSinhVienByIdLop($id_lop)
     {
         $data = SinhVien::leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
@@ -91,9 +158,8 @@ class SinhVienController extends Controller
         ->addIndexColumn()
         ->addColumn('action', function ($row) {
 
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
-            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ma_sv.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
-
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></a>';
+            $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_sv . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash"></i></a>';
             return $btn;
         })
         ->rawColumns(['action'])
@@ -166,9 +232,6 @@ class SinhVienController extends Controller
     
 
     
-    
-
-
     /**
      * Store a newly created resource in storage.
      *

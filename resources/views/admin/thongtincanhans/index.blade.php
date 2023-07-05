@@ -306,11 +306,13 @@
                                             <b>Các Môn Giảng Dạy: </b>
                                             @foreach($lophocphans
                                             as $lophocphan)
+                                            @if ($lophocphan->trang_thai_hoan_thanh == 0)
                                             <li class="list-group-item">
                                                 <a class="float-left">
                                                     {{ $lophocphan->ten_lop_hoc_phan }}
                                                 </a>
                                             </li>
+                                            @endif
                                             @endforeach
                                         </ul>
                                     </div>

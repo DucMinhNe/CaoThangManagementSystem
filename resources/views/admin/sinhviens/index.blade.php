@@ -13,40 +13,80 @@
     height: 35px !important;
 }
 </style>
-<div class="form-group row">
-    <label for="id_lop_hoc_filter" class="col-sm-1 col-form-label">Lớp Học</label>
-    <div class="col-sm-2">
-        <select name="id_lop_hoc_filter" id="id_lop_hoc_filter" class="form-control select2" style="width: 100%;">
-            <option value="0">-- Chọn lớp --</option>
-            @foreach ($lophocs as $lophoc)
-            @if ($lophoc->trang_thai == 1)
-            <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
-            </option>
-            @endif
-            @endforeach
-        </select>
-    </div>
-    <div class="col-sm-2">
-        <button id="xemBtn" class="btn btn-info" type="button">Xem</button>
-
-    </div>
-</div>
+<style>
+th,
+td {
+    white-space: nowrap;
+    width: auto;
+}
+</style>
 <section>
     <div class="container">
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <li class="nav-item mr-1">
-                <button id="themSinhVienExcelBtn" class="btn btn-primary" type="button">Thêm Bằng File
-                    Excel</button>
-            </li>
-            <li class="nav-item mr-1">
-                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
-            </li>
-            <li class="nav-item">
-                <button class="btn btn-success" type="button" id="createNewBtn">
-                    <i class="fa-solid fa-circle-plus"></i> Thêm
-                </button>
-            </li>
-        </ul>
+        <div class="form-group row mb-0">
+            <label for="id_khoa_filter" class="col-sm-2 col-form-label">Khoa</label>
+            <div class="col-sm-3">
+                <select name="id_khoa_filter" id="id_khoa_filter" class="form-control select2" style="width: 100%;">
+                    <option value="0">-- Chọn khoa --</option>
+                    @foreach ($khoas as $khoa)
+                    @if ($khoa->trang_thai == 1)
+                    <option value="{{ $khoa->id}}">{{ $khoa->ten_khoa }}
+                    </option>
+                    @endif
+                    @endforeach
+                </select>
+            </div>
+            <ul class="nav nav-pills nav-pills-bg-soft ml-auto mb-3">
+                <li class="nav-item mr-1">
+                    <button id="themSinhVienExcelBtn" class="btn btn-primary" type="button">Thêm Bằng File
+                        Excel</button>
+                </li>
+                <li class="nav-item mr-1">
+                    <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã
+                        xóa</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-success" type="button" id="createNewBtn">
+                        <i class="fa-solid fa-circle-plus"></i> Thêm
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="form-group row mt-0">
+
+            <label for="id_chuyen_nganh_filter" class="col-sm-2 col-form-label">Chuyên ngành</label>
+            <div class="col-sm-3">
+                <select name="id_chuyen_nganh_filter" id="id_chuyen_nganh_filter" class="form-control select2"
+                    style="width: 100%;">
+                    <option value="0">-- Chọn chuyên ngành --</option>
+                    @foreach ($chuyennganhs as $chuyennganh)
+                    @if ($chuyennganh->trang_thai == 1)
+                    <option value="{{ $chuyennganh->id}}">{{ $chuyennganh->ten_chuyen_nganh }}
+                    </option>
+                    @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group row mt-0">
+            <label for="id_lop_hoc_filter" class="col-sm-2 col-form-label">Lớp Học</label>
+            <div class="col-sm-3">
+                <select name="id_lop_hoc_filter" id="id_lop_hoc_filter" class="form-control select2"
+                    style="width: 100%;">
+                    <option value="0">-- Chọn lớp --</option>
+                    @foreach ($lophocs as $lophoc)
+                    @if ($lophoc->trang_thai == 1)
+                    <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
+                    </option>
+                    @endif
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="xemBtn" class="btn btn-info" type="button">Xem</button>
+                <button id="datLaiBtn" class="btn btn-info" type="button">Đặt lại</button>
+            </div>
+        </div>
+
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
@@ -71,7 +111,34 @@
                         <th>Hệ Đào Tạo</th>
                         <th>Lớp Học</th>
                         <th>Tình Trạng Học</th>
-                        <th width="72px"></th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th width="80px"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -246,8 +313,8 @@
                                     <label for="tinh_trang_hoc">Tình Trạng Học</label>
                                     <select class="form-control select2" id="tinh_trang_hoc" name="tinh_trang_hoc"
                                         required>
-                                        <option value="1">Đang Học</option>
-                                        <option value="0">Bảo Lưu</option>
+                                        <option value="Đang học">Đang học</option>
+                                        <option value="Bảo lưu">Bảo lưu</option>
                                     </select>
                                 </div>
                             </div>
@@ -327,45 +394,46 @@ $(function() {
         processing: true,
         serverSide: true,
         scrollX: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+                if (column.index() !== 20) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                    select.select2({
+                        width: 'auto',
+                        dropdownAutoWidth: true
+                    });
+                }
+            });
+            table.api().columns([2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14, 16, 17]).visible(
+                false);
+        },
         ajax: "{{ route('sinhvien.index') }}",
-        columnDefs: [{
-                "visible": false,
-                "targets": 2
-            }, {
-                "visible": false,
-                "targets": 3
-            }, {
-                "visible": false,
-                "targets": 4
-            }, {
-                "visible": false,
-                "targets": 5
-            }, {
-                "visible": false,
-                "targets": 7
-            }, {
-                "visible": false,
-                "targets": 8
-            }, {
-                "visible": false,
-                "targets": 9
-            }, {
-                "visible": false,
-                "targets": 10
-            }, {
-                "visible": false,
-                "targets": 11
-            }, {
+        columnDefs: [
+            // {
+            //     "visible": false,
+            //     "targets": [2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14]
+            // },
+            {
                 "targets": 12,
-                className: 'dt-body-center'
-            }, {
-                "visible": false,
-                "targets": 13
-            }, {
-                "visible": false,
-                "targets": 14
-            },
-
+                "className": 'dt-body-center'
+            }
         ],
         columns: [{
                 data: 'ma_sv',
@@ -436,7 +504,7 @@ $(function() {
                 render: function(data, type, full, meta) {
                     if (data) {
                         return '<img src="{{ asset("sinhvien_img") }}/' + data +
-                            '" width="80" height="80">';
+                            '" width="100" height="100">';
                     } else {
                         return '';
                     }
@@ -471,14 +539,7 @@ $(function() {
             },
             {
                 data: 'tinh_trang_hoc',
-                name: 'tinh_trang_hoc',
-                render: function(data, type, full, meta) {
-                    if (data == 1) {
-                        return 'Đang Học';
-                    } else {
-                        return 'Bảo Lưu';
-                    }
-                }
+                name: 'tinh_trang_hoc'
             },
             {
                 data: 'action',
@@ -544,6 +605,17 @@ $(function() {
             }
         ],
     });
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+        $(".table-cell").css("width", "");
+        table.columns.adjust().draw();
+    });
+    $(".filter-row").toggle();
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
+    });
     $('#themSinhVienExcelBtn').click(function() {
         // Hiển thị modal
         $('#themSinhVienExcelModal').modal('show');
@@ -563,13 +635,26 @@ $(function() {
             processData: false,
             success: function(response) {
                 // Xử lý phản hồi thành công
-                alert('Import thành công!');
-                location.reload(); // Tải lại trang
+                Swal.fire({
+                    title: 'Thêm thành công',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload(); // Tải lại trang
+                    }
+                })
             },
             error: function(xhr, status, error) {
-                // Xử lý lỗi
                 console.log('Error:', xhr.responseText);
                 // alert('Đã xảy ra lỗi: ' + xhr.responseText);
+                Swal.fire({
+                    title: 'Không đúng định dạng vui lòng nhập lại',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                    }
+                })
             }
         });
     });
@@ -584,12 +669,143 @@ $(function() {
             table.ajax.url("{{ route('sinhvien.index') }}").load();
         }
     });
+    $('#datLaiBtn').click(function() {
+        $("#id_khoa_filter").empty();
+        var khoas = <?php echo json_encode($khoas); ?>;
+        $("#id_khoa_filter").append('<option value="0">-- Chọn khoa --</option>');
+        $.each(khoas, function(index, khoa) {
+            var option = '<option value="' + khoa.id + '">' + khoa
+                .ten_khoa +
+                '</option>';
+            $("#id_khoa_filter").append(option);
+        });
+
+        $("#id_chuyen_nganh_filter").empty();
+        var chuyennganhs = <?php echo json_encode($chuyennganhs); ?>;
+        $("#id_chuyen_nganh_filter").append('<option value="0">-- Chọn chuyên ngành --</option>');
+        $.each(chuyennganhs, function(index, chuyennganh) {
+            var option = '<option value="' + chuyennganh.id + '">' + chuyennganh
+                .ten_chuyen_nganh +
+                '</option>';
+            $("#id_chuyen_nganh_filter").append(option);
+        });
+        $("#id_lop_hoc_filter").empty();
+        var lophocs = <?php echo json_encode($lophocs); ?>;
+        $("#id_lop_hoc_filter").append('<option value="0">-- Chọn lớp --</option>');
+        $.each(lophocs, function(index, lophoc) {
+            var option = '<option value="' + lophoc.id + '">' + lophoc.ten_lop_hoc +
+                '</option>';
+            $("#id_lop_hoc_filter").append(option);
+        });
+    });
     $('#xemBtn').click(function() {
+        var selectedKhoaId = $("#id_khoa_filter").val();
+        var selectedChuyenNganhId = $("#id_chuyen_nganh_filter").val();
         var selectedLopHocId = $("#id_lop_hoc_filter").val();
-        if (selectedLopHocId == 0) {
-            table.ajax.url("{{ route('sinhvien.index') }}").load();
-        } else {
+
+        if (selectedLopHocId != 0) {
+            // Nếu đã chọn lớp học, load danh sách sinh viên theo lớp học
             table.ajax.url("{{ route('sinhvien.getSinhVienByIdLop', '') }}/" + selectedLopHocId).load();
+        } else if (selectedChuyenNganhId != 0) {
+            // Nếu đã chọn chuyên ngành, load danh sách sinh viên theo chuyên ngành
+            table.ajax.url("{{ route('sinhvien.getSinhVienByIdChuyenNganh', '') }}/" +
+                selectedChuyenNganhId).load();
+        } else if (selectedKhoaId != 0) {
+            // Nếu đã chọn khoa, load danh sách sinh viên theo khoa
+            table.ajax.url("{{ route('sinhvien.getSinhVienByIdKhoa', '') }}/" + selectedKhoaId).load();
+        } else {
+            // Nếu không chọn gì cả, load lại toàn bộ danh sách sinh viên
+            table.ajax.url("{{ route('sinhvien.index') }}").load();
+        }
+    });
+    $("#id_khoa_filter").change(function() {
+        var selectedKhoaId = $(this).val();
+        if (selectedKhoaId != 0) {
+            $.ajax({
+                url: "{{ route('sinhvien.getChuyenNganhByKhoa', '') }}/" + selectedKhoaId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Xóa các option hiện tại trong dropdown chuyên ngành
+                    $("#id_chuyen_nganh_filter").empty();
+                    $("#id_chuyen_nganh_filter").append(
+                        '<option value="0">-- Chọn chuyên ngành --</option>');
+                    // Thêm các option mới từ response
+                    $.each(response, function(key, value) {
+                        $("#id_chuyen_nganh_filter").append('<option value="' +
+                            value.id + '">' + value.ten_chuyen_nganh +
+                            '</option>');
+                    });
+                }
+            });
+            $.ajax({
+                url: "{{ route('sinhvien.getLopByKhoa', '') }}/" + selectedKhoaId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Xóa các option hiện tại trong dropdown lớp học
+                    $("#id_lop_hoc_filter").empty();
+                    $("#id_lop_hoc_filter").append(
+                        '<option value="0">-- Chọn lớp --</option>');
+                    // Thêm các option mới từ response
+                    $.each(response, function(key, value) {
+                        $("#id_lop_hoc_filter").append('<option value="' +
+                            value.id + '">' + value.ten_lop_hoc +
+                            '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#id_chuyen_nganh_filter").empty();
+            var chuyennganhs = <?php echo json_encode($chuyennganhs); ?>;
+            $("#id_chuyen_nganh_filter").append('<option value="0">-- Chọn chuyên ngành --</option>');
+            $.each(chuyennganhs, function(index, chuyennganh) {
+                var option = '<option value="' + chuyennganh.id + '">' + chuyennganh
+                    .ten_chuyen_nganh +
+                    '</option>';
+                $("#id_chuyen_nganh_filter").append(option);
+            });
+            $("#id_lop_hoc_filter").empty();
+            var lophocs = <?php echo json_encode($lophocs); ?>;
+            $("#id_lop_hoc_filter").append('<option value="0">-- Chọn lớp --</option>');
+            $.each(lophocs, function(index, lophoc) {
+                var option = '<option value="' + lophoc.id + '">' + lophoc.ten_lop_hoc +
+                    '</option>';
+                $("#id_lop_hoc_filter").append(option);
+            });
+        }
+    });
+
+    // Lấy danh sách lớp học khi chọn chuyên ngành
+    $("#id_chuyen_nganh_filter").change(function() {
+        var selectedChuyenNganhId = $(this).val();
+
+        if (selectedChuyenNganhId != 0) {
+            $.ajax({
+                url: "{{ route('sinhvien.getLopByChuyenNganh', '') }}/" + selectedChuyenNganhId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Xóa các option hiện tại trong dropdown lớp học
+                    $("#id_lop_hoc_filter").empty();
+                    $("#id_lop_hoc_filter").append(
+                        '<option value="0">-- Chọn lớp --</option>');
+                    // Thêm các option mới từ response
+                    $.each(response, function(key, value) {
+                        $("#id_lop_hoc_filter").append('<option value="' + value
+                            .id + '">' + value.ten_lop_hoc + '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#id_lop_hoc_filter").empty();
+            var lophocs = <?php echo json_encode($lophocs); ?>;
+            $("#id_lop_hoc_filter").append('<option value="0">-- Chọn lớp --</option>');
+            $.each(lophocs, function(index, lophoc) {
+                var option = '<option value="' + lophoc.id + '">' + lophoc.ten_lop_hoc +
+                    '</option>';
+                $("#id_lop_hoc_filter").append(option);
+            });
         }
     });
     $('#createNewBtn').click(function() {

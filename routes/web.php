@@ -55,7 +55,6 @@ Route::get('khongcoquyen', function () {
 })->name('khongcoquyen');
 
 
-
 Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('login');
 Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);
 Route::get('/admin/dangxuat', [DangNhapController::class,'dangXuat']);
@@ -130,7 +129,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/ctchuongtrinhdaotao/restore/{id}', [CTChuongTrinhDaoTaoController::class, 'restore'])->name('ctchuongtrinhdaotao.restore');
         Route::resource('ctchuongtrinhdaotao', CTChuongTrinhDaoTaoController::class);
 
+        Route::get('/sinhvien/getLopByKhoa/{id_khoa}', [SinhVienController::class, 'getLopByKhoa'])->name('sinhvien.getLopByKhoa');
+        Route::get('/sinhvien/getChuyenNganhByKhoa/{id_khoa}', [SinhVienController::class, 'getChuyenNganhByKhoa'])->name('sinhvien.getChuyenNganhByKhoa');
+        Route::get('/sinhvien/getLopByChuyenNganh/{id_chuyen_nganh}', [SinhVienController::class, 'getLopByChuyenNganh'])->name('sinhvien.getLopByChuyenNganh');
+
+        Route::get('/sinhvien/getSinhVienByIdKhoa/{id_khoa}', [SinhVienController::class, 'getSinhVienByIdKhoa'])->name('sinhvien.getSinhVienByIdKhoa');
+        Route::get('/sinhvien/getSinhVienByIdChuyenNganh/{id_chuyen_nganh}', [SinhVienController::class, 'getSinhVienByIdChuyenNganh'])->name('sinhvien.getSinhVienByIdChuyenNganh');
         Route::get('/sinhvien/getSinhVienByIdLop/{id_lop_hoc}', [SinhVienController::class, 'getSinhVienByIdLop'])->name('sinhvien.getSinhVienByIdLop');
+        
         Route::post('/sinhvien/import', [SinhVienController::class, 'import'])->name('sinhvien.import');
         Route::get('/sinhvien/getInactiveData', [SinhVienController::class, 'getInactiveData'])->name('sinhvien.getInactiveData');
         Route::get('/sinhvien/restore/{id}', [SinhVienController::class, 'restore'])->name('sinhvien.restore');
@@ -145,6 +151,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::resource('danhsachchucvusinhvien', DanhSachChucVuSinhVienController::class);
     });            
     Route::group(['middleware' => 'checkchucvu:1'], function () {
+        Route::get('/giangvien/getGiangVienByIdKhoa/{id_khoa}', [GiangVienController::class, 'getGiangVienByIdKhoa'])->name('giangvien.getGiangVienByIdKhoa');
+        Route::get('/giangvien/getGiangVienByIdBoMon/{id_bo_mon}', [GiangVienController::class, 'getGiangVienByIdBoMon'])->name('giangvien.getGiangVienByIdBoMon');
         Route::get('/giangvien/getInactiveData', [GiangVienController::class, 'getInactiveData'])->name('giangvien.getInactiveData');
         Route::get('/giangvien/restore/{id}', [GiangVienController::class, 'restore'])->name('giangvien.restore');
         Route::resource('giangvien', GiangVienController::class);
@@ -159,28 +167,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     });   
     
     Route::resource('thongtincanhan', ThongTinCaNhanController::class);
-    
-
     Route::get('/get-thong-tin-lop-hoc-phan', [NhapDiemController::class, 'getThongTinLopHocPhan']);
     Route::resource('nhapdiem', NhapDiemController::class);
     Route::get('/lay-sinhvien-theo-lophoc', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
     Route::get('/lay-tong-sinh-vien', [SinhVienController::class, 'layTongSinhVien'])->name('lay-tong-sinh-vien');
     Route::get('/lay-tong-giang-vien', [GiangVienController::class, 'layTongGiangVien'])->name('lay-tong-giang-vien');
 });
-// Route::group(['middleware' => ['auth', 'checkchucvu:2'], 'prefix' => 'teacher'], function () {
-//     Route::get('/', function () {
-//         return view('admin.index');
-//     });
-//     Route::resource('thongtincanhan', ThongTinCaNhanController::class);
-//     Route::get('/lay-sinhvien-theo-lophoc', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
-//     Route::get('/lay-tong-sinh-vien', [SinhVienController::class, 'layTongSinhVien'])->name('lay-tong-sinh-vien');
-//     Route::get('/lay-tong-giang-vien', [GiangVienController::class, 'layTongGiangVien'])->name('lay-tong-giang-vien');
-
-//     Route::get('/khoa/getInactiveData', [KhoaController::class, 'getInactiveData'])->name('khoa.getInactiveData');
-//     Route::get('/khoa/restore/{id}', [KhoaController::class, 'restore'])->name('khoa.restore');
-//     Route::resource('khoa', KhoaController::class);
-// });
-// use App\Http\Controllers\TaiKhoanGiangVienController;
-// Route::get('/taikhoangiangvien/getInactiveData', [TaiKhoanGiangVienController::class, 'getInactiveData'])->name('taikhoangiangvien.getInactiveData');
-// Route::get('/taikhoangiangvien/restore/{id}', [TaiKhoanGiangVienController::class, 'restore'])->name('taikhoangiangvien.restore');
-// Route::resource('taikhoangiangvien', TaiKhoanGiangVienController::class);

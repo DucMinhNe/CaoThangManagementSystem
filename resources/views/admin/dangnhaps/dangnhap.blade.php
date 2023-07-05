@@ -69,7 +69,8 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-5">
-                            <button type="submit" class="btn btn-primary btn-block">Đăng Nhập</button>
+                            <button type="submit" class="btn btn-primary btn-block"><i
+                                    class="fa-solid fa-right-to-bracket"></i> Đăng Nhập</button>
                         </div>
                         <!-- /.col -->
                     </div>

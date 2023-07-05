@@ -13,9 +13,59 @@
     height: 35px !important;
 }
 </style>
+<style>
+th,
+td {
+    white-space: nowrap;
+    width: auto;
+}
+</style>
 <section>
     <div class="container">
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+        <div class="form-group row mb-0">
+            <label for="id_khoa_filter" class="col-sm-1 col-form-label">Khoa</label>
+            <div class="col-sm-3">
+                <select name="id_khoa_filter" id="id_khoa_filter" class="form-control select2" style="width: 100%;">
+                    <option value="0">-- Chọn khoa --</option>
+                    @foreach ($khoas as $khoa)
+                    @if ($khoa->trang_thai == 1)
+                    <option value="{{ $khoa->id}}">{{ $khoa->ten_khoa }}
+                    </option>
+                    @endif
+                    @endforeach
+                </select>
+            </div>
+            <ul class="nav nav-pills nav-pills-bg-soft ml-auto mb-3">
+                <li class="nav-item mr-1">
+                    <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã
+                        xóa</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-success" type="button" id="createNewBtn">
+                        <i class="fa-solid fa-circle-plus"></i> Thêm
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="form-group row mt-0">
+            <label for="id_bo_mon_filter" class="col-sm-1 col-form-label">Bộ Môn</label>
+            <div class="col-sm-3">
+                <select name="id_bo_mon_filter" id="id_bo_mon_filter" class="form-control select2" style="width: 100%;">
+                    <option value="0">-- Chọn bộ môn --</option>
+                    @foreach ($bomons as $bomon)
+                    @if ($bomon->trang_thai == 1)
+                    <option value="{{ $bomon->id}}">{{ $bomon->ten_bo_mon }}
+                    </option>
+                    @endif
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="xemBtn" class="btn btn-info" type="button">Xem</button>
+                <button id="datLaiBtn" class="btn btn-info" type="button">Đặt lại</button>
+            </div>
+        </div>
+        <!-- <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
             <li class="nav-item mr-1">
                 <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
             </li>
@@ -24,12 +74,12 @@
                     <i class="fa-solid fa-circle-plus"></i> Thêm
                 </button>
             </li>
-        </ul>
+        </ul> -->
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th width="50px">Mã Giảng Viên</th>
+                        <th>Mã Giảng Viên</th>
                         <th>Tên Giảng Viên</th>
                         <th>Email</th>
                         <th>Số Điện Thoại</th>
@@ -46,8 +96,33 @@
                         <th>Mật Khẩu</th>
                         <th>Bộ Môn</th>
                         <th>Chức Vụ</th>
-                        <th width="100px">Tình Trạng Làm Việc</th>
-                        <th width="72px"></th>
+                        <th>Tình Trạng Làm Việc</th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -254,41 +329,48 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        scrollX: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+                if (column.index() !== 18) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                    select.select2({
+                        width: 'auto',
+                        dropdownAutoWidth: true
+                    });
+                }
+            });
+            table.api().columns([2, 3, 4, 7, 8, 9, 10, 11, 13, 14]).visible(
+                false);
+        },
         ajax: "{{ route('giangvien.index') }}",
-        columnDefs: [{
-            "visible": false,
-            "targets": 2
-        }, {
-            "visible": false,
-            "targets": 3
-        }, {
-            "visible": false,
-            "targets": 4
-        }, {
-            "visible": false,
-            "targets": 7
-        }, {
-            "visible": false,
-            "targets": 8
-        }, {
-            "visible": false,
-            "targets": 9
-        }, {
-            "visible": false,
-            "targets": 10
-        }, {
-            "visible": false,
-            "targets": 11
-        }, {
-            "targets": 12,
-            className: 'dt-body-center'
-        }, {
-            "visible": false,
-            "targets": 13
-        }, {
-            "visible": false,
-            "targets": 14
-        }],
+        columnDefs: [
+            // {
+            //     "visible": false,
+            //     "targets": [2, 3, 4, 7, 8, 9, 10, 11, 13, 14]
+            // },
+            {
+                "targets": 12,
+                "className": 'dt-body-center'
+            }
+        ],
         columns: [{
                 data: 'ma_gv',
                 name: 'ma_gv',
@@ -456,7 +538,52 @@ $(function() {
             }
         ],
     });
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+        $(".table-cell").css("width", "");
+        table.columns.adjust().draw();
+    });
+    $(".filter-row").toggle();
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
+    });
+    $('#xemBtn').click(function() {
+        var selectedKhoaId = $("#id_khoa_filter").val();
+        var selectedBoMonId = $("#id_bo_mon_filter").val();
 
+        if (selectedBoMonId != 0) {
+            table.ajax.url("{{ route('giangvien.getGiangVienByIdBoMon', '') }}/" + selectedBoMonId)
+                .load();
+        } else if (selectedKhoaId != 0) {
+
+            table.ajax.url("{{ route('giangvien.getGiangVienByIdKhoa', '') }}/" +
+                selectedKhoaId).load();
+        } else {
+
+            table.ajax.url("{{ route('giangvien.index') }}").load();
+        }
+    });
+    $('#datLaiBtn').click(function() {
+        $("#id_khoa_filter").empty();
+        var khoas = <?php echo json_encode($khoas); ?>;
+        $("#id_khoa_filter").append('<option value="0">-- Chọn khoa --</option>');
+        $.each(khoas, function(index, khoa) {
+            var option = '<option value="' + khoa.id + '">' + khoa
+                .ten_khoa +
+                '</option>';
+            $("#id_khoa_filter").append(option);
+        });
+        $("#id_bo_mon_filter").empty();
+        var bomons = <?php echo json_encode($bomons); ?>;
+        $("#id_bo_mon_filter").append('<option value="0">-- Chọn bộ môn --</option>');
+        $.each(bomons, function(index, bomon) {
+            var option = '<option value="' + bomon.id + '">' + bomon.ten_bo_mon +
+                '</option>';
+            $("#id_bo_mon_filter").append(option);
+        });
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
