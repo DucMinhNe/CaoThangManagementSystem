@@ -36,28 +36,28 @@ class ThanhToanHocPhiController extends Controller
                                    ->latest()->get();
             return Datatables::of($data)
                     ->addIndexColumn()
-                    ->addColumn('action', function($row){
+                    // ->addColumn('action', function($row){
 
-                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-ma-sv="'.$row->ma_sv.'" data-id-lop-hoc="'.$row->id_lop_hoc.'" data-id-hoc-phi="'.$row->id_hoc_phi.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Xem</a>';
+                    //     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-ma-sv="'.$row->ma_sv.'" data-id-lop-hoc="'.$row->id_lop_hoc.'" data-hoc-ky="'.$row->hoc_ky.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Xem</a>';
 
-                            $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
-
-
-
-                        return $btn;
+                    //         $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
 
 
-                    })
-                    ->rawColumns(['action'])
+
+                    //     return $btn;
+
+
+                    // })
+                    // ->rawColumns(['action'])
                     ->make(true);
         }
         $khoahocs=ChuongTrinhDaoTao::where('trang_thai',1)->get();
         $chuyennganhs=ChuyenNganh::where('trang_thai',1)->get();
-
-        $hocphis=HocPhi::leftJoin('chuyen_nganhs','chuyen_nganhs.id','hoc_phis.id_chuyen_nganh')->select('hoc_phis.*','chuyen_nganhs.ten_chuyen_nganh')->where('hoc_phis.trang_thai',1)->get();
+        $lophocs=LopHoc::where('trang_thai',1)->get();
+        $hocphis=HocPhi::where('hoc_phis.trang_thai',1)->select('hoc_ky','khoa_hoc')->distinct()->get();
         $sinhviens=SinhVien::where('trang_thai',1)->whereNotIn('ma_sv',ThanhToanHocPhi::select('ma_sv')->where('trang_thai',1)->get())->get();
         $hinhthucthanhtoans=HinhThucThanhToan::where('trang_thai',1)->get();
-        return view('admin.thanhtoanhocphis.index',compact('hocphis','sinhviens','hinhthucthanhtoans','chuyennganhs'));
+        return view('admin.thanhtoanhocphis.index',compact('hocphis','sinhviens','hinhthucthanhtoans','chuyennganhs','lophocs'));
     }
     public function getInactiveData()
     {
@@ -101,42 +101,49 @@ class ThanhToanHocPhiController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->id_hinh_thuc_thanh_toan==1){
-            $searchPayment=PaypalPayment::where('payment_id',$request->payment_id)->first();
-            if($searchPayment==null){
+        $sinhvien=SinhVien::find($request->ma_sv);
+        $hocphi=HocPhi::where('hoc_ky',$request->hoc_ky)->where('khoa_hoc',$request->khoa_hoc)->where('id_chuyen_nganh',$sinhvien->lopHoc->id_chuyen_nganh)->where('trang_thai',1)->first();
+        if($hoc_ky!=null){
+            if($request->id_hinh_thuc_thanh_toan==1){
+                $searchPayment=PaypalPayment::where('payment_id',$request->payment_id)->first();
+                if($searchPayment==null){
 
-                $paypalPayment=PaypalPayment::create($request->all());
-                ThanhToanHocPhi::create([
-                    'id_hoc_phi'=>$request->id_hoc_phi,
-                    'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
-                    'paypal_payment_id'=>$paypalPayment->id,
-                    'ma_sv'=>$request->ma_sv,
-                ]);
+                    $paypalPayment=PaypalPayment::create($request->all());
+                    ThanhToanHocPhi::create([
+                        'id_hoc_phi'=>$hocphi->id,
+                        'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
+                        'paypal_payment_id'=>$paypalPayment->id,
+                        'ma_sv'=>$request->ma_sv,
+                    ]);
+                }
+                else
+                    return response()->json([
+                        'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
+                        'status'=>2
+                    ]);
             }
-            else
-                return response()->json([
-                    'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
-                    'status'=>2
-                ]);
-        }
-        if($request->id_hinh_thuc_thanh_toan==2){
-            $searchPayment=VnpayPayment::where('vnp_TxnRef',$request->vnp_TxnRef)->where('vnp_PayDate',$request->vnp_PayDate)->first();
-            if($searchPayment==null){
-                $vnpayPayment=VnpayPayment::create($request->all());
-                ThanhToanHocPhi::create([
-                    'id_hoc_phi'=>$request->id_hoc_phi,
-                    'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
-                    'vnpay_payment_id'=>$vnpayPayment->id,
-                    'ma_sv'=>$request->ma_sv,
-                ]);
+            if($request->id_hinh_thuc_thanh_toan==2){
+                $searchPayment=VnpayPayment::where('vnp_TxnRef',$request->vnp_TxnRef)->where('vnp_PayDate',$request->vnp_PayDate)->first();
+                if($searchPayment==null){
+                    $vnpayPayment=VnpayPayment::create($request->all());
+                    ThanhToanHocPhi::create([
+                        'id_hoc_phi'=>$hocphi->id,
+                        'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
+                        'vnpay_payment_id'=>$vnpayPayment->id,
+                        'ma_sv'=>$request->ma_sv,
+                    ]);
+                }
+                else
+                    return response()->json([
+                        'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
+                        'status'=>2
+                    ]);
             }
-            else
-                return response()->json([
-                    'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
-                    'status'=>2
-                ]);
+            return response()->json(['success' => 'Lưu Thành Công.','status'=>1]);
         }
-        return response()->json(['success' => 'Lưu Thành Công.','status'=>1]);
+        return response()->json(['error'=>'Không tìm thấy học phí','status'=>0]);
+
+
     }
 
     /**
@@ -356,13 +363,56 @@ class ThanhToanHocPhiController extends Controller
     public function lopThuocChuyenNganh($id_chuyen_nganh){
         return LopHoc::where('id_chuyen_nganh',$id_chuyen_nganh)->where('trang_thai',1)->get();
     }
-    public function sinhVienDongHocPhiTheoLopHoc($id_lop_hoc,$id_hoc_phi){
+    public function sinhVienDongHocPhiTheoLopHoc($id_lop_hoc,$hoc_ky,$khoa_hoc){
         $sinhviens= SinhVien::where('id_lop_hoc',$id_lop_hoc)->where('trang_thai',1)->orderBy('ma_sv','asc')->get();
-        $quatrinhhoctaps=QuaTrinhHocTap::where('id_lop_hoc',$id_lop_hoc)->where('trang_thai',1)->get();
+
         $data=array();
-        foreach ($quatrinhhoctaps as $quatrinhhoctap) {
-            $sinhvien=SinhVien::where('ma_sv',$quatrinhhoctap->ma_sv)->where('trang_thai',1)->first();
-            $thanhtoanhocphi=ThanhToanHocPhi::where('ma_sv',$sinhvien->ma_sv)->where('id_hoc_phi',$id_hoc_phi)->where('trang_thai',1)->first();
+        foreach ($sinhviens as $sinhvien) {
+            $sinhvien=SinhVien::where('ma_sv',$sinhvien->ma_sv)->where('trang_thai',1)->first();
+            $thanhtoanhocphi=ThanhToanHocPhi::leftJoin('hoc_phis','hoc_phis.id','thanh_toan_hoc_phis.id_hoc_phi')
+            ->where('hoc_phis.hoc_ky',$hoc_ky)
+            ->where('hoc_phis.khoa_hoc',$khoa_hoc)
+            ->where('ma_sv',$sinhvien->ma_sv)->where('thanh_toan_hoc_phis.trang_thai',1)->first();
+            if($thanhtoanhocphi!=null){
+                $dataPayment=array();
+                if($thanhtoanhocphi->id_hinh_thuc_thanh_toan==1){
+                    $dataPayment=array(
+                        'hinh_thuc_thanh_toan'=>HinhThucThanhToan::find($thanhtoanhocphi->id_hinh_thuc_thanh_toan),
+                        'thong_tin_thanh_toan'=>PaypalPayment::find($thanhtoanhocphi->paypal_payment_id),
+                    );
+                }
+                else{
+                    $dataPayment=array(
+                        'hinh_thuc_thanh_toan'=>HinhThucThanhToan::find($thanhtoanhocphi->id_hinh_thuc_thanh_toan),
+                        'thong_tin_thanh_toan'=>VnpayPayment::find($thanhtoanhocphi->vnpay_payment_id),
+                    );
+                }
+                $data[]=array(
+                    'sinh_vien'=>$sinhvien,
+                    'da_dong_hoc_phi'=>1,
+                    'thong_tin_thanh_toan'=>$dataPayment,
+                );
+            }else{
+                $data[]=array(
+                    'sinh_vien'=>$sinhvien,
+                    'da_dong_hoc_phi'=>0,
+                );
+            }
+        }
+        return $data;
+    }
+    public function danhSachSinhVienDongHocPhiTheoHocKy($hoc_ky,$khoa_hoc){
+
+        $sinhviens=SinhVien::where('trang_thai',1)->orderBy('ma_sv','asc')->get();
+        $data=array();
+        foreach ($sinhviens as $sinhvien) {
+            $thanhtoanhocphi=ThanhToanHocPhi::leftJoin('hoc_phis','hoc_phis.id','thanh_toan_hoc_phis.id_hoc_phi')
+                                            ->where('hoc_phis.hoc_ky',$hoc_ky)
+                                            ->where('hoc_phis.khoa_hoc',$khoa_hoc)
+                                            ->where('thanh_toan_hoc_phis.ma_sv',$sinhvien->ma_sv)
+                                            ->where('thanh_toan_hoc_phis.trang_thai',1)
+                                            ->select('thanh_toan_hoc_phis.*')
+                                            ->first();
             if($thanhtoanhocphi!=null){
                 $dataPayment=array();
                 if($thanhtoanhocphi->id_hinh_thuc_thanh_toan==1){

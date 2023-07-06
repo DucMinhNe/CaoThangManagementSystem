@@ -3,7 +3,7 @@
 
 <section>
     <div class="container">
-        <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button>
+        {{-- <button id="showInactiveBtn" class="btn btn-primary">Hiển thị Trạng thái 0</button> --}}
 
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
             <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thông tin đóng học phí </a>
@@ -20,7 +20,7 @@
                         <th>Mã sinh viên</th>
                         <th>Tên sinh viên</th>
                         <th>Tên lớp học</th>
-                        <th width="280px">Hành Động</th>
+                        {{-- <th width="280px">Hành Động</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,7 @@
                         <th>Mã sinh viên</th>
                         <th>Tên sinh viên</th>
                         <th>Tên lớp học</th>
-                        <th width="280px">Hành Động</th>
+                        {{-- <th width="280px">Hành Động</th> --}}
                     </tr>
                 </tfoot>
             </table>
@@ -53,32 +53,41 @@
                         <div class="row">
                             <div class="col-md-3" style="font-size: 0.8em">
                                 <input type="hidden" name="id" id="id">
+                                <input type="hidden" name="hoc_ky" id="hoc_ky">
+                                <input type="hidden" name="khoa_hoc" id="khoa_hoc">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="id_hoc_phi">Học kỳ</label>
                                         <select name="id_hoc_phi" id="id_hoc_phi" class="form-control select2" style="width: 100%;">
+
                                             @foreach ($hocphis as $hocphi)
-                                            <option value="{{ $hocphi->id }}">{{$hocphi->khoa_hoc}}.{{$hocphi->ten_chuyen_nganh}} - Học kì {{$hocphi->hoc_ky}}</option>
+                                            <option  data-hoc-ky="{{$hocphi->hoc_ky}}" data-khoa-hoc="{{$hocphi->khoa_hoc}}">{{$hocphi->khoa_hoc}}.Học kì {{$hocphi->hoc_ky}}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="chuyen_nganh">Chuyên ngành</label>
-                                            <input type="text" class="form-control" id="chuyen_nganh" name="chuyen_nganh"
-                                            placeholder="Mã" value="" readonly>
-                                    </div>
+
+
                                     <div class="form-group">
                                         <label for="id_lop_hoc">Lớp học</label>
-                                        <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2 select2-hidden-accessible" style="width: 100%;">
-
+                                        <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2 select2-hidden-accessible" style="width: 100%;" disabled>
+                                            @foreach ($lophocs as $lophoc)
+                                            <option value="{{ $lophoc->id }}">{{$lophoc->ten_lop_hoc}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="chon_theo_lop_hoc_hien_tai">
+                                        <label class="form-check-label" for="chon_theo_lop_hoc_hien_tai">
+                                          Chọn theo lớp học hiện tại
+                                        </label>
+                                      </div>
                                     <div class="form-group">
                                         <label for="ma_sv">Sinh Viên</label>
                                         <select name="ma_sv" id="ma_sv" class="form-control select2 select2-hidden-accessible" style="width: 100%;">
 
                                         </select>
                                     </div>
+
                                     <div class="cs-form">
                                         <label for="id_hinh_thuc_thanh_toan">Hình thức thanh toán</label>
                                         <select name="id_hinh_thuc_thanh_toan" id="id_hinh_thuc_thanh_toan" class="form-control select2" style="width: 100%;">
@@ -248,8 +257,7 @@ $(function() {
     var $option=0;
     $jsonData='{!!json_encode($hocphis)!!}';
     $hocphis=JSON.parse($jsonData);
-    $jsonData='{!!json_encode($chuyennganhs)!!}';
-    $chuyennganhs=JSON.parse($jsonData);
+    $('#id_lop_hoc').val('').trigger('change');
     $sinhviens=null;
     $selectMasv=null;
     $selectLopHoc=null;
@@ -295,12 +303,12 @@ $(function() {
                 data: 'ten_lop_hoc',
                 name: 'ten_lop_hoc'
             },
-            {
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false
-            },
+            // {
+            //     data: 'action',
+            //     name: 'action',
+            //     orderable: false,
+            //     searchable: false
+            // },
         ],
         language: {
             "sEmptyTable": "Không có dữ liệu",
@@ -353,66 +361,82 @@ $(function() {
         ],
     });
 
-    $('#showInactiveBtn').click(function() {
-        var button = $(this);
-        var buttonText = button.text();
+    // $('#showInactiveBtn').click(function() {
+    //     var button = $(this);
+    //     var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
-            button.text('Hiển thị Trạng thái 1');
-            table.ajax.url("{{ route('thanhtoanhocphi.getInactiveData') }}").load();
-        } else {
-            button.text('Hiển thị Trạng thái 0');
-            table.ajax.url("{{ route('thanhtoanhocphi.index') }}").load();
+    //     if (buttonText === 'Hiển thị Trạng thái 0') {
+    //         button.text('Hiển thị Trạng thái 1');
+    //         table.ajax.url("{{ route('thanhtoanhocphi.getInactiveData') }}").load();
+    //     } else {
+    //         button.text('Hiển thị Trạng thái 0');
+    //         table.ajax.url("{{ route('thanhtoanhocphi.index') }}").load();
+    //     }
+    // });
+    $('#chon_theo_lop_hoc_hien_tai').click(function(){
+        $('#id_hoc_phi').val($('#id_hoc_phi').val()).trigger('change');
+        if($(this).is(':checked')){
+            $('#id_chuyen_nganh').prop('disabled',false);
+            $('#id_lop_hoc').prop('disabled', false);
+
+        }else{
+
+            $('#id_lop_hoc').prop('disabled', true);
+            $('#id_chuyen_nganh').prop('disabled',true);
         }
-    });
-    function generateLopHocTheoChuyenNganh(id_chuyen_nganh){
-        $.ajax({
-            method:"GET",
-            url:"{{env('SERVER_URL')}}/api/chuyennganh/lopthuocchuyennganh/"+id_chuyen_nganh,
-        }).done(function(data){
-            text="";
-            data.forEach(element => {
-                text=text+'<option value="'+element.id+'">'+element.ten_lop_hoc+'</option>'
-            });
+    })
 
-            $('#id_lop_hoc').empty();
-            $('#id_lop_hoc').append(text);
-            if($selectLopHoc!=null){
-                $('#id_lop_hoc').val($selectLopHoc).trigger('change');
-                $selectLopHoc=null;
-            }
-            $('#id_lop_hoc').val("");
-        });
-    }
     $('#id_hoc_phi').change(function(){
-        $('#danh_sach_sinh_vien tbody').empty();
-        $('#id_lop_hoc').empty();
-        $('#ma_sv').empty();
 
-        var id=$(this).val();
-        id_chuyen_nganh=0;
-        for (let i = 0; i < $hocphis.length; i++) {
-            if($hocphis[i].id==id){
-                for (let j = 0; j < $chuyennganhs.length; j++) {
-                    if($chuyennganhs[j].id==$hocphis[i].id_chuyen_nganh){
-                        $('#chuyen_nganh').val($chuyennganhs[j].ten_chuyen_nganh);
-                        id_chuyen_nganh=$chuyennganhs[j].id;
-                        break
-                    }
-
-                }
-                break
-            }
+        var khoa_hoc=$(this).children("option:selected").attr('data-khoa-hoc');
+        var hoc_ky=$(this).children("option:selected").attr('data-hoc-ky');
+        $('#hoc_ky').val(hoc_ky);
+        $('#khoa_hoc').val(khoa_hoc);
+        if($('#chon_theo_lop_hoc_hien_tai').is(':checked')){
+            $('#id_lop_hoc').val($('#id_lop_hoc').val()).trigger('change');
+            $('#danh_sach_sinh_vien tbody').empty();
+            $('#ma_sv').empty();
 
         }
-        generateLopHocTheoChuyenNganh(id_chuyen_nganh);
+        else{
+            $.ajax({
+                type:"GET",
+                url:"{{env('SERVER_URL')}}/api/hocphi/danhsachsinhviendonghocphihocky/"+hoc_ky+"/"+khoa_hoc,
+
+            }).done(function(data){
+                console.log(data);
+            text="";
+            textOption="";
+            $sinhviens=data;
+            data.forEach(element => {
+                textOption=textOption+'<option value="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+' - '+element.sinh_vien.ten_sinh_vien+'</option>';
+                if(element.da_dong_hoc_phi==0){
+                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-warning text-dark">Chưa đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td></td></tr>';
+                }
+                else{
+                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi" data-ma-sv="'+element.sinh_vien.ma_sv+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
+                }
+
+            });
+            console.log("Xong id_lop_hoc");
+            $('#ma_sv').empty();
+            $('#ma_sv').append(textOption);
+            if($selectMasv!=null){
+                $('#ma_sv').val($selectMasv).trigger('change');
+                $selectMasv=null;
+            }
+            $('#danh_sach_sinh_vien tbody').empty();
+            $('#danh_sach_sinh_vien tbody').append(text);
+            })
+        }
+
 
     });
 
     $('#id_lop_hoc').change(function(){
         $.ajax({
             method:"GET",
-            url:"{{env('SERVER_URL')}}/api/sinhvien/sinhvientheolophoc/"+$(this).val()+"/"+$('#id_hoc_phi').val(),
+            url:"{{env('SERVER_URL')}}/api/sinhvien/sinhvientheolophoc/"+$(this).val()+"/"+$('#id_hoc_phi option:selected').attr('data-hoc-ky')+"/"+$('#id_hoc_phi option:selected').attr('data-khoa-hoc'),
         }).done(function(data){
             console.log(data);
             text="";
@@ -546,6 +570,7 @@ $(function() {
 
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#chon_theo_lop_hoc_hien_tai').prop('checked',false);
         $('#btn-paypal_querydr').css('display','none');
         $('#btn-querydr').css('display','none');
         // $('#danh_sach_sinh_vien tbody').empty();
@@ -627,7 +652,8 @@ $(function() {
         $option=0;
         var id = $(this).data('id');
         var id_lop_hoc=$(this).attr('data-id-lop-hoc');
-        var id_hoc_phi=$(this).attr('data-id-hoc-phi');
+        var hoc_ky=$(this).attr('data-hoc-ky');
+        var khoa_hoc=$(this).attr('data-khoa-hoc');
         $selectLopHoc=id_lop_hoc;
         var ma_sv=$(this).attr('data-ma-sv');
         $selectMasv=ma_sv
@@ -637,17 +663,22 @@ $(function() {
         //             $('#ma_sv').val(ma_sv).trigger('change');
         //         });
         //     });
-        $('#id_hoc_phi').val(id_hoc_phi).trigger('change');
+
+        // $('#id_hoc_phi').val(id_hoc_phi).trigger('change');
+        $('#id_hoc_phi option').filter(function() {
+            return $(this).data('hoc-ky') == hoc_ky && $(this).data('khoa-hoc') == khoa_hoc;
+        }).prop('selected', true);
         $.get("{{ route('thanhtoanhocphi.index') }}" + '/' + id + '/edit', function(data) {
 
             // $('#ma_sv').val(data.ma_sv);
             $('#id_hinh_thuc_thanh_toan').val(data.id_hinh_thuc_thanh_toan).trigger('change');
+            $('#chon_theo_lop_hoc_hien_tai').prop('checked',false);
             thong_tin_giao_dich=data.thong_tin_giao_dich;
             if(data.id_hinh_thuc_thanh_toan==1){
                 $('.paypal_payments').attr('hidden',false);
                 $('.vnpay_payments').attr('hidden',true);
-                console.log(thong_tin_giao_dich.payment_id);
-                console.log("Dô");
+                // console.log(thong_tin_giao_dich.payment_id);
+                // console.log("Dô");
                 $('#payment_id').val(thong_tin_giao_dich.payment_id);
                 $('#payer_email_address').val(thong_tin_giao_dich.payer_email_address);
                 $('#payer_id').val(thong_tin_giao_dich.payer_id);
@@ -680,7 +711,7 @@ $(function() {
     function reloadLopHoc(){
         $.ajax({
             method:"GET",
-            url:"{{env('SERVER_URL')}}/api/sinhvien/sinhvientheolophoc/"+$('#id_lop_hoc').val()+"/"+$('#id_hoc_phi').val(),
+            url:"{{env('SERVER_URL')}}/api/sinhvien/sinhvientheolophoc/"+$('#id_lop_hoc').val()+"/"+$('#id_hoc_phi option:selected').attr('data-hoc-ky')+"/"+$('#id_hoc_phi option:selected').attr('data-khoa-hoc'),
         }).done(function(data){
             console.log(data);
             text="";
@@ -729,6 +760,14 @@ $(function() {
                         // footer: '<a href="">Why do I have this issue?</a>'
                         })
                     }
+                    if(data.status==3){
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: data.message,
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
 
                 },
                 error: function(data) {
@@ -739,36 +778,36 @@ $(function() {
 
     });
 
-    $('body').on('click', '.deleteBtn', function() {
-        var id = $(this).data("id");
-        if (confirm("Bạn có muốn xóa?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('thanhtoanhocphi.destroy', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
-    });
-    $('body').on('click', '.restoreBtn', function() {
-        var id = $(this).data("id");
-        if (confirm("Bạn có muốn khôi phục?")) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('thanhtoanhocphi.restore', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
-    });
+    // $('body').on('click', '.deleteBtn', function() {
+    //     var id = $(this).data("id");
+    //     if (confirm("Bạn có muốn xóa?")) {
+    //         $.ajax({
+    //             type: "DELETE",
+    //             url: "{{ route('thanhtoanhocphi.destroy', '') }}/" + id,
+    //             success: function(data) {
+    //                 table.draw();
+    //             },
+    //             error: function(data) {
+    //                 console.log('Error:', data);
+    //             }
+    //         });
+    //     }
+    // });
+    // $('body').on('click', '.restoreBtn', function() {
+    //     var id = $(this).data("id");
+    //     if (confirm("Bạn có muốn khôi phục?")) {
+    //         $.ajax({
+    //             type: "GET",
+    //             url: "{{ route('thanhtoanhocphi.restore', '') }}/" + id,
+    //             success: function(data) {
+    //                 table.draw();
+    //             },
+    //             error: function(data) {
+    //                 console.log('Error:', data);
+    //             }
+    //         });
+    //     }
+    // });
 });
 </script>
 
