@@ -76,7 +76,7 @@ class APILopHocController extends Controller
      */
     public function show($id)
     {
-        //
+        return LopHoc::where('id',$id)->where('trang_thai',1)->first();
     }
 
     /**

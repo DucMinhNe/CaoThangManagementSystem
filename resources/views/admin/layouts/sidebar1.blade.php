@@ -271,6 +271,16 @@
                       </a>
                   </li>
                   @php
+                  $isOpen = Request::is('admin/thongbao') || Request::is('admin/thongbao');
+                  @endphp
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/thongbao') }}"
+                          class="nav-link {{ Request::url() == url('/admin/thongbao') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>Quản lý thông báo</p>
+                      </a>
+                  </li>
+                  @php
                   $isOpen = Request::is('admin/dangkylophocphan') || Request::is('admin/modangkymon');
                   @endphp
                   <li class="nav-item {{ $isOpen ? 'menu-open' : '' }} ">

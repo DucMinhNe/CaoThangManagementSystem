@@ -54,9 +54,18 @@ class APILopHocPhanController extends Controller
      */
     public function show($id)
     {
-        return LopHocPhan::where('id',$id)->where('trang_thai',1)->first();
+        return LopHocPhan::join('lop_hocs','lop_hocs.id','=','lop_hoc_phans.id_lop_hoc')
+                        ->select('lop_hocs.ten_lop_hoc','lop_hoc_phans.ten_lop_hoc_phan')
+                        ->where('lop_hoc_phans.id',$id)
+                        ->first();
+       
     }
-
+    public function layLopHoc()
+    {
+        $data = null;
+        
+        return $data;
+    }
     /**
      * Update the specified resource in storage.
      *
