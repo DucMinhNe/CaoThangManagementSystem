@@ -101,42 +101,49 @@ class ThanhToanHocPhiController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->id_hinh_thuc_thanh_toan==1){
-            $searchPayment=PaypalPayment::where('payment_id',$request->payment_id)->first();
-            if($searchPayment==null){
+        $sinhvien=SinhVien::find($request->ma_sv);
+        $hocphi=HocPhi::where('hoc_ky',$request->hoc_ky)->where('khoa_hoc',$request->khoa_hoc)->where('id_chuyen_nganh',$sinhvien->lopHoc->id_chuyen_nganh)->where('trang_thai',1)->first();
+        if($hoc_ky!=null){
+            if($request->id_hinh_thuc_thanh_toan==1){
+                $searchPayment=PaypalPayment::where('payment_id',$request->payment_id)->first();
+                if($searchPayment==null){
 
-                $paypalPayment=PaypalPayment::create($request->all());
-                ThanhToanHocPhi::create([
-                    'id_hoc_phi'=>$request->id_hoc_phi,
-                    'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
-                    'paypal_payment_id'=>$paypalPayment->id,
-                    'ma_sv'=>$request->ma_sv,
-                ]);
+                    $paypalPayment=PaypalPayment::create($request->all());
+                    ThanhToanHocPhi::create([
+                        'id_hoc_phi'=>$hocphi->id,
+                        'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
+                        'paypal_payment_id'=>$paypalPayment->id,
+                        'ma_sv'=>$request->ma_sv,
+                    ]);
+                }
+                else
+                    return response()->json([
+                        'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
+                        'status'=>2
+                    ]);
             }
-            else
-                return response()->json([
-                    'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
-                    'status'=>2
-                ]);
-        }
-        if($request->id_hinh_thuc_thanh_toan==2){
-            $searchPayment=VnpayPayment::where('vnp_TxnRef',$request->vnp_TxnRef)->where('vnp_PayDate',$request->vnp_PayDate)->first();
-            if($searchPayment==null){
-                $vnpayPayment=VnpayPayment::create($request->all());
-                ThanhToanHocPhi::create([
-                    'id_hoc_phi'=>$request->id_hoc_phi,
-                    'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
-                    'vnpay_payment_id'=>$vnpayPayment->id,
-                    'ma_sv'=>$request->ma_sv,
-                ]);
+            if($request->id_hinh_thuc_thanh_toan==2){
+                $searchPayment=VnpayPayment::where('vnp_TxnRef',$request->vnp_TxnRef)->where('vnp_PayDate',$request->vnp_PayDate)->first();
+                if($searchPayment==null){
+                    $vnpayPayment=VnpayPayment::create($request->all());
+                    ThanhToanHocPhi::create([
+                        'id_hoc_phi'=>$hocphi->id,
+                        'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
+                        'vnpay_payment_id'=>$vnpayPayment->id,
+                        'ma_sv'=>$request->ma_sv,
+                    ]);
+                }
+                else
+                    return response()->json([
+                        'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
+                        'status'=>2
+                    ]);
             }
-            else
-                return response()->json([
-                    'message'=>"Thông tin giao dịch đã tồn tại, Vui lòng nhập thông tin giao dịch khác",
-                    'status'=>2
-                ]);
+            return response()->json(['success' => 'Lưu Thành Công.','status'=>1]);
         }
-        return response()->json(['success' => 'Lưu Thành Công.','status'=>1]);
+        return response()->json(['error'=>'Không tìm thấy học phí','status'=>0]);
+
+
     }
 
     /**

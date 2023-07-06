@@ -53,6 +53,8 @@
                         <div class="row">
                             <div class="col-md-3" style="font-size: 0.8em">
                                 <input type="hidden" name="id" id="id">
+                                <input type="hidden" name="hoc_ky" id="hoc_ky">
+                                <input type="hidden" name="khoa_hoc" id="khoa_hoc">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="id_hoc_phi">Học kỳ</label>
@@ -388,7 +390,8 @@ $(function() {
 
         var khoa_hoc=$(this).children("option:selected").attr('data-khoa-hoc');
         var hoc_ky=$(this).children("option:selected").attr('data-hoc-ky');
-
+        $('#hoc_ky').val(hoc_ky);
+        $('#khoa_hoc').val(khoa_hoc);
         if($('#chon_theo_lop_hoc_hien_tai').is(':checked')){
             $('#id_lop_hoc').val($('#id_lop_hoc').val()).trigger('change');
             $('#danh_sach_sinh_vien tbody').empty();
@@ -750,6 +753,14 @@ $(function() {
                         table.draw();
                     }
                     if(data.status==2){
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: data.message,
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+                    if(data.status==3){
                         Swal.fire({
                         icon: 'error',
                         title: 'Lỗi...',
