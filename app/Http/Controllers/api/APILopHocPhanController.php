@@ -9,6 +9,7 @@ use App\Models\MonHoc;
 use App\Models\ThoiKhoaBieu;
 use App\Models\ThoiGianBieu;
 use App\Models\GiangVien;
+use App\Models\SinhVien;
 use App\Models\Phong;
 use App\Models\LopHoc;
 
@@ -25,11 +26,11 @@ class APILopHocPhanController extends Controller
     }
     public function laydssinhvien_lophocphan($id)
     {
-       $chitietlophocphan = CTLopHocPhan::where('id_lop_hoc_phan',$id)->get();
+       $chitietlophocphan = CTLopHocPhan::where('id_lop_hoc_phan',$id)->where('trang_thai',1)->get();
         $arr_sv = array();
        foreach($chitietlophocphan as $sv_lhp)
        {
-        $sinhvien = SinhVien::find($sv_lhp->id_sinh_vien);
+        $sinhvien = SinhVien::find($sv_lhp->ma_sv);
         $arr_sv[]= $sinhvien;
        }
        return $arr_sv;
@@ -82,11 +83,13 @@ class APILopHocPhanController extends Controller
         $danhSachlopHocPhan=null;
         if($request->option==1){
             $lopHocPhan=LopHocPhan::where('id',$request->id_lop_hoc_phan)
-                                          ->where(function($query)use ($ma_gv){
-                                            $query->where('ma_gv_1',$ma_gv)
-                                                  ->orWhere('ma_gv_2',$ma_gv);
-                                          })
+                                          ->where(function($query) use ($ma_gv){
+                                            $query->where('lop_hoc_phans.ma_gv_1',$ma_gv)
+                                            ->orWhere('lop_hoc_phans.ma_gv_2',$ma_gv)
+                                            ->orWhere('lop_hoc_phans.ma_gv_3',$ma_gv);
+                                        })
                                           ->where('trang_thai',1)
+                                        
                                           ->first();
             $danhSachSinhVien=array();
             if($lopHocPhan==null){
@@ -104,16 +107,20 @@ class APILopHocPhanController extends Controller
                 'id_lop_hoc_phan'=>$lopHocPhan->id,
                 'giang_vien_chinh'=>$lopHocPhan->giangVienChinh,
                 'giang_vien_phu'=>$lopHocPhan->giangVienPhu,
-                'mon_hoc'=>$lopHocPhan->ctChuongTrinhDaoTao->monHoc,
+                'mon_hoc'=>$lopHocPhan->chiTietChuongTrinhDaoTao->monHoc,
                 'lop_hoc'=>$lopHocPhan->lopHoc,
                 'danh_sach_sinh_vien'=>$danhSachSinhVien
                 ]
             );
 
         }else{
-            $danhSachlopHocPhan=LopHocPhan::where('ma_gv_1',$ma_gv)->where('trang_thai',1)
-                              ->orWhere('ma_gv_2',$ma_gv)
-                              ->get();
+            $danhSachlopHocPhan=LopHocPhan::
+                where(function($query) use ($ma_gv){
+                $query->where('lop_hoc_phans.ma_gv_1',$ma_gv)
+                ->orWhere('lop_hoc_phans.ma_gv_2',$ma_gv)
+                ->orWhere('lop_hoc_phans.ma_gv_3',$ma_gv);
+                })->where('trang_thai_hoan_thanh',0)
+                ->get();
                               //return $danhSachlopHocPhan;
         $data=array();
         foreach($danhSachlopHocPhan as $lopHocPhan){
@@ -131,11 +138,14 @@ class APILopHocPhanController extends Controller
                 'danh_sach_sinh_vien'=>$danhSachSinhVien
             );
         }
+        
         return $data;
         }
 
 
     }
+
+    
     public function danhSachLopHocPhanConMoThuocMonHoc($id){
         $lopHocPhan=LopHocPhan::select('lop_hoc_phans.*')
                               ->join('ct_chuong_trinh_dao_taos','lop_hoc_phans.id_ct_chuong_trinh_dao_tao','ct_chuong_trinh_dao_taos.id')

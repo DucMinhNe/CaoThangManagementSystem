@@ -13,7 +13,7 @@ class LopHocPhan extends Model
         'ten_lop_hoc_phan','id_lop_hoc','ma_gv_1','ma_gv_2','ma_gv_3','id_ct_chuong_trinh_dao_tao','mo_dang_ky','trang_thai_hoan_thanh','trang_thai'
     ];
     public function chiTietLopHocPhan()
-    {
+    { 
         return $this->hasMany(CTLopHocPhan::class,'id_lop_hoc_phan','id');
     }
     public function lopHoc(){

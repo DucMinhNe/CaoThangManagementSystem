@@ -110,6 +110,7 @@ class APIThoiKhoaBieuController extends Controller
                 'id_phong_hoc'=>$PhongHoc->id,
                 'id_lop_hoc_phan'=>$LopHocPhan->id,
                 'ten_phong_hoc'=>$PhongHoc->ten_phong,
+                'ten_phong_hoc'=>$PhongHoc->ten_phong,
                 'id_mon_hoc'=>$MonHoc->id,
                 'ten_mon_hoc'=>$MonHoc->ten_mon_hoc,
                 'id_giang_vien'=>$GiangVien->id,

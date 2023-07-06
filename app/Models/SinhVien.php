@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
+
 class SinhVien extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
