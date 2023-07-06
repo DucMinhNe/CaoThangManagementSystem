@@ -40,6 +40,17 @@ class APIGiangVienController extends Controller
         return GiangVien::where('ma_gv',$ma_gv)->where('trang_thai',1)->first();
 
     }
+    public function xulydoimatkhau(Request $request)
+    {
+        $giangvien = GiangVien::where('ma_gv',$request->id)->where('trang_thai',1)->get();
+    
+        $newpassword= Hash::make($request->mat_khau_moi);
+        $giangvien->update(
+            ['mat_khau'=>$newpassword]
+    );
+        return response()->json(['success' => 'Thay dổi thành công.']);
+        
+    }
 
     /**
      * Update the specified resource in storage.

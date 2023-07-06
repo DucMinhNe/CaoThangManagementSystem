@@ -16,6 +16,9 @@
         <!-- Ionicons -->
         <!-- <link rel="stylesheet"
             href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}"> -->
+        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ asset('dist/css/ionicons.min.css') }}">
         <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">

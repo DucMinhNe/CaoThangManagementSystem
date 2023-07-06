@@ -56,7 +56,12 @@ class APILopHocPhanController extends Controller
     {
         return LopHocPhan::where('id',$id)->where('trang_thai',1)->first();
     }
-
+    public function layLopHoc()
+    {
+        $data = null;
+        
+        return $data;
+    }
     /**
      * Update the specified resource in storage.
      *
