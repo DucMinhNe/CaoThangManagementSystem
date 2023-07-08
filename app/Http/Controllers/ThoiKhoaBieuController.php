@@ -68,7 +68,7 @@ class ThoiKhoaBieuController extends Controller
             ThoiKhoaBieu::create([
                 'id_lop_hoc_phan'=>$request->id_lop_hoc_phan,
                 'id_phong_hoc'=>$lichhoc['phong_hoc']['id'],
-                'hoc_ky'=>$request->hoc_ky,
+                'hoc_ky'=>$lichhoc['hoc_ky'],
                 'thu_trong_tuan'=>$lichhoc['thu_trong_tuan'],
                 'id_tiet_bat_dau'=>$lichhoc['tiet_bat_dau']['id'],
                 'id_tiet_ket_thuc'=>$lichhoc['tiet_ket_thuc']['id'],
@@ -107,6 +107,7 @@ class ThoiKhoaBieuController extends Controller
             $dataLich[]=array(
 
                 'thu_trong_tuan'=>$thoikhoabieu->thu_trong_tuan,
+                'hoc_ky'=>$thoikhoabieu->hoc_ky,
                 'phong_hoc'=>$thoikhoabieu->phongHoc,
                 'tiet_bat_dau'=>$thoikhoabieu->tietBatDau,
                 'tiet_ket_thuc'=>$thoikhoabieu->tietKetThuc,
@@ -119,8 +120,8 @@ class ThoiKhoaBieuController extends Controller
             'giang_vien_2'=>$lophocphan->giangVienPhu,
             'giang_vien_3'=>$lophocphan->giangVienPhu2,
             'lop_hoc'=>$lophocphan->lopHoc,
-            'hoc_ky'=>$lophocphan->chiTietChuongTrinhDaoTao->hoc_ky,
-            'mon_hoc'=>$lophocphan->chiTietChuongTrinhDaoTao->monHoc,
+            'hoc_ky'=>$lophocphan->chiTietChuongTrinhDaoTao!=null?$lophocphan->chiTietChuongTrinhDaoTao->hoc_ky:null,
+            'mon_hoc'=>$lophocphan->chiTietChuongTrinhDaoTao!=null?$lophocphan->chiTietChuongTrinhDaoTao->monHoc:null,
             'ten_lop_hoc_phan'=>$lophocphan->ten_lop_hoc_phan,
             'lich_hoc'=>$dataLich,
         ],200);

@@ -90,13 +90,14 @@ Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}/hoc-ky/{hocky}',[APISinhVienCo
     Route::get('/kiem-tra-mon-hoc-cua-lop-hoc-phan-dang-ky',[APIDangKyLopHocPhanController::class,'kiemTraLopHocPhanCoMonDangKy']);
     Route::post('/cap-nhat-trang-thai-da-doc-cua-thong-bao/{id}',[APIThongBaoController::class,'capNhatTrangThaiThongBao']);
     Route::get('/thoi-khoa-bieu-cua-sinh-vien-dang-ky-lop-hoc-phan/{ma_sv}',[APIThoiKhoaBieuController::class,'danhSachLichHocCuaSinhVienDangKyHocPhan']);
-    Route::get('/thoi-khoa-bieu-cua-sinh-vien/{ma_sv}',[APIThoiKhoaBieuController::class,'danhSachLichHocCuaSinhVienTheoChuongTrinh']);
+
     Route::get('/hoc-ky-hien-tai-cua-sinh-vien/{ma_sv}',[APIThoiKhoaBieuController::class,'layHocKyHienTaiCuaSinhVien']);
     Route::get('/danh-sach-lop-dang-ky/{ma_sv}',[APIDangKyLopHocPhanController::class,'layDanhSachLopDangKyCuaSinhVien']);
     Route::get('/danh-sach-lop-hoc-phan-theo-mon-con-mo/{id}',[APILopHocPhanController::class,'danhSachLopHocPhanConMoThuocMonHoc']);
     Route::get('/hoc-phi/thong-tin-hoc-phi/{id}',[APIHocPhiController::class,'thongTinHocPhi']);
     Route::post('/sinh-vien/doi-mat-khau/{ma_sv}',[APISinhVienController::class,'doiMatKhau']);
-});
+}); Route::get('/thoi-khoa-bieu-cua-sinh-vien/{ma_sv}',[APIThoiKhoaBieuController::class,'danhSachLichHocCuaSinhVienTheoChuongTrinh']);
+
 
 
 // Route::get('/lich-hoc-cua-cac-lop-hoc-phan-dang-ky/{ma_sv}',[APIThoiKhoaBieuController::class,'lichHocCuaCacLopHocPhanDangDangKy']);
@@ -149,30 +150,31 @@ Route::get('/giang-vien/lop-hoc/{id}',[APILopHocController::class,'show']);
 Route::group(['middleware'=>'auth:sanctum'],function(){
      Route::post('/dang-xuat-giang-vien',[APIAuthController::class,'dangXuatGiangVien'])->name('dang-xuat-gv');
      Route::get('/kiem-tra-dang-nhap-gv',[APIAuthController::class,'kiemtraDangNhap_GiangVien']);
-     
+
     Route::get('giang-vien/danh-sach-lop-chu-nhiem/{ma_gv}',[APILopHocController::class,'lopChuNhiem']);
-  
-    
+
+
      Route::get('/danh-sach-sinh-vien-chu-nhiem/{id_lop_hoc}',[APILopHocController::class,'danhsachSinhvienlopChuNhiem']);
      Route::get('giang-vien/danh-sach-lop-hoc-phan/{ma_gv}',[APILopHocPhanController::class,'layDanhSachLopHocPhanTheoGiangVien']);
      Route::get('/giang-vien/thong-bao/danh-sach-thong-bao-lop-hoc-phan',[APIThongBaoController::class,'layDanhSachThongBaoCuaLop']);
      Route::post('/giang-vien/thong-bao/them-thong-bao',[APIThongBaoController::class,'xulythemthongbao'])->name('xu-ly-them-thong-bao');
-     
+
      Route::post('/giang-vien/thong-bao/xoa-thong-bao',[APIThongBaoController::class,'xoathongbao'])->name('xoa-thong-bao');
-     
+
      Route::get('/giang-vien/thong-bao/lay-thong-bao/{id}',[APIThongBaoController::class,'laythongbao'])->name('lay-thong-bao');
-     
+
      Route::post('/giang-vien/thong-bao/sua-thong-bao/{id}',[APIThongBaoController::class,'suathongbao'])->name('sua-thong-bao');
-     
-     Route::get('/sinh-vien/{ma_sv}',[APISinhVienController::class,'show']); 
-     
+
+     Route::get('/sinh-vien/{ma_sv}',[APISinhVienController::class,'show']);
+
      Route::get('/giang-vien/lop-hoc-phan/bang-diem/{id}',[APIChiTietLopHocPhanController::class,'bangdiemsinhvien']);
      Route::post('/giang-vien/lop-hoc-phan/bang-diem-sinh-vien/thay-doi-diem/{id_lop_hoc_phan}',[APIChiTietLopHocPhanController::class,'thaydoidiem']);
-     Route::get('/giang-vien/thoi-khoa-bieu/{id}',[APIThoiKhoaBieuController::class,'DanhSachLichDayGiangVien']); 
+
      Route::post('/giang-vien/xu-ly-doi-mat-khau/{ma_gv}',[APIGiangVienController::class,'xulydoimatkhau']);
      Route::get('/giang-vien/{id}',[APIGiangVienController::class,'show']);
-   
+
  });
+ Route::get('/giang-vien/thoi-khoa-bieu/{id}',[APIThoiKhoaBieuController::class,'DanhSachLichDayGiangVien']);
 
 
 

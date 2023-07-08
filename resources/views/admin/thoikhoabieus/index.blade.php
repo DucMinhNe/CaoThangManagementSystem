@@ -76,8 +76,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="hoc_ky">Học kỳ</label>
-                                        <input type="text" class="form-control" id="hoc_ky" name="ten_giang_vien_3"
-                                             value="" readonly>
+                                        <select name="hoc_ky" id="hoc_ky" class="form-control select2" style="width: 100%;" disabled>
+                                            <option value="1">Học kỳ 1</option>
+                                            <option value="2">Học kỳ 2</option>
+                                            <option value="3">Học kỳ 3</option>
+                                            <option value="4">Học kỳ 4</option>
+                                            <option value="5">Học kỳ 5</option>
+                                            <option value="6">Học kỳ 6</option>
+                                         </select>
+
                                     </div>
                                 </div>
                             </div>
@@ -132,6 +139,7 @@
                                         <th>Tiết học</th>
                                         <th>Thời gian</th>
                                         <th>Phòng học</th>
+                                        <th>Học kỳ</th>
                                         <th>Xóa</th>
                                     </thead>
                                     <tbody>
@@ -266,24 +274,30 @@ $('body').on('click', '.editBtn', function() {
     var id = $(this).data('id');
     $.get("{{ route('thoikhoabieu.index') }}" + '/' + id + '/edit', function(data) {
         console.log(data);
+        $('#hoc_ky').prop('disabled',true);
         $('#modelHeading').html("Sửa");
         $('#savedata').val("edit-Btn");
         $('#ajaxModelexa').modal('show');
 
         $('#id').val(data.id);
-        $('#ten_giang_vien_1').val(data.giang_vien_1.ten_giang_vien);
+
+        $('#ten_giang_vien_1').val(data.giang_vien_1!=null?data.giang_vien_1.ten_giang_vien:"Trống");
         $('#ten_giang_vien_2').val(data.giang_vien_2!=null?data.giang_vien_2.ten_giang_vien:"Trống");
         $('#ten_giang_vien_3').val(data.giang_vien_3!=null?data.giang_vien_3.ten_giang_vien:"Trống");
         $('#ten_lop_hoc_phan').val(data.ten_lop_hoc_phan);
         $('#ten_lop_hoc').val(data.lop_hoc!=null?data.lop_hoc.ten_lop_hoc:"Trống");
-        $('#ten_mon_hoc').val(data.mon_hoc.ten_mon_hoc);
-        $('#hoc_ky').val(data.hoc_ky)
+        $('#ten_mon_hoc').val(data.mon_hoc!=null?data.mon_hoc.ten_mon_hoc:"Trống");
+        if(data.hoc_ky==null){
+            $('#hoc_ky').prop('disabled',false);
+            $('#hoc_ky').val('').trigger('change');
+        }else
+            $('#hoc_ky').val(data.hoc_ky).trigger('change');
         text="";
         row=0;
         $dataOld=$dataNew= data.lich_hoc;
         data.lich_hoc.forEach(element => {
             row=row+1;
-            text=text+'<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+element.thu_trong_tuan+'">'+$arrayThu[element.thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+element.tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+element.tiet_ket_thuc.id+'">'+element.tiet_bat_dau.stt+' -> '+element.tiet_ket_thuc.stt+'</td><td >'+element.tiet_bat_dau.thoi_gian_bat_dau+' -> '+element.tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+element.phong_hoc.id+'">'+element.phong_hoc.ten_phong+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
+            text=text+'<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+element.thu_trong_tuan+'">'+$arrayThu[element.thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+element.tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+element.tiet_ket_thuc.id+'">'+element.tiet_bat_dau.stt+' -> '+element.tiet_ket_thuc.stt+'</td><td >'+element.tiet_bat_dau.thoi_gian_bat_dau+' -> '+element.tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+element.phong_hoc.id+'">'+element.phong_hoc.ten_phong+'</td><td data-hoc-ky="'+element.hoc_ky+'">'+element.hoc_ky+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
         });
         $('#table-thoi-khoa-bieu tbody').empty();
         $('#table-thoi-khoa-bieu tbody').append(text);
@@ -300,7 +314,6 @@ $('#savedata').click(function(e) {
         console.log("Dô");
         $dataSend={
             'id_lop_hoc_phan':$('#id').val(),
-            'hoc_ky':$('#hoc_ky').val(),
             'lich_hoc':$dataNew,
         };
         $.ajax({
@@ -310,7 +323,7 @@ $('#savedata').click(function(e) {
             dataType: 'json',
             success: function(data) {
                 $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
+                //$('#ajaxModelexa').modal('hide');
                 $('#savedata').html('Lưu');
                 table.draw();
             },
@@ -332,6 +345,7 @@ $('#add-row-tkb').click(function(){
     var id_tiet_ket_thuc=$('#id_tiet_ket_thuc').val();
     var id_phong_hoc=$('#id_phong_hoc').val();
     var thu_trong_tuan=$('#thu_trong_tuan').val();
+    var hoc_ky=$('#hoc_ky').val();
     var tiet_bat_dau;
     var tiet_ket_thuc;
     var phong_hoc;
@@ -351,7 +365,7 @@ $('#add-row-tkb').click(function(){
     });
     row=$('#table-thoi-khoa-bieu tbody tr').length+1;
     $dataNew.forEach(element => {
-        if(element.thu_trong_tuan==thu_trong_tuan){
+        if(element.thu_trong_tuan==thu_trong_tuan&&element.hoc_ky==hoc_ky){
             var start = element.tiet_bat_dau.stt;
             var end = element.tiet_ket_thuc.stt;
             var arrayLich1 = Array.from({ length: end - start + 1 }, (_, index) => index + start);
@@ -364,15 +378,13 @@ $('#add-row-tkb').click(function(){
             }
         }
     });
-
-
     if(flag==true){
         jsonOject={
             'id_tiet_bat_dau':id_tiet_bat_dau,
             'id_tiet_ket_thuc':id_tiet_ket_thuc,
             'id_phong_hoc':id_phong_hoc,
             'thu_trong_tuan':thu_trong_tuan,
-            'hoc_ky':$('#hoc_ky').val(),
+            'hoc_ky':hoc_ky,
         }
         $.ajax({
             method:"GET",
@@ -380,11 +392,12 @@ $('#add-row-tkb').click(function(){
             data:jsonOject
         }).done(function(response){
             if(response.status==1){
-                text='<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+thu_trong_tuan+'">'+$arrayThu[thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+tiet_ket_thuc.id+'">'+tiet_bat_dau.stt+' -> '+tiet_ket_thuc.stt+'</td><td >'+tiet_bat_dau.thoi_gian_bat_dau+' -> '+tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+phong_hoc.id+'">'+phong_hoc.ten_phong+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
+                text='<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+thu_trong_tuan+'">'+$arrayThu[thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+tiet_ket_thuc.id+'">'+tiet_bat_dau.stt+' -> '+tiet_ket_thuc.stt+'</td><td >'+tiet_bat_dau.thoi_gian_bat_dau+' -> '+tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+phong_hoc.id+'">'+phong_hoc.ten_phong+'</td><td data-hoc-ky="'+hoc_ky+'">'+hoc_ky+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
                 jsonOject={
                     'thu_trong_tuan':thu_trong_tuan,
                     'tiet_bat_dau':tiet_bat_dau,
                     'tiet_ket_thuc':tiet_ket_thuc,
+                    'hoc_ky':hoc_ky,
                     'phong_hoc':phong_hoc
                 }
                 $dataNew.push(jsonOject);
