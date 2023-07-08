@@ -75,6 +75,12 @@ class ChuyenNganhController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_chuyen_nganh' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'ma_chu' => ['required', 'regex:/^[\p{Lu}\s]+$/u'],
+            'ma_so' => 'required|numeric|digits:2',
+            'id_khoa' => 'required'
+        ]);
         ChuyenNganh::updateOrCreate(['id' => $request->id],
                  ['ten_chuyen_nganh' => $request->ten_chuyen_nganh,
                     'ma_chu' => $request->ma_chu,
@@ -134,5 +140,10 @@ class ChuyenNganhController extends Controller
     {
         ChuyenNganh::where('id', $id)->update(['trang_thai' => 1]);
         return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
+    }
+    public function layTongChuyenNganh()
+    {
+        $tongChuyenNganhs = ChuyenNganh::where('trang_thai', 1)->count();
+        return response()->json(['tongChuyenNganhs' => $tongChuyenNganhs]);
     }
 }

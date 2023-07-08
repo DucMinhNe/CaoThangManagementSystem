@@ -20,7 +20,7 @@
                     <div class="small-box bg-info">
                         <div class="inner">
                             <h3 id="so-sinh-vien">Đang Tải ...</h3>
-                            <p>Học Sinh</p>
+                            <p>Sinh Viên</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-graduation-cap"></i>
@@ -47,11 +47,11 @@
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3 id="so-sinh-vien">Đang Tải ...</h3>
-                            <p>Học Sinh</p>
+                            <h3 id="so-khoa">Đang Tải ...</h3>
+                            <p>Khoa</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-graduation-cap"></i>
+                            <i class="fas fa-boxes-stacked"></i>
                         </div>
                         <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
@@ -61,46 +61,16 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3 id="so-giang-vien">Đang Tải ...</h3>
+                            <h3 id="so-chuyen-nganh">Đang Tải ...</h3>
 
-                            <p>Giảng Viên</p>
+                            <p>Chuyên Ngành</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-person-chalkboard"></i>
+                            <i class="fas fa-people-group"></i>
                         </div>
                         <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- <div class="col-lg-3 col-6">
-                    
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3 id="so-giang-vien">Đang Tải ...</h3>
-
-                            <p>Số Môn Giảng Dạy</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-person-add"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-               
-                <div class="col-lg-3 col-6">
-                    
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3>65</h3>
-
-                            <p>Unique Visitors</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div> -->
-
             </div>
             <div class="row justify-content-center">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -169,6 +139,28 @@ $(function() {
             success: function(response) {
                 var tongGiangViens = response.tongGiangViens;
                 $('#so-giang-vien').text(tongGiangViens);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+        $.ajax({
+            url: '{{ route("lay-tong-khoa") }}',
+            type: 'GET',
+            success: function(response) {
+                var tongKhoas = response.tongKhoas;
+                $('#so-khoa').text(tongKhoas);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+        $.ajax({
+            url: '{{ route("lay-tong-chuyen-nganh") }}',
+            type: 'GET',
+            success: function(response) {
+                var tongChuyenNganhs = response.tongChuyenNganhs;
+                $('#so-chuyen-nganh').text(tongChuyenNganhs);
             },
             error: function(xhr) {
                 console.log(xhr.responseText);

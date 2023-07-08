@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class SinhVien extends Model
+use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+class SinhVien extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'sinh_viens';
     protected $primaryKey = 'ma_sv';
     public $incrementing = false;
@@ -23,7 +27,7 @@ class SinhVien extends Model
         'gioi_tinh',
         'ngay_sinh',
         'noi_sinh',
-        'dan_toc',  
+        'dan_toc',
         'ton_giao',
         'dia_chi_thuong_tru',
         'dia_chi_tam_tru',
@@ -44,5 +48,8 @@ class SinhVien extends Model
     public function setPasswordAttribute($password)
     {
         $this->attributes['mat_khau'] = bcrypt($password);
+    }
+    public function lopHoc(){
+        return $this->hasOne(LopHoc::class,'id','id_lop_hoc');
     }
 }

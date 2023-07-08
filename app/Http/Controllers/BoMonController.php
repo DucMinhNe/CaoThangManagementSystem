@@ -74,6 +74,10 @@ class BoMonController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_bo_mon' => ['required', 'regex:/^[\p{L}\d\s]+$/u'],
+            'id_khoa' => 'required'
+        ]);
         BoMon::updateOrCreate(
             ['id' => $request->id],
             [

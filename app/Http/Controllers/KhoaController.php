@@ -63,10 +63,13 @@ class KhoaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_khoa' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+        ]);
         Khoa::updateOrCreate(['id' => $request->id],
                 ['ten_khoa' => $request->ten_khoa]);        
    
-        return response()->json(['success'=>'Lưu Khoa Thành Công.']);
+        return response()->json(['success'=>'Lưu Thành Công.']);
     }
 
     /**
@@ -99,17 +102,19 @@ class KhoaController extends Controller
      */
     public function destroy($id)
     {
-        // Khoa::find($id)->delete();
-        // return response()->json(['success'=>'Xóa Khoa Thành Công.']);
         Khoa::where('id', $id)->update(['trang_thai' => 0]);
-        return response()->json(['success' => 'Xóa Khoa Thành Công.']);
+        return response()->json(['success' => 'Xóa Thành Công.']);
     }
     public function restore($id)
     {
         Khoa::where('id', $id)->update(['trang_thai' => 1]);
-        return response()->json(['success' => 'Khôi phục Khoa thành công.']);
+        return response()->json(['success' => 'Khôi phục thành công.']);
     }
-    
+    public function layTongKhoa()
+    {
+        $tongKhoas = Khoa::where('trang_thai', 1)->count();
+        return response()->json(['tongKhoas' => $tongKhoas]);
+    }
 
    
 }

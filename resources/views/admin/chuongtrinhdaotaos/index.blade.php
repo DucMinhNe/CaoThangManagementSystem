@@ -78,18 +78,25 @@
                         <div class="form-group">
                             <label for="khoa_hoc">Khóa Học</label>
                             <input type="text" class="form-control" id="khoa_hoc" name="khoa_hoc" placeholder="Khóa Học"
-                                value="" required>
+                                value="" required pattern="^\d{4}$">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập năm có 4 ký tự
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="id_chuyen_nganh">Chuyên Ngành</label>
                             <select name="id_chuyen_nganh" id="id_chuyen_nganh" class="form-control select2"
-                                style="width: 100%;">
+                                style="width: 100%;" required>
+                                <option value="">-- Chọn chuyên ngành --</option>
                                 @foreach ($chuyennganhs as $chuyennganh)
                                 @if ($chuyennganh->trang_thai == 1)
                                 <option value="{{ $chuyennganh->id }}">{{ $chuyennganh->ten_chuyen_nganh }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn chuyên ngành
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -325,14 +332,17 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#id_chuyen_nganh').val('').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('chuongtrinhdaotao.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -346,32 +356,36 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('chuongtrinhdaotao.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('chuongtrinhdaotao.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");

@@ -65,16 +65,6 @@ td {
                 <button id="datLaiBtn" class="btn btn-info" type="button">Đặt lại</button>
             </div>
         </div>
-        <!-- <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
-            <li class="nav-item mr-1">
-                <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
-            </li>
-            <li class="nav-item">
-                <button class="btn btn-success" type="button" id="createNewBtn">
-                    <i class="fa-solid fa-circle-plus"></i> Thêm
-                </button>
-            </li>
-        </ul> -->
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
@@ -167,38 +157,65 @@ td {
                                 <div class="form-group">
                                     <label for="ma_gv">Mã Giảng Viên</label>
                                     <input type="text" class="form-control" id="ma_gv" name="ma_gv"
-                                        placeholder="Mã Giảng Viên" value="" required pattern="[0-9]{10}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="ten_giang_vien">Tên Giảng Viên</label>
-                                    <input type="text" class="form-control" id="ten_giang_vien" name="ten_giang_vien"
-                                        placeholder="Tên Giảng Viên" value="" required>
+                                        placeholder="Mã Giảng Viên" value="" required pattern="[0-9]{9}">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập mã giảng viên phải là số và có 9 chữ số.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="Email"
-                                        value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="so_dien_thoai">Số Điện Thoại</label>
-                                    <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai"
-                                        placeholder="Số Điện Thoại" value="" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                        value="" required pattern="^[a-zA-Z0-9._%+-]+@caothang\.edu\.vn$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập đúng định dạng email
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="so_cmt">CMND/CCCD</label>
+                                    <label for="so_cmt">Số CMT</label>
                                     <input type="text" class="form-control" id="so_cmt" name="so_cmt"
-                                        placeholder="Số CMT" value="" required>
+                                        placeholder="Số CMT" value="" required pattern="\d{9}|\d{12}">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số chứng minh thư 9 số(CMND) hoặc 12 số (CCCD).
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ten_giang_vien">Tên Giảng Viên</label>
+                                    <input type="text" class="form-control" id="ten_giang_vien" name="ten_giang_vien"
+                                        placeholder="Tên Giảng Viên" value="" required pattern="^[\p{L}\s]+$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên giảng viên hợp lệ.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="so_dien_thoai">Số Điện Thoại</label>
+                                    <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai"
+                                        placeholder="Số Điện Thoại" value="" required pattern="^(0|\+84)?([3-9]\d{8})$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số điện thoại hợp lệ.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="gioi_tinh">Giới Tính</label>
                                     <select class="form-control select2" id="gioi_tinh" name="gioi_tinh" required>
+                                        <option value="">-- Chọn giới tính --</option>
                                         <option value="1">Nam</option>
                                         <option value="0">Nữ</option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn giới tính.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -208,23 +225,19 @@ td {
                                     <label for="ngay_sinh">Ngày Sinh</label>
                                     <input type="date" class="form-control" id="ngay_sinh" name="ngay_sinh"
                                         placeholder="Ngày Sinh" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="noi_sinh">Nơi Sinh</label>
-                                    <input type="text" class="form-control" id="noi_sinh" name="noi_sinh"
-                                        placeholder="Nơi Sinh" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn ngày sinh.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="dan_toc">Dân Tộc</label>
                                     <input type="text" class="form-control" id="dan_toc" name="dan_toc"
-                                        placeholder="Dân Tộc" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="ton_giao">Tôn Giáo</label>
-                                    <input type="text" class="form-control" id="ton_giao" name="ton_giao"
-                                        placeholder="Tôn Giáo" value="" required>
+                                        placeholder="Dân Tộc" value="Kinh" required pattern="^[\p{L}\s]+$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập dân tộc.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -232,75 +245,135 @@ td {
                                     <label for="dia_chi_thuong_tru">Địa Chỉ Thường Trú</label>
                                     <input type="text" class="form-control" id="dia_chi_thuong_tru"
                                         name="dia_chi_thuong_tru" placeholder="Địa Chỉ Thường Trú" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="dia_chi_tam_tru">Địa Chỉ Tạm Trú</label>
-                                    <input type="text" class="form-control" id="dia_chi_tam_tru" name="dia_chi_tam_tru"
-                                        placeholder="Địa Chỉ Tạm Trú" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập địa chỉ thường trú.
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="tai_khoan">Tài Khoản</label>
-                                    <input type="text" class="form-control" id="tai_khoan" name="tai_khoan"
-                                        placeholder="Tài Khoản" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="mat_khau">Mật Khẩu</label>
-                                    <input type="password" class="form-control" id="mat_khau" name="mat_khau"
-                                        placeholder="Mật Khẩu" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tinh_trang_lam_viec">Tình Trạng Làm Việc</label>
-                                    <select class="form-control select2" id="tinh_trang_lam_viec"
-                                        name="tinh_trang_lam_viec" style="width: 100%;">
-                                        <option selected="selected" value="1">Đang Làm Việc</option>
-                                        <option value="0">Ngưng Làm Việc</option>
-
-                                    </select>
-                                </div>
-
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="id_bo_mon">Bộ Môn</label>
-                                    <select name="id_bo_mon" id="id_bo_mon" class="form-control select2"
-                                        style="width: 100%;">
-                                        <option value="">-- Chọn Bộ Môn --</option>
-                                        @foreach ($bomons as $bomon)
-                                        @if ($bomon->trang_thai == 1)
-                                        <option value="{{ $bomon->id }}">{{ $bomon->ten_bo_mon }}</option>
-                                        @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id_chuc_vu">Chức Vụ</label>
-                                    <select name="id_chuc_vu" id="id_chuc_vu" class="form-control select2"
-                                        style="width: 100%;">
-                                        @foreach ($chucvus as $chucvu)
-                                        @if ($chucvu->trang_thai == 1)
-                                        <option value="{{ $chucvu->id }}">{{ $chucvu->ten_chuc_vu }}</option>
-                                        @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="hinh_anh_dai_dien">Hình Ảnh Đại Diện</label>
-                                    <input type="file" class="form-control" id="hinh_anh_dai_dien"
-                                        name="hinh_anh_dai_dien">
-                                    <input type="hidden" id="hinh_anh_dai_dien_hidden" name="hinh_anh_dai_dien_hidden"
-                                        value="">
+                                    <label for="noi_sinh">Nơi Sinh</label>
+                                    <input type="text" class="form-control" id="noi_sinh" name="noi_sinh"
+                                        placeholder="Nơi Sinh" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập nơi sinh.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <img id="hinh_anh_dai_dien_preview" width="260" height="240" alt="" />
+                                    <label for="ton_giao">Tôn Giáo</label>
+                                    <input type="text" class="form-control" id="ton_giao" name="ton_giao"
+                                        placeholder="Tôn Giáo" value="Không" required pattern="^[\p{L}\s]+$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tôn giáo.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="dia_chi_tam_tru">Địa Chỉ Tạm Trú</label>
+                                    <input type="text" class="form-control" id="dia_chi_tam_tru" name="dia_chi_tam_tru"
+                                        placeholder="Địa Chỉ Tạm Trú" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập địa chỉ tạm trú.
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="tai_khoan">Tài Khoản</label>
+                                        <input type="text" class="form-control" id="tai_khoan" name="tai_khoan"
+                                            placeholder="Tài Khoản" value="" required>
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập tài khoản.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="id_bo_mon">Bộ Môn</label>
+                                        <select name="id_bo_mon" id="id_bo_mon" class="form-control select2"
+                                            style="width: 100%;">
+                                            <option value="">-- Chọn bộ môn --</option>
+                                            @foreach ($bomons as $bomon)
+                                            @if ($bomon->trang_thai == 1)
+                                            <option value="{{ $bomon->id }}">{{ $bomon->ten_bo_mon }}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="id_chuc_vu">Chức Vụ</label>
+                                        <select name="id_chuc_vu" id="id_chuc_vu" class="form-control select2"
+                                            style="width: 100%;" required>
+                                            <option value="">-- Chọn chức vụ --</option>
+                                            @foreach ($chucvus as $chucvu)
+                                            @if ($chucvu->trang_thai == 1)
+                                            <option value="{{ $chucvu->id }}">{{ $chucvu->ten_chuc_vu }}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Vui lòng chọn chức vụ.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="mat_khau">Mật Khẩu</label>
+                                        <input type="text" class="form-control" id="mat_khau" name="mat_khau"
+                                            placeholder="Mật Khẩu" value="" required pattern=".{6,30}">
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Mật khẩu phải có ít nhất 6 ký tự và không quá 30 ký tự.
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="tinh_trang_lam_viec">Tình Trạng Làm Việc</label>
+                                        <select class="form-control select2" id="tinh_trang_lam_viec"
+                                            name="tinh_trang_lam_viec" style="width: 100%;" required>
+                                            <option value="">-- Chọn tình trạng làm việc --</option>
+                                            <option selected="selected" value="1">Đang Làm Việc</option>
+                                            <option value="0">Ngưng Làm Việc</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Vui lòng chọn tình trạng làm việc.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="hinh_anh_dai_dien">Hình Ảnh Đại Diện</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="hinh_anh_dai_dien"
+                                                name="hinh_anh_dai_dien">
+                                            <label class="custom-file-label" for="customFile"></label>
+                                        </div>
+                                        <input type="hidden" id="hinh_anh_dai_dien_hidden"
+                                            name="hinh_anh_dai_dien_hidden" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <img id="hinh_anh_dai_dien_preview" width="100" height="100" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
@@ -309,9 +382,6 @@ td {
                                 class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
-                <!-- <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-                    <a class="btn btn-info" href="javascript:void(0)" id="clearImg"> Xóa Hình</a>
-                </ul> -->
             </div>
         </div>
     </div>
@@ -452,7 +522,7 @@ $(function() {
                 data: 'mat_khau',
                 name: 'mat_khau',
                 render: function(data, type, full, meta) {
-                    return '****';
+                    return '*****';
                 }
             },
             {
@@ -584,6 +654,10 @@ $(function() {
             $("#id_bo_mon_filter").append(option);
         });
     });
+    $('#email').on('input', function() {
+        var email = $(this).val();
+        $('#tai_khoan').val(email);
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
@@ -596,6 +670,8 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#mat_khau').attr('required', 'required');
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#ma_gv').removeAttr('readonly');
         $('#modalForm').trigger("reset");
@@ -606,8 +682,14 @@ $(function() {
         // Đặt giá trị của thẻ <img> về đường dẫn mặc định
         $('#hinh_anh_dai_dien_preview').attr('src', '{{ asset("img/warning.jpg") }}');
         $('#hinh_anh_dai_dien_preview').attr('alt', 'Warning');
+        $('#gioi_tinh').val('').trigger('change');
+        $('#id_bo_mon').val('').trigger('change');
+        $('#id_chuc_vu').val('').trigger('change');
+        $('#tinh_trang_lam_viec').val('').trigger('change');
     });
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
+        $('#mat_khau').removeAttr('required');
         $('#ma_gv').attr('readonly', 'readonly');
         var id = $(this).data('id');
         $.get("{{ route('giangvien.index') }}" + '/' + id + '/edit', function(data) {
@@ -639,7 +721,7 @@ $(function() {
             }
             $('#tai_khoan').val(data.tai_khoan);
             //$('#mat_khau').val(data.mat_khau);
-            $('#mat_khau').attr('placeholder', '******');
+            $('#mat_khau').attr('placeholder', '*********');
             $('#id_bo_mon').val(data.id_bo_mon).trigger('change');
             $('#id_chuc_vu').val(data.id_chuc_vu).trigger('change');
             $('#tinh_trang_lam_viec').val(data.tinh_trang_lam_viec).trigger('change');
@@ -659,35 +741,39 @@ $(function() {
     });
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
-        var formData = new FormData($('#modalForm')[0]);
-        $.ajax({
-            data: formData,
-            url: "{{ route('giangvien.store') }}",
-            type: "POST",
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Sending..');
+            var formData = new FormData($('#modalForm')[0]);
+            $.ajax({
+                data: formData,
+                url: "{{ route('giangvien.store') }}",
+                type: "POST",
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

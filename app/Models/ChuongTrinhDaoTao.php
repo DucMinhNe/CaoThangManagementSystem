@@ -14,4 +14,8 @@ class ChuongTrinhDaoTao extends Model
         'id_chuyen_nganh',
         'trang_thai',
     ];
+    public function ctChuongTrinhDaoTao()
+    {
+        return $this->hasMany(CTChuongTrinhDaoTao::class,'id_chuong_trinh_dao_tao','id')->orderBy('hoc_ky','asc');
+    }
 }

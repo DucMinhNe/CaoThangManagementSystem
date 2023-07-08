@@ -147,6 +147,7 @@
                             <label for="id_ct_chuong_trinh_dao_tao">Tên Môn Học</label>
                             <select name="id_ct_chuong_trinh_dao_tao" id="id_ct_chuong_trinh_dao_tao"
                                 class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn Môn Học --</option>
                                 @foreach ($ctchuongtrinhdaotaos as $ctchuongtrinhdaotao)
                                 @if ($ctchuongtrinhdaotao->trang_thai == 1)
                                 <option value="{{ $ctchuongtrinhdaotao->id }}">

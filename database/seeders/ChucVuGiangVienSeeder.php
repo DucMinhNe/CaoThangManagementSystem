@@ -18,11 +18,11 @@ class ChucVuGiangVienSeeder extends Seeder
         DB::table('chuc_vu_giang_viens')->insert([
             [
                 'id' => '1',
-                'ten_chuc_vu' => 'Super Admin',
+                'ten_chuc_vu' => 'Siêu quản trị viên',
             ],
             [
                 'id' => '2',
-                'ten_chuc_vu' => 'Admin',
+                'ten_chuc_vu' => 'Quản trị viên',
             ],
             [
                 'id' => '3',

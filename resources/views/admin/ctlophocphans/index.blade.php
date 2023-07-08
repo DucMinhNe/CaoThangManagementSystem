@@ -90,7 +90,7 @@
                         <div class="form-group">
                             <label for="id_lop_hoc_phan">Lớp Học Phần</label>
                             <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2"
-                                style="width: 100%;">
+                                style="width: 100%;" required>
                                 <option value="">-- Chọn Lớp Học Phần --</option>
                                 @foreach ($lophocphans as $lophocphan)
                                 @if ($lophocphan->trang_thai == 1)
@@ -98,10 +98,13 @@
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn lớp học phần.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="ma_sv">Sinh Viên</label>
-                            <select name="ma_sv" id="ma_sv" class="form-control select2" style="width: 100%;">
+                            <select name="ma_sv" id="ma_sv" class="form-control select2" style="width: 100%;" required>
                                 <option value="">-- Chọn Sinh Viên --</option>
                                 @foreach ($sinhviens as $sinhvien)
                                 @if ($sinhvien->trang_thai == 1)
@@ -109,36 +112,57 @@
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn sinh viên.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="chuyen_can">Chuyên Cần</label>
                             <input type="text" class="form-control" id="chuyen_can" name="chuyen_can"
-                                placeholder="Chuyên Cần" value="" required>
+                                placeholder="Chuyên Cần" value="" required pattern="^0(\.\d+)?|1(\.0+)?$">
+                            <div class="invalid-feedback">
+                                Vui lòng chỉ nhập số (0->1).
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="tbkt">TBKT</label>
                             <input type="text" class="form-control" id="tbkt" name="tbkt" placeholder="TBKT" value=""
-                                required>
+                                required pattern="^([0-3](\.[0-9])?|4(\.0)?)$">
+                            <div class="invalid-feedback">
+                                Vui lòng chỉ nhập số (0->4).
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="thi_1">Thi 1</label>
                             <input type="text" class="form-control" id="thi_1" name="thi_1" placeholder="Thi 1" value=""
-                                required>
+                                required pattern="^(10(\.0)?|[0-9](\.[0-9])?)$">
+                            <div class="invalid-feedback">
+                                Vui lòng chỉ nhập số (0->10).
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="thi_2">Thi 2</label>
                             <input type="text" class="form-control" id="thi_2" name="thi_2" placeholder="Thi 2" value=""
-                                required>
+                                required pattern="^(10(\.0)?|[0-9](\.[0-9])?)$">
+                            <div class="invalid-feedback">
+                                Vui lòng chỉ nhập số (0->10).
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="tong_ket_1">Tổng Kết 1</label>
                             <input type="text" class="form-control" id="tong_ket_1" name="tong_ket_1"
-                                placeholder="Tổng Kết 1" value="" required>
+                                placeholder="Tổng Kết 1" value="" required pattern="^(10(\.0)?|[0-9](\.[0-9])?)$">
+                            <div class="invalid-feedback">
+                                Vui lòng chỉ nhập số (0->10).
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="tong_ket_2">Tổng Kết 2</label>
                             <input type="text" class="form-control" id="tong_ket_2" name="tong_ket_2"
-                                placeholder="Tổng Kết 2" value="" required>
+                                placeholder="Tổng Kết 2" value="" required pattern="^(10(\.0)?|[0-9](\.[0-9])?)$">
+                            <div class="invalid-feedback">
+                                Vui lòng chỉ nhập số (0->10).
+                            </div>
                         </div>
 
                     </div>
@@ -315,8 +339,11 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#id_lop_hoc_phan').val('').trigger('change');
+        $('#ma_sv').val('').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
@@ -324,6 +351,7 @@ $(function() {
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('ctlophocphan.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -343,32 +371,36 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('ctlophocphan.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('ctlophocphan.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

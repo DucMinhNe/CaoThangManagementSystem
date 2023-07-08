@@ -63,6 +63,9 @@ class ChucVuGiangVienController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_chuc_vu' => ['required', 'regex:/^[\p{L}\d\s]+$/u'],
+        ]);
         ChucVuGiangVien::updateOrCreate(
             ['id' => $request->id],
             [

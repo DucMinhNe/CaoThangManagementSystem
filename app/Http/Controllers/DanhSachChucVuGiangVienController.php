@@ -76,6 +76,10 @@ class DanhSachChucVuGiangVienController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ma_gv' => 'required',
+            'id_chuc_vu' => 'required',
+        ]);
         DanhSachChucVuGiangVien::updateOrCreate(['id' => $request->id],
         ['ma_gv' => $request->ma_gv,
            'id_chuc_vu' => $request->id_chuc_vu,

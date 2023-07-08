@@ -68,10 +68,12 @@
                         <div class="form-group">
                             <label for="ten_khoa"> Tên Chức Vụ</label>
                             <input type="text" class="form-control" id="ten_chuc_vu" name="ten_chuc_vu"
-                                placeholder="Tên Chức Vụ" value="" required>
+                                placeholder="Tên Chức Vụ" value="" required pattern="[\p{L}\d\s]+">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập chữ cái, số và khoảng trắng.
+                            </div>
                         </div>
                     </div>
-                    <!-- /.card-body -->
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
                                 class="fa-regular fa-floppy-disk"></i> Lưu</button>
@@ -213,6 +215,7 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
         $('#modalForm').trigger("reset");
@@ -221,6 +224,7 @@ $(function() {
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('chucvusinhvien.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -230,37 +234,39 @@ $(function() {
             $('#ten_chuc_vu').val(data.ten_chuc_vu);
         })
     });
-
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('chucvusinhvien.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('chucvusinhvien.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
-
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
         Swal.fire({

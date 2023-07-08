@@ -186,37 +186,64 @@ td {
                                     <label for="ma_sv">Mã Sinh Viên</label>
                                     <input type="text" class="form-control" id="ma_sv" name="ma_sv"
                                         placeholder="Mã Sinh Viên" value="" required pattern="[0-9]{10}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="ten_sinh_vien">Tên Sinh Viên</label>
-                                    <input type="text" class="form-control" id="ten_sinh_vien" name="ten_sinh_vien"
-                                        placeholder="Tên Sinh Viên" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập mã sinh viên phải là số và có 10 chữ số.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="text" class="form-control" id="email" name="email" placeholder="Email"
-                                        value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="so_dien_thoai">Số Điện Thoại</label>
-                                    <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai"
-                                        placeholder="Số Điện Thoại" value="" required>
+                                        value="" readonly required>
+                                    <div class="invalid-feedback">
+                                        Email phải khớp với mã sinh viên.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="so_cmt">Số CMT</label>
                                     <input type="text" class="form-control" id="so_cmt" name="so_cmt"
-                                        placeholder="Số CMT" value="" required>
+                                        placeholder="Số CMT" value="" required pattern="\d{9}|\d{12}">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số chứng minh thư 9 số(CMND) hoặc 12 số (CCCD).
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ten_sinh_vien">Tên Sinh Viên</label>
+                                    <input type="text" class="form-control" id="ten_sinh_vien" name="ten_sinh_vien"
+                                        placeholder="Tên Sinh Viên" value="" required pattern="^[\p{L}\s]+$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên sinh viên hợp lệ.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="so_dien_thoai">Số Điện Thoại</label>
+                                    <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai"
+                                        placeholder="Số Điện Thoại" value="" required pattern="^(0|\+84)?([3-9]\d{8})$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số điện thoại hợp lệ.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="gioi_tinh">Giới Tính</label>
                                     <select class="form-control select2" id="gioi_tinh" name="gioi_tinh" required>
+                                        <option value="">-- Chọn Giới Tính --</option>
                                         <option value="1">Nam</option>
                                         <option value="0">Nữ</option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn giới tính.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -226,23 +253,19 @@ td {
                                     <label for="ngay_sinh">Ngày Sinh</label>
                                     <input type="date" class="form-control" id="ngay_sinh" name="ngay_sinh"
                                         placeholder="Ngày Sinh" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="noi_sinh">Nơi Sinh</label>
-                                    <input type="text" class="form-control" id="noi_sinh" name="noi_sinh"
-                                        placeholder="Nơi Sinh" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn ngày sinh.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="dan_toc">Dân Tộc</label>
                                     <input type="text" class="form-control" id="dan_toc" name="dan_toc"
-                                        placeholder="Dân Tộc" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="ton_giao">Tôn Giáo</label>
-                                    <input type="text" class="form-control" id="ton_giao" name="ton_giao"
-                                        placeholder="Tôn Giáo" value="" required>
+                                        placeholder="Dân Tộc" value="" required pattern="^[\p{L}\s]+$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập dân tộc.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -250,11 +273,41 @@ td {
                                     <label for="dia_chi_thuong_tru">Địa Chỉ Thường Trú</label>
                                     <input type="text" class="form-control" id="dia_chi_thuong_tru"
                                         name="dia_chi_thuong_tru" placeholder="Địa Chỉ Thường Trú" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập địa chỉ thường trú.
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="noi_sinh">Nơi Sinh</label>
+                                    <input type="text" class="form-control" id="noi_sinh" name="noi_sinh"
+                                        placeholder="Nơi Sinh" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập nơi sinh.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ton_giao">Tôn Giáo</label>
+                                    <input type="text" class="form-control" id="ton_giao" name="ton_giao"
+                                        placeholder="Tôn Giáo" value="" required pattern="^[\p{L}\s]+$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tôn giáo.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="dia_chi_tam_tru">Địa Chỉ Tạm Trú</label>
                                     <input type="text" class="form-control" id="dia_chi_tam_tru" name="dia_chi_tam_tru"
                                         placeholder="Địa Chỉ Tạm Trú" value="" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập địa chỉ tạm trú.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -263,39 +316,64 @@ td {
                                 <div class="form-group">
                                     <label for="tai_khoan">Tài Khoản</label>
                                     <input type="text" class="form-control" id="tai_khoan" name="tai_khoan"
-                                        placeholder="Tài Khoản" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="mat_khau">Mật Khẩu</label>
-                                    <input type="password" class="form-control" id="mat_khau" name="mat_khau"
-                                        placeholder="Mật Khẩu" value="" required>
+                                        placeholder="Tài Khoản" value="" readonly required>
+                                    <div class="invalid-feedback">
+                                        Tài khoản phải trùng với mã sinh viên.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="khoa_hoc">Khóa Học</label>
                                     <input type="text" class="form-control" id="khoa_hoc" name="khoa_hoc"
-                                        placeholder="Khóa Học" value="" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="bac_dao_tao">Bậc Đào Tạo</label>
-                                    <select class="form-control select2" id="bac_dao_tao" name="bac_dao_tao" required>
-                                        <option value="Cao đẳng ngành">Cao đẳng ngành</option>
-                                        <option value="Cao đẳng nghề">Cao đẳng nghề</option>
-                                    </select>
+                                        placeholder="Khóa Học" value="" required pattern="^\d{4}$">
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập năm hợp lệ.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="he_dao_tao">Hệ Đào Tạo</label>
                                     <select class="form-control select2" id="he_dao_tao" name="he_dao_tao" required>
+                                        <option value="">-- Chọn Hệ Đào Tạo--</option>
                                         <option value="Chính quy">Chính quy</option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn hệ đào tạo.
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="mat_khau">Mật Khẩu</label>
+                                    <input type="text" class="form-control" id="mat_khau" name="mat_khau"
+                                        placeholder="Mật Khẩu" value="" readonly required>
+                                    <div class="invalid-feedback">
+                                        Mật khẩu phải khớp với số chứng minh thư.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bac_dao_tao">Bậc Đào Tạo</label>
+                                    <select class="form-control select2" id="bac_dao_tao" name="bac_dao_tao" required>
+                                        <option value="">-- Chọn Bậc Đào Tạo--</option>
+                                        <option value="Cao đẳng ngành">Cao đẳng ngành</option>
+                                        <option value="Cao đẳng nghề">Cao đẳng nghề</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn bậc đào tạo.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_lop_hoc">Lớp</label>
                                     <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2"
-                                        style="width: 100%;">
+                                        style="width: 100%;" required>
                                         <option value="">-- Chọn lớp --</option>
                                         @foreach ($lophocs as $lophoc)
                                         @if ($lophoc->trang_thai == 1)
@@ -304,6 +382,9 @@ td {
                                         @endif
                                         @endforeach
                                     </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn lớp.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -313,23 +394,32 @@ td {
                                     <label for="tinh_trang_hoc">Tình Trạng Học</label>
                                     <select class="form-control select2" id="tinh_trang_hoc" name="tinh_trang_hoc"
                                         required>
+                                        <option value="">-- Chọn tình trạng học --</option>
                                         <option value="Đang học">Đang học</option>
                                         <option value="Bảo lưu">Bảo lưu</option>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn tình trạng học.
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="hinh_anh_dai_dien">Hình Ảnh Đại Diện</label>
-                                    <input type="file" class="form-control" id="hinh_anh_dai_dien"
-                                        name="hinh_anh_dai_dien">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="hinh_anh_dai_dien"
+                                            name="hinh_anh_dai_dien">
+                                        <label class="custom-file-label" for="customFile"></label>
+                                    </div>
+                                    <!-- <input type="file" class="form-control" id="hinh_anh_dai_dien"
+                                        name="hinh_anh_dai_dien"> -->
                                     <input type="hidden" id="hinh_anh_dai_dien_hidden" name="hinh_anh_dai_dien_hidden"
                                         value="">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 text-left">
                                 <div class="form-group">
-                                    <img id="hinh_anh_dai_dien_preview" width="90" height="90" alt="" />
+                                    <img id="hinh_anh_dai_dien_preview" width="100" height="100" alt="" />
                                 </div>
                             </div>
                         </div>
@@ -368,7 +458,11 @@ td {
                                 @endforeach
                             </select>
                         </div>
-                        <input type="file" name="fileExcel" class="form-control">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" name="fileExcel">
+                            <label class="custom-file-label" for="customFile"></label>
+                        </div>
+                        <!-- <input type="file" name="fileExcel" class="form-control"> -->
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="themSinhVienExcelSubmit">Xác Nhận</button>
@@ -425,16 +519,10 @@ $(function() {
                 false);
         },
         ajax: "{{ route('sinhvien.index') }}",
-        columnDefs: [
-            // {
-            //     "visible": false,
-            //     "targets": [2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14]
-            // },
-            {
-                "targets": 12,
-                "className": 'dt-body-center'
-            }
-        ],
+        columnDefs: [{
+            "targets": 12,
+            "className": 'dt-body-center'
+        }],
         columns: [{
                 data: 'ma_sv',
                 name: 'ma_sv',
@@ -604,6 +692,10 @@ $(function() {
                 text: 'Số bản ghi trên trang'
             }
         ],
+        lengthMenu: [
+            [10, 25, 50, -1],
+            [10, 25, 50, 'Tất cả']
+        ]
     });
     $("#filterToggle").on("click", function() {
         $(".filter-row").toggle();
@@ -657,6 +749,16 @@ $(function() {
                 })
             }
         });
+    });
+    $('#ma_sv').on('input', function() {
+        var ma_sv = $(this).val();
+        var email = ma_sv + '@caothang.edu.vn';
+        $('#tai_khoan').val(ma_sv);
+        $('#email').val(email);
+    });
+    $('#so_cmt').on('input', function() {
+        var so_cmt = $(this).val();
+        $('#mat_khau').val(so_cmt);
     });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
@@ -809,6 +911,7 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#ma_sv').removeAttr('readonly');
         $('#modalForm').trigger("reset");
@@ -819,8 +922,14 @@ $(function() {
         // Đặt giá trị của thẻ <img> về đường dẫn mặc định
         $('#hinh_anh_dai_dien_preview').attr('src', '{{ asset("img/warning.jpg") }}');
         $('#hinh_anh_dai_dien_preview').attr('alt', 'Warning');
+        $('#gioi_tinh').val('').trigger('change');
+        $('#bac_dao_tao').val('').trigger('change');
+        $('#he_dao_tao').val('').trigger('change');
+        $('#id_lop_hoc').val('').trigger('change');
+        $('#tinh_trang_hoc').val('').trigger('change');
     });
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         $('#ma_sv').attr('readonly', 'readonly');
         var id = $(this).data('id');
         $.get("{{ route('sinhvien.index') }}" + '/' + id + '/edit', function(data) {
@@ -833,7 +942,6 @@ $(function() {
             $('#so_dien_thoai').val(data.so_dien_thoai);
             $('#so_cmt').val(data.so_cmt);
             $('#gioi_tinh').val(data.gioi_tinh).trigger('change');
-            // $('#gioi_tinh option[value="' + data.gioi_tinh + '"]').prop('selected', true);
             $('#ngay_sinh').val(data.ngay_sinh);
             $('#noi_sinh').val(data.noi_sinh);
             $('#dan_toc').val(data.dan_toc);
@@ -852,7 +960,7 @@ $(function() {
             }
             $('#tai_khoan').val(data.tai_khoan);
             // $('#mat_khau').val(data.mat_khau);
-            $('#mat_khau').attr('placeholder', '******');
+            $('#mat_khau').attr('placeholder', data.so_cmt);
             $('#khoa_hoc').val(data.khoa_hoc);
             $('#bac_dao_tao').val(data.bac_dao_tao).trigger('change');
             $('#he_dao_tao').val(data.he_dao_tao).trigger('change');
@@ -874,35 +982,39 @@ $(function() {
     });
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        var formData = new FormData($('#modalForm')[0]);
-        $.ajax({
-            data: formData,
-            url: "{{ route('sinhvien.store') }}",
-            type: "POST",
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            var formData = new FormData($('#modalForm')[0]);
+            $.ajax({
+                data: formData,
+                url: "{{ route('sinhvien.store') }}",
+                type: "POST",
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

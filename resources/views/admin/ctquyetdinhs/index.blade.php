@@ -72,24 +72,32 @@
                         <div class="form-group">
                             <label for="id_quyet_dinh">Quyết Định</label>
                             <select name="id_quyet_dinh" id="id_quyet_dinh" class="form-control select2"
-                                style="width: 100%;">
+                                style="width: 100%;" required>
+                                <option value="">-- Chọn Quyết Định --</option>
                                 @foreach ($quyetdinhs as $quyetdinh)
                                 @if ($quyetdinh->trang_thai == 1)
                                 <option value="{{ $quyetdinh->id }}">{{ $quyetdinh->noi_dung }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn quyết định.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="ma_sv_nhan_quyet_dinh">Sinh Viên</label>
                             <select name="ma_sv_nhan_quyet_dinh" id="ma_sv_nhan_quyet_dinh" class="form-control select2"
-                                style="width: 100%;">
+                                style="width: 100%;" required>
+                                <option value="">-- Chọn Sinh Viên --</option>
                                 @foreach ($sinhviens as $sinhvien)
                                 @if ($sinhvien->trang_thai == 1)
                                 <option value="{{ $sinhvien->ma_sv }}">{{ $sinhvien->ten_sinh_vien }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn sinh viên.
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -239,14 +247,18 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#id_quyet_dinh').val('').trigger('change');
+        $('#ma_sv_nhan_quyet_dinh').val('').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('ctquyetdinh.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -261,32 +273,36 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('ctquyetdinh.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('ctquyetdinh.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

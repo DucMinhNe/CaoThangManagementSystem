@@ -5,6 +5,9 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+use Laravel\Sanctum\Sanctum;
+use Laravel\Sanctum\PersonalAccessToken;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -25,6 +28,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+        PersonalAccessToken::creating(function (PersonalAccessToken $token) {
+            $token->expires_at = now()->addHours(2); // Thay đổi thời gian hết hạn theo yêu cầu của bạn
+        });
         //
     }
 }

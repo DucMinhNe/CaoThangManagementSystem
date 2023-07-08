@@ -130,6 +130,22 @@ class GiangVienController extends Controller
             $profileImage = $request->ma_gv . "." . $files->getClientOriginalExtension();
             $files->move($destinationPath, $profileImage);
         }
+        $request->validate([
+            'ten_giang_vien' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'email' => ['required', 'email'],
+            'so_dien_thoai' => ['required', 'regex:/^(0|\+84)?([3-9]\d{8})$/'],
+            'so_cmt' => ['required', 'regex:/\d{9}|\d{12}/'],
+            'gioi_tinh' => ['required'],
+            'ngay_sinh' => ['required'],
+            'noi_sinh' => ['required'],
+            'dan_toc' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'ton_giao' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'dia_chi_thuong_tru' => ['required'],
+            'dia_chi_tam_tru' => ['required'],
+            'tai_khoan' => ['required'],
+            'id_chuc_vu' => ['required'],
+            'tinh_trang_lam_viec' => ['required'],
+        ]);  
         $giangVienData = [
             'ten_giang_vien' => $request->ten_giang_vien,
             'email' => $request->email,
@@ -216,5 +232,12 @@ class GiangVienController extends Controller
         $tongGiangViens = GiangVien::where('trang_thai', 1)->count();
 
         return response()->json(['tongGiangViens' => $tongGiangViens]);
+    }
+    public function layThongTinQuanTriVien()
+    {
+        $data = GiangVien::select('ten_giang_vien', 'email', 'so_dien_thoai', 'hinh_anh_dai_dien')
+            ->where('id_chuc_vu', 1)
+            ->get();
+        return response()->json($data);
     }
 }

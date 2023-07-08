@@ -252,6 +252,25 @@ class SinhVienController extends Controller
             $profileImage = $request->ma_sv . "." . $files->getClientOriginalExtension();
             $files->move($destinationPath, $profileImage);
         }
+        $request->validate([
+            'ten_sinh_vien' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'email' => ['required', 'email'],
+            'so_dien_thoai' => ['required', 'regex:/^(0|\+84)?([3-9]\d{8})$/'],
+            'so_cmt' => ['required', 'regex:/\d{9}|\d{12}/'],
+            'gioi_tinh' => ['required'],
+            'ngay_sinh' => ['required'],
+            'noi_sinh' => ['required'],
+            'dan_toc' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'ton_giao' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'dia_chi_thuong_tru' => ['required'],
+            'dia_chi_tam_tru' => ['required'],
+            'tai_khoan' => ['required'],
+            'khoa_hoc' => ['required', 'regex:/^\d{4}$/'],
+            'bac_dao_tao' => ['required'],
+            'he_dao_tao' => ['required'],
+            'id_lop_hoc' => ['required'],
+            'tinh_trang_hoc' => ['required'],
+        ]);        
         $sinhVienData = [
             'ten_sinh_vien' => $request->ten_sinh_vien,
             'email' => $request->email,
@@ -276,30 +295,6 @@ class SinhVienController extends Controller
             $sinhVienData['mat_khau'] = bcrypt($request->mat_khau);
         }
         SinhVien::updateOrCreate(['ma_sv' => $request->ma_sv], $sinhVienData);
-        // SinhVien::updateOrCreate(['ma_sv' => $request->ma_sv],
-        // [
-        //  'ten_sinh_vien' => $request->ten_sinh_vien,
-        //  'email' => $request->email,
-        //  'so_dien_thoai' => $request->so_dien_thoai,
-        //  'so_cmt' => $request->so_cmt,
-        //  'gioi_tinh' => $request->gioi_tinh,
-        //  'ngay_sinh' => $request->ngay_sinh,
-        //  'noi_sinh' => $request->noi_sinh,
-        //  'dan_toc' => $request->dan_toc,
-        //  'ton_giao' => $request->ton_giao,
-        //  'dia_chi_thuong_tru' => $request->dia_chi_thuong_tru,
-        //  'dia_chi_tam_tru' => $request->dia_chi_tam_tru,
-        //  'hinh_anh_dai_dien' => $profileImage,
-        //  'tai_khoan' => $request->tai_khoan,
-        //  //'mat_khau' => $request->mat_khau,
-        //  'mat_khau' => bcrypt($request->mat_khau),
-        //  'khoa_hoc' => $request->khoa_hoc,
-        //  'bac_dao_tao' => $request->bac_dao_tao,
-        //  'he_dao_tao' => $request->he_dao_tao,
-        //  'id_lop_hoc' => $request->id_lop_hoc,
-        //  'tinh_trang_hoc' => $request->tinh_trang_hoc,
-        // ],
-        // );        
         return response()->json(['success'=>'Lưu Thành Công.']);
     }
 

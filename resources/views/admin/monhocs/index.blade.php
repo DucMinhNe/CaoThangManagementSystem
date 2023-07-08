@@ -76,27 +76,39 @@
                             <label for="ten_mon_hoc">Tên Môn Học</label>
                             <input type="text" class="form-control" id="ten_mon_hoc" name="ten_mon_hoc"
                                 placeholder="Tên Môn Học" value="" required>
+                            <div class="invalid-feedback">
+                                Vui lòng nhập chữ cái số và khoảng trắng.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="id_bo_mon">Bộ Môn</label>
-                            <select name="id_bo_mon" id="id_bo_mon" class="form-control select2" style="width: 100%;">
+                            <select name="id_bo_mon" id="id_bo_mon" class="form-control select2" style="width: 100%;"
+                                required>
+                                <option value="">-- Chọn bộ môn--</option>
                                 @foreach ($bomons as $bomon)
                                 @if ($bomon->trang_thai == 1)
                                 <option value="{{ $bomon->id }}">{{ $bomon->ten_bo_mon }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn bộ môn.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="id_loai_mon_hoc">Loại Môn Học</label>
                             <select name="id_loai_mon_hoc" id="id_loai_mon_hoc" class="form-control select2"
-                                style="width: 100%;">
+                                style="width: 100%;" required>
+                                <option value="">-- Chọn loại môn học--</option>
                                 @foreach ($loaimonhocs as $loaimonhoc)
                                 @if ($loaimonhoc->trang_thai == 1)
                                 <option value="{{ $loaimonhoc->id }}">{{ $loaimonhoc->ten_loai_mon_hoc }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn loại môn học.
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -252,14 +264,18 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#id_bo_mon').val('').trigger('change');
+        $('#id_loai_mon_hoc').val('').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('monhoc.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -274,32 +290,36 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('monhoc.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('monhoc.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

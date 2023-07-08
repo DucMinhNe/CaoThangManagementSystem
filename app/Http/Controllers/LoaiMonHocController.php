@@ -62,6 +62,9 @@ class LoaiMonHocController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_loai_mon_hoc' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+        ]);
         LoaiMonHoc::updateOrCreate(['id' => $request->id],
         ['ten_loai_mon_hoc' => $request->ten_loai_mon_hoc]);        
 

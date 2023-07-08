@@ -73,6 +73,10 @@ class PhongController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_phong' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'suc_chua' => 'required|numeric',
+        ]);
         Phong::updateOrCreate(['id' => $request->id],
         ['ten_phong' => $request->ten_phong,
            'mo_ta' => $request->mo_ta,
