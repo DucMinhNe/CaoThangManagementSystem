@@ -138,8 +138,8 @@
             $danh_sach_lop_hoc = JSON.parse('{!! json_encode($lop_hoc) !!}');
             $danh_sach_lop_hoc_phan = JSON.parse('{!! json_encode($lop_hoc_phan) !!}');
             $danh_sach_sinh_vien_thuoc_lop = null;
-            console.log($danh_sach_lop_hoc);
-            console.log($danh_sach_lop_hoc_phan);
+            // console.log($danh_sach_lop_hoc);
+            // console.log($danh_sach_lop_hoc_phan);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -229,27 +229,36 @@
             $('#loai_lop_hoc').change(function() {
                 $loai_lop_hoc = $('#loai_lop_hoc').val();
                 $text = "";
+                firstSelect=0;
                 if ($loai_lop_hoc == 1) {
                     $danh_sach_lop_hoc.forEach(lop_hoc => {
-                        $text += "<option value=" + lop_hoc.id + ">" + lop_hoc.ten_lop_hoc +
-                            "</option>"
+                        $text += "<option value='" + lop_hoc.id + "''>" + lop_hoc.ten_lop_hoc +
+                            "</option>";
+                        if(firstSelect==0){
+                            firstSelect=lop_hoc.id;
+                        }
                     });
+
                 } else {
                     $danh_sach_lop_hoc_phan.forEach(lop_hoc_phan => {
-                        $text += "<option value=" + lop_hoc_phan.id + ">" + lop_hoc_phan
+                        $text += "<option value='" + lop_hoc_phan.id + "'>" + lop_hoc_phan
                             .ten_lop_hoc_phan +
-                            "</option>"
+                            "</option>";
+                            if(firstSelect==0){
+                            firstSelect=lop_hoc.id;
+                        }
                     });
                 }
                 $('#danh_sach_lop').empty();
                 $('#danh_sach_lop').append($text);
-
+                $('#danh_sach_lop').val(firstSelect).trigger('change');
+                console.log("Xong");
             })
 
             $('#danh_sach_lop').change(function() {
-
-                console.log('Do');
-                $.ajax({
+                console.log($(this).val());
+                if($(this).val()!=null){
+                    $.ajax({
                     type: "GET",
                     url: "{{ env('SERVER_URL') }}/admin/thongbao/danhsachsinhvienlophoc",
                     data: {
@@ -293,6 +302,8 @@
 
 
                 })
+                }
+
             })
 
             // $http({
@@ -305,9 +316,7 @@
 
 
 
-            $('#danh_sach_lop').change(function() {
 
-            })
             $('#showInactiveBtn').click(function() {
                 var button = $(this);
                 var buttonText = button.text();
@@ -323,10 +332,11 @@
             $('#createNewBtn').click(function() {
                 $('#loai_lop_hoc').prop('disabled',false);
                 $('#danh_sach_lop').prop('disabled',false);
+
                 $('#savedata').val("create-Btn");
                 $('#id').val('');
                 $('#loai_lop_hoc').val(1).trigger('change');
-
+                $('#danh_sach_lop').val('').trigger('change');
                 $('#modalForm').trigger("reset");
                 $('#modelHeading').html("Thêm");
                 $('#ajaxModelexa').modal('show');
