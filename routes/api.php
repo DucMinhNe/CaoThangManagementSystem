@@ -73,7 +73,7 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
     Route::get('/thoi-khoa-bieu/{id}',[APIThoiKhoaBieuController::class,'getLichHoc']);
     Route::get('/danh-sach-thong-bao/{id}',[APIThongBaoController::class,'layDanhSachThongBaoCuaSinhVien']);
     Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}',[APISinhVienController::class,'layBangDiemCuaSinhVien']);
-Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}/hoc-ky/{hocky}',[APISinhVienController::class,'layBangDiemCuaSinhVienTheoHocKy']);
+    Route::get('/danh-sach-diem-cua-sinh-vien/{ma_sv}/hoc-ky/{hocky}',[APISinhVienController::class,'layBangDiemCuaSinhVienTheoHocKy']);
 
 
     Route::get('/sinh-vien-duoc-phep-vao-trang-dang-ky-mon',[APIMoDangKyMonController::class,'choPhepTruyCapDangKyMonHoc']);
