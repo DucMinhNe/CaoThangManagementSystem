@@ -102,9 +102,19 @@ class APIAuthController extends Controller
     //}
      public function loginSinhVien(Request $request){
         $sinhvien=SinhVien::where('tai_khoan',$request->tai_khoan)->where('trang_thai',1)->first();
-        if(!$sinhvien||!Hash::check($request->mat_khau, $sinhvien->mat_khau)){
+        if($sinhvien && !Hash::check($request->mat_khau, $sinhvien->mat_khau))
+        {
             return response([
-                'message'=>'Đăng nhập không được'
+                'message'=>'Sai mật khẩu',
+                'status' => '-1',
+                'token' =>''
+            ],401);
+        }
+        if(!$sinhvien){
+            return response([
+                'message'=>'Tài khoản không tồn tại trong hệ thống',
+                'status' => '0',
+                'token' =>''
             ],401);
         }
         $token=$sinhvien->createToken('myapptoken')->plainTextToken;
@@ -112,6 +122,7 @@ class APIAuthController extends Controller
         $response=[
             'sinh_vien'=>$sinhvien,
             'token'=>$token,
+            'status'=>'1'
         ];
         return response($response,201);
     }
@@ -140,20 +151,32 @@ class APIAuthController extends Controller
         ];
     }
     public function DangNhapGiangVien(Request $request)
-    {
+    {   
         $taiKhoanGiangVien=GiangVien::where('tai_khoan',$request->tai_khoan)->where('trang_thai',1)->first();
         
-        if(!$taiKhoanGiangVien||!Hash::check($request->mat_khau, $taiKhoanGiangVien->mat_khau)){
+        if($taiKhoanGiangVien && !Hash::check($request->mat_khau, $taiKhoanGiangVien->mat_khau))
+        {
             return response([
-                'message'=>'Lỗi đăng nhập'
+                'message'=>'Sai mật khẩu',
+                'status' => '-1',
+                'token' =>''
             ],401);
         }
+        if(!$taiKhoanGiangVien){
+            return response([
+                'message'=>'Tài khoản không tồn tại trong hệ thống',
+                'status' => '0',
+                'token' =>''
+            ],401);
+        }
+        
         $token=$taiKhoanGiangVien->createToken('myapptoken')->plainTextToken;
         
         $giangVien=GiangVien::where('ma_gv',$taiKhoanGiangVien->ma_gv)->where('trang_thai',1)->first();
         $response=[
             'giang_vien'=>$giangVien,
             'token'=>$token,
+            'status' => '1',
         ];
         return response($response,201);
     }
