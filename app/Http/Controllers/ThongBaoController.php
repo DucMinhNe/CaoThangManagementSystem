@@ -37,8 +37,7 @@ class ThongBaoController extends Controller
                                                         ->select('ma_sv')
                                                         ->distinct()
                                                         ->where('id_lop_hoc',$request->id_lop_hoc)
-
-                                                        ->where('bang_thong_baos.trang_thai',1)
+                                                        // ->where('bang_thong_baos.trang_thai',1)
                                                         ->get();
             }
             $danhSachSinhVien=array();
@@ -83,6 +82,7 @@ class ThongBaoController extends Controller
             [
 
                         'id_lop_hoc'=>$id_lop_hoc,
+                        'id_lop_hoc_phan'=>null,
                         'ma_gv'=>$ma_giang_vien,
                         'tieu_de'=>$tieu_de,
                         'noi_dung'=>$noi_dung
@@ -98,6 +98,7 @@ class ThongBaoController extends Controller
                 ['id'=>$request->id],
                 [
                     'id_lop_hoc_phan'=>$id_lop_hoc,
+                    'id_lop_hoc'=>null,
                     'ma_gv'=>$ma_giang_vien,
                     'tieu_de'=>$tieu_de,
                     'noi_dung'=>$noi_dung
@@ -105,8 +106,6 @@ class ThongBaoController extends Controller
                 );
 
         }
-
-
        foreach ($danh_sach_sinh_vien as $sinhvien) {
             $data = ThongBaoCuaSinhVien::updateOrCreate(
             [
@@ -190,18 +189,23 @@ public function xulysuaThongBao(Request $request )
     }
     public function getInactiveData()
     {
-        $data = ChucVuSinhVien::where('trang_thai', 0)->latest()->get();
+        $data = ThongBao::leftJoin('lop_hocs', 'lop_hocs.id', '=', 'bang_thong_baos.id_lop_hoc')
+        ->leftJoin('lop_hoc_phans', 'lop_hoc_phans.id', '=', 'bang_thong_baos.id_lop_hoc_phan')
+        ->leftJoin('giang_viens', 'giang_viens.ma_gv', '=', 'bang_thong_baos.ma_gv')
+        ->select('bang_thong_baos.*','giang_viens.ten_giang_vien','ten_lop_hoc','ten_lop_hoc_phan',)
+        ->where('bang_thong_baos.trang_thai', 0)->latest()->get();
+
         return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
+        ->addIndexColumn()
+        ->addColumn('action', function($row){
 
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
-            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
 
-                        return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+                return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
     /**
      * Show the form for creating a new resource.
@@ -307,23 +311,23 @@ public function xulysuaThongBao(Request $request )
     public function restore($id)
     {
         $sinhvien_nhanthongbao =  ThongBaoCuaSinhVien::where('id_thong_bao',$id)
-                                                     ->where('trang_thai',1)->get();
+                                                     ->where('trang_thai',0)->get();
 
         foreach($sinhvien_nhanthongbao as $sv)
         {
             $sv->update(
                 [
-                    'trang_thai'=>0,
+                    'trang_thai'=>1,
                 ]
             ) ;
         }
 
         $thongBao = ThongBao::where('id',$id)
-                            ->where('trang_thai',1)->first();
+                            ->where('trang_thai',0)->first();
         $thongBao->update([
-            'trang_thai'=>0,
+            'trang_thai'=>1,
         ]);
 
-        return response()->json(['success' => 'Xóa Thành Công.']);
+        return response()->json(['success' => 'Khôi phục Thành Công.']);
     }
 }

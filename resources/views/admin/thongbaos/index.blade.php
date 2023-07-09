@@ -4,8 +4,7 @@
         <div class="container">
 
             <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-                <a id="showInactiveBtn" class="btn btn-primary" href="#" style="margin-right: 10px">Danh sách thông báo
-                    xóa</a>
+                <a id="showInactiveBtn" class="btn btn-primary" href="#" style="margin-right: 10px">Hiển thị danh sách đã xóa</a>
                 <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm</a>
             </ul>
             <div class="card-body">
@@ -62,7 +61,7 @@
                                                 <div class="form-group" style="padding-left:10px;">
                                                     <label for="danh_sach_lop">Danh sách lớp học </label>
                                                     <select name="danh_sach_lop" id="danh_sach_lop"
-                                                        class="form-control select2" style="width: 100%;">
+                                                        class="form-control select2" style="width: 100%;" >
 
 
 
@@ -282,6 +281,8 @@
                                 if ($mssv == $danh_sach_sinh_vien_thuoc_lop[i].ma_sv) {
                                     $(this).prop('checked', true);
                                     break;
+                                }else{
+                                    $(this).prop('checked', false);
                                 }
 
                             }
@@ -307,7 +308,21 @@
             $('#danh_sach_lop').change(function() {
 
             })
+            $('#showInactiveBtn').click(function() {
+                var button = $(this);
+                var buttonText = button.text();
+
+                if (buttonText == 'Hiển thị danh sách đã xóa') {
+                    button.text('Hiển thị danh sách chính');
+                    table.ajax.url("{{ route('thongbao.getInactiveData') }}").load();
+                } else {
+                    button.text('Hiển thị danh sách đã xóa');
+                    table.ajax.url("{{ route('thongbao.index') }}").load();
+                }
+            });
             $('#createNewBtn').click(function() {
+                $('#loai_lop_hoc').prop('disabled',false);
+                $('#danh_sach_lop').prop('disabled',false);
                 $('#savedata').val("create-Btn");
                 $('#id').val('');
                 $('#loai_lop_hoc').val(1).trigger('change');
@@ -320,6 +335,7 @@
 
 
             $('body').on('click', '.editBtn', function() {
+
                 var id = $(this).data('id');
                 $('#id').val(id);
                 $('#modelHeading').html("Sửa")
@@ -330,12 +346,14 @@
                     $danh_sach_sinh_vien_thuoc_lop = data.danh_sach_sinh_vien;
                     $('#danh_sach_lop').val(data.loai_lop_hoc == 1 ? data.thong_bao.id_lop_hoc :
                         data.thong_bao.id_lop_hoc_phan).trigger('change');
+                        console.log($danh_sach_sinh_vien_thuoc_lop);
                     $('#tieu_de_post').val(data.thong_bao.tieu_de);
                     // $('.note-placeholder').attr(data.thong_bao.noi_dung);
 
-
                     $('.note-editable').html(data.thong_bao.noi_dung);
-                    console.log(data.thong_bao.noi_dung);
+                    $('#loai_lop_hoc').prop('disabled',true);
+                    $('#danh_sach_lop').prop('disabled',true);
+                    //console.log(data.thong_bao.noi_dung);
                     $('#ajaxModelexa').modal('show');
 
 
@@ -468,7 +486,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "GET",
-                            url: "{{ route('chucvusinhvien.restore', '') }}/" + id,
+                            url: "{{ route('thongbao.restore', '') }}/" + id,
                             success: function(data) {
                                 Swal.fire({
                                     toast: true,
