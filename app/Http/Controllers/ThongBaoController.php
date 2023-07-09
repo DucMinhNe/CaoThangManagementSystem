@@ -287,17 +287,17 @@ public function xulysuaThongBao(Request $request )
     // }
     public function destroy($id)
     {
-        $sinhvien_nhanthongbao =  ThongBaoCuaSinhVien::where('id_thong_bao',$id)
-                                                     ->where('trang_thai',1)->get();
+        // $sinhvien_nhanthongbao =  ThongBaoCuaSinhVien::where('id_thong_bao',$id)
+        //                                              ->where('trang_thai',1)->get();
 
-        foreach($sinhvien_nhanthongbao as $sv)
-        {
-            $sv->update(
-                [
-                    'trang_thai'=>0,
-                ]
-            ) ;
-        }
+        // foreach($sinhvien_nhanthongbao as $sv)
+        // {
+        //     $sv->update(
+        //         [
+        //             'trang_thai'=>0,
+        //         ]
+        //     ) ;
+        // }
 
         $thongBao = ThongBao::where('id',$id)
                             ->where('trang_thai',1)->first();
@@ -310,17 +310,17 @@ public function xulysuaThongBao(Request $request )
 }
     public function restore($id)
     {
-        $sinhvien_nhanthongbao =  ThongBaoCuaSinhVien::where('id_thong_bao',$id)
-                                                     ->where('trang_thai',0)->get();
+        // $sinhvien_nhanthongbao =  ThongBaoCuaSinhVien::where('id_thong_bao',$id)
+        //                                              ->where('trang_thai',0)->get();
 
-        foreach($sinhvien_nhanthongbao as $sv)
-        {
-            $sv->update(
-                [
-                    'trang_thai'=>0,
-                ]
-            ) ;
-        }
+        // // foreach($sinhvien_nhanthongbao as $sv)
+        // // {
+        // //     $sv->update(
+        // //         [
+        // //             'trang_thai'=>0,
+        // //         ]
+        // //     ) ;
+        // // }
 
         $thongBao = ThongBao::where('id',$id)
                             ->where('trang_thai',0)->first();
