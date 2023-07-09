@@ -508,7 +508,7 @@ $(function() {
                 render: function(data, type, full, meta) {
                     if (data) {
                         return '<img src="{{ asset("giangvien_img") }}/' + data +
-                            '" width="80" height="80">';
+                            '" width="100" height="100">';
                     } else {
                         return '';
                     }
@@ -657,6 +657,38 @@ $(function() {
     $('#email').on('input', function() {
         var email = $(this).val();
         $('#tai_khoan').val(email);
+    });
+    $("#id_khoa_filter").change(function() {
+        var selectedKhoaId = $(this).val();
+        if (selectedKhoaId != 0) {
+            $.ajax({
+                url: "{{ route('giangvien.getBoMonByKhoa', '') }}/" + selectedKhoaId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Xóa các option hiện tại trong dropdown 
+                    $("#id_bo_mon_filter").empty();
+                    $("#id_bo_mon_filter").append(
+                        '<option value="0">-- Chọn bộ môn --</option>');
+                    // Thêm các option mới từ response
+                    $.each(response, function(key, value) {
+                        $("#id_bo_mon_filter").append('<option value="' +
+                            value.id + '">' + value.ten_bo_mon +
+                            '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#id_bo_mon_filter").empty();
+            var bomons = <?php echo json_encode($bomons); ?>;
+            $("#id_bo_mon_filter").append('<option value="0">-- Chọn bộ môn --</option>');
+            $.each(bomons, function(index, bomon) {
+                var option = '<option value="' + bomon.id + '">' + bomon
+                    .ten_bo_mon +
+                    '</option>';
+                $("#id_bo_mon_filter").append(option);
+            });
+        }
     });
     $('#showInactiveBtn').click(function() {
         var button = $(this);

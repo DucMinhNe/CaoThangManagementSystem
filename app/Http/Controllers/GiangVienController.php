@@ -60,6 +60,13 @@ class GiangVienController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
     }
+    public function getBoMonByKhoa($id_khoa)
+    {
+        $boMons = BoMon::where('id_khoa', $id_khoa)
+        ->where('trang_thai', 1)
+        ->get();
+        return response()->json($boMons);
+    }
     public function getGiangVienByIdKhoa($id_khoa)
     {
         $data = GiangVien::leftJoin('bo_mons', 'giang_viens.id_bo_mon', '=', 'bo_mons.id')

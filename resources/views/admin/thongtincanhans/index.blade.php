@@ -112,60 +112,60 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Mã Giảng Viên</label>
-                                                    <div class="col-sm-6">
+                                                    <label class="col-sm-5 col-form-label">Mã Giảng Viên</label>
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ma_gv}}"
                                                             placeholder="Mã Giảng Viên" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Tên Giảng
+                                                    <label class="col-sm-5 col-form-label">Tên Giảng
                                                         Viên</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ten_giang_vien}}"
                                                             placeholder="Tên Giảng Viên" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Email</label>
-                                                    <div class="col-sm-6">
+                                                    <label class="col-sm-5 col-form-label">Email</label>
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->email}}" placeholder="Email"
                                                             readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Số Điện
+                                                    <label class="col-sm-5 col-form-label">Số Điện
                                                         Thoại</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->so_dien_thoai}}"
                                                             placeholder="Số Điện Thoại" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">CMND/CCCD</label>
-                                                    <div class="col-sm-6">
+                                                    <label class="col-sm-5 col-form-label">CMND/CCCD</label>
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->so_cmt}}" placeholder="CMND/CCCD"
                                                             readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Đ/C Thường
+                                                    <label class="col-sm-5 col-form-label">Đ/C Thường
                                                         Trú</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dia_chi_thuong_tru}}"
                                                             placeholder="Đ/C Thường Trú" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Bộ
+                                                    <label class="col-sm-5 col-form-label">Bộ
                                                         Môn</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{ $bomons ? $bomons->ten_bo_mon : '' }}"
                                                             placeholder="Bộ Môn" readonly>
@@ -174,63 +174,63 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Giới
+                                                    <label class="col-sm-5 col-form-label">Giới
                                                         Tính</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->gioi_tinh}}"
+                                                            value="{{ auth()->user()->gioi_tinh == 1 ? 'Nam' : 'Nữ' }}"
                                                             placeholder="Giới Tính" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Ngày
+                                                    <label class="col-sm-5 col-form-label">Ngày
                                                         Sinh</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ngay_sinh}}"
                                                             placeholder="Ngày Sinh" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Nơi
+                                                    <label class="col-sm-5 col-form-label">Nơi
                                                         Sinh</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->noi_sinh}}" placeholder="Nơi Sinh"
                                                             readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Dân
+                                                    <label class="col-sm-5 col-form-label">Dân
                                                         Tộc</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dan_toc}}" placeholder="Dân Tộc"
                                                             readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Tôn
+                                                    <label class="col-sm-5 col-form-label">Tôn
                                                         Giáo</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ton_giao}}" placeholder="Tôn Giáo"
                                                             readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Đ/C Tạm
+                                                    <label class="col-sm-5 col-form-label">Đ/C Tạm
                                                         Trú</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dia_chi_tam_tru}}"
                                                             placeholder="Đ/C Tạm Trú" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-4 col-form-label">Chức
+                                                    <label class="col-sm-5 col-form-label">Chức
                                                         Vụ</label>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{ $chucvus ? $chucvus->ten_chuc_vu : '' }}"
                                                             placeholder="Chức Vụ" readonly>

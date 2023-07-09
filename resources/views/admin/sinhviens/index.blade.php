@@ -507,12 +507,12 @@ $(function() {
                         select.append('<option value="' + d + '">' + d +
                             '</option>');
                     });
-                    $(".filter-row").toggle();
+                    // $(".filter-row").toggle();
                     select.select2();
-                    select.select2({
-                        width: 'auto',
-                        dropdownAutoWidth: true
-                    });
+                    // select.select2({
+                    //     width: 'auto',
+                    //     dropdownAutoWidth: true
+                    // });
                 }
             });
             table.api().columns([2, 3, 4, 5, 7, 8, 9, 10, 11, 13, 14, 16, 17]).visible(
@@ -649,10 +649,10 @@ $(function() {
             "sSearch": "Tìm kiếm:",
             "sZeroRecords": "Không tìm thấy kết quả nào phù hợp",
             "oPaginate": {
-                "sFirst": "Đầu",
-                "sLast": "Cuối",
-                "sNext": "Tiếp",
-                "sPrevious": "Trước"
+                "sFirst": "<<",
+                "sLast": ">>",
+                "sNext": ">",
+                "sPrevious": "<"
             },
             "oAria": {
                 "sSortAscending": ": Sắp xếp tăng dần",
@@ -1008,6 +1008,7 @@ $(function() {
                     table.draw();
                 },
                 error: function(data) {
+                    table.draw();
                     console.log('Error:', data);
                     $('#savedata').html('Lưu');
                 }

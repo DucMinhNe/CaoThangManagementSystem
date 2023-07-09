@@ -4,7 +4,8 @@ namespace App\Http\Controllers\api;
 
 use Illuminate\Http\Request;
 use App\Models\GiangVien;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 
 class APIGiangVienController extends Controller
 {
@@ -39,6 +40,24 @@ class APIGiangVienController extends Controller
     {
         return GiangVien::where('ma_gv',$ma_gv)->where('trang_thai',1)->first();
 
+    }
+    public function xulydoimatkhau($ma_gv,Request $request)
+    {
+        $giang_vien=GiangVien::find($ma_gv);
+        if(Hash::check($request->mat_khau_cu,$giang_vien->mat_khau)){
+            $giang_vien->update([
+                'mat_khau'=>Hash::make($request->mat_khau_moi),
+            ]);
+            return response()->json([
+                'message'=>"Thay đổi mật khẩu thành công",
+                'status'=>1,
+            ],201);
+        }
+        return response()->json([
+            'message'=>"Mật khẩu cũ không khớp với mật khẩu hiện tại",
+            'status'=>0,
+        ],401);
+        
     }
 
     /**
