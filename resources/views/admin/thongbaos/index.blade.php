@@ -245,7 +245,7 @@
                             .ten_lop_hoc_phan +
                             "</option>";
                             if(firstSelect==0){
-                            firstSelect=lop_hoc.id;
+                            firstSelect=lop_hoc_phan.id;
                         }
                     });
                 }
