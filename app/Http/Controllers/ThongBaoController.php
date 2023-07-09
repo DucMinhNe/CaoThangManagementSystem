@@ -317,7 +317,7 @@ public function xulysuaThongBao(Request $request )
         {
             $sv->update(
                 [
-                    'trang_thai'=>1,
+                    'trang_thai'=>0,
                 ]
             ) ;
         }
