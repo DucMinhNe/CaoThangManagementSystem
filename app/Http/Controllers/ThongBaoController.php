@@ -31,26 +31,26 @@ class ThongBaoController extends Controller
                                                         ->where('id_lop_hoc',$request->id_lop_hoc)
                                                         ->where('trang_thai',1)->get();
             }
-            else 
+            else
             {
                 $danh_sach_sinh_vien_cua_lop = ThongBao::join('thong_bao_cua_sinh_viens','id_thong_bao','=','bang_thong_baos.id')
                                                         ->select('ma_sv')
                                                         ->distinct()
                                                         ->where('id_lop_hoc',$request->id_lop_hoc)
-                                                   
+
                                                         ->where('bang_thong_baos.trang_thai',1)
                                                         ->get();
             }
             $danhSachSinhVien=array();
-        
+
 
           foreach ($danh_sach_sinh_vien_cua_lop as $sinh_vien) {
             $danhSachSinhVien[] =SinhVien::where('ma_sv',$sinh_vien->ma_sv)->where('trang_thai',1)->first();
           }
-          
+
           return $danhSachSinhVien;
         }
-        else 
+        else
         {
             $chitietlophocphan = CTLopHocPhan::where('id_lop_hoc_phan',$request->id_lop_hoc)->where('trang_thai',1)->get();
             $arr_sv = array();
@@ -63,49 +63,49 @@ class ThongBaoController extends Controller
         }
     }
     public function xulydangthongbao(Request $request)
-    {   
+    {
         $data = array();
-       
+
         $id_lop_hoc = $request->id_lop_hoc;
         $ma_giang_vien = auth()->user()->ma_gv;
         $danh_sach_sinh_vien = $request->danh_sach_sinh_vien ;
         $tieu_de = $request->tieu_de;
         $noi_dung = $request->noi_dung;
         $thongbao = null;
-       
-        
+
+
         if($request->loai_lop_hoc == 1 )
         {
-            
-            
+
+
             $thongbao = ThongBao::updateOrCreate(
             ['id'=>$request->id],
-            [   
-                        
+            [
+
                         'id_lop_hoc'=>$id_lop_hoc,
                         'ma_gv'=>$ma_giang_vien,
                         'tieu_de'=>$tieu_de,
                         'noi_dung'=>$noi_dung
-                        
+
             ]
             );
-         
+
         }
-        else 
+        else
         {
-            
+
             $thongbao = ThongBao::updateOrCreate(
                 ['id'=>$request->id],
-                [   
+                [
                     'id_lop_hoc_phan'=>$id_lop_hoc,
                     'ma_gv'=>$ma_giang_vien,
                     'tieu_de'=>$tieu_de,
                     'noi_dung'=>$noi_dung
                 ]
                 );
-           
+
         }
-       
+
 
        foreach ($danh_sach_sinh_vien as $sinhvien) {
             $data = ThongBaoCuaSinhVien::updateOrCreate(
@@ -144,7 +144,7 @@ public function xulysuaThongBao(Request $request )
             ]
         );
     }
-    else 
+    else
     {
         $thongBao->update(
             [
@@ -154,7 +154,7 @@ public function xulysuaThongBao(Request $request )
             ]
         );
     }
-    
+
 
     return response()->json([
         'message'=>"Cập nhật thông báo thành công",
@@ -171,14 +171,14 @@ public function xulysuaThongBao(Request $request )
                             ->leftJoin('giang_viens', 'giang_viens.ma_gv', '=', 'bang_thong_baos.ma_gv')
                             ->select('bang_thong_baos.*','giang_viens.ten_giang_vien','ten_lop_hoc','ten_lop_hoc_phan',)
                             ->where('bang_thong_baos.trang_thai', 1)->latest()->get();
-            
+
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        
+
                         $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
                         $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
-    
+
                             return $btn;
                     })
                     ->rawColumns(['action'])
@@ -226,7 +226,7 @@ public function xulysuaThongBao(Request $request )
             [
                 'ten_chuc_vu' => $request->ten_chuc_vu,
             ]
-        );        
+        );
         return response()->json(['success' => 'Lưu Thành Công.']);
     }
 
