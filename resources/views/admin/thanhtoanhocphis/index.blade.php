@@ -476,7 +476,7 @@ $(function() {
         })
         swalWithBootstrapButtons.fire({
         title: 'Chắc muốn hủy đóng học phí của sinh viên này?',
-        text: "Bạn có thể khôi phục lại được!",
+        text: "",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Xóa!',
@@ -572,13 +572,14 @@ $(function() {
 
         $('#id').val('');
         $('#chon_theo_lop_hoc_hien_tai').prop('checked',false);
-
-        $("#id_hoc_phi option:selected").prop("selected", false)
+        $('#savedata').prop("disabled",true);
+        $("#id_hoc_phi option:selected").prop("selected", false);
         $('#btn-paypal_querydr').css('display','none');
         $('#btn-querydr').css('display','none');
         // $('#danh_sach_sinh_vien tbody').empty();
         $('#modalForm').trigger("reset");
         // $('#modelHeading').html("Thêm");
+
         $('#ajaxModelexa').modal('show');
     });
     $('#id_hinh_thuc_thanh_toan').change(function(){
