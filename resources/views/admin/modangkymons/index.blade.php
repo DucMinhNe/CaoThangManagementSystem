@@ -65,7 +65,7 @@
                                         </div>
                                         <table class="table table-success table-striped" id="table-mo-dang-ky-mon">
                                             <thead>
-                                                <th>ID</th>
+                                                <th>STT</th>
                                                 <th>Tên môn học</th>
                                                 <th>Ngày bắt đầu</th>
                                                 <th>Ngày kết thúc</th>

@@ -336,7 +336,7 @@
                 $('#savedata').val("create-Btn");
                 $('#id').val('');
                 $('#loai_lop_hoc').val(1).trigger('change');
-                $('#danh_sach_lop').val('').trigger('change');
+
                 $('#modalForm').trigger("reset");
                 $('#modelHeading').html("Thêm");
                 $('#ajaxModelexa').modal('show');

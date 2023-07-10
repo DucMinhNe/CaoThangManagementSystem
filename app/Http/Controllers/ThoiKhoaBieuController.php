@@ -135,24 +135,40 @@ class ThoiKhoaBieuController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function kiemTraTrungPhongTrungTiet(Request $request){
-        $thoikhoabieus=ThoiKhoaBieu::where('id_phong_hoc',$request->id_phong_hoc)->where('hoc_ky',$request->hoc_ky)->where('thu_trong_tuan',$request->thu_trong_tuan)->where('trang_thai',1)->get();
-        $sttTietDau=ThoiGianBieu::where('id',$request->id_tiet_bat_dau)->where('trang_thai',1)->first()->stt;
-        //dd($sttTietDau);
-        $sttTietCuoi=ThoiGianBieu::where('id',$request->id_tiet_ket_thuc)->where('trang_thai',1)->first()->stt;
-        //dd($thoikhoabieus);
-        $arrKiemTra= range($sttTietDau,$sttTietCuoi );
-        foreach ($thoikhoabieus as $thoikhoabieu) {
-            $sttTietDau=ThoiGianBieu::where('id',$thoikhoabieu->id_tiet_bat_dau)->where('trang_thai',1)->first()->stt;
-            $sttTietCuoi=ThoiGianBieu::where('id',$thoikhoabieu->id_tiet_ket_thuc)->where('trang_thai',1)->first()->stt;
-            $arrDuyet=range($sttTietDau,$sttTietCuoi );
-            $intersect = array_intersect($arrKiemTra, $arrDuyet);
-            if (!empty($intersect)) {
-                return response()->json([
-                    'message'=>"Đã có tiết ở phòng này vào ngày đó",
-                    'status'=>0
-                ]);
+        // return response()->json([
+        //     'message'=>"Hợp lệ",
+        //     'status'=>1
+        // ]);
+        $thoikhoabieus=ThoiKhoaBieu::leftJoin('lop_hoc_phans','lop_hoc_phans.id','thoi_khoa_bieus.id_lop_hoc_phan')
+        ->where('id_phong_hoc',$request->id_phong_hoc)
+        // ->where('hoc_ky',$request->hoc_ky)
+        ->where('thu_trong_tuan',$request->thu_trong_tuan)
+        ->where('thoi_khoa_bieus.trang_thai',1)
+        ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
+        ->select('thoi_khoa_bieus.*')
+        ->get();
+
+
+        if($thoikhoabieus->count()>0){
+            $sttTietDau=ThoiGianBieu::where('id',$request->id_tiet_bat_dau)->where('trang_thai',1)->first()->stt;
+            //dd($sttTietDau);
+            $sttTietCuoi=ThoiGianBieu::where('id',$request->id_tiet_ket_thuc)->where('trang_thai',1)->first()->stt;
+            //dd($thoikhoabieus);
+            $arrKiemTra= range($sttTietDau,$sttTietCuoi );
+            foreach ($thoikhoabieus as $thoikhoabieu) {
+                $sttTietDau=ThoiGianBieu::where('id',$thoikhoabieu->id_tiet_bat_dau)->first()->stt;
+                $sttTietCuoi=ThoiGianBieu::where('id',$thoikhoabieu->id_tiet_ket_thuc)->first()->stt;
+                $arrDuyet=range($sttTietDau,$sttTietCuoi );
+                $intersect = array_intersect($arrKiemTra, $arrDuyet);
+                if (!empty($intersect)) {
+                    return response()->json([
+                        'message'=>"Đã có tiết ở phòng này vào ngày đó",
+                        'status'=>0
+                    ]);
+                }
             }
         }
+
         return response()->json([
             'message'=>"Hợp lệ",
             'status'=>1
