@@ -148,9 +148,7 @@ $(function() {
         ],
         language: {
             "sEmptyTable": "Không có dữ liệu",
-            // "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
-            "sInfo": "(_START_ - _END_) dòng của _TOTAL_ mục",
-            // "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+            "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
             "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
             "sInfoFiltered": "(được lọc từ _MAX_ tổng số bản ghi)",
             "sInfoPostFix": "",
@@ -161,10 +159,10 @@ $(function() {
             "sSearch": "Tìm kiếm:",
             "sZeroRecords": "Không tìm thấy kết quả nào phù hợp",
             "oPaginate": {
-                "sFirst": "<<<",
-                "sLast": ">>>",
-                "sNext": ">",
-                "sPrevious": "<"
+                "sFirst": "Đầu",
+                "sLast": "Cuối",
+                "sNext": "Tiếp",
+                "sPrevious": "Trước"
             },
             "oAria": {
                 "sSortAscending": ": Sắp xếp tăng dần",
@@ -210,7 +208,7 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('khoa.getInactiveData') }}").load();
         } else {

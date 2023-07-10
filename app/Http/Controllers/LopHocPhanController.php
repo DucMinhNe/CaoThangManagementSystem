@@ -114,8 +114,9 @@ class LopHocPhanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-      
-            'id_ct_chuong_trinh_dao_tao' => 'required',
+            'ten_lop_hoc_phan' => 'required',
+            'mo_dang_ky' => 'required',
+            'trang_thai_hoan_thanh' => 'required',
         ]); 
         LopHocPhan::updateOrCreate(['id' => $request->id],
                  ['ten_lop_hoc_phan' => $request->ten_lop_hoc_phan,

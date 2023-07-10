@@ -50,8 +50,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" name="mat_khau" id="mat_khau"
-                            placeholder="Mật Khẩu">
+                        <input type="password" class="form-control" name="mat_khau" id="mat_khau" placeholder="Mật Khẩu"
+                            required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>

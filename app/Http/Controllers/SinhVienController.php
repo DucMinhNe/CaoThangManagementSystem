@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\LopHoc;
 use DataTables;
 use File;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\DB;
 class SinhVienController extends Controller
 {
@@ -162,6 +163,92 @@ class SinhVienController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
+    }
+    public function taoBangTen($hoten, $lop)
+    {   
+        $image = Image::canvas(800, 350, '#ffffff')->rectangle(6,6, 795, 340, function ($draw) {
+           
+            $draw->border(12, '#0000FF');
+        });
+        $image->text(mb_strtoupper($hoten), 400, 100, function($font) {
+            $font->file(public_path('sinhvien_bangten/calibri.ttf'));
+            $font->size(131);
+            $font->color('#0000FF');
+            $font->align('center');
+            $font->valign('middle');
+        });
+        $image->text($lop, 400, 250, function($font) {
+            $font->file(public_path('sinhvien_bangten/calibri.ttf'));
+            $font->size(100);
+            $font->color('#0000FF');
+            $font->align('center');
+            $font->valign('middle');
+        });
+        $newImagePath = public_path('sinhvien_bangten/image.jpg');
+        $image->save($newImagePath);
+        return response()->json(asset('sinhvien_bangten/image.jpg'));
+    }
+    public function taoTheSinhVien($mssv)
+    {   
+        $sv = SinhVien::where('ma_sv', $mssv)->first();
+        $lop = LopHoc::where('id', $sv->id_lop_hoc)->first();
+        // dd($sv->ten_sinh_vien);
+        $image = Image::canvas(770, 400, '#ffffff');
+        $hinhsv = Image::make(public_path('sinhvien_img/'.$sv->hinh_anh_dai_dien))->resize(132, 175);
+        $image->insert($hinhsv, 'top-left', 37, 165);
+        $logocaothang = Image::make(public_path('sinhvien_thesinhvien/logo_caothang.jpg'))->resize(80, 120);
+        $image->insert($logocaothang, 'top-left', 59, 10);
+        $image->text('TRƯỜNG CAO ĐẲNG KỸ THUẬT CAO THẮNG', 170, 24, function($font) {
+            $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
+            $font->size(32);
+            $font->color('#0000FF');
+            $font->valign('middle');
+        });
+        $image->text('THẺ SINH VIÊN', 390, 65, function($font) {
+            $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
+            $font->size(42);
+            $font->color('#FF0000');
+            $font->align('left');
+            $font->valign('middle');
+        });
+        $image->text(mb_strtoupper($sv->ten_sinh_vien), 250, 120, function($font) {
+            $font->file(public_path('sinhvien_bangten/calibri.ttf'));
+            $font->size(40);
+            $font->color('#0000FF');
+            $font->align('left');
+            $font->valign('middle');
+        });
+         $image->text('Ngày sinh: '.$sv->ngay_sinh, 250, 180, function($font) {
+            $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
+            $font->size(35);
+            $font->color('#0000FF');
+            $font->align('left');
+            $font->valign('middle');
+        });
+        $image->text('Khóa: '.$sv->khoa_hoc, 250, 250, function($font) {
+            $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
+            $font->size(35);
+            $font->color('#0000FF');
+            $font->align('left');
+            $font->valign('middle');
+        });
+        $image->text('Lớp: '.$lop->ten_lop_hoc, 250, 325, function($font) {
+            $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
+            $font->size(35);
+            $font->color('#0000FF');
+            $font->align('left');
+            $font->valign('middle');
+        });
+        $image->text('MS: '.$sv->ma_sv, 19, 370, function($font) {
+            $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
+            $font->size(25);
+            $font->color('#0000FF');
+            $font->align('left');
+            $font->valign('middle');
+        });
+        $newImagePath = public_path('sinhvien_thesinhvien/image.jpg');
+        $image->save($newImagePath);
+        return response()->json(asset('sinhvien_thesinhvien/image.jpg'));
     }
     public function getDiemTrungBinhHocKy()
     {

@@ -357,7 +357,7 @@ td {
                                         <label for="hinh_anh_dai_dien">Hình Ảnh Đại Diện</label>
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="hinh_anh_dai_dien"
-                                                name="hinh_anh_dai_dien">
+                                                name="hinh_anh_dai_dien" accept=".jpg, .jpeg, .png">
                                             <label class="custom-file-label" for="customFile"></label>
                                         </div>
                                         <input type="hidden" id="hinh_anh_dai_dien_hidden"
@@ -367,6 +367,12 @@ td {
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
+
+                                </div>
+                                <div class="col-md-4">
+
+                                </div>
+                                <div class="col-md-4 text-center">
                                     <div class="form-group">
                                         <img id="hinh_anh_dai_dien_preview" width="100" height="100" alt="" />
                                     </div>
@@ -693,7 +699,7 @@ $(function() {
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('giangvien.getInactiveData') }}").load();
         } else {

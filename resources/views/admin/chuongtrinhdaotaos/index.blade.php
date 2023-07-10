@@ -120,7 +120,7 @@
                 <form id="modalForm" name="modalForm" class="form-horizontal">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="id_chuong_trinh_dao_tao_1">Chương Trình Đạo Tạo</label>
+                            <label for="id_chuong_trinh_dao_tao_1">Chương Trình Đạo Tạo Gốc</label>
                             <select name="id_chuong_trinh_dao_tao_1" id="id_chuong_trinh_dao_tao_1"
                                 class="form-control select2" style="width: 100%;">
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
@@ -136,7 +136,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="id_chuong_trinh_dao_tao_2">Chương Trình Đạo Tạo</label>
+                            <label for="id_chuong_trinh_dao_tao_2">Chương Trình Đạo Tạo Sao Chép</label>
                             <select name="id_chuong_trinh_dao_tao_2" id="id_chuong_trinh_dao_tao_2"
                                 class="form-control select2" style="width: 100%;">
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
@@ -153,8 +153,11 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="saoChepChiTiet">Sao
+                        <button type="submit" class="btn btn-primary" id="saoChepChiTiet"><i
+                                class="fa-solid fa-copy"></i> Sao
                             chép</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>
@@ -323,7 +326,7 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('chuongtrinhdaotao.getInactiveData') }}").load();
         } else {

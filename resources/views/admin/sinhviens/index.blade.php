@@ -408,7 +408,7 @@ td {
                                     <label for="hinh_anh_dai_dien">Hình Ảnh Đại Diện</label>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="hinh_anh_dai_dien"
-                                            name="hinh_anh_dai_dien">
+                                            name="hinh_anh_dai_dien" accept=".jpg, .jpeg, .png">
                                         <label class="custom-file-label" for="customFile"></label>
                                     </div>
                                     <!-- <input type="file" class="form-control" id="hinh_anh_dai_dien"
@@ -417,7 +417,7 @@ td {
                                         value="">
                                 </div>
                             </div>
-                            <div class="col-md-4 text-left">
+                            <div class="col-md-4 text-center">
                                 <div class="form-group">
                                     <img id="hinh_anh_dai_dien_preview" width="100" height="100" alt="" />
                                 </div>
@@ -427,6 +427,10 @@ td {
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
                                 class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-primary" id="taoBangTenBtn"><i
+                                class="fa-regular fa-rectangle-list"></i> Tạo Bảng Tên</button>
+                        <button type="button" class="btn btn-primary" id="taoTheSinhVienBtn"><i
+                                class="fa-regular fa-rectangle-list"></i> Tạo Thẻ Sinh Viên</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i
                                 class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
@@ -649,10 +653,10 @@ $(function() {
             "sSearch": "Tìm kiếm:",
             "sZeroRecords": "Không tìm thấy kết quả nào phù hợp",
             "oPaginate": {
-                "sFirst": "<<",
-                "sLast": ">>",
-                "sNext": ">",
-                "sPrevious": "<"
+                "sFirst": "Đầu",
+                "sLast": "Cuối",
+                "sNext": "Tiếp",
+                "sPrevious": "Trước"
             },
             "oAria": {
                 "sSortAscending": ": Sắp xếp tăng dần",
@@ -760,10 +764,54 @@ $(function() {
         var so_cmt = $(this).val();
         $('#mat_khau').val(so_cmt);
     });
+    $('#taoBangTenBtn').click(function() {
+        var tenSinhVien = $('#ten_sinh_vien').val();
+        var maSinhVien = $('#ma_sv').val();
+        var lop = $('#id_lop_hoc option:selected').text();
+        $.ajax({
+            url: "{{ route('sinhvien.index') }}" + '/taobangten/' + tenSinhVien +
+                '/' +
+                lop,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var downloadLink = response;
+                var link = document.createElement('a');
+                link.href = downloadLink;
+                link.download = maSinhVien + '.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            error: function(xhr, status, error) {
+
+            }
+        });
+    });
+    $('#taoTheSinhVienBtn').click(function() {
+        var maSinhVien = $('#ma_sv').val();
+        $.ajax({
+            url: "{{ route('sinhvien.index') }}" + '/taothesinhvien/' + maSinhVien,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var downloadLink = response;
+                var link = document.createElement('a');
+                link.href = downloadLink;
+                link.download = maSinhVien + '.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            error: function(xhr, status, error) {
+
+            }
+        });
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('sinhvien.getInactiveData') }}").load();
         } else {
@@ -927,10 +975,14 @@ $(function() {
         $('#he_dao_tao').val('').trigger('change');
         $('#id_lop_hoc').val('').trigger('change');
         $('#tinh_trang_hoc').val('').trigger('change');
+        $("#taoBangTenBtn").hide();
+        $("#taoTheSinhVienBtn").hide();
     });
     $('body').on('click', '.editBtn', function() {
         $('#modalForm').removeClass('was-validated');
         $('#ma_sv').attr('readonly', 'readonly');
+        $("#taoBangTenBtn").show();
+        $("#taoTheSinhVienBtn").show();
         var id = $(this).data('id');
         $.get("{{ route('sinhvien.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
