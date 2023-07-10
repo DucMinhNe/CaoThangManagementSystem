@@ -59,7 +59,7 @@
                                     <div class="form-group">
                                         <label for="id_hoc_phi">Học kỳ</label>
                                         <select name="id_hoc_phi" id="id_hoc_phi" class="form-control select2" style="width: 100%;">
-
+                                            <option value="selecthocky">Chọn học kỳ</option>
                                             @foreach ($hocphis as $hocphi)
                                             <option  data-hoc-ky="{{$hocphi->hoc_ky}}" data-khoa-hoc="{{$hocphi->khoa_hoc}}">{{$hocphi->khoa_hoc}}.Học kì {{$hocphi->hoc_ky}}</option>
                                             @endforeach
@@ -257,7 +257,7 @@ $(function() {
     var $option=0;
     $jsonData='{!!json_encode($hocphis)!!}';
     $hocphis=JSON.parse($jsonData);
-    $('#id_lop_hoc').val('').trigger('change');
+
     $sinhviens=null;
     $selectMasv=null;
     $selectLopHoc=null;
@@ -387,8 +387,8 @@ $(function() {
     })
 
     $('#id_hoc_phi').change(function(){
-
-        var khoa_hoc=$(this).children("option:selected").attr('data-khoa-hoc');
+        if($('#id_hoc_phi').val()!="selecthocky"){
+            var khoa_hoc=$(this).children("option:selected").attr('data-khoa-hoc');
         var hoc_ky=$(this).children("option:selected").attr('data-hoc-ky');
         $('#hoc_ky').val(hoc_ky);
         $('#khoa_hoc').val(khoa_hoc);
@@ -414,7 +414,7 @@ $(function() {
                     text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-warning text-dark">Chưa đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td></td></tr>';
                 }
                 else{
-                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi" data-ma-sv="'+element.sinh_vien.ma_sv+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
+                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi" data-ma-sv="'+element.sinh_vien.ma_sv+'" data-id-hoc-phi="'+element.id_hoc_phi+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
                 }
 
             });
@@ -429,8 +429,7 @@ $(function() {
             $('#danh_sach_sinh_vien tbody').append(text);
             })
         }
-
-
+        }
     });
 
     $('#id_lop_hoc').change(function(){
@@ -448,7 +447,7 @@ $(function() {
                     text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-warning text-dark">Chưa đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td></td></tr>';
                 }
                 else{
-                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi" data-ma-sv="'+element.sinh_vien.ma_sv+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
+                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi" data-ma-sv="'+element.sinh_vien.ma_sv+'" data-id-hoc-phi="'+element.id_hoc_phi+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
                 }
 
             });
@@ -466,7 +465,8 @@ $(function() {
         $('#ma_sv').val($(this).attr('data-ma-sv')).trigger('change');
     })
     $(document).on('click','.huy-dong-hoc-phi',function(){
-        var ma_sv=$(this).attr('data-ma-sv');
+
+        var id=$(this).attr('data-id-hoc-phi');
         const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success',
@@ -486,8 +486,8 @@ $(function() {
         if (result.isConfirmed) {
             var id_hoc_phi=$('#id_hoc_phi').val();
             var dataJson={
-                'id_hoc_phi':id_hoc_phi,
-                'ma_sv':ma_sv,
+                'id':id,
+
             };
             $.ajax({
                 url:'{{route('thanhtoanhocphi.huydonghocphi')}}',
@@ -495,7 +495,7 @@ $(function() {
                 data:dataJson,
                 dataType: 'json',
             }).done(response=>{
-                reloadLopHoc();
+                reloadDanhSachSinhVien();
                 swalWithBootstrapButtons.fire(
                 'Hủy học phí!',
                 'Đã hủy thành công.',
@@ -569,8 +569,11 @@ $(function() {
     $('#createNewBtn').click(function() {
 
         $('#savedata').val("create-Btn");
+
         $('#id').val('');
         $('#chon_theo_lop_hoc_hien_tai').prop('checked',false);
+
+        $("#id_hoc_phi option:selected").prop("selected", false)
         $('#btn-paypal_querydr').css('display','none');
         $('#btn-querydr').css('display','none');
         // $('#danh_sach_sinh_vien tbody').empty();
@@ -708,8 +711,64 @@ $(function() {
             // $('#hoc_ky').val(data.hoc_ky);
         })
     });
-    function reloadLopHoc(){
-        $.ajax({
+    function reloadDanhSachSinhVien(){
+        if($('#chon_theo_lop_hoc_hien_tai').is(':checked')==false){
+            hoc_ky=$('#id_hoc_phi option:selected').attr('data-hoc-ky');
+            console.log(hoc_ky);
+
+            khoa_hoc=$('#id_hoc_phi option:selected').attr('data-khoa-hoc');
+            console.log(khoa_hoc);
+            $.ajax({
+                type:"GET",
+                url:"{{env('SERVER_URL')}}/api/hocphi/danhsachsinhviendonghocphihocky/"+hoc_ky+"/"+khoa_hoc,
+
+            }).done(function(data){
+                console.log(data);
+            text="";
+            textOption="";
+            $sinhviens=data;
+            data.forEach(element => {
+                textOption=textOption+'<option value="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+' - '+element.sinh_vien.ten_sinh_vien+'</option>';
+                if(element.da_dong_hoc_phi==0){
+                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-warning text-dark">Chưa đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td></td></tr>';
+                }
+                else{
+                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi" data-ma-sv="'+element.sinh_vien.ma_sv+'" data-id-hoc-phi="'+element.id_hoc_phi+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
+                }
+
+            });
+            console.log("Xong id_lop_hoc");
+            $('#ma_sv').empty();
+            $('#ma_sv').append(textOption);
+            if($selectMasv!=null){
+                $('#ma_sv').val($selectMasv).trigger('change');
+                $selectMasv=null;
+            }
+            $('#danh_sach_sinh_vien tbody').empty();
+            $('#danh_sach_sinh_vien tbody').append(text);
+            })
+            // hoc_ky=$('#id_hoc_phi option:selected').attr('data-hoc-ky');
+            // console.log(hoc_ky);
+
+            // khoa_hoc=$('#id_hoc_phi option:selected').attr('data-khoa-hoc');
+            // console.log(khoa_hoc);
+            // $('#id_hoc_phi option').filter(function() {
+            //     return $(this).data('hoc-ky') == hoc_ky && $(this).data('khoa-hoc') == khoa_hoc;
+            // }).prop('selected', true);
+            // $('#id_hoc_phi option').each(function() {
+            // // Lấy giá trị của hai thuộc tính dữ liệu
+            // var hk = $(this).data('hoc-ky');
+            // var kh = $(this).data('khoa-hoc');
+
+            // // Kiểm tra điều kiện trùng khớp
+            // if (hk == hoc_ky && kh == khoa_hoc) {
+            //     // Select option nếu trùng khớp
+            //     $(this).prop('selected', true);
+            // }
+            // });
+
+        }else{
+            $.ajax({
             method:"GET",
             url:"{{env('SERVER_URL')}}/api/sinhvien/sinhvientheolophoc/"+$('#id_lop_hoc').val()+"/"+$('#id_hoc_phi option:selected').attr('data-hoc-ky')+"/"+$('#id_hoc_phi option:selected').attr('data-khoa-hoc'),
         }).done(function(data){
@@ -723,7 +782,7 @@ $(function() {
                     text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-warning text-dark">Chưa đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td></td></tr>';
                 }
                 else{
-                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi" data-ma-sv="'+element.sinh_vien.ma_sv+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
+                    text=text+'<tr><td><div class="form-check"><span class="badge rounded-pill bg-success">Đã đóng</span></div></td><td><a href="#" class="xem_thong_tin_thanh_toan" data-ma-sv="'+element.sinh_vien.ma_sv+'">'+element.sinh_vien.ma_sv+'</a></td><td>'+element.sinh_vien.ten_sinh_vien+'</td><td><a type="button" class="btn btn-danger huy-dong-hoc-phi " data-ma-sv="'+element.sinh_vien.ma_sv+'" data-id-hoc-phi="'+element.id_hoc_phi+'" style="font-size:0.8em">Hủy đóng</a></td></tr>';
                 }
 
             });
@@ -731,12 +790,21 @@ $(function() {
             $('#danh_sach_sinh_vien tbody').empty();
             $('#danh_sach_sinh_vien tbody').append(text);
         });
+        }
+
     }
     $('#savedata').click(function(e) {
+        $dataJson={
+            'hoc_ky': $('#id_hoc_phi option:selected').attr('data-hoc-ky'),
+            'khoa_hoc':$('#id_hoc_phi option:selected').attr('data-khoa-hoc'),
+            'id_hinh_thuc_thanh_toan':$('#id_hinh_thuc_thanh_toan').val(),
+            'ma_sv':$('#ma_sv').val(),
+        }
         e.preventDefault();
             $(this).html('Sending..');
             console.log("OK");
 
+            console.log();
             $.ajax({
                 data: $('#modalForm').serialize(),
                 url: "{{ route('thanhtoanhocphi.store') }}",
@@ -748,9 +816,10 @@ $(function() {
                         // $('#modalForm').trigger("reset");
                         // $('#ajaxModelexa').modal('hide');
                         // $('#savedata').html('Lưu');
-                        reloadLopHoc();
+                        reloadDanhSachSinhVien();
                         console.log("OK");
                         table.draw();
+                        $(this).html('Lưu');
                     }
                     if(data.status==2){
                         Swal.fire({

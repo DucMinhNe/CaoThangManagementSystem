@@ -151,9 +151,9 @@ class APIAuthController extends Controller
         ];
     }
     public function DangNhapGiangVien(Request $request)
-    {   
+    {
         $taiKhoanGiangVien=GiangVien::where('tai_khoan',$request->tai_khoan)->where('trang_thai',1)->first();
-        
+
         if($taiKhoanGiangVien && !Hash::check($request->mat_khau, $taiKhoanGiangVien->mat_khau))
         {
             return response([
@@ -169,9 +169,9 @@ class APIAuthController extends Controller
                 'token' =>''
             ],401);
         }
-        
+
         $token=$taiKhoanGiangVien->createToken('myapptoken')->plainTextToken;
-        
+
         $giangVien=GiangVien::where('ma_gv',$taiKhoanGiangVien->ma_gv)->where('trang_thai',1)->first();
         $response=[
             'giang_vien'=>$giangVien,

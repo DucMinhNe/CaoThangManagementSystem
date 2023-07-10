@@ -103,9 +103,9 @@ class ThanhToanHocPhiController extends Controller
     {
         $sinhvien=SinhVien::find($request->ma_sv);
         $hocphi=HocPhi::where('hoc_ky',$request->hoc_ky)->where('khoa_hoc',$request->khoa_hoc)->where('id_chuyen_nganh',$sinhvien->lopHoc->id_chuyen_nganh)->where('trang_thai',1)->first();
-        if($hoc_ky!=null){
+        if($hocphi!=null){
             if($request->id_hinh_thuc_thanh_toan==1){
-                $searchPayment=PaypalPayment::where('payment_id',$request->payment_id)->first();
+                $searchPayment=PaypalPayment::where('payment_id',$request->payment_id)->where('trang_thai',1)->first();
                 if($searchPayment==null){
 
                     $paypalPayment=PaypalPayment::create($request->all());
@@ -123,7 +123,8 @@ class ThanhToanHocPhiController extends Controller
                     ]);
             }
             if($request->id_hinh_thuc_thanh_toan==2){
-                $searchPayment=VnpayPayment::where('vnp_TxnRef',$request->vnp_TxnRef)->where('vnp_PayDate',$request->vnp_PayDate)->first();
+                $searchPayment=VnpayPayment::where('vnp_TxnRef',$request->vnp_TxnRef)->where('vnp_PayDate',$request->vnp_PayDate)->where('trang_thai',1)->first();
+                //dd($searchPayment);
                 if($searchPayment==null){
                     $vnpayPayment=VnpayPayment::create($request->all());
                     ThanhToanHocPhi::create([
@@ -213,7 +214,7 @@ class ThanhToanHocPhiController extends Controller
         return response()->json(['success' => 'Xóa Thành Công.']);
     }
     public function huyDongHocPhi(Request $request){
-        $thanhtoanhocphi=ThanhToanHocPhi::where('id_hoc_phi',$request->id_hoc_phi)->where('ma_sv',$request->ma_sv)->where('trang_thai',1)->first();
+        $thanhtoanhocphi=ThanhToanHocPhi::where('id',$request->id)->where('trang_thai',1)->first();
         if($thanhtoanhocphi->id_hinh_thuc_thanh_toan==1){
             PaypalPayment::find($thanhtoanhocphi->paypal_payment_id)->update(['trang_thai'=>0]);
         }else{
@@ -429,6 +430,7 @@ class ThanhToanHocPhiController extends Controller
                 }
                 $data[]=array(
                     'sinh_vien'=>$sinhvien,
+                    'id_hoc_phi'=>$thanhtoanhocphi->id,
                     'da_dong_hoc_phi'=>1,
                     'thong_tin_thanh_toan'=>$dataPayment,
                 );

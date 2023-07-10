@@ -52,13 +52,13 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="hoc_ky">Học kỳ</label>
-                            <input type="text" class="form-control" id="hoc_ky" name="hoc_ky"
+                            <input type="number" class="form-control" id="hoc_ky" name="hoc_ky"
                                 placeholder="Học kỳ" value="" required>
                         </div>
 
                         <div class="form-group">
                             <label for="khoa_hoc">Khóa học</label>
-                            <input type="text" class="form-control" id="khoa_hoc" name="khoa_hoc"
+                            <input type="number" class="form-control" id="khoa_hoc" name="khoa_hoc"
                                 placeholder="Khóa học" value="" required>
                         </div>
                         <div class="form-group">
@@ -71,7 +71,7 @@
                         </div>
                         <div class="form-group">
                             <label for="so_tien">Số tiền</label>
-                            <input type="text" class="form-control" id="so_tien" name="so_tien"
+                            <input type="number" class="form-control" id="so_tien" name="so_tien"
                                 placeholder="Số tiền" value="" required>
                         </div>
                         <div class="cs-form">

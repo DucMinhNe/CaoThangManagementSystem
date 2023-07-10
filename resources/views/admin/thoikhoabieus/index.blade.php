@@ -272,6 +272,7 @@ $('#id_tiet_bat_dau').change(function(){
 })
 $('body').on('click', '.editBtn', function() {
     var id = $(this).data('id');
+
     $.get("{{ route('thoikhoabieu.index') }}" + '/' + id + '/edit', function(data) {
         console.log(data);
         $('#hoc_ky').prop('disabled',true);
@@ -308,7 +309,7 @@ $('body').on('click', '.editBtn', function() {
 
 $('#savedata').click(function(e) {
     e.preventDefault();
-
+    
     // if(JSON.stringify($dataOld)!==JSON.stringify($dataNew)){
         $(this).html('Sending..');
         console.log("Dô");
