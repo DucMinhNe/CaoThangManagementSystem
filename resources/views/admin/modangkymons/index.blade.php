@@ -115,7 +115,7 @@
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th>STT</th>
                         <th>Tên môn học</th>
                         <th>Khóa học</th>
                         <th>Thời gian bắt đầu</th>
@@ -128,7 +128,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>No</th>
+                        <th>STT</th>
                         <th>Tên môn học</th>
                         <th>Khóa học</th>
                         <th>Thời gian bắt đầu</th>

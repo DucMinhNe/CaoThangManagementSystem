@@ -303,7 +303,16 @@ $(function() {
         if (column == 'chuyen_can') {
             if (parseFloat(value) < 0 || parseFloat(value) > 10.0) {
                 // Hiển thị thông báo lỗi
-                alert('Giá trị chuyên cần phải nằm trong khoảng từ 0 đến 10.0');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'error',
+                    title: 'Giá trị chuyên cần phải nằm trong khoảng từ 0 đến 10.0',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
                 return;
             }
         }
@@ -312,29 +321,53 @@ $(function() {
         if (column == 'tbkt') {
             if (parseFloat(value) < 0 || parseFloat(value) > 10.0) {
                 // Hiển thị thông báo lỗi
-                alert('Giá trị TBKT phải nằm trong khoảng từ 0 đến 10.0');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'error',
+                    title: 'Giá trị TBKT phải nằm trong khoảng từ 0 đến 10.0',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
                 return;
             }
         }
 
         // Kiểm tra giá trị nhập liệu cho thi
-        if (column == 'thi_1' || column === 'thi_2') {
+        if (column == 'thi_1' || column == 'thi_2') {
             if (parseFloat(value) < 0 || parseFloat(value) > 10.0) {
                 // Hiển thị thông báo lỗi
-                alert('Giá trị thi phải nằm trong khoảng từ 0 đến 10.0');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'error',
+                    title: 'Giá trị thi phải nằm trong khoảng từ 0 đến 10.0',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 return;
             }
         }
-        if (column === 'chuyen_can' || column === 'tbkt' || column === 'thi_1') {
-            var chuyenCan = parseFloat($('[data-column="chuyen_can"]').text().trim()) || 0;
-            var tbkt = parseFloat($('[data-column="tbkt"]').text().trim()) || 0;
-            var thi1 = Number($('[data-column="thi_1"]').text().trim()) || 0;
+        if (column == 'chuyen_can' || column == 'tbkt' || column == 'thi_1' || column == 'thi_2') {
+            var chuyenCan = parseFloat($('[data-column="chuyen_can"][data-id="' + id + '"]').text().trim()) ||
+                0;
+            var tbkt = parseFloat($('[data-column="tbkt"][data-id="' + id + '"]').text().trim()) || 0;
+            var thi1 = parseFloat($('[data-column="thi_1"][data-id="' + id + '"]').text().trim()) || null;
+            var thi2 = parseFloat($('[data-column="thi_2"][data-id="' + id + '"]').text().trim()) || null;
             var tongKet1 = chuyenCan * 0.1 + tbkt * 0.4 + thi1 * 0.5;
+            var tongKet2 = chuyenCan * 0.1 + tbkt * 0.4 + thi2 * 0.5;
             var tongKet1Rounded = Math.round(tongKet1 * 10) / 10; // Làm tròn với 1 chữ số sau dấu thập phân
+            var tongKet2Rounded = Math.round(tongKet2 * 10) / 10; // Làm tròn với 1 chữ số sau dấu thập phân
+            // console.log(id);
             $('[data-column="tong_ket_1"][data-id="' + id + '"]').text(tongKet1Rounded.toFixed(1));
+            if (thi2 !== null)
+                $('[data-column="tong_ket_2"][data-id="' + id + '"]').text(tongKet2Rounded.toFixed(1));
+            else
+                $('[data-column="tong_ket_2"][data-id="' + id + '"]').text('');
         }
-
-
 
         // Nếu giá trị nhập liệu hợp lệ, tiếp tục gửi yêu cầu AJAX để lưu giá trị
         $.ajax({
@@ -348,11 +381,44 @@ $(function() {
             },
             success: function(response) {
                 console.log(response);
+                $.ajax({
+                    url: "{{ route('nhapdiem.store') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id,
+                        column: "tong_ket_1",
+                        value: tongKet1Rounded.toFixed(1)
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+                $.ajax({
+                    url: "{{ route('nhapdiem.store') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id,
+                        column: "tong_ket_2",
+                        value: tongKet2Rounded.toFixed(1)
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
             },
             error: function(xhr) {
                 console.log(xhr.responseText);
             }
         });
+
     }
 
     // function saveCellValue(column, id, value) {

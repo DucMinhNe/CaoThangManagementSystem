@@ -257,6 +257,13 @@
                       </a>
                   </li>
                   <li class="nav-item">
+                      <a href="{{ url('/admin/xettotnghiep') }}"
+                          class="nav-link {{ Request::url() == url('/admin/xettotnghiep') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-user-graduate"></i>
+                          <p>Xét tốt nghiệp</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
                       <a href="{{ url('/admin/thongbao') }}"
                           class="nav-link {{ Request::url() == url('/admin/thongbao') ? 'active' : '' }}">
                           <i class="nav-icon fas fa-bell"></i>

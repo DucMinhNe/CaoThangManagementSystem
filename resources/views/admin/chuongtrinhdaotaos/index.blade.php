@@ -123,6 +123,7 @@
                             <label for="id_chuong_trinh_dao_tao_1">Chương Trình Đạo Tạo Gốc</label>
                             <select name="id_chuong_trinh_dao_tao_1" id="id_chuong_trinh_dao_tao_1"
                                 class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn --</option>
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
                                 @if ($chuongtrinhdaotao->trang_thai == 1)
                                 <?php $chuyennganh = App\Models\ChuyenNganh::find($chuongtrinhdaotao->id_chuyen_nganh); ?>
@@ -139,6 +140,7 @@
                             <label for="id_chuong_trinh_dao_tao_2">Chương Trình Đạo Tạo Sao Chép</label>
                             <select name="id_chuong_trinh_dao_tao_2" id="id_chuong_trinh_dao_tao_2"
                                 class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn --</option>
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
                                 @if ($chuongtrinhdaotao->trang_thai == 1)
                                 <?php $chuyennganh = App\Models\ChuyenNganh::find($chuongtrinhdaotao->id_chuyen_nganh); ?>
@@ -288,7 +290,29 @@ $(function() {
         selects.val('').trigger('change');
     });
     $('#saoChepChuongTrinhDaoTaoBtn').click(function() {
-        // Hiển thị modal
+        $.ajax({
+            url: "{{ route('getChuongTrinhDaoTao') }}",
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $("#id_chuong_trinh_dao_tao_1").empty();
+                $("#id_chuong_trinh_dao_tao_1").append(
+                    '<option value="0">-- Chọn --</option>');
+                $.each(response, function(key, value) {
+                    $("#id_chuong_trinh_dao_tao_1").append('<option value="' +
+                        value.id + '">' + value.khoa_hoc + '.' + value
+                        .ten_chuyen_nganh + '</option>');
+                });
+                $("#id_chuong_trinh_dao_tao_2").empty();
+                $("#id_chuong_trinh_dao_tao_2").append(
+                    '<option value="0">-- Chọn --</option>');
+                $.each(response, function(key, value) {
+                    $("#id_chuong_trinh_dao_tao_2").append('<option value="' +
+                        value.id + '">' + value.khoa_hoc + '.' + value
+                        .ten_chuyen_nganh + '</option>');
+                });
+            }
+        });
         $('#saoChepModal').modal('show');
     });
     $('#saoChepChiTiet').click(function(e) {

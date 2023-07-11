@@ -11,7 +11,7 @@
                 <table id="example1" class="table table-bordered table-striped data-table">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th>STT</th>
                             <th>Tên giảng viên</th>
                             <th>Tên lớp học</th>
                             <th>Tên lớp học phần</th>
@@ -23,7 +23,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>No</th>
+                            <th>STT</th>
                             <th>Tên giảng viên</th>
                             <th>Tên lớp học</th>
                             <th>Tên lớp học phần</th>

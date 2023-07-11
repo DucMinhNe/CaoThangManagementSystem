@@ -2,21 +2,22 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="/" class="brand-link">
-          <img src="{{ asset('dist/img/caothang.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-              style="opacity: .8">
+          <img src="{{ asset('dist/img/logo_caothang.jpg') }}" alt="AdminLTE Logo" class="brand-image img elevation-3"
+              style="opacity: .8 ;width: 25px; height: 45px">
           <span class="brand-text font-weight-light">Cao Thắng</span>
       </a>
 
       <!-- Sidebar -->
       <div class="sidebar">
           <!-- Sidebar user panel (optional) -->
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="user-panel mt-2 pb-2 mb-2 d-flex">
               <div class="image">
                   @php
                   $hinhAnhDaiDien = auth()->user()->hinh_anh_dai_dien ? asset('giangvien_img/' .
                   auth()->user()->hinh_anh_dai_dien) : asset('dist/img/user2-160x160.jpg');
                   @endphp
-                  <img src="{{ $hinhAnhDaiDien }}" class="img-circle elevation-2" alt="User Image">
+                  <img src="{{ $hinhAnhDaiDien }}" class="img-circle elevation-2" alt="User Image"
+                      style="opacity: .8 ;width: 31px; height: 38px">
                   <!-- <img src="{{ asset('giangvien_img/' . auth()->user()->hinh_anh_dai_dien) }}"
                       class="img-circle elevation-2" alt="User Image"> -->
                   <!-- <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image"> -->
@@ -97,7 +98,13 @@
                           </li>
                       </ul>
                   </li>
-                  <li class="nav-item">
+                  @php
+                  $isOpen = Request::is('admin/khoa') || Request::is('admin/chuyennganh') ||
+                  Request::is('admin/chuongtrinhdaotao') || Request::is('admin/ctchuongtrinhdaotao')||
+                  Request::is('admin/lophocphan')|| Request::is('admin/ctlophocphan')||
+                  Request::is('admin/bomon') || Request::is('admin/loaimonhoc')|| Request::is('admin/monhoc');
+                  @endphp
+                  <li class="nav-item {{ $isOpen ? 'menu-open' : '' }}">
                       <a href="#" class="nav-link">
                           <i class="nav-icon fas fa-school"></i>
                           <p>
@@ -172,6 +179,7 @@
                           </li>
                       </ul>
                   </li>
+
                   @php
                   $isOpen = Request::is('admin/quyetdinh') || Request::is('admin/ctquyetdinh');
                   @endphp
@@ -202,25 +210,130 @@
                       </ul>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ url('/admin/loaiphong') }}"
-                          class="nav-link {{ Request::url() == url('/admin/loaiphong') ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
-                          <p>Loại Phòng</p>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="{{ url('/admin/phong') }}"
-                          class="nav-link {{ Request::url() == url('/admin/phong') ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
-                          <p>Phòng</p>
-                      </a>
-                  </li>
-                  <li class="nav-item">
                       <a href="{{ url('/admin/nhapdiem') }}"
                           class="nav-link {{ Request::url() == url('/admin/nhapdiem') ? 'active' : '' }}">
                           <i class="nav-icon fas fa-award"></i>
                           <p>Nhập Điểm</p>
                       </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/xettotnghiep') }}"
+                          class="nav-link {{ Request::url() == url('/admin/xettotnghiep') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-user-graduate"></i>
+                          <p>Xét tốt nghiệp</p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('/admin/thongbao') }}"
+                          class="nav-link {{ Request::url() == url('/admin/thongbao') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-bell"></i>
+                          <p>Quản lý thông báo</p>
+                      </a>
+                  </li>
+                  @php
+                  $isOpen = Request::is('admin/dangkylophocphan') || Request::is('admin/modangkymon');
+                  @endphp
+                  <li class="nav-item {{ $isOpen ? 'menu-open' : '' }} ">
+                      <a href="#" class="nav-link">
+                          <i class="fa-solid fa-pen-nib"></i>
+                          <p>
+                              Quản Lý Đăng Ký Lớp Học Phần
+                              <i class="right fas fa-angle-left"></i>
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/modangkymon') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/modangkymon') ? 'active' : '' }}">
+                                  <!-- <i class="nav-icon fas fa-graduation-cap"></i> -->
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Mở đăng ký môn</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/dangkylophocphan') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/dangkylophocphan') ? 'active' : '' }}">
+                                  <!-- <i class="nav-icon fas fa-users"></i> -->
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Đăng ký</p>
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
+                  @php
+                  $isOpen = Request::is('admin/thoigianbieu') || Request::is('admin/thoikhoabieu') ||
+                  Request::is('admin/loaiphong')|| Request::is('admin/phong');
+                  @endphp
+                  <li class="nav-item {{ $isOpen ? 'menu-open' : '' }} ">
+                      <a href="#" class="nav-link">
+                          <i class="fa-solid fa-calendar-days"></i>
+                          <p>
+                              Quản Lý Thời Khóa Biểu
+                              <i class="right fas fa-angle-left"></i>
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/thoigianbieu') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/thoigianbieu') ? 'active' : '' }}">
+                                  <!-- <i class="nav-icon fas fa-graduation-cap"></i> -->
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Thời gian biểu</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/thoikhoabieu') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/thoikhoabieu') ? 'active' : '' }}">
+                                  <!-- <i class="nav-icon fas fa-users"></i> -->
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Thời khóa biểu</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/loaiphong') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/loaiphong') ? 'active' : '' }}">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Loại Phòng</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/phong') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/phong') ? 'active' : '' }}">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Phòng</p>
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
+                  @php
+                  $isOpen = Request::is('admin/hocphi') || Request::is('admin/thanhtoanhocphi');
+                  @endphp
+                  <li class="nav-item {{ $isOpen ? 'menu-open' : '' }} ">
+                      <a href="#" class="nav-link">
+                          <i class="fa-solid fa-money-check"></i>
+                          <p>
+                              Quản Lý Học Phí
+                              <i class="right fas fa-angle-left"></i>
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/hocphi') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/hocphi') ? 'active' : '' }}">
+                                  <!-- <i class="nav-icon fas fa-graduation-cap"></i> -->
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Học Phí</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/thanhtoanhocphi') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/thanhtoanhocphi') ? 'active' : '' }}">
+                                  <!-- <i class="nav-icon fas fa-users"></i> -->
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Thanh Toán Học Phí</p>
+                              </a>
+                          </li>
+                      </ul>
                   </li>
                   <li class="nav-item">
                       <a href="/admin/dangxuat" class="nav-link">

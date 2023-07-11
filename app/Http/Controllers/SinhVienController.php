@@ -194,7 +194,16 @@ class SinhVienController extends Controller
         $lop = LopHoc::where('id', $sv->id_lop_hoc)->first();
         // dd($sv->ten_sinh_vien);
         $image = Image::canvas(770, 400, '#ffffff');
-        $hinhsv = Image::make(public_path('sinhvien_img/'.$sv->hinh_anh_dai_dien))->resize(132, 175);
+        // $hinhsv = Image::make(public_path('sinhvien_img/'.$sv->hinh_anh_dai_dien))->resize(132, 175);
+        $filePath = null;
+        if ($sv->hinh_anh_dai_dien) {
+            $filePath = public_path('sinhvien_img/'.$sv->hinh_anh_dai_dien);
+        }
+        if ($filePath && file_exists($filePath)) {
+            $hinhsv = Image::make($filePath)->resize(132, 175);
+        } else {
+            return "Không tìm thấy hình ảnh";
+        }
         $image->insert($hinhsv, 'top-left', 37, 165);
         $logocaothang = Image::make(public_path('sinhvien_thesinhvien/logo_caothang.jpg'))->resize(80, 120);
         $image->insert($logocaothang, 'top-left', 59, 10);
@@ -204,7 +213,7 @@ class SinhVienController extends Controller
             $font->color('#0000FF');
             $font->valign('middle');
         });
-        $image->text('THẺ SINH VIÊN', 390, 65, function($font) {
+        $image->text('THẺ SINH VIÊN', 360, 65, function($font) {
             $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
             $font->size(42);
             $font->color('#FF0000');
@@ -245,7 +254,7 @@ class SinhVienController extends Controller
             $font->color('#0000FF');
             $font->align('left');
             $font->valign('middle');
-        });
+        });  
         $newImagePath = public_path('sinhvien_thesinhvien/image.jpg');
         $image->save($newImagePath);
         return response()->json(asset('sinhvien_thesinhvien/image.jpg'));

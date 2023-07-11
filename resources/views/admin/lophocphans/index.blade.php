@@ -437,6 +437,20 @@ $(function() {
 
     $('#themSinhVienVaoLopHocPhanBtn').click(function() {
         // Hiển thị modal
+        $.ajax({
+            url: "{{ route('getLopHocPhan') }}",
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $("#id_lop_hoc_phan_saochep").empty();
+                $("#id_lop_hoc_phan_saochep").append(
+                    '<option value="0">-- Chọn lớp học phần--</option>');
+                $.each(response, function(key, value) {
+                    $("#id_lop_hoc_phan_saochep").append('<option value="' +
+                        value.id + '">' + value.ten_lop_hoc_phan + '</option>');
+                });
+            }
+        });
         $('#saoChepModal').modal('show');
     });
     $('#saoChepSinhVien').click(function(e) {

@@ -91,7 +91,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>

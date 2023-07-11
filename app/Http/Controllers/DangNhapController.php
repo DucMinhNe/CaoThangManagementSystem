@@ -7,30 +7,7 @@ use Auth;
 use Hash;
 use App\Models\GiangVien;
 class DangNhapController extends Controller
-{// dd($request->all());
-       //  $request->validate([
-       //     'tai_khoan' => 'required',
-       //     'mat_khau' => 'required',
-       // ]);
-   
-       // $credentials = $request->only('tai_khoan', 'mat_khau');
-       // if (Auth::attempt($credentials)) {
-       //     return redirect('/dashboard');
-       // }
-       // return redirect()->back()->with('message', 'Login details are not valid!'); 
-         //    if (Auth::attempt(['tai_khoan' => $request->input('tai_khoan'), 'password' => $request->input('mat_khau')], true)) {
-    //        return redirect('/admin');
-    //    } else {
-    //        return redirect()->back()->with('error', 'Tài khoản hoặc mật khẩu không đúng');
-    //    }  
-
-          // else {
-        //     if ($user->id_chuc_vu == 1) {
-        //         return redirect('/admin');
-        //     } elseif ($user->id_chuc_vu == 2) {
-        //         return redirect('/teacher');
-        //     }
-        // }
+{
     public function dangNhap(){
         if(!empty(Auth::check()))
         {

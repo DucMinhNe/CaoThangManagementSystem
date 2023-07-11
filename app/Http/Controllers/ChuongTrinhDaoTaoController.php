@@ -39,6 +39,13 @@ class ChuongTrinhDaoTaoController extends Controller
         $chuyennganhs = ChuyenNganh::all();
         return view('admin.chuongtrinhdaotaos.index', compact('chuyennganhs','chuongtrinhdaotaos'));    
     }
+    public function getChuongTrinhDaoTao()
+    {
+        return ChuongTrinhDaoTao::leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
+        ->select('chuong_trinh_dao_taos.*', 'chuyen_nganhs.ten_chuyen_nganh')
+        ->where('chuong_trinh_dao_taos.trang_thai', 1) 
+        ->get();
+    }
     public function getInactiveData()
     {
         $data = ChuongTrinhDaoTao::leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')

@@ -262,7 +262,7 @@ td {
                                 <div class="form-group">
                                     <label for="dan_toc">Dân Tộc</label>
                                     <input type="text" class="form-control" id="dan_toc" name="dan_toc"
-                                        placeholder="Dân Tộc" value="" required pattern="^[\p{L}\s]+$">
+                                        placeholder="Dân Tộc" value="Kinh" required pattern="^[\p{L}\s]+$">
                                     <div class="invalid-feedback">
                                         Vui lòng nhập dân tộc.
                                     </div>
@@ -294,7 +294,7 @@ td {
                                 <div class="form-group">
                                     <label for="ton_giao">Tôn Giáo</label>
                                     <input type="text" class="form-control" id="ton_giao" name="ton_giao"
-                                        placeholder="Tôn Giáo" value="" required pattern="^[\p{L}\s]+$">
+                                        placeholder="Tôn Giáo" value="Không" required pattern="^[\p{L}\s]+$">
                                     <div class="invalid-feedback">
                                         Vui lòng nhập tôn giáo.
                                     </div>
@@ -804,7 +804,14 @@ $(function() {
                 document.body.removeChild(link);
             },
             error: function(xhr, status, error) {
+                Swal.fire({
+                    title: 'Không có hình',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {
 
+                    }
+                })
             }
         });
     });

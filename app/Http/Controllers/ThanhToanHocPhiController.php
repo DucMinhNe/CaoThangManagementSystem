@@ -40,7 +40,7 @@ class ThanhToanHocPhiController extends Controller
 
                     //     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-ma-sv="'.$row->ma_sv.'" data-id-lop-hoc="'.$row->id_lop_hoc.'" data-hoc-ky="'.$row->hoc_ky.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Xem</a>';
 
-                    //         $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
+                    //         $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash"></i></a>';
 
 
 
@@ -75,7 +75,7 @@ class ThanhToanHocPhiController extends Controller
 
                             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-ma-sv="'.$row->ma_sv.'" data-id-lop-hoc="'.$row->id_lop_hoc.'" data-id-hoc-phi="'.$row->id_hoc_phi.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Xem</a>';
 
-                            $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
+                            $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash"></i></a>';
 
                         return $btn;
 

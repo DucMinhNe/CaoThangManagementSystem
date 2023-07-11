@@ -25,6 +25,7 @@ use App\Http\Controllers\ChucVuGiangVienController;
 use App\Http\Controllers\DanhSachChucVuGiangVienController;
 
 
+use App\Http\Controllers\XetTotNghiepController;
 use App\Http\Controllers\SinhVienController;
 use App\Http\Controllers\ChucVuSinhVienController;
 use App\Http\Controllers\DanhSachChucVuSinhVienController;
@@ -77,6 +78,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     });
     Route::group(['middleware' => 'checkchucvu:1|2'], function () {
 
+        Route::get('/xettotnghiep/getSinhVienByIdKhoa/{id_khoa}', [XetTotNghiepController::class, 'getSinhVienByIdKhoa'])->name('xettotnghiep.getSinhVienByIdKhoa');
+        Route::get('/xettotnghiep/getSinhVienByIdChuyenNganh/{id_chuyen_nganh}', [XetTotNghiepController::class, 'getSinhVienByIdChuyenNganh'])->name('xettotnghiep.getSinhVienByIdChuyenNganh');
+        Route::get('/xettotnghiep/getSinhVienByIdLop/{id_lop_hoc}', [XetTotNghiepController::class, 'getSinhVienByIdLop'])->name('xettotnghiep.getSinhVienByIdLop');
+        Route::resource('xettotnghiep', XetTotNghiepController::class);
+        Route::get('/diemtrungbinhhocky/{id_lop_hoc}', [XetTotNghiepController::class, 'getDiemTrungBinhHocKyByLop_xettotnghiep']);
         Route::get('/diem-trung-binh-hoc-ky-by-lop-xet-tot-nghiep/{id_lop_hoc}', [SinhVienController::class, 'getDiemTrungBinhHocKyByLop_xettotnghiep']);
         Route::get('/diem-trung-binh-hoc-ky-by-lop/{id_lop_hoc}', [SinhVienController::class, 'getDiemTrungBinhHocKyByLop']);
         Route::get('/diem-trung-binh-hoc-ky', [SinhVienController::class, 'getDiemTrungBinhHocKy']);
@@ -102,6 +108,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/lophoc/restore/{id}', [LopHocController::class, 'restore'])->name('lophoc.restore');
         Route::resource('lophoc', LopHocController::class);
 
+        Route::get('/lophocphan/getLopHocPhan', [LopHocPhanController::class, 'getLopHocPhan'])->name('getLopHocPhan');
         Route::get('/lophocphan/saochep/{idLopHoc}/{idLopHocPhan}', [LopHocPhanController::class, 'themSinhVienVaoLopHocPhan']);
         Route::get('/lophocphan/getInactiveData', [LopHocPhanController::class, 'getInactiveData'])->name('lophocphan.getInactiveData');
         Route::get('/lophocphan/restore/{id}', [LopHocPhanController::class, 'restore'])->name('lophocphan.restore');
@@ -131,7 +138,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/ctquyetdinh/restore/{id}', [CTQuyetDinhController::class, 'restore'])->name('ctquyetdinh.restore');
         Route::resource('ctquyetdinh', CTQuyetDinhController::class);
 
-
+        Route::get('/chuongtrinhdaotao/getChuongTrinhDaoTao', [ChuongTrinhDaoTaoController::class, 'getChuongTrinhDaoTao'])->name('getChuongTrinhDaoTao');
         Route::get('/chuongtrinhdaotao/saochep/{idChuongTrinhDaoTao1}/{idChuongTrinhDaoTao2}', [ChuongTrinhDaoTaoController::class, 'saoChepChiTiet']);
         Route::get('/chuongtrinhdaotao/getInactiveData', [ChuongTrinhDaoTaoController::class, 'getInactiveData'])->name('chuongtrinhdaotao.getInactiveData');
         Route::get('/chuongtrinhdaotao/restore/{id}', [ChuongTrinhDaoTaoController::class, 'restore'])->name('chuongtrinhdaotao.restore');

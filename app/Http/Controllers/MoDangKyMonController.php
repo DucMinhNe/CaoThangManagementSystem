@@ -27,7 +27,7 @@ class MoDangKyMonController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
 
-                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-id-chuyen-nganh="'.$row->id_chuyen_nganh.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-id-chuyen-nganh="'.$row->id_chuyen_nganh.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
                         if($row->da_dong==0){
                             $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Close" class="btn btn-danger btn-sm closeBtn">Đóng</a>';
                         }
@@ -52,9 +52,9 @@ class MoDangKyMonController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
 
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-khoa-hoc="'.$row->khoa_hoc.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
 
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn">Khôi phục</a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
 
                         return $btn;
                 })

@@ -51,12 +51,17 @@ class LopHocPhanController extends Controller
         ->leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
         ->selectRaw('ct_chuong_trinh_dao_taos.*, CONCAT(chuong_trinh_dao_taos.khoa_hoc, ".", mon_hocs.ten_mon_hoc) AS ten_mon_hoc_khoa_hoc, mon_hocs.ten_mon_hoc')
         ->where('ct_chuong_trinh_dao_taos.trang_thai', 1)
+        ->where('chuong_trinh_dao_taos.trang_thai', 1)
         ->latest()
         ->get();
         $lophocphans = LopHocPhan::all();
     
         return view('admin.lophocphans.index', compact('lophocs', 'giangviens', 'ctchuongtrinhdaotaos','lophocphans'));
 
+    }
+    public function getLopHocPhan()
+    {
+        return LopHocPhan::where('trang_thai', 1)->get();
     }
     public function getInactiveData()
     {

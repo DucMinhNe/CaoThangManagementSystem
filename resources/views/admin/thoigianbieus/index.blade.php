@@ -11,7 +11,7 @@
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th>STT</th>
                         <th>Số thứ tự</th>
                         <th>Thời gian bắt đầu</th>
                         <th>Thời gian kết thúc</th>
@@ -22,7 +22,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>No</th>
+                        <th>STT</th>
                         <th>Số thứ tự</th>
                         <th>Thời gian bắt đầu</th>
                         <th>Thời gian kết thúc</th>
@@ -44,15 +44,17 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="stt"> Số thứ tự</label>
-                            <input type="text" class="form-control" id="stt" name="stt"
-                                placeholder="Số thứ tự" value="" required>
+                            <input type="text" class="form-control" id="stt" name="stt" placeholder="Số thứ tự" value=""
+                                required>
                             <div class="cs-form">
                                 <label for="thoi_gian_bat_dau">Thời gian bắt đầu</label>
-                                <input type="time" class="form-control" name="thoi_gian_bat_dau" id="thoi_gian_bat_dau" required/>
+                                <input type="time" class="form-control" name="thoi_gian_bat_dau" id="thoi_gian_bat_dau"
+                                    required />
                             </div>
                             <div class="cs-form">
                                 <label for="thoi_gian_ket_thuc">Thời gian kết thúc</label>
-                                <input type="time" class="form-control" name="thoi_gian_ket_thuc" id="thoi_gian_ket_thuc" required/>
+                                <input type="time" class="form-control" name="thoi_gian_ket_thuc"
+                                    id="thoi_gian_ket_thuc" required />
                             </div>
                         </div>
                     </div>
