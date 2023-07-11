@@ -298,7 +298,7 @@ $('body').on('click', '.editBtn', function() {
         $dataOld=$dataNew= data.lich_hoc;
         data.lich_hoc.forEach(element => {
             row=row+1;
-            text=text+'<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+element.thu_trong_tuan+'">'+$arrayThu[element.thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+element.tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+element.tiet_ket_thuc.id+'">'+element.tiet_bat_dau.stt+' -> '+element.tiet_ket_thuc.stt+'</td><td >'+element.tiet_bat_dau.thoi_gian_bat_dau+' -> '+element.tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+element.phong_hoc.id+'">'+element.phong_hoc.ten_phong+'</td><td data-hoc-ky="'+element.hoc_ky+'">'+element.hoc_ky+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
+            text=text+'<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+element.thu_trong_tuan+'">'+$arrayThu[element.thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+element.tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+element.tiet_ket_thuc.id+'">'+element.tiet_bat_dau.stt+' &#8594; '+element.tiet_ket_thuc.stt+'</td><td >'+element.tiet_bat_dau.thoi_gian_bat_dau+' &#8594; '+element.tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+element.phong_hoc.id+'">'+element.phong_hoc.ten_phong+'</td><td data-hoc-ky="'+element.hoc_ky+'">'+element.hoc_ky+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
         });
         $('#table-thoi-khoa-bieu tbody').empty();
         $('#table-thoi-khoa-bieu tbody').append(text);
@@ -309,7 +309,7 @@ $('body').on('click', '.editBtn', function() {
 
 $('#savedata').click(function(e) {
     e.preventDefault();
-    
+
     // if(JSON.stringify($dataOld)!==JSON.stringify($dataNew)){
         $(this).html('Sending..');
         console.log("Dô");
