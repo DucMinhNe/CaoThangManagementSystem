@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DangKyLopHocPhan;
+use App\Models\MoDangKyMon;
 use App\Models\LopHocPhan;
 use App\Models\ChuongTrinhDaoTao;
 use App\Models\ChuyenNganh;
@@ -21,25 +22,78 @@ class DangKyLopHocPhanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function danhSachSinhVienTheoKhoaHocVaChuyenNganh(Request $request){
-        $sinhviens=SinhVien::join('lop_hocs','sinh_viens.id_lop_hoc','lop_hocs.id')
-                           ->where('lop_hocs.id_chuyen_nganh',$request->id_chuyen_nganh)
-                           ->where('khoa_hoc',$request->khoa_hoc)
-                           ->where('sinh_viens.trang_thai',1)
-                           ->get();
+    public function danhsachsinhvientheokhoatheonganh(Request $request){
+        $sinhviens=SinhVien::leftJoin('lop_hocs','lop_hocs.id','sinh_viens.id_lop_hoc')
+        ->where('sinh_viens.trang_thai',1)
+        ->where('sinh_viens.khoa_hoc',$request->khoa_hoc)
+        ->where('lop_hocs.id_chuyen_nganh',$request->id_chuyen_nganh)
+        ->select('sinh_viens.*')
+        ->get();
         $data=array();
-        foreach ($sinhviens as $sinhvien) {
-           $data[]=$sinhvien;
+            foreach ($sinhviens as $sinhvien) {
+            $data[]=$sinhvien;
+            }
+            return response()->json([
+                'sinh_vien'=>$data,
+                'status'=>1,
+            ]);
+    }
+    public function danhSachSinhVienTheoKhoaHocTheoMonNo(Request $request){
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $currenDateTime= date('Y-m-d H:i:s');
+        $modangkymon=MoDangKyMon::where('id_mon_hoc',$request->id_mon_hoc)
+                                ->where('khoa_hoc',$request->khoa_hoc)
+                                ->where('da_dong',0)
+                                ->where('mo_dang_ky','<',$currenDateTime)
+                                ->where('dong_dang_ky','>',$currenDateTime)
+                                ->where('trang_thai',1)
+                                ->first();
+        if($modangkymon!=null){
+            $dangkylophocphans=DangKyLopHocPhan::join('lop_hoc_phans','lop_hoc_phans.id','dang_ky_lop_hoc_phans.id_lop_hoc_phan')
+                                          ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
+                                          ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$request->id_mon_hoc)
+                                        //   ->where('dang_ky_lop_hoc_phans.ma_sv',$request->ma_sv)
+                                          ->where('dang_ky_lop_hoc_phans.trang_thai',1)
+                                          ->where('dang_ky_lop_hoc_phans.created_at','>',$modangkymon->mo_dang_ky)
+                                          ->where('dang_ky_lop_hoc_phans.created_at','<',$modangkymon->dong_dang_ky)
+
+                                          ->select('dang_ky_lop_hoc_phans.ma_sv')
+                                          ->get();
+                                          //dd($dangkylophocphan);
+            $sinhviens=SinhVien::join('ct_lop_hoc_phans','ct_lop_hoc_phans.ma_sv','sinh_viens.ma_sv')
+                            ->join('lop_hoc_phans','lop_hoc_phans.id','ct_lop_hoc_phans.id_lop_hoc_phan')
+                            ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
+                            ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$request->id_mon_hoc)
+                            ->where('sinh_viens.khoa_hoc',$request->khoa_hoc)
+                            ->where(function($query){
+                                    $query->whereNotNull('tong_ket_2')
+                                    ->where('tong_ket_2','<',5);
+                                })
+                            ->whereNotIn('sinh_viens.ma_sv',$dangkylophocphans)
+                            ->where('sinh_viens.trang_thai',1)
+                            ->get();
+
+            $data=array();
+            foreach ($sinhviens as $sinhvien) {
+            $data[]=$sinhvien;
+            }
+            return response()->json([
+                'sinh_vien'=>$data,
+                'status'=>1,
+            ]);
         }
         return response()->json([
-            'sinh_vien'=>$data,
+            'message'=>"Chưa mở đăng ký môn học này",
+            'status'=>0,
         ]);
+
     }
     public function danhSachLopHocPhanTheoMon(Request $request){
         $lophocphans=LopHocPhan::select('lop_hoc_phans.*')
                               ->join('ct_chuong_trinh_dao_taos','lop_hoc_phans.id_ct_chuong_trinh_dao_tao','ct_chuong_trinh_dao_taos.id')
                               ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$request->id_mon_hoc)
-
+                              ->where('lop_hoc_phans.mo_dang_ky',1)
+                              ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
                               ->where('lop_hoc_phans.trang_thai',1)
                               ->get();
         $data=array();
@@ -85,7 +139,7 @@ class DangKyLopHocPhanController extends Controller
                     if($row->da_dong_tien==1){
                         $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="review" class="btn btn-success btn-sm reviewBtn">Duyệt</a>';
                     }
-                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+                    $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Xem</a>';
                     $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn">Xóa</a>';
 
                     return $btn;
@@ -111,7 +165,7 @@ class DangKyLopHocPhanController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
 
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Sửa</a>';
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn">Xem</a>';
                 $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Restore" class="btn btn-success btn-sm restoreBtn">Khôi phục</a>';
 
                 return $btn;

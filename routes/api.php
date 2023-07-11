@@ -181,9 +181,10 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
 Route::get('/thoikhoabieu/kiemtratrungphongtrungtiet',[ThoiKhoaBieuController::class,'kiemTraTrungPhongTrungTiet'])->name('thoikhoabieu.kiemtratrungphongtrungtiet');
 Route::get('/chuyennganh/laymonhoctheokhoahocvanganh',[DangKyLopHocPhanController::class,'searchMonTheoChuyenNganh'])->name('chuyennganh.laymonhoctheokhoahocvanganh');
 Route::get('/lophoc/danhsachlophocphantheomon',[DangKyLopHocPhanController::class,'danhSachLopHocPhanTheoMon'])->name('lophocphan.danhsachlophocphantheomon');
-Route::get('/sinhvien/danhsachsinhvientheokhoahocvachuyennganh',[DangKyLopHocPhanController::class,'danhSachSinhVienTheoKhoaHocVaChuyenNganh'])->name('sinhvien.danhsachsinhvientheokhoahocvachuyennganh');
+Route::get('/sinhvien/danhsachsinhvientheokhoahocvamonno',[DangKyLopHocPhanController::class,'danhSachSinhVienTheoKhoaHocTheoMonNo'])->name('sinhvien.danhsachsinhvientheokhoahocvamonno');
 Route::get('/thanhtoanhocphi/getvnpaypaymentdetail',[ThanhToanHocPhiController::class,'getVNPayPaymentDetail'])->name('thanhtoanhocphi.getVNPayPaymentDetail');
 Route::get('/thanhtoanhocphi/getpaypalorderdetail',[ThanhToanHocPhiController::class,'getPaypalOrderDetail'])->name('thanhtoanhocphi.getPaypalOrderDetail');
 Route::get('/chuyennganh/lopthuocchuyennganh/{id_chuyen_nganh}',[ThanhToanHocPhiController::class,'lopThuocChuyenNganh'])->name('chuyennganh.lopthuocchuyennganh');
 Route::get('/sinhvien/sinhvientheolophoc/{id_lop_hoc}/{hoc_ky}/{khoa_hoc}',[ThanhToanHocPhiController::class,'sinhVienDongHocPhiTheoLopHoc'])->name('sinhvien.sinhvientheolophoc');
 Route::get('/hocphi/danhsachsinhviendonghocphihocky/{hoc_ky}/{khoa_hoc}',[ThanhToanHocPhiController::class,'danhSachSinhVienDongHocPhiTheoHocKy'])->name('hocphi.danhsachsinhviendonghocphihocky');
+Route::get('/sinhvien/danhsachsinhvientheokhoatheonganh',[DangKyLopHocPhanController::class,'danhsachsinhvientheokhoatheonganh'])->name('danhsachsinhvientheokhoatheonganh');

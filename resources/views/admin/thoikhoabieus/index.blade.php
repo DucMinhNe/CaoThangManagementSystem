@@ -288,49 +288,35 @@ $(function() {
 
             $('#id').val(data.id);
 
-            $('#ten_giang_vien_1').val(data.giang_vien_1 != null ? data.giang_vien_1
-                .ten_giang_vien : "Trống");
-            $('#ten_giang_vien_2').val(data.giang_vien_2 != null ? data.giang_vien_2
-                .ten_giang_vien : "Trống");
-            $('#ten_giang_vien_3').val(data.giang_vien_3 != null ? data.giang_vien_3
-                .ten_giang_vien : "Trống");
-            $('#ten_lop_hoc_phan').val(data.ten_lop_hoc_phan);
-            $('#ten_lop_hoc').val(data.lop_hoc != null ? data.lop_hoc.ten_lop_hoc : "Trống");
-            $('#ten_mon_hoc').val(data.mon_hoc != null ? data.mon_hoc.ten_mon_hoc : "Trống");
-            if (data.hoc_ky == null) {
-                $('#hoc_ky').prop('disabled', false);
-                $('#hoc_ky').val('').trigger('change');
-            } else
-                $('#hoc_ky').val(data.hoc_ky).trigger('change');
-            text = "";
-            row = 0;
-            $dataOld = $dataNew = data.lich_hoc;
-            data.lich_hoc.forEach(element => {
-                row = row + 1;
-                text = text + '<tr data-row-tkb="' + row +
-                    '"><td data-thu_trong_tuan="' + element.thu_trong_tuan + '">' +
-                    $arrayThu[element.thu_trong_tuan - 1] +
-                    '</td><td data-id-tiet-bat-dau="' + element.tiet_bat_dau.id +
-                    '" data-id-tiet-ket-thuc="' + element.tiet_ket_thuc.id + '">' +
-                    element.tiet_bat_dau.stt + ' -> ' + element.tiet_ket_thuc.stt +
-                    '</td><td >' + element.tiet_bat_dau.thoi_gian_bat_dau + ' -> ' +
-                    element.tiet_ket_thuc.thoi_gian_ket_thuc + '</td><td data-phong="' +
-                    element.phong_hoc.id + '">' + element.phong_hoc.ten_phong +
-                    '</td><td data-hoc-ky="' + element.hoc_ky + '">' + element.hoc_ky +
-                    '</td><td><a class="btn btn-warning remove-row" data-row-tkb="' +
-                    row + '">Bỏ</a></td></tr>';
-            });
-            $('#table-thoi-khoa-bieu tbody').empty();
-            $('#table-thoi-khoa-bieu tbody').append(text);
-            // $('#ma_gv').val(data.ma_gv);
-            // $('#id_chuc_vu').val(data.id_chuc_vu);
-        })
-    });
+        $('#ten_giang_vien_1').val(data.giang_vien_1!=null?data.giang_vien_1.ten_giang_vien:"Trống");
+        $('#ten_giang_vien_2').val(data.giang_vien_2!=null?data.giang_vien_2.ten_giang_vien:"Trống");
+        $('#ten_giang_vien_3').val(data.giang_vien_3!=null?data.giang_vien_3.ten_giang_vien:"Trống");
+        $('#ten_lop_hoc_phan').val(data.ten_lop_hoc_phan);
+        $('#ten_lop_hoc').val(data.lop_hoc!=null?data.lop_hoc.ten_lop_hoc:"Trống");
+        $('#ten_mon_hoc').val(data.mon_hoc!=null?data.mon_hoc.ten_mon_hoc:"Trống");
+        if(data.hoc_ky==null){
+            $('#hoc_ky').prop('disabled',false);
+            $('#hoc_ky').val('').trigger('change');
+        }else
+            $('#hoc_ky').val(data.hoc_ky).trigger('change');
+        text="";
+        row=0;
+        $dataOld=$dataNew= data.lich_hoc;
+        data.lich_hoc.forEach(element => {
+            row=row+1;
+            text=text+'<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+element.thu_trong_tuan+'">'+$arrayThu[element.thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+element.tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+element.tiet_ket_thuc.id+'">'+element.tiet_bat_dau.stt+' &#8594; '+element.tiet_ket_thuc.stt+'</td><td >'+element.tiet_bat_dau.thoi_gian_bat_dau+' &#8594; '+element.tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+element.phong_hoc.id+'">'+element.phong_hoc.ten_phong+'</td><td data-hoc-ky="'+element.hoc_ky+'">'+element.hoc_ky+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
+        });
+        $('#table-thoi-khoa-bieu tbody').empty();
+        $('#table-thoi-khoa-bieu tbody').append(text);
+        // $('#ma_gv').val(data.ma_gv);
+        // $('#id_chuc_vu').val(data.id_chuc_vu);
+    })
+});
 
-    $('#savedata').click(function(e) {
-        e.preventDefault();
+$('#savedata').click(function(e) {
+    e.preventDefault();
 
-        // if(JSON.stringify($dataOld)!==JSON.stringify($dataNew)){
+    // if(JSON.stringify($dataOld)!==JSON.stringify($dataNew)){
         $(this).html('Sending..');
         console.log("Dô");
         $dataSend = {
