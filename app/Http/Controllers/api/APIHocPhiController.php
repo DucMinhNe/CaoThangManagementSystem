@@ -124,9 +124,8 @@ class APIHocPhiController extends Controller
     }
     function danhSachHocPhi($ma_sv){
         $idChuyenNganhs=ChuyenNganh::join('lop_hocs','chuyen_nganhs.id','lop_hocs.id_chuyen_nganh')
-                                ->join('qua_trinh_hoc_taps','qua_trinh_hoc_taps.id_lop_hoc','lop_hocs.id')
                                 ->select('lop_hocs.id_chuyen_nganh')
-                                ->where('qua_trinh_hoc_taps.ma_sv',$ma_sv)->where('qua_trinh_hoc_taps.trang_thai',1)->get();
+                                ->get();
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $currenDateTime= date('Y-m-d H:i:s');
         $danhSachDangKyLopHocPhan=DangKyLopHocPhan::where('ma_sv',$ma_sv)
