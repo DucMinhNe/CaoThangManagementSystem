@@ -15,7 +15,7 @@ class SinhViensImport implements ToModel, WithHeadingRow
     */
     public function headingRow(): int
     {
-        return 3; // Số thứ tự của heading row (dòng tiêu đề), ví dụ 1 là dòng đầu tiên.
+        return 4; // Số thứ tự của heading row (dòng tiêu đề)
     }
     private $idLopHocExcel;
     
@@ -50,7 +50,7 @@ class SinhViensImport implements ToModel, WithHeadingRow
             'mat_khau' => Hash::make($row['so_cmt']),
             'khoa_hoc' => $row['khoa_hoc'],
             'bac_dao_tao' => $row['bac_dao_tao'],
-            'he_dao_tao' => $row['he_dao_tao'],     
+            // 'he_dao_tao' => $row['he_dao_tao'],     
             'id_lop_hoc' => $this->idLopHocExcel,
         ]);
     }

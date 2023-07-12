@@ -105,10 +105,13 @@ class ChuongTrinhDaoTaoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'khoa_hoc' => ['required', 'regex:/^\d{4}$/'],
+            'id_chuyen_nganh' => 'required'
+        ]);
         ChuongTrinhDaoTao::updateOrCreate(['id' => $request->id],
                  ['khoa_hoc' => $request->khoa_hoc,
                     'id_chuyen_nganh' => $request->id_chuyen_nganh,
-                 
              ],
         );        
         return response()->json(['success'=>'Lưu Chuyên Ngành Thành Công.']);

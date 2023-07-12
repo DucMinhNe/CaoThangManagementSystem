@@ -32,7 +32,17 @@
                         <th width="30px">STT</th>
                         <th>Tên Bộ Môn</th>
                         <th>Khoa</th>
-                        <th width="72px"></th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th width="30px"></th>
+                        <th></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,17 +72,25 @@
                         <div class="form-group">
                             <label for="ten_bo_mon">Tên Bộ Môn</label>
                             <input type="text" class="form-control" id="ten_bo_mon" name="ten_bo_mon"
-                                placeholder="Tên Bộ Môn" value="" required>
+                                placeholder="Tên Bộ Môn" value="" required pattern="[\p{L}\d\s]+">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập chỉ chấp nhận chữ cái, số và khoảng trắng.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="id_khoa">Khoa</label>
-                            <select name="id_khoa" id="id_khoa" class="form-control select2" style="width: 100%;">
+                            <select name="id_khoa" id="id_khoa" class="form-control select2" style="width: 100%;"
+                                required>
+                                <option value="">-- Chọn khoa --</option>
                                 @foreach ($khoas as $khoa)
                                 @if ($khoa->trang_thai == 1)
                                 <option value="{{ $khoa->id }}">{{ $khoa->ten_khoa }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn khoa
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -100,6 +118,32 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+
+                if (column.index() !== 0 && column.index() !== 3) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--Chọn--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                }
+
+            });
+        },
         ajax: "{{ route('bomon.index') }}",
         columns: [{
                 data: 'id',
@@ -156,15 +200,18 @@ $(function() {
             },
             {
                 extend: 'excel',
-                text: 'Xuất Excel'
+                text: 'Xuất Excel',
+                title: 'Bộ Môn'
             },
             {
                 extend: 'pdf',
-                text: 'Xuất PDF'
+                text: 'Xuất PDF',
+                title: 'Bộ Môn'
             },
             {
                 extend: 'print',
-                text: 'In'
+                text: 'In',
+                title: 'Bộ Môn'
             },
             {
                 extend: 'colvis',
@@ -176,11 +223,20 @@ $(function() {
             }
         ],
     });
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+    });
+    $('#filterToggle').trigger('click');
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('bomon.getInactiveData') }}").load();
         } else {
@@ -189,14 +245,17 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#id_khoa').val('').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('bomon.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -210,32 +269,36 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('bomon.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('bomon.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

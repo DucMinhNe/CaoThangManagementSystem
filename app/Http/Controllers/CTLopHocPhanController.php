@@ -75,6 +75,16 @@ class CTLopHocPhanController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id_lop_hoc_phan' => 'required',
+            'ma_sv' => 'required',
+            'chuyen_can' => 'required|numeric|between:0,1',
+            'tbkt' => 'required|numeric|between:0,4',
+            'thi_1' => 'required|numeric|between:0,10',
+            'thi_2' => 'required|numeric|between:0,10',
+            'tong_ket_1' => 'required|numeric|between:0,10',
+            'tong_ket_2' => 'required|numeric|between:0,10',
+        ]);
         CTLopHocPhan::updateOrCreate(['id' => $request->id],
         ['id_lop_hoc_phan' => $request->id_lop_hoc_phan,
            'ma_sv' => $request->ma_sv,

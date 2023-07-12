@@ -45,13 +45,13 @@
                         <input type="text" class="form-control" name="tai_khoan" placeholder="Tài Khoản" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
+                                <span class="fas fa-user"></span>
                             </div>
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" name="mat_khau" id="mat_khau"
-                            placeholder="Mật Khẩu">
+                        <input type="password" class="form-control" name="mat_khau" id="mat_khau" placeholder="Mật Khẩu"
+                            required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -69,7 +69,8 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-5">
-                            <button type="submit" class="btn btn-primary btn-block">Đăng Nhập</button>
+                            <button type="submit" class="btn btn-primary btn-block"><i
+                                    class="fa-solid fa-right-to-bracket"></i> Đăng Nhập</button>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -96,7 +97,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h3 class="text-center">Hãy liên hệ các siêu quản trị viên để nhận được sử trợ giúp</h3>
+                    <h3 class="text-center">Hãy liên hệ siêu quản trị viên để nhận được sự trợ giúp</h3>
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-12 d-flex align-items-stretch flex-column ">
                             <div class="card bg-light d-flex flex-fill border border-danger">
@@ -106,31 +107,32 @@
                                 <div class="card-body pt-0">
                                     <div class="row">
                                         <div class="col-7 d-flex flex-column">
-                                            <h2 class="lead"><b>Lê Đức Minh</b></h2>
+                                            <h2 class="lead"><b id="lecturer-name"></b></h2>
                                             <div class="mt-auto">
                                                 <ul class="ml-4 mb-0 fa-ul text-muted">
                                                     <li class=""><span class="fa-li"><i
-                                                                class="fas fa-lg fa-phone"></i></span> SĐT : 0905913419
-                                                    </li>
+                                                                class="fas fa-lg fa-phone"></i></span><span
+                                                            id="lecturer-phone"></span></li>
                                                     <li class=""><span class="fa-li"><i
-                                                                class="fas fa-lg fa-envelope"></i></span> Email :
-                                                        ducminh@gmail.com</li>
+                                                                class="fas fa-lg fa-envelope"></i></span><span
+                                                            id="lecturer-email"></span></li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="col-5 text-center">
                                             <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar"
-                                                class="img-circle img-fluid">
+                                                class="img-circle img-fluid" style="width: 120px; height: 180px;"
+                                                id="lecturer-avatar">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        <a href="tel:0905913419" class="btn btn-sm bg-teal">
+                                        <a href="#" class="btn btn-sm bg-teal" id="btn-call">
                                             <i class="fas fa-phone-volume"></i>
                                             Gọi ngay
                                         </a>
-                                        <a href="mailto:ducminhldm@gmail.com" class="btn btn-sm btn-primary">
+                                        <a href="#" class="btn btn-sm btn-primary" id="btn-email">
                                             <i class="fa-solid fa-envelope"></i>
                                             Email
                                         </a>
@@ -163,6 +165,31 @@
             x.type = "password";
         }
     }
+    $(document).ready(function() {
+        $.ajax({
+            url: '/lay-thong-tin-quan-tri-vien',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.length > 0) {
+                    var randomIndex = Math.floor(Math.random() * data.length);
+                    var lecturer = data[randomIndex];
+                    $('#lecturer-name').text(lecturer.ten_giang_vien);
+                    $('#lecturer-phone').text('SĐT: ' + lecturer.so_dien_thoai);
+                    $('#lecturer-email').text('Email: ' + lecturer.email);
+                    if (lecturer.hinh_anh_dai_dien) {
+                        $('#lecturer-avatar').attr('src', '/giangvien_img/' + lecturer
+                            .hinh_anh_dai_dien);
+                    };
+                    $('#btn-call').attr('href', 'tel:' + lecturer.so_dien_thoai);
+                    $('#btn-email').attr('href', 'mailto:' + lecturer.email);
+                }
+            },
+            error: function() {
+                console.log('Đã xảy ra lỗi khi lấy thông tin quản trị viên.');
+            }
+        });
+    });
     </script>
 </body>
 

@@ -35,7 +35,20 @@
                         <th>Nội Dung</th>
                         <th>Hiệu Lực Bắt Đầu</th>
                         <th>Hiệu Lực Đến</th>
-                        <th width="72px"></th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th width="30px"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,33 +82,46 @@
                         <div class="form-group">
                             <label for="ma_gv_ra_quyet_dinh">Người Ra Quyết Định</label>
                             <select name="ma_gv_ra_quyet_dinh" id="ma_gv_ra_quyet_dinh" class="form-control select2"
-                                style="width: 100%;">
+                                style="width: 100%;" required>
+                                <option value="">-- Chọn giảng viên--</option>
                                 @foreach ($giangviens as $giangvien)
                                 @if ($giangvien->trang_thai == 1)
                                 <option value="{{ $giangvien->ma_gv }}">{{ $giangvien->ten_giang_vien }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn người ra quyết định.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="ngay_ra_quyet_dinh">Ngày Ra Quyết Định</label>
                             <input type="date" class="form-control" id="ngay_ra_quyet_dinh" name="ngay_ra_quyet_dinh"
                                 placeholder="" value="" required>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn ngày ra quyết định.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="noi_dung">Nội Dung</label>
                             <input type="text" class="form-control" id="noi_dung" name="noi_dung" placeholder="Nội Dung"
                                 value="" required>
+                            <div class="invalid-feedback">
+                                Vui lòng nhập nội dung.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="hieu_luc_bat_dau">Hiệu Lực Bắt Đầu</label>
                             <input type="date" class="form-control" id="hieu_luc_bat_dau" name="hieu_luc_bat_dau"
                                 placeholder="" value="" required>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn hiệu lực bắt đầu.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="hieu_luc_ket_thuc">Hiệu Lực Đến</label>
                             <input type="date" class="form-control" id="hieu_luc_ket_thuc" name="hieu_luc_ket_thuc"
-                                placeholder="" value="" required>
+                                placeholder="" value="">
                         </div>
                     </div>
                     <div class="card-footer">
@@ -123,6 +149,30 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+                if (column.index() !== 0 && column.index() !== 6) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--Chọn--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                }
+            });
+        },
         ajax: "{{ route('quyetdinh.index') }}",
         columns: [{
                 data: 'id',
@@ -211,11 +261,19 @@ $(function() {
             }
         ],
     });
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+    });
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('quyetdinh.getInactiveData') }}").load();
         } else {
@@ -224,14 +282,17 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#ma_gv_ra_quyet_dinh').val('').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('quyetdinh.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -247,32 +308,36 @@ $(function() {
     });
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('quyetdinh.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('quyetdinh.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

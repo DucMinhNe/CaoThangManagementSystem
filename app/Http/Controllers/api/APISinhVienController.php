@@ -243,6 +243,6 @@ class APISinhVienController extends Controller
         return response()->json([
             'message'=>"Mật khẩu cũ không khớp với mật khẩu hiện tại",
             'status'=>0,
-        ],401);
+        ],201);
     }
 }

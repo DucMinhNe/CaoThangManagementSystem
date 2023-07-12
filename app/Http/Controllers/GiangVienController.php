@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\GiangVien;
 use App\Models\BoMon;
+use App\Models\Khoa;
 use App\Models\ChucVuGiangVien;
 use DataTables;
 use File;
@@ -34,9 +35,10 @@ class GiangVienController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+        $khoas = Khoa::all();
         $bomons = BoMon::all();
         $chucvus = ChucVuGiangVien::all();
-        return view('admin.giangviens.index', compact('bomons','chucvus'));    
+        return view('admin.giangviens.index', compact('khoas','bomons','chucvus'));    
     }
     public function getInactiveData()
     {
@@ -57,6 +59,53 @@ class GiangVienController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+    }
+    public function getBoMonByKhoa($id_khoa)
+    {
+        $boMons = BoMon::where('id_khoa', $id_khoa)
+        ->where('trang_thai', 1)
+        ->get();
+        return response()->json($boMons);
+    }
+    public function getGiangVienByIdKhoa($id_khoa)
+    {
+        $data = GiangVien::leftJoin('bo_mons', 'giang_viens.id_bo_mon', '=', 'bo_mons.id')
+        ->leftJoin('khoas', 'bo_mons.id_khoa', '=', 'khoas.id')
+        ->leftJoin('chuc_vu_giang_viens', 'giang_viens.id_chuc_vu', '=', 'chuc_vu_giang_viens.id')
+        ->select('giang_viens.*', 'bo_mons.ten_bo_mon', 'chuc_vu_giang_viens.ten_chuc_vu')
+        ->where('khoas.id', $id_khoa)
+        ->where('giang_viens.trang_thai', 1) 
+        ->latest()
+        ->get();
+            return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_gv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></a>';
+                $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_gv . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash"></i></a>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    
+    public function getGiangVienByIdBoMon($id_bo_mon)
+    {
+        $data = GiangVien::leftJoin('bo_mons', 'giang_viens.id_bo_mon', '=', 'bo_mons.id')
+        ->leftJoin('chuc_vu_giang_viens', 'giang_viens.id_chuc_vu', '=', 'chuc_vu_giang_viens.id')
+        ->select('giang_viens.*', 'bo_mons.ten_bo_mon', 'chuc_vu_giang_viens.ten_chuc_vu')
+        ->where('id_bo_mon', $id_bo_mon)
+        ->where('giang_viens.trang_thai', 1) 
+        ->latest()
+        ->get();
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_gv . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fas fa-pencil-alt"></i></a>';
+            $btn = $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->ma_gv . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fas fa-trash"></i></a>';
+            return $btn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
     /**
      * Show the form for creating a new resource.
@@ -88,6 +137,22 @@ class GiangVienController extends Controller
             $profileImage = $request->ma_gv . "." . $files->getClientOriginalExtension();
             $files->move($destinationPath, $profileImage);
         }
+        $request->validate([
+            'ten_giang_vien' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'email' => ['required', 'email'],
+            'so_dien_thoai' => ['required', 'regex:/^(0|\+84)?([3-9]\d{8})$/'],
+            'so_cmt' => ['required', 'regex:/\d{9}|\d{12}/'],
+            'gioi_tinh' => ['required'],
+            'ngay_sinh' => ['required'],
+            'noi_sinh' => ['required'],
+            'dan_toc' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'ton_giao' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'dia_chi_thuong_tru' => ['required'],
+            'dia_chi_tam_tru' => ['required'],
+            'tai_khoan' => ['required'],
+            'id_chuc_vu' => ['required'],
+            'tinh_trang_lam_viec' => ['required'],
+        ]);  
         $giangVienData = [
             'ten_giang_vien' => $request->ten_giang_vien,
             'email' => $request->email,
@@ -174,5 +239,12 @@ class GiangVienController extends Controller
         $tongGiangViens = GiangVien::where('trang_thai', 1)->count();
 
         return response()->json(['tongGiangViens' => $tongGiangViens]);
+    }
+    public function layThongTinQuanTriVien()
+    {
+        $data = GiangVien::select('ten_giang_vien', 'email', 'so_dien_thoai', 'hinh_anh_dai_dien')
+            ->where('id_chuc_vu', 1)
+            ->get();
+        return response()->json($data);
     }
 }

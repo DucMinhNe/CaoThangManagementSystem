@@ -8,6 +8,7 @@ use App\Models\ThoiGianBieu;
 use App\Models\GiangVien;
 use App\Models\MonHoc;
 use App\Models\LopHocPhan;
+use App\Models\LopHoc;
 use App\Models\SinhVien;
 use App\Models\Phong;
 use App\Models\DangKyLopHocPhan;
@@ -177,18 +178,19 @@ class APIThoiKhoaBieuController extends Controller
     }
     public function danhSachLichHocCuaSinhVienTheoChuongTrinh($ma_sv){
         $sinhVien=SinhVien::where('ma_sv',$ma_sv)->where('trang_thai',1)->first();
+        $lophoc=LopHoc::where('id',$sinhVien->id_lop_hoc)->first();
         $thoiKhoaBieu= ThoiKhoaBieu::join('lop_hoc_phans','thoi_khoa_bieus.id_lop_hoc_phan','lop_hoc_phans.id')
-                                ->join('ct_lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
-                                ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
-                                ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
+                                // ->join('ct_lop_hoc_phans','ct_lop_hoc_phans.id_lop_hoc_phan','lop_hoc_phans.id')
+                                // ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
+                                // ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
                                 ->join('phongs','phongs.id','thoi_khoa_bieus.id_phong_hoc')
-                                ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
+                                // ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
                                 ->where('id_lop_hoc',$sinhVien->id_lop_hoc)
                                 ->where('thoi_khoa_bieus.trang_thai',1);
 
-        //dd($thoiKhoaBieu->get());
+        // return $thoiKhoaBieu->select('lop_hoc_phans.*')->get();
         $phongHoc= clone $thoiKhoaBieu;
-        $phongHoc=$phongHoc->select('ten_phong','id_phong_hoc')->distinct()->get();
+        $phongHoc=$phongHoc->select('id_lop_hoc','ten_phong','id_phong_hoc')->distinct()->get();
         //dd($phongHoc);
         $data=array();
         foreach($phongHoc as $p){
@@ -203,12 +205,20 @@ class APIThoiKhoaBieuController extends Controller
                     $tietKetThuc=ThoiGianBieu::where('id',$lich->id_tiet_ket_thuc)->where('trang_thai',1)->first();
                     $giangVien1=GiangVien::where('ma_gv',$lich->ma_gv_1)->where('trang_thai',1)->first();
 
+                    $monhoc=null;
+                    if($lich->id_ct_chuong_trinh_dao_tao!=null){
+                        $monhoc=MonHoc::join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id_mon_hoc','mon_hocs.id')->where('ct_chuong_trinh_dao_taos.id',$lich->id_ct_chuong_trinh_dao_tao)->select('mon_hocs.*')->first();
+                    }
                     $giangVien2=GiangVien::where('ma_gv',$lich->ma_gv_2)->where('trang_thai',1)->first();
                     $lichThuocPhong[]=array(
-                        'mon_hoc'=>$lich->ten_mon_hoc,
+                        'mon_hoc'=>$monhoc!=null?$monhoc->ten_mon_hoc:$lich->ten_lop_hoc_phan,
                         'hoc_ky'=>$lich->hoc_ky,
                         'giang_vien_1'=>$giangVien1!=null?$giangVien1->ten_giang_vien:"Empty",
                         'giang_vien_2'=>$giangVien2!=null?$giangVien2->ten_giang_vien:"Empty",
+                        'lop_hoc'=>array(
+                            'ten_lop_hoc'=>$lophoc->ten_lop_hoc,
+                            'giang_vien_chu_nhiem'=>$lophoc->giangVienChuNhiem,
+                        ),
                         'thu_trong_tuan'=>$lich->thu_trong_tuan,
                         'tiet_bat_dau'=>$tietBatDau->stt,
                         'thoi_gian_bat_dau'=>$tietBatDau->thoi_gian_bat_dau,
@@ -221,7 +231,9 @@ class APIThoiKhoaBieuController extends Controller
             $data[]=array(
                 'id_phong_hoc'=>$p->id_phong_hoc,
                 'ten_phong_hoc'=>$p->ten_phong,
+
                 'lich'=>$lichThuocPhong
+
             );
         }
 
@@ -283,23 +295,25 @@ class APIThoiKhoaBieuController extends Controller
     {
 
         $thoiKhoaBieu= ThoiKhoaBieu::join('lop_hoc_phans','thoi_khoa_bieus.id_lop_hoc_phan','lop_hoc_phans.id')
-        ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
-        ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
+        // ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
+        // ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
         ->join('phongs','phongs.id','thoi_khoa_bieus.id_phong_hoc')
+        ->join('lop_hocs','lop_hocs.id','lop_hoc_phans.id_lop_hoc')
         ->where(function($query) use ($ma_giang_vien){
             $query->where('lop_hoc_phans.ma_gv_1',$ma_giang_vien)
             ->orWhere('lop_hoc_phans.ma_gv_2',$ma_giang_vien)
-            ->orWhere('lop_hoc_phans.ma_gv_3',$ma_giang_vien);
+            ->orWhere('lop_hoc_phans.ma_gv_3',$ma_giang_vien)
+            ->orWhere('lop_hocs.ma_gv_chu_nhiem',$ma_giang_vien);
         })
-
         ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
         ->where('thoi_khoa_bieus.trang_thai',1);
 
-        //    dd($thoiKhoaBieu->get());
+        //return $thoiKhoaBieu->get();
         $phongHoc= clone $thoiKhoaBieu;
         $phongHoc=$phongHoc->select('ten_phong','id_phong_hoc')->distinct()->get();
         //dd($phongHoc);
         $data=array();
+
         foreach($phongHoc as $p){
         $lichThuocPhong=array();
         $lichHoc=clone $thoiKhoaBieu;
@@ -310,10 +324,19 @@ class APIThoiKhoaBieuController extends Controller
         $tietKetThuc=ThoiGianBieu::where('id',$lich->id_tiet_ket_thuc)->where('trang_thai',1)->first();
         $giangVien1=GiangVien::where('ma_gv',$lich->ma_gv_1)->where('trang_thai',1)->first();
         $giangVien2=GiangVien::where('ma_gv',$lich->ma_gv_2)->where('trang_thai',1)->first();
+        $lophocphan=LopHocPhan::where('id',$lich->id_lop_hoc_phan)->first();
+        $lophoc=null;
+        if($lich->id_ct_chuong_trinh_dao_tao==null){
+            $lophoc=LopHoc::where('id',$lich->id_lop_hoc)->first();
+        }
         $lichThuocPhong[]=array(
-                'mon_hoc'=>$lich->ten_mon_hoc,
+                'mon_hoc'=>$lophocphan->chiTietChuongTrinhDaoTao!=null?$lophocphan->chiTietChuongTrinhDaoTao->monHoc->ten_mon_hoc:$lich->ten_lop_hoc_phan,
                 'giang_vien_1'=>$giangVien1!=null?$giangVien1->ten_giang_vien:"Empty",
                 'giang_vien_2'=>$giangVien2!=null?$giangVien2->ten_giang_vien:"Empty",
+                'lop_hoc'=>$lophoc!=null?array(
+                    'ten_lop_hoc'=>$lophoc->ten_lop_hoc,
+                    'giang_vien_chu_nhiem'=>$lophoc->giangVienChuNhiem,
+                ):null,
                 'thu_trong_tuan'=>$lich->thu_trong_tuan,
                 'tiet_bat_dau'=>$tietBatDau->stt,
                 'thoi_gian_bat_dau'=>$tietBatDau->thoi_gian_bat_dau,

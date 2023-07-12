@@ -44,7 +44,23 @@
                         <th>Tên Môn</th>
                         <th>Mở Đăng Ký</th>
                         <th>Trạng Thái Hoàn Thành</th>
-                        <th width="72px"></th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th width="30px"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,7 +101,7 @@
                         <div class="form-group">
                             <label for="id_lop_hoc">Lớp</label>
                             <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2" style="width: 100%;">
-                                <option value="">-- Chọn lớp --</option>
+                                <option value="">-- Chọn lớp học --</option>
                                 @foreach ($lophocs as $lophoc)
                                 @if ($lophoc->trang_thai == 1)
                                 <option value="{{ $lophoc->id}}">{{ $lophoc->ten_lop_hoc }}
@@ -131,6 +147,7 @@
                             <label for="id_ct_chuong_trinh_dao_tao">Tên Môn Học</label>
                             <select name="id_ct_chuong_trinh_dao_tao" id="id_ct_chuong_trinh_dao_tao"
                                 class="form-control select2" style="width: 100%;">
+                                <option value="">-- Chọn môn học --</option>
                                 @foreach ($ctchuongtrinhdaotaos as $ctchuongtrinhdaotao)
                                 @if ($ctchuongtrinhdaotao->trang_thai == 1)
                                 <option value="{{ $ctchuongtrinhdaotao->id }}">
@@ -151,13 +168,16 @@
                             <label for="trang_thai_hoan_thanh">Trạng Thái Hoàn Thành</label>
                             <select class="form-control select2" id="trang_thai_hoan_thanh" name="trang_thai_hoan_thanh"
                                 required>
-                                <option value="1">Hoàn Thành</option>
                                 <option value="0">Chưa Hoàn Thành</option>
+                                <option value="1">Hoàn Thành</option>
                             </select>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                        <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>
@@ -201,8 +221,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="saoChepSinhVien">Sao
-                            chép</button>
+                        <button type="submit" class="btn btn-primary" id="saoChepSinhVien"> <i
+                                class="fa-solid fa-file-import"></i> Nhập</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
             </div>
@@ -222,6 +244,30 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+                if (column.index() !== 0 && column.index() !== 9) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--Chọn--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                }
+            });
+        },
         ajax: "{{ route('lophocphan.index') }}",
         columns: [{
                 data: 'id',
@@ -336,12 +382,59 @@ $(function() {
             }
         ],
     });
+    $('#ma_gv_2, #ma_gv_3').prop('disabled', true);
+    // Xử lý khi chọn giảng viên 1
+    $('#ma_gv_1').change(function() {
+        var selectedGiangVien1 = $(this).val();
+        if (!selectedGiangVien1) {
+            $('#ma_gv_2, #ma_gv_3').prop('disabled', true);
+            $('#ma_gv_2').val('').trigger('change');
+            $('#ma_gv_3').val('').trigger('change');
+            return;
+        }
+        $('#ma_gv_2').prop('disabled', false);
+        $('#ma_gv_3').prop('disabled', true);
+    });
+    // Xử lý khi chọn giảng viên 2
+    $('#ma_gv_2').change(function() {
+        var selectedGiangVien2 = $(this).val();
+        if (!selectedGiangVien2) {
+            $('#ma_gv_3').prop('disabled', true);
+            $('#ma_gv_3').val('').trigger('change');
+            return;
+        }
+        $('#ma_gv_3').prop('disabled', false);
+    });
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+    });
+    $('#filterToggle').trigger('click');
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
+    });
     $('#id_lop_hoc, #id_ct_chuong_trinh_dao_tao').change(function() {
         var selectedLop = $('#id_lop_hoc').find('option:selected').text().trim();
         var selectedMonHoc = $('#id_ct_chuong_trinh_dao_tao').find('option:selected').text().trim();
-        var tenLopHocPhan = selectedLop + ' - ' + selectedMonHoc;
+        if (selectedLop == '-- Chọn lớp học --') {
+            selectedLop = '';
+        }
+        if (selectedMonHoc == '-- Chọn môn học --') {
+            selectedMonHoc = '';
+        }
+
+        var tenLopHocPhan = '';
+        if (selectedLop && selectedMonHoc) {
+            tenLopHocPhan = selectedLop + ' - ' + selectedMonHoc;
+        } else if (selectedLop) {
+            tenLopHocPhan = selectedLop;
+        } else if (selectedMonHoc) {
+            tenLopHocPhan = selectedMonHoc;
+        }
         $('#ten_lop_hoc_phan').val(tenLopHocPhan);
     });
+
     $('#themSinhVienVaoLopHocPhanBtn').click(function() {
         // Hiển thị modal
         $('#saoChepModal').modal('show');
@@ -379,7 +472,7 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('lophocphan.getInactiveData') }}").load();
         } else {
@@ -388,24 +481,29 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
+        $('#id_lop_hoc').val('').trigger('change');
         $('#ma_gv_1').val('').trigger('change');
         $('#ma_gv_2').val('').trigger('change');
         $('#ma_gv_3').val('').trigger('change');
+        $('#id_ct_chuong_trinh_dao_tao').val('').trigger(
+            'change');
+        $('#ten_lop_hoc_phan').val('');
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('lophocphan.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
-            $('#ten_lop_hoc_phan').val(data.ten_lop_hoc_phan);
             $('#id_lop_hoc').val(data.id_lop_hoc).trigger('change');
             $('#ma_gv_1').val(data.ma_gv_1).trigger('change');
             $('#ma_gv_2').val(data.ma_gv_2).trigger('change');
@@ -414,38 +512,42 @@ $(function() {
                 'change');
             $('#mo_dang_ky').val(data.mo_dang_ky).trigger('change');
             $('#trang_thai_hoan_thanh').val(data.trang_thai_hoan_thanh).trigger('change');
-
+            $('#ten_lop_hoc_phan').val(data.ten_lop_hoc_phan);
         })
     });
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('lophocphan.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('lophocphan.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

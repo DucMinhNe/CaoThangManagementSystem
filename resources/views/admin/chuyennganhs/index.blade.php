@@ -34,7 +34,19 @@
                         <th>Mã Chữ</th>
                         <th>Mã Số</th>
                         <th>Khoa</th>
-                        <th width="72px"></th>
+                        <th width="72px" class="text-center"><a href="#" id="filterToggle">Bộ Lọc</a></th>
+                    </tr>
+                    <tr class="filter-row">
+                        <th width="30px"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th width="72px" class="text-center">
+                            <div class="mb-2">
+                                <a href="#" class="pb-2 reset-filter">↺</a>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,27 +78,41 @@
                         <div class="form-group">
                             <label for="ten_khoa">Tên Chuyên Ngành</label>
                             <input type="text" class="form-control" id="ten_chuyen_nganh" name="ten_chuyen_nganh"
-                                placeholder="Tên Chuyên Ngành" value="" required>
+                                placeholder="Tên Chuyên Ngành" value="" required pattern="^[\p{L}\s]+$">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập chữ cái và khoảng trắng.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="ten_khoa">Mã Chữ</label>
                             <input type="text" class="form-control" id="ma_chu" name="ma_chu" placeholder="Mã Chữ"
-                                value="" required>
+                                value="" required pattern="^[\p{Lu}\s]+$">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập chữ.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="ten_khoa">Mã Số</label>
                             <input type="text" class="form-control" id="ma_so" name="ma_so" placeholder="Mã Số "
-                                value="" required>
+                                value="" required pattern="\d{2}">
+                            <div class="invalid-feedback">
+                                Vui lòng nhập số
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="id_khoa">Khoa</label>
-                            <select name="id_khoa" id="id_khoa" class="form-control select2" style="width: 100%;">
+                            <select name="id_khoa" id="id_khoa" class="form-control select2" style="width: 100%;"
+                                required>
+                                <option value="">-- Chọn khoa --</option>
                                 @foreach ($khoas as $khoa)
                                 @if ($khoa->trang_thai == 1)
                                 <option value="{{ $khoa->id }}">{{ $khoa->ten_khoa }}</option>
                                 @endif
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn khoa
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -114,6 +140,30 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
+        orderCellsTop: true,
+        initComplete: function() {
+            var table = this;
+            table.api().columns().every(function() {
+                var column = this;
+                if (column.index() !== 0 && column.index() !== 5) {
+                    var select = $(
+                            '<select class="form-control select2"><option value="">--</option></select>'
+                        ).appendTo($(table.api().table().container()).find(
+                            '.filter-row th:eq(' + column.index() + ')'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                    $(".filter-row").toggle();
+                    select.select2();
+                }
+            });
+        },
         ajax: "{{ route('chuyennganh.index') }}",
         columns: [{
                 data: 'id',
@@ -198,11 +248,20 @@ $(function() {
             }
         ],
     });
+    $("#filterToggle").on("click", function() {
+        $(".filter-row").toggle();
+    });
+    $('#filterToggle').trigger('click');
+    $('.reset-filter').on('click', function(e) {
+        e.preventDefault();
+        var selects = $('.filter-row select');
+        selects.val('').trigger('change');
+    });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị danh sách đã xóa') {
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('chuyennganh.getInactiveData') }}").load();
         } else {
@@ -211,14 +270,17 @@ $(function() {
         }
     });
     $('#createNewBtn').click(function() {
+        $('#modalForm').removeClass('was-validated');
         $('#savedata').val("create-Btn");
         $('#id').val('');
+        $('#id_khoa').val('').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm Chuyên Ngành");
         $('#ajaxModelexa').modal('show');
     });
 
     $('body').on('click', '.editBtn', function() {
+        $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('chuyennganh.index') }}" + '/' + id + '/edit', function(data) {
             $('#modelHeading').html("Sửa");
@@ -234,32 +296,36 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Đang gửi ...');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('chuyennganh.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Thành Công',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('chuyennganh.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Thành Công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

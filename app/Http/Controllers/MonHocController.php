@@ -77,6 +77,11 @@ class MonHocController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_mon_hoc' => 'required',
+            'id_bo_mon' => 'required',
+            'id_loai_mon_hoc' => 'required',
+        ]); 
         MonHoc::updateOrCreate(['id' => $request->id],
         ['ten_mon_hoc' => $request->ten_mon_hoc,
            'id_bo_mon' => $request->id_bo_mon,

@@ -74,6 +74,12 @@ class QuyetDinhController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ma_gv_ra_quyet_dinh' => 'required',
+            'ngay_ra_quyet_dinh' => 'required',
+            'noi_dung' => 'required',
+            'hieu_luc_bat_dau' => 'required',
+        ]);    
         QuyetDinh::updateOrCreate(['id' => $request->id],
         ['ma_gv_ra_quyet_dinh' => $request->ma_gv_ra_quyet_dinh,
            'ngay_ra_quyet_dinh' => $request->ngay_ra_quyet_dinh,

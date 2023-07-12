@@ -1,4 +1,4 @@
-@extends('admin.hocphis.layout')
+@extends('admin.layouts.layout')
 @section('content')
 <section>
     <div class="container">
@@ -52,18 +52,19 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="hoc_ky">Học kỳ</label>
-                            <input type="text" class="form-control" id="hoc_ky" name="hoc_ky"
-                                placeholder="Học kỳ" value="" required>
+                            <input type="number" class="form-control" id="hoc_ky" name="hoc_ky" placeholder="Học kỳ"
+                                value="" required>
                         </div>
 
                         <div class="form-group">
                             <label for="khoa_hoc">Khóa học</label>
-                            <input type="text" class="form-control" id="khoa_hoc" name="khoa_hoc"
+                            <input type="number" class="form-control" id="khoa_hoc" name="khoa_hoc"
                                 placeholder="Khóa học" value="" required>
                         </div>
                         <div class="form-group">
                             <label for="id_chuyen_nganh">Chuyên Ngành</label>
-                            <select name="id_chuyen_nganh" id="id_chuyen_nganh" class="form-control select2" style="width: 100%;">
+                            <select name="id_chuyen_nganh" id="id_chuyen_nganh" class="form-control select2"
+                                style="width: 100%;">
                                 @foreach ($chuyennganhs as $chuyennganh)
                                 <option value="{{ $chuyennganh->id }}">{{$chuyennganh->ten_chuyen_nganh}}</option>
                                 @endforeach
@@ -71,20 +72,23 @@
                         </div>
                         <div class="form-group">
                             <label for="so_tien">Số tiền</label>
-                            <input type="text" class="form-control" id="so_tien" name="so_tien"
-                                placeholder="Số tiền" value="" required>
+                            <input type="number" class="form-control" id="so_tien" name="so_tien" placeholder="Số tiền"
+                                value="" required>
                         </div>
                         <div class="cs-form">
                             <label for="ngay_bat_dau">Thời gian bắt đầu</label>
-                            <input type="datetime-local" class="form-control" name="ngay_bat_dau" id="ngay_bat_dau" required/>
+                            <input type="datetime-local" class="form-control" name="ngay_bat_dau" id="ngay_bat_dau"
+                                required />
                         </div>
                         <div class="cs-form">
                             <label for="ngay_ket_thuc">Thời gian kết thúc</label>
-                            <input type="datetime-local" class="form-control" name="ngay_ket_thuc" id="ngay_ket_thuc" required/>
+                            <input type="datetime-local" class="form-control" name="ngay_ket_thuc" id="ngay_ket_thuc"
+                                required />
                         </div>
                         <div class="form-group">
                             <label for="mo_dong_hoc_phi">Mở đóng học phí</label>
-                            <select name="mo_dong_hoc_phi" id="mo_dong_hoc_phi" class="form-control select2" style="width: 100%;">
+                            <select name="mo_dong_hoc_phi" id="mo_dong_hoc_phi" class="form-control select2"
+                                style="width: 100%;">
                                 <option value="1" selected>Mở</option>
                                 <option value="0">Đóng</option>
                             </select>
@@ -146,7 +150,7 @@ $(function() {
                 data: 'mo_dong_hoc_phi',
                 name: 'mo_dong_hoc_phi',
                 render: function(data, type, full, meta) {
-                    if (data==1) {
+                    if (data == 1) {
                         return '<span class="badge bg-success">Đang mở</span>';
                     } else {
                         return '<span class="badge bg-danger">Đã đóng</span>';
@@ -215,7 +219,7 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
+        if (buttonText == 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
             table.ajax.url("{{ route('hocphi.getInactiveData') }}").load();
         } else {

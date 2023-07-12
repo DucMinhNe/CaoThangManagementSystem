@@ -1,4 +1,4 @@
-@extends('admin.modangkymons.layout')
+@extends('admin.layouts.layout')
 @section('content')
 <section>
     <div class="container">
@@ -6,65 +6,73 @@
 
         <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
             {{-- <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm </a> --}}
-            <a class="btn btn-info" href="javascript:void(0)" id="btnMoDangKyMon"> Mở đăng ký môn theo khóa theo ngành </a>
+            <a class="btn btn-info" href="javascript:void(0)" id="btnMoDangKyMon"> Mở đăng ký môn theo khóa theo ngành
+            </a>
         </ul>
-        <div class="modal fade bd-example-modal-lg" id="formthemmodangkymon"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal fade bd-example-modal-lg" id="formthemmodangkymon" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
-              <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modelHeading-them">Mở đăng ký môn theo khóa theo ngành</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="modalFormThem" name="modalForm" class="form-horizontal">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div >
-                                        <input type="hidden" name="id" id="id">
-                                        <div class="form-group">
-                                            <label for="khoa_hoc">Khóa</label>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modelHeading-them">Mở đăng ký môn theo khóa theo ngành</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modalFormThem" name="modalForm" class="form-horizontal">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div>
+                                            <input type="hidden" name="id" id="id">
+                                            <div class="form-group">
+                                                <label for="khoa_hoc">Khóa</label>
 
-                                            <select name="khoa_hoc" id="khoa_hoc" class="form-control select2" style="width: 100%;">
-                                                @foreach ($khoahocs as $khoahoc)
-                                                <option value="{{ $khoahoc->khoa_hoc }}">{{$khoahoc->khoa_hoc}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="chuyen_nganh">Chuyên ngành</label>
-                                            <select name="chuyen_nganh" id="chuyen_nganh" class="form-control select2" style="width: 100%;">
-                                                @foreach ($chuyennganhs as $chuyennganh)
-                                                <option value="{{ $chuyennganh->id }}">{{$chuyennganh->ten_chuyen_nganh}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="chon_ngay_bat_dau">Ngày bắt đầu</label>
-                                            <input type="datetime-local" class="form-control" name="chon_ngay_bat_dau" id="chon_ngay_bat_dau" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="chon_ngay_ket_thuc">Ngày kết thúc</label>
-                                            <input type="datetime-local" class="form-control" name="chon_ngay_ket_thuc" id="chon_ngay_ket_thuc" />
-                                        </div>
+                                                <select name="khoa_hoc" id="khoa_hoc" class="form-control select2"
+                                                    style="width: 100%;">
+                                                    @foreach ($khoahocs as $khoahoc)
+                                                    <option value="{{ $khoahoc->khoa_hoc }}">{{$khoahoc->khoa_hoc}}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="chuyen_nganh">Chuyên ngành</label>
+                                                <select name="chuyen_nganh" id="chuyen_nganh"
+                                                    class="form-control select2" style="width: 100%;">
+                                                    @foreach ($chuyennganhs as $chuyennganh)
+                                                    <option value="{{ $chuyennganh->id }}">
+                                                        {{$chuyennganh->ten_chuyen_nganh}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="chon_ngay_bat_dau">Ngày bắt đầu</label>
+                                                <input type="datetime-local" class="form-control"
+                                                    name="chon_ngay_bat_dau" id="chon_ngay_bat_dau" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="chon_ngay_ket_thuc">Ngày kết thúc</label>
+                                                <input type="datetime-local" class="form-control"
+                                                    name="chon_ngay_ket_thuc" id="chon_ngay_ket_thuc" />
+                                            </div>
 
 
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-9" style="height:600px; overflow:scroll">
-                                    <div>
-                                       Danh sách môn
-                                    </div>
-                                    <table class="table table-success table-striped" id="table-mo-dang-ky-mon" >
-                                        <thead>
-                                            <th>ID</th>
-                                            <th>Tên môn học</th>
-                                            <th>Ngày bắt đầu</th>
-                                            <th>Ngày kết thúc</th>
-                                            <th>Xác nhận</th>
-                                        </thead>
-                                        <tbody>
-                                            {{-- <tr >
+                                    <div class="col-md-9" style="height:600px; overflow:scroll">
+                                        <div>
+                                            Danh sách môn
+                                        </div>
+                                        <table class="table table-success table-striped" id="table-mo-dang-ky-mon">
+                                            <thead>
+                                                <th>STT</th>
+                                                <th>Tên môn học</th>
+                                                <th>Ngày bắt đầu</th>
+                                                <th>Ngày kết thúc</th>
+                                                <th>Xác nhận</th>
+                                            </thead>
+                                            <tbody>
+                                                {{-- <tr >
                                                 <td>1</td>
                                                 <td>Môn a</td>
                                                 <td>
@@ -90,19 +98,19 @@
                                                     <input type="checkbox" class="chon_mo_lop" data-id-mon-hoc="2">
                                                 </td>
                                             </tr> --}}
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
-                        </div>
-                    </form>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
@@ -151,27 +159,27 @@
                                 <select name="id_mon_hoc" id="id_mon_hoc" class="form-control select2" style="width: 100%;">
                                     @foreach ($monhocs as $monhoc)
                                     <option value="{{ $monhoc->id }}">{{$monhoc->ten_mon_hoc}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="cs-form">
-                                <label for="mo_dang_ky">Thời gian bắt đầu</label>
-                                <input type="datetime-local" class="form-control" name="mo_dang_ky" id="mo_dang_ky" />
-                            </div>
-                            <div class="cs-form">
-                                <label for="dong_dang_ky">Thời gian kết thúc</label>
-                                <input type="datetime-local" class="form-control" name="dong_dang_ky" id="dong_dang_ky" />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+@endforeach
+</select>
+</div>
+<div class="cs-form">
+    <label for="mo_dang_ky">Thời gian bắt đầu</label>
+    <input type="datetime-local" class="form-control" name="mo_dang_ky" id="mo_dang_ky" />
+</div>
+<div class="cs-form">
+    <label for="dong_dang_ky">Thời gian kết thúc</label>
+    <input type="datetime-local" class="form-control" name="dong_dang_ky" id="dong_dang_ky" />
+</div>
+</div>
+</div>
+<!-- /.card-body -->
+<div class="card-footer">
+    <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
+</div>
+</form>
+</div>
+</div>
+</div>
 </div> --}}
 
 </body>
@@ -179,7 +187,7 @@
 <script type="text/javascript">
 $(function() {
     $('#chuyen_nganh').val('').trigger('change');
-    var $monhocbandau=null;
+    var $monhocbandau = null;
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -213,7 +221,7 @@ $(function() {
                 data: 'da_dong',
                 name: 'da_dong',
                 render: function(data, type, full, meta) {
-                    if (data==0) {
+                    if (data == 0) {
                         return '<span class="badge bg-success">Đang mở</span>';
                     } else {
                         return '<span class="badge bg-danger">Đã đóng</span>';
@@ -277,45 +285,59 @@ $(function() {
             }
         ],
     });
-    $('#khoa_hoc').change(function(){
-        var chuyennganh=$('#chuyen_nganh').val();
+    $('#khoa_hoc').change(function() {
+        var chuyennganh = $('#chuyen_nganh').val();
         // $('#table-mo-dang-ky-mon tbody').empty();
-        if(chuyennganh!=""){
+        if (chuyennganh != "") {
             $('#chuyen_nganh').val(chuyennganh).trigger('change');
         }
     })
-    $('#chon_ngay_bat_dau').change(function(){
-        var newDate=$('#chon_ngay_bat_dau').val()
+    $('#chon_ngay_bat_dau').change(function() {
+        var newDate = $('#chon_ngay_bat_dau').val()
         $('.ngay_mo_dang_ky_mon').val(newDate);
     })
-    $('#chon_ngay_ket_thuc').change(function(){
-        var newDate=$('#chon_ngay_ket_thuc').val()
+    $('#chon_ngay_ket_thuc').change(function() {
+        var newDate = $('#chon_ngay_ket_thuc').val()
         $('.ngay_dong_dang_ky_mon').val(newDate);
     })
-    $('#chuyen_nganh').change(function(){
-        var chuyennganh=$(this).val();
+    $('#chuyen_nganh').change(function() {
+        var chuyennganh = $(this).val();
         $('#table-mo-dang-ky-mon tbody').empty();
-        if(chuyennganh!=''){
+        if (chuyennganh != '') {
             $.ajax({
-                type:"GET",
-                url:'{{route('modangkymon.danhsachmonhocmodangky')}}',
-                data:{
-                    'khoa_hoc':$('#khoa_hoc').val(),
-                    'id_chuyen_nganh':chuyennganh
+                type: "GET",
+                url: "{{route('modangkymon.danhsachmonhocmodangky')}}",
+                data: {
+                    'khoa_hoc': $('#khoa_hoc').val(),
+                    'id_chuyen_nganh': chuyennganh
                 }
-            }).done(function(data){
+            }).done(function(data) {
                 //console.log(data);
-                var text="";
-                $monhocbandau=data;
-                var i=1;
+                var text = "";
+                $monhocbandau = data;
+                var i = 1;
                 data.forEach(mon_hoc => {
-                    if(mon_hoc.da_dong==0){
+                    if (mon_hoc.da_dong == 0) {
                         var mo_dang_ky
-                        text=text+'<tr><td>'+i+'</td><td>'+mon_hoc.mon_hoc.ten_mon_hoc+'</td><td><input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" value="'+mon_hoc.mo_dang_ky+'"/></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="'+mon_hoc.dong_dang_ky+'"/></td><td><input type="checkbox" checked class="chon_mo_lop" data-id-mon-hoc="'+mon_hoc.mon_hoc.id+'" ></td></tr>';
-                    }else{
-                        text=text+'<tr><td>'+i+'</td><td>'+mon_hoc.mon_hoc.ten_mon_hoc+'</td><td><input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" value="'+mon_hoc.mo_dang_ky+'"/></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="'+mon_hoc.dong_dang_ky+'"/></td><td><input type="checkbox" class="chon_mo_lop" data-id-mon-hoc="'+mon_hoc.mon_hoc.id+'" ></td></tr>';
+                        text = text + '<tr><td>' + i + '</td><td>' + mon_hoc.mon_hoc
+                            .ten_mon_hoc +
+                            '</td><td><input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" value="' +
+                            mon_hoc.mo_dang_ky +
+                            '"/></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="' +
+                            mon_hoc.dong_dang_ky +
+                            '"/></td><td><input type="checkbox" checked class="chon_mo_lop" data-id-mon-hoc="' +
+                            mon_hoc.mon_hoc.id + '" ></td></tr>';
+                    } else {
+                        text = text + '<tr><td>' + i + '</td><td>' + mon_hoc.mon_hoc
+                            .ten_mon_hoc +
+                            '</td><td><input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" value="' +
+                            mon_hoc.mo_dang_ky +
+                            '"/></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="' +
+                            mon_hoc.dong_dang_ky +
+                            '"/></td><td><input type="checkbox" class="chon_mo_lop" data-id-mon-hoc="' +
+                            mon_hoc.mon_hoc.id + '" ></td></tr>';
                     }
-                    i=i+1;
+                    i = i + 1;
 
                 });
                 $('#table-mo-dang-ky-mon tbody').append(text);
@@ -334,7 +356,7 @@ $(function() {
     //         table.ajax.url("{{ route('modangkymon.index') }}").load();
     //     }
     // });
-    $('#btnMoDangKyMon').click(function(){
+    $('#btnMoDangKyMon').click(function() {
         $('#id').val('');
         $('#modalForm').trigger("reset");
         $('#formthemmodangkymon').modal('show');
@@ -349,21 +371,21 @@ $(function() {
 
     $('body').on('click', '.editBtn', function() {
         var id = $(this).data('id');
-        var khoa_hoc=$(this).data('khoa-hoc');
+        var khoa_hoc = $(this).data('khoa-hoc');
         // $('#table-mo-dang-ky-mon tbody').empty();
         $('#chuyen_nganh').val("").trigger('change');
-        var chuyen_nganh=$(this).data('id-chuyen-nganh');
+        var chuyen_nganh = $(this).data('id-chuyen-nganh');
         $('#khoa_hoc').val(khoa_hoc).trigger('change');
         $('#chuyen_nganh').val(chuyen_nganh).trigger('change');
 
         // $('#modalForm').trigger("reset");
         $('#formthemmodangkymon').modal('show');
     });
-    $(document).on('change','.chon_mo_lop',function(){
+    $(document).on('change', '.chon_mo_lop', function() {
         var row = $(this).closest('tr');
         var ngaymodangky = row.find('.ngay_mo_dang_ky_mon').val();
         var ngaydongdangky = row.find('.ngay_dong_dang_ky_mon').val();
-        if(ngaydongdangky==""||ngaymodangky==""){
+        if (ngaydongdangky == "" || ngaymodangky == "") {
             $(this).prop('checked', false);
         }
 
@@ -371,44 +393,45 @@ $(function() {
     $('#savedata').click(function(e) {
         e.preventDefault();
 
-        var JsonArray={
-            'khoa_hoc':$('#khoa_hoc').val(),
-            'danh_sach_mon_hoc':[]
+        var JsonArray = {
+            'khoa_hoc': $('#khoa_hoc').val(),
+            'danh_sach_mon_hoc': []
         }
         $('#table-mo-dang-ky-mon tbody tr').each(function() {
             var checkbox = $(this).find('.chon_mo_lop');
 
             if (checkbox.is(':checked')) {
-                var idMonHoc=checkbox.attr('data-id-mon-hoc')
-                var ngaybatdau=$(this).find('.ngay_mo_dang_ky_mon').val();
-                var ngayketthuc=$(this).find('.ngay_dong_dang_ky_mon').val();
+                var idMonHoc = checkbox.attr('data-id-mon-hoc')
+                var ngaybatdau = $(this).find('.ngay_mo_dang_ky_mon').val();
+                var ngayketthuc = $(this).find('.ngay_dong_dang_ky_mon').val();
 
-                var JsonObject={
-                    'id_mon_hoc':idMonHoc,
-                    'ngay_bat_dau':ngaybatdau,
-                    'ngay_ket_thuc':ngayketthuc,
-                    'da_dong':0,
+                var JsonObject = {
+                    'id_mon_hoc': idMonHoc,
+                    'ngay_bat_dau': ngaybatdau,
+                    'ngay_ket_thuc': ngayketthuc,
+                    'da_dong': 0,
                 }
                 JsonArray.danh_sach_mon_hoc.push(JsonObject);
             }
 
         });
         for (let i = 0; i < $monhocbandau.length; i++) {
-            var kiemtra=true;
+            var kiemtra = true;
             for (let j = 0; j < JsonArray.danh_sach_mon_hoc.length; j++) {
-                if(JsonArray.danh_sach_mon_hoc[j].id_mon_hoc==$monhocbandau[i].mon_hoc.id){
-                    kiemtra=false;
+                if (JsonArray.danh_sach_mon_hoc[j].id_mon_hoc == $monhocbandau[i].mon_hoc.id) {
+                    kiemtra = false;
                     break;
                 }
                 //kiemtra=true;
             }
-            if(kiemtra==true&&$monhocbandau[i].mo_dang_ky!=null&&$monhocbandau[i].dong_dang_ky!=null){
+            if (kiemtra == true && $monhocbandau[i].mo_dang_ky != null && $monhocbandau[i]
+                .dong_dang_ky != null) {
 
-                var JsonObject={
-                    'id_mon_hoc':$monhocbandau[i].mon_hoc.id,
-                    'ngay_bat_dau':$monhocbandau[i].mo_dang_ky,
-                    'ngay_ket_thuc':$monhocbandau[i].dong_dang_ky,
-                    'da_dong':1,
+                var JsonObject = {
+                    'id_mon_hoc': $monhocbandau[i].mon_hoc.id,
+                    'ngay_bat_dau': $monhocbandau[i].mo_dang_ky,
+                    'ngay_ket_thuc': $monhocbandau[i].dong_dang_ky,
+                    'da_dong': 1,
                 }
                 JsonArray.danh_sach_mon_hoc.push(JsonObject);
             }
@@ -420,22 +443,22 @@ $(function() {
             confirmButtonText: 'Lưu',
             denyButtonText: `Không`,
         }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-            $.ajax({
-                url:"{{route('modangkymon.modangky')}}",
-                type:"POST",
-                data:JsonArray,
-                dataType:'json',
-            }).done(function(response){
-                if(response.status==1){
-                    Swal.fire('Lưu thành công!', '', 'success')
-                }
-                table.draw();
-            })
-        } else if (result.isDenied) {
-            Swal.fire('Đã hủy lưu', '', 'info')
-        }
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{route('modangkymon.modangky')}}",
+                    type: "POST",
+                    data: JsonArray,
+                    dataType: 'json',
+                }).done(function(response) {
+                    if (response.status == 1) {
+                        Swal.fire('Lưu thành công!', '', 'success')
+                    }
+                    table.draw();
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Đã hủy lưu', '', 'info')
+            }
         })
 
         console.log(JsonArray);

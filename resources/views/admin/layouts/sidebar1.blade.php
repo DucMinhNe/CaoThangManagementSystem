@@ -2,21 +2,22 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="/" class="brand-link">
-          <img src="{{ asset('dist/img/caothang.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-              style="opacity: .8">
+          <img src="{{ asset('dist/img/logo_caothang.jpg') }}" alt="AdminLTE Logo" class="brand-image img elevation-3"
+              style="opacity: .8 ;width: 25px; height: 45px">
           <span class="brand-text font-weight-light">Cao Thắng</span>
       </a>
 
       <!-- Sidebar -->
       <div class="sidebar">
           <!-- Sidebar user panel (optional) -->
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="user-panel mt-2 pb-2 mb-2 d-flex">
               <div class="image">
                   @php
                   $hinhAnhDaiDien = auth()->user()->hinh_anh_dai_dien ? asset('giangvien_img/' .
                   auth()->user()->hinh_anh_dai_dien) : asset('dist/img/user2-160x160.jpg');
                   @endphp
-                  <img src="{{ $hinhAnhDaiDien }}" class="img-circle elevation-2" alt="User Image">
+                  <img src="{{ $hinhAnhDaiDien }}" class="img-circle elevation-2" alt="User Image"
+                      style="opacity: .8 ;width: 31px; height: 38px">
                   <!-- <img src="{{ asset('giangvien_img/' . auth()->user()->hinh_anh_dai_dien) }}"
                       class="img-circle elevation-2" alt="User Image"> -->
                   <!-- <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image"> -->
@@ -249,34 +250,16 @@
                       </ul>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ url('/admin/loaiphong') }}"
-                          class="nav-link {{ Request::url() == url('/admin/loaiphong') ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
-                          <p>Loại Phòng</p>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="{{ url('/admin/phong') }}"
-                          class="nav-link {{ Request::url() == url('/admin/phong') ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
-                          <p>Phòng</p>
-                      </a>
-                  </li>
-
-                  <li class="nav-item">
                       <a href="{{ url('/admin/nhapdiem') }}"
                           class="nav-link {{ Request::url() == url('/admin/nhapdiem') ? 'active' : '' }}">
                           <i class="nav-icon fas fa-award"></i>
                           <p>Nhập Điểm</p>
                       </a>
                   </li>
-                  @php
-                  $isOpen = Request::is('admin/thongbao') || Request::is('admin/thongbao');
-                  @endphp
                   <li class="nav-item">
                       <a href="{{ url('/admin/thongbao') }}"
                           class="nav-link {{ Request::url() == url('/admin/thongbao') ? 'active' : '' }}">
-                          <i class="nav-icon fas fa-users"></i>
+                          <i class="nav-icon fas fa-bell"></i>
                           <p>Quản lý thông báo</p>
                       </a>
                   </li>
@@ -285,7 +268,7 @@
                   @endphp
                   <li class="nav-item {{ $isOpen ? 'menu-open' : '' }} ">
                       <a href="#" class="nav-link">
-                        <i class="fa-solid fa-pen-nib"></i>
+                          <i class="fa-solid fa-pen-nib"></i>
                           <p>
                               Quản Lý Đăng Ký Lớp Học Phần
                               <i class="right fas fa-angle-left"></i>
@@ -309,13 +292,14 @@
                               </a>
                           </li>
                       </ul>
-                  </li> 
+                  </li>
                   @php
-                  $isOpen = Request::is('admin/thoigianbieu') || Request::is('admin/thoikhoabieu');
+                  $isOpen = Request::is('admin/thoigianbieu') || Request::is('admin/thoikhoabieu') ||
+                  Request::is('admin/loaiphong')|| Request::is('admin/phong');
                   @endphp
                   <li class="nav-item {{ $isOpen ? 'menu-open' : '' }} ">
                       <a href="#" class="nav-link">
-                        <i class="fa-solid fa-calendar-days"></i>
+                          <i class="fa-solid fa-calendar-days"></i>
                           <p>
                               Quản Lý Thời Khóa Biểu
                               <i class="right fas fa-angle-left"></i>
@@ -338,6 +322,20 @@
                                   <p>Thời khóa biểu</p>
                               </a>
                           </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/loaiphong') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/loaiphong') ? 'active' : '' }}">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Loại Phòng</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/phong') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/phong') ? 'active' : '' }}">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Phòng</p>
+                              </a>
+                          </li>
                       </ul>
                   </li>
                   @php
@@ -345,7 +343,7 @@
                   @endphp
                   <li class="nav-item {{ $isOpen ? 'menu-open' : '' }} ">
                       <a href="#" class="nav-link">
-                        <i class="fa-solid fa-money-check"></i>
+                          <i class="fa-solid fa-money-check"></i>
                           <p>
                               Quản Lý Học Phí
                               <i class="right fas fa-angle-left"></i>

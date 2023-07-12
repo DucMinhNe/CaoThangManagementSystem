@@ -75,6 +75,10 @@ class CTQuyetDinhController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id_quyet_dinh' => 'required',
+            'ma_sv_nhan_quyet_dinh' => 'required',
+        ]);
         CTQuyetDinh::updateOrCreate(['id' => $request->id],
         ['id_quyet_dinh' => $request->id_quyet_dinh,
            'ma_sv_nhan_quyet_dinh' => $request->ma_sv_nhan_quyet_dinh,

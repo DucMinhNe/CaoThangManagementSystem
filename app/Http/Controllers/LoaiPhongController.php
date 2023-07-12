@@ -62,6 +62,9 @@ class LoaiPhongController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ten_loai_phong' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+        ]);
         LoaiPhong::updateOrCreate(['id' => $request->id],
         ['ten_loai_phong' => $request->ten_loai_phong]);        
         return response()->json(['success'=>'Lưu Thành Công.']);

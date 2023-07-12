@@ -83,6 +83,13 @@ class CTChuongTrinhDaoTaoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id_chuong_trinh_dao_tao' => 'required',
+            'hoc_ky' => 'required|numeric',
+            'id_mon_hoc' => 'required',
+            'so_tin_chi' => 'required|numeric',
+            'so_tiet' => 'required|numeric',
+        ]);    
         CTChuongTrinhDaoTao::updateOrCreate(['id' => $request->id],
         ['id_chuong_trinh_dao_tao' => $request->id_chuong_trinh_dao_tao,
            'hoc_ky' => $request->hoc_ky,
