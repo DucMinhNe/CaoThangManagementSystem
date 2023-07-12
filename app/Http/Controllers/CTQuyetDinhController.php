@@ -50,8 +50,46 @@ class CTQuyetDinhController extends Controller
                 ->addColumn('action', function ($row) {
         
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
 
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true); 
+    }
+    public function getChiTietQuyetDinhByQuyetDinh($id_quyet_dinh)
+    {
+        $data = CTQuyetDinh::leftJoin('quyet_dinhs', 'ct_quyet_dinhs.id_quyet_dinh', '=', 'quyet_dinhs.id')
+            ->leftJoin('sinh_viens', 'ct_quyet_dinhs.ma_sv_nhan_quyet_dinh', '=', 'sinh_viens.ma_sv')
+            ->leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
+            ->select('ct_quyet_dinhs.*', 'quyet_dinhs.noi_dung', 'sinh_viens.ten_sinh_vien','lop_hocs.ten_lop_hoc')
+            ->where('quyet_dinhs.id', $id_quyet_dinh)
+            ->where('ct_quyet_dinhs.trang_thai', 1)
+            ->get();        
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteCTQuyetDinhBtn"><i class="fa-solid fa-trash"></i></a>';
+                    // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteCTQuyetDinhBtn"><i class="fa-solid fa-trash"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true); 
+    }
+    public function getChiTietQuyetDinhByQuyetDinhDaXoa($id_quyet_dinh)
+    {
+        $data = CTQuyetDinh::leftJoin('quyet_dinhs', 'ct_quyet_dinhs.id_quyet_dinh', '=', 'quyet_dinhs.id')
+            ->leftJoin('sinh_viens', 'ct_quyet_dinhs.ma_sv_nhan_quyet_dinh', '=', 'sinh_viens.ma_sv')
+            ->leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
+            ->select('ct_quyet_dinhs.*', 'quyet_dinhs.noi_dung', 'sinh_viens.ten_sinh_vien','lop_hocs.ten_lop_hoc')
+            ->where('quyet_dinhs.id', $id_quyet_dinh)
+            ->where('ct_quyet_dinhs.trang_thai', 0)
+            ->get();        
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreCTQuyetDinhBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+                    // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteCTQuyetDinhBtn"><i class="fa-solid fa-trash"></i></a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])

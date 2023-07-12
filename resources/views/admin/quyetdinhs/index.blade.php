@@ -135,7 +135,62 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="ctquyetdinhModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ctquyetdinhmodelHeading"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="ctquyetdinhForm" name="ctquyetdinhForm" class="form-horizontal">
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="id_quyet_dinh" id="id_quyet_dinh">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="ma_sv_nhan_quyet_dinh">Sinh Viên</label>
+                            <select name="ma_sv_nhan_quyet_dinh" id="ma_sv_nhan_quyet_dinh" class="form-control select2"
+                                style="width: 100%;" required>
+                                <option value="">-- Chọn Sinh Viên --</option>
+                                @foreach ($sinhviens as $sinhvien)
+                                @if ($sinhvien->trang_thai == 1)
+                                <option value="{{ $sinhvien->ma_sv }}">{{ $sinhvien->ten_sinh_vien }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn sinh viên.
+                            </div>
+                        </div>
+                        <button class="btn btn-success" type="button" id="themCTQuyetDinhBtn">
+                            <i class="fa-solid fa-circle-plus"></i> Thêm
+                        </button>
+                        <button id="xemCTQuyetDinhDaXoa" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+                        <table id="example2" class="table table-bordered table-striped ctquyetdinh-table"
+                            style="width:430px;">
+                            <thead>
+                                <tr>
+                                    <th width="30px">STT</th>
+                                    <th>Quyết định</th>
+                                    <th width="200px">Sinh Viên</th>
+                                    <th width="200px">Lớp Học</th>
+                                    <th width="72px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button> -->
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="{{ asset('plugins/jquery/jquery.js') }}"></script>
 <script type="text/javascript">
@@ -179,7 +234,7 @@ $(function() {
                 name: 'id',
                 render: function(data, type, full, meta) {
                     var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
-                        data + '" data-original-title="Edit" class="editBtn">' + data +
+                        data + '" data-original-title="Edit" class="ctQuyetDinhBtn">' + data +
                         '</a>';
                     return btn;
                 }
@@ -261,6 +316,45 @@ $(function() {
             }
         ],
     });
+    var ctquyetdinhtable = $('.ctquyetdinh-table').DataTable({
+        processing: true,
+        serverSide: true,
+        searching: false,
+        info: false,
+        autoWidth: false,
+        paging: false,
+        ajax: "{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh', '') }}/1",
+        columns: [{
+                data: 'id',
+                name: 'id',
+                render: function(data, type, full, meta) {
+                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
+                        data + '" data-original-title="Edit" class="editCTQuyetDinhBtn">' +
+                        data +
+                        '</a>';
+                    return btn;
+                }
+            },
+            {
+                data: 'id_quyet_dinh',
+                name: 'id_quyet_dinh'
+            },
+            {
+                data: 'ten_sinh_vien',
+                name: 'ten_sinh_vien'
+            },
+            {
+                data: 'ten_lop_hoc',
+                name: 'ten_lop_hoc'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            },
+        ],
+    });
     $("#filterToggle").on("click", function() {
         $(".filter-row").toggle();
     });
@@ -279,6 +373,20 @@ $(function() {
         } else {
             button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('quyetdinh.index') }}").load();
+        }
+    });
+    $('#xemCTQuyetDinhDaXoa').click(function() {
+        var button = $(this);
+        var idqd = $('#ctquyetdinhForm input#id_quyet_dinh').val();
+        var buttonText = button.text();
+        if (buttonText == 'Hiển thị danh sách đã xóa') {
+            button.text('Hiển thị danh sách chính');
+            ctquyetdinhtable.ajax.url("{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinhDaXoa', '') }}/" + idqd)
+            .load();
+        } else {
+            button.text('Hiển thị danh sách đã xóa');
+            ctquyetdinhtable.ajax.url("{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh', '') }}/" + idqd)
+            .load();
         }
     });
     $('#createNewBtn').click(function() {
@@ -305,6 +413,40 @@ $(function() {
             $('#hieu_luc_bat_dau').val(data.hieu_luc_bat_dau);
             $('#hieu_luc_ket_thuc').val(data.hieu_luc_ket_thuc);
         })
+    });
+    $('body').on('click', '.ctQuyetDinhBtn', function() {
+        var id = $(this).data('id');
+        $('#id_quyet_dinh').val(id);
+        $('#ctquyetdinhModal').modal('show');
+        ctquyetdinhtable.ajax.url("{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh', '') }}/" + id)
+            .load();
+    });
+    $('#themCTQuyetDinhBtn').click(function(e) {
+        e.preventDefault();
+        $(this).html('Đang gửi ...');
+        $.ajax({
+            data: $('#ctquyetdinhForm').serialize(),
+            url: "{{ route('ctquyetdinh.store') }}",
+            type: "POST",
+            dataType: 'json',
+            success: function(data) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Thành Công',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                $('#themCTQuyetDinhBtn').html('Thêm');
+                ctquyetdinhtable.draw();
+            },
+            error: function(data) {
+                $('#themCTQuyetDinhBtn').html('Thêm');
+                console.log('Error:', data);
+            }
+        });
     });
     $('#savedata').click(function(e) {
         e.preventDefault();
@@ -366,6 +508,74 @@ $(function() {
                             timer: 1000
                         })
                         table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
+    });
+    $('body').on('click', '.deleteCTQuyetDinhBtn', function() {
+        var id = $(this).data("id");
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('ctquyetdinh.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        ctquyetdinhtable.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
+    });
+    $('body').on('click', '.restoreCTQuyetDinhBtn', function() {
+        var id = $(this).data("id");
+        Swal.fire({
+            title: 'Bạn Có Muốn Khôi Phục',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('ctquyetdinh.restore', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Khôi Phục Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        ctquyetdinhtable.draw();
                     },
                     error: function(data) {
                         console.log('Error:', data);

@@ -77,7 +77,7 @@ class ChuyenNganhController extends Controller
     {
         $request->validate([
             'ten_chuyen_nganh' => ['required', 'regex:/^[\p{L}\s]+$/u'],
-            'ma_chu' => ['required', 'regex:/^[\p{Lu}\s]+$/u'],
+            'ma_chu' => 'required',
             'ma_so' => 'required|numeric|digits:2',
             'id_khoa' => 'required'
         ]);

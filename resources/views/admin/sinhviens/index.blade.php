@@ -490,7 +490,7 @@ $(function() {
     });
     var table = $('.data-table').DataTable({
         processing: true,
-        serverSide: true,
+        serverSide: false,
         scrollX: true,
         orderCellsTop: true,
         initComplete: function() {

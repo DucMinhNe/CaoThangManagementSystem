@@ -97,7 +97,7 @@
                                         data-toggle="tab">Thông
                                         Tin Cá Nhân</a>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="#doimatkhau" data-toggle="tab">Đỗi Mật
+                                <li class="nav-item"><a class="nav-link" href="#doimatkhau" data-toggle="tab">Đổi Mật
                                         Khẩu</a>
                                 </li>
                                 <li class="nav-item"><a class="nav-link" href="#cacmongiangday" data-toggle="tab">Các

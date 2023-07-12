@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\CTLopHocPhan;
 use App\Models\LopHocPhan;
 use App\Models\SinhVien;
+use App\Models\Khoa;
+use App\Models\ChuyenNganh;
+use App\Models\LopHoc;
 use DataTables;
 class CTLopHocPhanController extends Controller
 {
@@ -36,7 +39,10 @@ class CTLopHocPhanController extends Controller
         }
         $lophocphans = LopHocPhan::all();
         $sinhviens = SinhVien::all();
-        return view('admin.ctlophocphans.index', compact('lophocphans','sinhviens'));   
+        $khoas = Khoa::all();
+        $chuyennganhs = ChuyenNganh::all();
+        $lophocs = LopHoc::all();
+        return view('admin.ctlophocphans.index', compact('lophocphans','sinhviens','khoas','chuyennganhs','lophocs',));   
     }
     public function getInactiveData()
     {
@@ -51,6 +57,26 @@ class CTLopHocPhanController extends Controller
     
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
                 $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+    
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    public function getCTLopHocPhanByIdLopHocPhan($id_lop_hoc_phan)
+    {
+        $data = CTLopHocPhan::leftJoin('lop_hoc_phans', 'ct_lop_hoc_phans.id_lop_hoc_phan', '=', 'lop_hoc_phans.id')
+        ->leftJoin('sinh_viens', 'ct_lop_hoc_phans.ma_sv', '=', 'sinh_viens.ma_sv')
+        ->select('ct_lop_hoc_phans.*', 'lop_hoc_phans.ten_lop_hoc_phan', 'sinh_viens.ten_sinh_vien')
+        ->where('ct_lop_hoc_phans.id_lop_hoc_phan', $id_lop_hoc_phan)
+        ->where('ct_lop_hoc_phans.trang_thai', 1)
+        ->get();        
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+    
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBtn"><i class="fa-solid fa-trash"></i></a>';
     
                 return $btn;
             })

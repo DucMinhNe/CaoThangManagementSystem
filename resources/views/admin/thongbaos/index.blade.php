@@ -122,7 +122,8 @@
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
-                            <a class="btn btn-primary" style="color:white">Huỷ</a>
+                            <button type="button" class="btn btn-danger" id="huyBtn"><i
+                                class="fa-solid fa-xmark"></i> Hủy</button>
                         </div>
                     </form>
                 </div>
@@ -328,6 +329,9 @@
                     button.text('Hiển thị danh sách đã xóa');
                     table.ajax.url("{{ route('thongbao.index') }}").load();
                 }
+            });
+            $('#huyBtn').click(function() {
+                $('#ajaxModelexa').modal('hide');
             });
             $('#createNewBtn').click(function() {
                 $('#loai_lop_hoc').prop('disabled',false);

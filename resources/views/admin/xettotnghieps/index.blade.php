@@ -249,6 +249,96 @@ $(function() {
             $("#id_lop_hoc_filter").append(option);
         });
     });
+    $("#id_khoa_filter").change(function() {
+        var selectedKhoaId = $(this).val();
+        if (selectedKhoaId != 0) {
+            $.ajax({
+                url: "{{ route('sinhvien.getChuyenNganhByKhoa', '') }}/" + selectedKhoaId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Xóa các option hiện tại trong dropdown chuyên ngành
+                    $("#id_chuyen_nganh_filter").empty();
+                    $("#id_chuyen_nganh_filter").append(
+                        '<option value="0">-- Chọn chuyên ngành --</option>');
+                    // Thêm các option mới từ response
+                    $.each(response, function(key, value) {
+                        $("#id_chuyen_nganh_filter").append('<option value="' +
+                            value.id + '">' + value.ten_chuyen_nganh +
+                            '</option>');
+                    });
+                }
+            });
+            $.ajax({
+                url: "{{ route('sinhvien.getLopByKhoa', '') }}/" + selectedKhoaId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Xóa các option hiện tại trong dropdown lớp học
+                    $("#id_lop_hoc_filter").empty();
+                    $("#id_lop_hoc_filter").append(
+                        '<option value="0">-- Chọn lớp --</option>');
+                    // Thêm các option mới từ response
+                    $.each(response, function(key, value) {
+                        $("#id_lop_hoc_filter").append('<option value="' +
+                            value.id + '">' + value.ten_lop_hoc +
+                            '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#id_chuyen_nganh_filter").empty();
+            var chuyennganhs = <?php echo json_encode($chuyennganhs); ?>;
+            $("#id_chuyen_nganh_filter").append('<option value="0">-- Chọn chuyên ngành --</option>');
+            $.each(chuyennganhs, function(index, chuyennganh) {
+                var option = '<option value="' + chuyennganh.id + '">' + chuyennganh
+                    .ten_chuyen_nganh +
+                    '</option>';
+                $("#id_chuyen_nganh_filter").append(option);
+            });
+            $("#id_lop_hoc_filter").empty();
+            var lophocs = <?php echo json_encode($lophocs); ?>;
+            $("#id_lop_hoc_filter").append('<option value="0">-- Chọn lớp --</option>');
+            $.each(lophocs, function(index, lophoc) {
+                var option = '<option value="' + lophoc.id + '">' + lophoc.ten_lop_hoc +
+                    '</option>';
+                $("#id_lop_hoc_filter").append(option);
+            });
+        }
+    });
+
+    // Lấy danh sách lớp học khi chọn chuyên ngành
+    $("#id_chuyen_nganh_filter").change(function() {
+        var selectedChuyenNganhId = $(this).val();
+
+        if (selectedChuyenNganhId != 0) {
+            $.ajax({
+                url: "{{ route('sinhvien.getLopByChuyenNganh', '') }}/" + selectedChuyenNganhId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Xóa các option hiện tại trong dropdown lớp học
+                    $("#id_lop_hoc_filter").empty();
+                    $("#id_lop_hoc_filter").append(
+                        '<option value="0">-- Chọn lớp --</option>');
+                    // Thêm các option mới từ response
+                    $.each(response, function(key, value) {
+                        $("#id_lop_hoc_filter").append('<option value="' + value
+                            .id + '">' + value.ten_lop_hoc + '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#id_lop_hoc_filter").empty();
+            var lophocs = <?php echo json_encode($lophocs); ?>;
+            $("#id_lop_hoc_filter").append('<option value="0">-- Chọn lớp --</option>');
+            $.each(lophocs, function(index, lophoc) {
+                var option = '<option value="' + lophoc.id + '">' + lophoc.ten_lop_hoc +
+                    '</option>';
+                $("#id_lop_hoc_filter").append(option);
+            });
+        }
+    });
 });
 </script>
 @endsection

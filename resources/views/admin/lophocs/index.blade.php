@@ -75,7 +75,7 @@
                         <div class="form-group">
                             <label for="ten_lop_hoc">Tên Lớp Học</label>
                             <input type="text" class="form-control" id="ten_lop_hoc" name="ten_lop_hoc"
-                                placeholder="Tên Lớp Học" value="" required pattern="^[\p{Lu}\d]+$">
+                                placeholder="Tên Lớp Học" value="" required pattern="^[a-zA-Z\d\p{L}\p{N}\s]+$">
                             <div class="invalid-feedback">
                                 Vui lòng nhập chữ cái ,số và khoảng trắng.
                             </div>

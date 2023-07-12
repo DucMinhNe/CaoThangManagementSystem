@@ -15,7 +15,35 @@
 </style>
 <section>
     <div class="container">
-        <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
+        <div class="form-group row mt-0">
+            <label for="id_lop_hoc_phan_filter" class="col-sm-2 col-form-label">Lớp Học Phần</label>
+            <div class="col-sm-3">
+                <select name="id_lop_hoc_phan_filter" id="id_lop_hoc_phan_filter" class="form-control select2"
+                    style="width: 100%;" required>
+                    <option value="">-- Chọn lớp học phần --</option>
+                    @foreach ($lophocphans as $lophocphan)
+                    @if ($lophocphan->trang_thai == 1)
+                    <option value="{{ $lophocphan->id }}">{{ $lophocphan->ten_lop_hoc_phan }}</option>
+                    @endif
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button id="xemBtn" class="btn btn-info" type="button">Xem</button>
+                <button id="datLaiBtn" class="btn btn-info" type="button">Đặt lại</button>
+            </div>
+            <ul class="nav nav-pills nav-pills-bg-soft ml-auto mb-3">
+                <li class="nav-item mr-1">
+                    <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-success" type="button" id="createNewBtn">
+                        <i class="fa-solid fa-circle-plus"></i> Thêm
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!-- <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4">
             <li class="nav-item mr-1">
                 <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
             </li>
@@ -24,7 +52,7 @@
                     <i class="fa-solid fa-circle-plus"></i> Thêm
                 </button>
             </li>
-        </ul>
+        </ul> -->
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
@@ -325,6 +353,16 @@ $(function() {
         e.preventDefault();
         var selects = $('.filter-row select');
         selects.val('').trigger('change');
+    });
+    $('#xemBtn').click(function() {
+        var selectedLopHocPhanId = $("#id_lop_hoc_phan_filter").val();
+        if (selectedLopHocPhanId != 0) {
+            table.ajax.url("{{ route('ctlophocphan.getCTLopHocPhanByIdLopHocPhan', '') }}/" +
+                    selectedLopHocPhanId)
+                .load();
+        } else {
+            table.ajax.url("{{ route('ctlophocphan.index') }}").load();
+        }
     });
     $('#showInactiveBtn').click(function() {
         var button = $(this);

@@ -142,6 +142,7 @@ td {
                 </tfoot>
             </table>
         </div>
+    </div>
 </section>
 <div class="modal fade" id="ajaxModelexa" aria-hidden="true">
     <div class="modal-dialog modal-xl">

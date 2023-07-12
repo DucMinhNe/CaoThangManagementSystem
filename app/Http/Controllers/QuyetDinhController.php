@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\QuyetDinh;
 use App\Models\GiangVien;
+use App\Models\SinhVien;
 use DataTables;
 class QuyetDinhController extends Controller
 {
@@ -33,9 +34,9 @@ class QuyetDinhController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        
+        $sinhviens = SinhVien::all();
         $giangviens = GiangVien::all();
-        return view('admin.quyetdinhs.index', compact('giangviens'));    
+        return view('admin.quyetdinhs.index', compact('giangviens','sinhviens'));   
     }
     public function getInactiveData()
     {

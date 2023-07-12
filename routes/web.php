@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/lophocphan/restore/{id}', [LopHocPhanController::class, 'restore'])->name('lophocphan.restore');
         Route::resource('lophocphan', LopHocPhanController::class);
 
+        Route::get('/ctlophocphan/getCTLopHocPhanByIdLopHocPhan/{id_lop_hoc_phan}', [CTLopHocPhanController::class, 'getCTLopHocPhanByIdLopHocPhan'])->name('ctlophocphan.getCTLopHocPhanByIdLopHocPhan');
         Route::get('/ctlophocphan/getInactiveData', [CTLopHocPhanController::class, 'getInactiveData'])->name('ctlophocphan.getInactiveData');
         Route::get('/ctlophocphan/restore/{id}', [CTLopHocPhanController::class, 'restore'])->name('ctlophocphan.restore');
         Route::resource('ctlophocphan', CTLopHocPhanController::class);
@@ -134,6 +135,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/quyetdinh/restore/{id}', [QuyetDinhController::class, 'restore'])->name('quyetdinh.restore');
         Route::resource('quyetdinh', QuyetDinhController::class);
 
+        Route::get('/ctquyetdinh/getChiTietQuyetDinhByQuyetDinhDaXoa/{id_quyet_dinh}', [CTQuyetDinhController::class, 'getChiTietQuyetDinhByQuyetDinhDaXoa'])->name('ctquyetdinh.getChiTietQuyetDinhByQuyetDinhDaXoa');
+        Route::get('/ctquyetdinh/getChiTietQuyetDinhByQuyetDinh/{id_quyet_dinh}', [CTQuyetDinhController::class, 'getChiTietQuyetDinhByQuyetDinh'])->name('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh');
         Route::get('/ctquyetdinh/getInactiveData', [CTQuyetDinhController::class, 'getInactiveData'])->name('ctquyetdinh.getInactiveData');
         Route::get('/ctquyetdinh/restore/{id}', [CTQuyetDinhController::class, 'restore'])->name('ctquyetdinh.restore');
         Route::resource('ctquyetdinh', CTQuyetDinhController::class);

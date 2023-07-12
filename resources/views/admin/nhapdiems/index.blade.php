@@ -361,12 +361,15 @@ $(function() {
             var tongKet2 = chuyenCan * 0.1 + tbkt * 0.4 + thi2 * 0.5;
             var tongKet1Rounded = Math.round(tongKet1 * 10) / 10; // Làm tròn với 1 chữ số sau dấu thập phân
             var tongKet2Rounded = Math.round(tongKet2 * 10) / 10; // Làm tròn với 1 chữ số sau dấu thập phân
-            // console.log(id);
+
             $('[data-column="tong_ket_1"][data-id="' + id + '"]').text(tongKet1Rounded.toFixed(1));
-            if (thi2 !== null)
+            if (thi2 !== null) {
                 $('[data-column="tong_ket_2"][data-id="' + id + '"]').text(tongKet2Rounded.toFixed(1));
-            else
+                var valTongKet2 = tongKet2Rounded.toFixed(1)
+            } else {
                 $('[data-column="tong_ket_2"][data-id="' + id + '"]').text('');
+                var valTongKet2 = null
+            }
         }
 
         // Nếu giá trị nhập liệu hợp lệ, tiếp tục gửi yêu cầu AJAX để lưu giá trị
@@ -404,7 +407,7 @@ $(function() {
                         _token: "{{ csrf_token() }}",
                         id: id,
                         column: "tong_ket_2",
-                        value: tongKet2Rounded.toFixed(1)
+                        value: valTongKet2
                     },
                     success: function(response) {
                         console.log(response);

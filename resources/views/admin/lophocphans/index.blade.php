@@ -473,6 +473,8 @@ $(function() {
                     showConfirmButton: false,
                     timer: 1500
                 })
+                $('#modalForm').trigger("reset");
+                $('#saoChepModal').modal('hide');
                 console.log(response.success);
             },
             error: function(xhr, status, error) {

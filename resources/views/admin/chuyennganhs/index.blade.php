@@ -86,7 +86,7 @@
                         <div class="form-group">
                             <label for="ten_khoa">Mã Chữ</label>
                             <input type="text" class="form-control" id="ma_chu" name="ma_chu" placeholder="Mã Chữ"
-                                value="" required pattern="^[\p{Lu}\s]+$">
+                                value="" required>
                             <div class="invalid-feedback">
                                 Vui lòng nhập chữ.
                             </div>

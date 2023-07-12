@@ -63,9 +63,7 @@ class KhoaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'ten_khoa' => ['required', 'regex:/^[\p{L}\s]+$/u'],
-        ]);
+      
         Khoa::updateOrCreate(['id' => $request->id],
                 ['ten_khoa' => $request->ten_khoa]);        
    
