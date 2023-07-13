@@ -11,7 +11,7 @@
                 <table id="example1" class="table table-bordered table-striped data-table">
                     <thead>
                         <tr>
-                            <th>STT</th>
+                            <th>No</th>
                             <th>Tên giảng viên</th>
                             <th>Tên lớp học</th>
                             <th>Tên lớp học phần</th>
@@ -23,7 +23,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>STT</th>
+                            <th>No</th>
                             <th>Tên giảng viên</th>
                             <th>Tên lớp học</th>
                             <th>Tên lớp học phần</th>
@@ -39,6 +39,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modelHeading"></h4>
+                    <button type="button" class="close" id="closeBtn">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                 </div>
                 <div class="modal-body">
                     <form id="modalForm" name="modalForm" class="form-horizontal" enctype="multipart/form-data"
@@ -122,8 +125,7 @@
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
-                            <button type="button" class="btn btn-danger" id="huyBtn"><i
-                                class="fa-solid fa-xmark"></i> Hủy</button>
+                            <a class="btn btn-primary" style="color:white">Huỷ</a>
                         </div>
                     </form>
                 </div>
@@ -227,6 +229,10 @@
                     }
                 ],
             });
+            $('#closeBtn').click(function(){
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                })
             $('#loai_lop_hoc').change(function() {
                 $loai_lop_hoc = $('#loai_lop_hoc').val();
                 $text = "";
@@ -329,9 +335,6 @@
                     button.text('Hiển thị danh sách đã xóa');
                     table.ajax.url("{{ route('thongbao.index') }}").load();
                 }
-            });
-            $('#huyBtn').click(function() {
-                $('#ajaxModelexa').modal('hide');
             });
             $('#createNewBtn').click(function() {
                 $('#loai_lop_hoc').prop('disabled',false);

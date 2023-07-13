@@ -127,12 +127,7 @@ class APISinhVienController extends Controller
                 $data[]=array(
                     'ten_mon_hoc'=>$monHoc->ten_mon_hoc,
                     'hoc_ky'=>$item->hoc_ky,
-                    'diem'=>$temp->tong_ket_1!=null?
-                  				$temp->tong_ket_2!=null?
-                  					$temp->tong_ket_1>$temp->tong_ket_2?
-                  						$temp->tong_ket_1:$temp->tong_ket_2
-                  				:$temp->tong_ket_1
-                  				:-1
+                    'diem'=>$temp->tong_ket_1!=null?$temp->tong_ket_1:$temp->tong_ket_2
                 );
             }else{
                 if($chiTietLopHocPhans->count()==0){
@@ -147,13 +142,7 @@ class APISinhVienController extends Controller
                     $data[]=array(
                     'ten_mon_hoc'=>$monHoc->ten_mon_hoc,
                     'hoc_ky'=>$item->hoc_ky,
-                    'diem'=>$chiTietLopHocPhans->first()->tong_ket_1!=null?
-                  				$chiTietLopHocPhans->first()->tong_ket_2!=null?
-                  					$chiTietLopHocPhans->first()->tong_ket_1 > $chiTietLopHocPhans->first()->tong_ket_2?
-                  						$chiTietLopHocPhans->first()->tong_ket_1:$chiTietLopHocPhans->first()->tong_ket_2
-                  				:$chiTietLopHocPhans->first()->tong_ket_1
-                  				:-1
-                      //$chiTietLopHocPhans->first()->tong_ket_1!=null?$chiTietLopHocPhans->first()->tong_ket_1:-1,
+                    'diem'=>$chiTietLopHocPhans->first()->tong_ket_1!=null?$chiTietLopHocPhans->first()->tong_ket_1:$chiTietLopHocPhans->first()->tong_ket_2
                     );
                 }
 
@@ -203,11 +192,11 @@ class APISinhVienController extends Controller
                         'ten_mon_hoc'=>$monHoc->ten_mon_hoc,
                         'hoc_ky'=>$item->hoc_ky,
                         'diem'=>$temp->tong_ket_1!=null?
-                  				$temp->tong_ket_2!=null?
-                  					$temp->tong_ket_1>$temp->tong_ket_2?
-                  						$temp->tong_ket_1:$temp->tong_ket_2
-                  				:$temp->tong_ket_1
-                  				:-1
+                                $temp->tong_ket_2!=null?
+                                    $temp->tong_ket_1>$temp->tong_ket_2?
+                                        $temp->tong_ket_1:$temp->tong_ket_2
+                                :$temp->tong_ket_1
+                                :-1
                     );
                 }else{
                     if($chiTietLopHocPhans->count()==0){
@@ -215,7 +204,6 @@ class APISinhVienController extends Controller
                             'ten_mon_hoc'=>$monHoc->ten_mon_hoc,
                             'hoc_ky'=>$item->hoc_ky,
                             'diem'=>-1
-
                         );
                     }else{
                         //dd($chiTietLopHocPhans->first()->tong_ket_1);
@@ -223,11 +211,11 @@ class APISinhVienController extends Controller
                         'ten_mon_hoc'=>$monHoc->ten_mon_hoc,
                         'hoc_ky'=>$item->hoc_ky,
                         'diem'=>$chiTietLopHocPhans->first()->tong_ket_1!=null?
-                  				$chiTietLopHocPhans->first()->tong_ket_2!=null?
-                  					$chiTietLopHocPhans->first()->tong_ket_1 > $chiTietLopHocPhans->first()->tong_ket_2?
-                  						$chiTietLopHocPhans->first()->tong_ket_1:$chiTietLopHocPhans->first()->tong_ket_2
-                  				:$chiTietLopHocPhans->first()->tong_ket_1
-                  				:-1,
+                                $chiTietLopHocPhans->first()->tong_ket_2!=null?
+                                    $chiTietLopHocPhans->first()->tong_ket_1 > $chiTietLopHocPhans->first()->tong_ket_2?
+                                        $chiTietLopHocPhans->first()->tong_ket_1:$chiTietLopHocPhans->first()->tong_ket_2
+                                :$chiTietLopHocPhans->first()->tong_ket_1
+                                :-1,
                         );
                     }
 

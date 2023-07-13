@@ -11,7 +11,7 @@
             <table id="example1" class="table table-bordered table-striped data-table">
                 <thead>
                     <tr>
-                        <th>STT</th>
+                        <th>No</th>
                         <th>Số thứ tự</th>
                         <th>Thời gian bắt đầu</th>
                         <th>Thời gian kết thúc</th>
@@ -22,7 +22,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>STT</th>
+                        <th>No</th>
                         <th>Số thứ tự</th>
                         <th>Thời gian bắt đầu</th>
                         <th>Thời gian kết thúc</th>
@@ -37,6 +37,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modelHeading"></h4>
+                <button type="button" class="close" id="closeBtn">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
             <div class="modal-body">
                 <form id="modalForm" name="modalForm" class="form-horizontal">
@@ -44,17 +47,24 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="stt"> Số thứ tự</label>
-                            <input type="text" class="form-control" id="stt" name="stt" placeholder="Số thứ tự" value=""
-                                required>
+                            <input type="text" class="form-control" id="stt" name="stt"
+                                placeholder="Số thứ tự" value="" required>
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập số thứ tự.
+                                </div>
                             <div class="cs-form">
                                 <label for="thoi_gian_bat_dau">Thời gian bắt đầu</label>
-                                <input type="time" class="form-control" name="thoi_gian_bat_dau" id="thoi_gian_bat_dau"
-                                    required />
+                                <input type="time" class="form-control" name="thoi_gian_bat_dau" id="thoi_gian_bat_dau" required/>
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập thời gian bắt đầu.
+                                </div>
                             </div>
                             <div class="cs-form">
                                 <label for="thoi_gian_ket_thuc">Thời gian kết thúc</label>
-                                <input type="time" class="form-control" name="thoi_gian_ket_thuc"
-                                    id="thoi_gian_ket_thuc" required />
+                                <input type="time" class="form-control" name="thoi_gian_ket_thuc" id="thoi_gian_ket_thuc" required/>
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập thời gian kết thúc.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -155,12 +165,15 @@ $(function() {
             }
         ],
     });
-
+    $('#closeBtn').click(function(){
+        $('#modalForm').trigger("reset");
+        $('#ajaxModelexa').modal('hide');
+    })
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
+        if (buttonText == 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
             table.ajax.url("{{ route('thoigianbieu.getInactiveData') }}").load();
         } else {
@@ -192,22 +205,26 @@ $(function() {
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Sending..');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('thoigianbieu.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('thoigianbieu.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {
