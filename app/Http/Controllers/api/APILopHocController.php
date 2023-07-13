@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SinhVien;
 use App\Models\GiangVien;
 use App\Models\LopHoc;
-use App\Models\QuaTrinhHocTap;
+
 
 class APILopHocController extends Controller
 {
@@ -32,14 +32,12 @@ class APILopHocController extends Controller
         }
         $data = array();
         foreach ($lopChuNhiem as $lopHoc) {
-          $QuaTrinhHocTaps = QuaTrinhHocTap::where('id_lop_hoc',$lopHoc->id)->where('trang_thai',1)->get();
-          foreach ($QuaTrinhHocTaps as $QuaTrinhHocTap) {
-            $danhSachSinhVien[] =SinhVien::where('ma_sv',$QuaTrinhHocTap->ma_sv)->where('trang_thai',1)->first();
-          }
+         $sinhviens=SinhVien::where('id_lop_hoc',$lopHoc->id)->where('trang_thai',1)->get();
+
           $data[]=array(
             'lop_hoc'=> $lopHoc,
             'giang_vien' =>$giangVien,
-            'danh_sach_sinh_vien'=>$danhSachSinhVien
+            'danh_sach_sinh_vien'=>$sinhviens
           );
         }
         return $data;
@@ -47,15 +45,7 @@ class APILopHocController extends Controller
     }
     public function danhsachSinhvienlopChuNhiem($id_lop_chu_nhiem)
     {
-        $danhSachSinhVien=array();
-        $QuaTrinhHocTaps = QuaTrinhHocTap::where('id_lop_hoc',$id_lop_chu_nhiem)->where('trang_thai',1)->get();
-
-          foreach ($QuaTrinhHocTaps as $QuaTrinhHocTap) {
-            $danhSachSinhVien[] =SinhVien::where('ma_sv',$QuaTrinhHocTap->ma_sv)->where('trang_thai',1)->first();
-          }
-      
-          return $danhSachSinhVien;
-        
+       return SinhVien::where('id_lop_hoc',$id_lop_chu_nhiem)->where('trang_thai',1)->get();
     }
     /**
      * Store a newly created resource in storage.

@@ -50,13 +50,14 @@
                                             <div class="form-group">
                                                 <label for="chon_ngay_bat_dau">Ngày bắt đầu</label>
                                                 <input type="datetime-local" class="form-control"
-                                                    name="chon_ngay_bat_dau" id="chon_ngay_bat_dau" />
+                                                    name="chon_ngay_bat_dau" id="chon_ngay_bat_dau" min="{{ date("Y-m-d\TH:i") }}"/>
                                             </div>
                                             <div class="form-group">
                                                 <label for="chon_ngay_ket_thuc">Ngày kết thúc</label>
                                                 <input type="datetime-local" class="form-control"
-                                                    name="chon_ngay_ket_thuc" id="chon_ngay_ket_thuc" />
+                                                    name="chon_ngay_ket_thuc" id="chon_ngay_ket_thuc" min="{{ date("Y-m-d\TH:i") }}"/>
                                             </div>
+                                            <button type="button" class="btn btn-info" id="openBtn">Mở tất cả môn</button>
 
 
                                         </div>
@@ -292,6 +293,20 @@ $(function() {
         $('#modalForm').trigger("reset");
         $('#formthemmodangkymon').modal('hide');
     })
+    $('#openBtn').click(function(){
+        if($(this).text()=="Mở tất cả môn"){
+            $('.chon_mo_lop').prop('checked',true).trigger('change');
+            $(this).html('Đóng tất cả môn');
+        }
+        else{
+            if($(this).text()=="Đóng tất cả môn"){
+                $('.chon_mo_lop').prop('checked',false).trigger('change');
+                $(this).html('Mở tất cả môn');
+            }
+        }
+    })
+
+
     $('#khoa_hoc').change(function() {
         var chuyennganh = $('#chuyen_nganh').val();
         // $('#table-mo-dang-ky-mon tbody').empty();
@@ -330,18 +345,18 @@ $(function() {
                             .ten_mon_hoc +
                             '</td><td><input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" value="' +
                             mon_hoc.mo_dang_ky +
-                            '"/></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="' +
+                            '" min="{{ date("Y-m-d\TH:i") }}" /></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="' +
                             mon_hoc.dong_dang_ky +
                             '"/></td><td><input type="checkbox" checked class="chon_mo_lop" data-id-mon-hoc="' +
-                            mon_hoc.mon_hoc.id + '" ></td></tr>';
+                            mon_hoc.mon_hoc.id + '" min="{{ date("Y-m-d\TH:i") }}"></td></tr>';
                     } else {
                         text = text + '<tr><td>' + i + '</td><td>' + mon_hoc.mon_hoc
                             .ten_mon_hoc +
                             '</td><td><input type="datetime-local" class="form-control ngay_mo_dang_ky_mon" name="ngay_mo_dang_ky_mon" value="' +
                             mon_hoc.mo_dang_ky +
-                            '"/></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="' +
+                            '" min="{{ date("Y-m-d\TH:i") }}"/></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="' +
                             mon_hoc.dong_dang_ky +
-                            '"/></td><td><input type="checkbox" class="chon_mo_lop" data-id-mon-hoc="' +
+                            '" min="{{ date("Y-m-d\TH:i") }}"/></td><td><input type="checkbox" class="chon_mo_lop" data-id-mon-hoc="' +
                             mon_hoc.mon_hoc.id + '" ></td></tr>';
                     }
                     i = i + 1;
@@ -388,6 +403,7 @@ $(function() {
         // $('#modalForm').trigger("reset");
         $('#formthemmodangkymon').modal('show');
     });
+
     $(document).on('change', '.chon_mo_lop', function() {
         var row = $(this).closest('tr');
         var ngaymodangky = row.find('.ngay_mo_dang_ky_mon').val();

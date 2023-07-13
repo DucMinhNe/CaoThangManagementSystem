@@ -93,7 +93,7 @@
                         <div class="cs-form">
                             <label for="ngay_bat_dau">Thời gian bắt đầu</label>
                             <input type="datetime-local" class="form-control" name="ngay_bat_dau" id="ngay_bat_dau"
-                                required />
+                                required min="{{ date("Y-m-d\TH:i") }}"/>
                                 <div class="invalid-feedback">
                                     Vui lòng nhập thời gian bắt đầu.
                                 </div>
@@ -101,7 +101,7 @@
                         <div class="cs-form">
                             <label for="ngay_ket_thuc">Thời gian kết thúc</label>
                             <input type="datetime-local" class="form-control" name="ngay_ket_thuc" id="ngay_ket_thuc"
-                                required />
+                                required min="{{ date("Y-m-d\TH:i") }}"/>
                                 <div class="invalid-feedback">
                                     Vui lòng nhập thời gian kết thúc.
                                 </div>
