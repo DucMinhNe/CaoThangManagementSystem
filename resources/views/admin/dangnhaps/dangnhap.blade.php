@@ -98,8 +98,8 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <h3 class="text-center">Hãy liên hệ siêu quản trị viên để nhận được sự trợ giúp</h3>
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-md-12 d-flex align-items-stretch flex-column ">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12 col-sm-6 col-md-8 d-flex align-items-stretch flex-column ">
                             <div class="card bg-light d-flex flex-fill border border-danger">
                                 <div class="card-header text-muted border-bottom-0">
                                     Siêu Quản Trị Viên
@@ -142,8 +142,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                <div class="modal-footer justify-content-end">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i>
+                        Đóng</button>
                 </div>
             </div>
             <!-- /.modal-content -->

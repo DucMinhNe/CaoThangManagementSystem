@@ -31,9 +31,9 @@ return new class extends Migration
             $table->string('mat_khau')->nullable();
             $table->string('khoa_hoc')->nullable();
             $table->string('bac_dao_tao')->nullable();
-            $table->string('he_dao_tao')->nullable()->default('Chính quy');
+            $table->string('he_dao_tao')->nullable();
             $table->integer('id_lop_hoc')->nullable()->index('id_lop_hoc');
-            $table->string('tinh_trang_hoc')->nullable()->default('Đang học');
+            $table->string('tinh_trang_hoc')->nullable();
             $table->boolean('trang_thai')->nullable()->default(true);
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();

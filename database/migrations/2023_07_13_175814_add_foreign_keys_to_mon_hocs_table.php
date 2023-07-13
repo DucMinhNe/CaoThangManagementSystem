@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('mon_hocs', function (Blueprint $table) {
-            $table->foreign(['id_loai_mon_hoc'], 'mon_hocs_ibfk_2')->references(['id'])->on('loai_mon_hocs');
             $table->foreign(['id_bo_mon'], 'mon_hocs_ibfk_1')->references(['id'])->on('bo_mons');
+            $table->foreign(['id_loai_mon_hoc'], 'mon_hocs_ibfk_2')->references(['id'])->on('loai_mon_hocs');
         });
     }
 
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('mon_hocs', function (Blueprint $table) {
-            $table->dropForeign('mon_hocs_ibfk_2');
             $table->dropForeign('mon_hocs_ibfk_1');
+            $table->dropForeign('mon_hocs_ibfk_2');
         });
     }
 };

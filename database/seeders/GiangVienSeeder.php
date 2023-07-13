@@ -18,10 +18,10 @@ class GiangVienSeeder extends Seeder
     {
         DB::table('giang_viens')->insert([
             [
-                'ma_gv' => '123',
+                'ma_gv' => '011234567',
                 'ten_giang_vien' => 'Lê Đức Minh',
-                'email' => 'ducminh@gmail.com',
-                'so_dien_thoai' => '0123456789',
+                'email' => 'ducminh@caothang.edu.vn',
+                'so_dien_thoai' => '0906913419',
                 'so_cmt' => '123456789',
                 'ngay_sinh' => '2002-04-04',
                 'noi_sinh' => 'HCM',
@@ -39,10 +39,10 @@ class GiangVienSeeder extends Seeder
                 'trang_thai' => 1,
             ],
             [
-                'ma_gv' => '1234',
-                'ten_giang_vien' => 'Lê Viết Hoàng Nguyên',
-                'email' => 'ducminh@gmail.com',
-                'so_dien_thoai' => '0123456789',
+                'ma_gv' => '021234567',
+                'ten_giang_vien' => 'Trần Thế An',
+                'email' => 'thean@caothang.edu.vn',
+                'so_dien_thoai' => '0906913419',
                 'so_cmt' => '123456789',
                 'ngay_sinh' => '2002-04-04',
                 'noi_sinh' => 'HCM',
@@ -60,10 +60,10 @@ class GiangVienSeeder extends Seeder
                 'trang_thai' => 1,
             ],
             [
-                'ma_gv' => '12345',
-                'ten_giang_vien' => 'Lê Lê Lê',
-                'email' => 'ducminh@gmail.com',
-                'so_dien_thoai' => '0123456789',
+                'ma_gv' => '031234567',
+                'ten_giang_vien' => 'Nguyễn Minh Hưng',
+                'email' => 'minhhung@caothang.edu.vn',
+                'so_dien_thoai' => '0906913419',
                 'so_cmt' => '123456789',
                 'ngay_sinh' => '2002-04-04',
                 'noi_sinh' => 'HCM',
