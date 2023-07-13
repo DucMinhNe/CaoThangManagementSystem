@@ -237,7 +237,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
     Route::get('/get-thong-tin-lop-hoc-phan', [NhapDiemController::class, 'getThongTinLopHocPhan']);
     Route::resource('nhapdiem', NhapDiemController::class);
-    Route::get('/lay-sinhvien-theo-lophoc', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
+    Route::get('/lay-sinhvien-theo-lophoc/{id_lop_hoc}', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');
     Route::get('/lay-tong-sinh-vien', [SinhVienController::class, 'layTongSinhVien'])->name('lay-tong-sinh-vien');
     Route::get('/lay-tong-giang-vien', [GiangVienController::class, 'layTongGiangVien'])->name('lay-tong-giang-vien');
     Route::get('/lay-tong-khoa', [KhoaController::class, 'layTongKhoa'])->name('lay-tong-khoa');

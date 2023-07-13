@@ -34,7 +34,8 @@
             </div>
             <ul class="nav nav-pills nav-pills-bg-soft ml-auto mb-3">
                 <li class="nav-item mr-1">
-                    <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+                    <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã
+                        xóa</button>
                 </li>
                 <li class="nav-item">
                     <button class="btn btn-success" type="button" id="createNewBtn">
@@ -147,17 +148,17 @@
                         <div class="form-group">
                             <label for="chuyen_can">Chuyên Cần</label>
                             <input type="text" class="form-control" id="chuyen_can" name="chuyen_can"
-                                placeholder="Chuyên Cần" value="" required pattern="^0(\.\d+)?|1(\.0+)?$">
+                                placeholder="Chuyên Cần" value="" required pattern="^(?:[0-9]|10)$">
                             <div class="invalid-feedback">
-                                Vui lòng chỉ nhập số (0->1).
+                                Vui lòng chỉ nhập số (0->10).
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="tbkt">TBKT</label>
                             <input type="text" class="form-control" id="tbkt" name="tbkt" placeholder="TBKT" value=""
-                                required pattern="^([0-3](\.[0-9])?|4(\.0)?)$">
+                                required pattern="^(10(\.0)?|[0-9](\.[0-9])?)$">
                             <div class="invalid-feedback">
-                                Vui lòng chỉ nhập số (0->4).
+                                Vui lòng chỉ nhập số (0->10).
                             </div>
                         </div>
                         <div class="form-group">
@@ -344,7 +345,17 @@ $(function() {
             }
         ],
     });
-
+    $('#datLaiBtn').click(function() {
+        $("#id_lop_hoc_phan_filter").empty();
+        var lophocphans = <?php echo json_encode($lophocphans); ?>;
+        $("#id_lop_hoc_phan_filter").append('<option value="0">-- Chọn lớp học phần --</option>');
+        $.each(lophocphans, function(index, lophocphan) {
+            var option = '<option value="' + lophocphan.id + '">' + lophocphan
+                .ten_lop_hoc_phan +
+                '</option>';
+            $("#id_lop_hoc_phan_filter").append(option);
+        });
+    });
     $("#filterToggle").on("click", function() {
         $(".filter-row").toggle();
     });

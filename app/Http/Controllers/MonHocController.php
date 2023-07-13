@@ -78,7 +78,7 @@ class MonHocController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ten_mon_hoc' => 'required',
+            'ten_mon_hoc' => ['required', 'regex:/[\p{L}\d\s\.]+/'],
             'id_bo_mon' => 'required',
             'id_loai_mon_hoc' => 'required',
         ]); 

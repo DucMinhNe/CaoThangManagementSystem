@@ -101,7 +101,10 @@
                                         Khẩu</a>
                                 </li>
                                 <li class="nav-item"><a class="nav-link" href="#cacmongiangday" data-toggle="tab">Các
-                                        Môn Giảng Dạy</a>
+                                        Môn Đang Giảng Dạy</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="#cacmondagiangday" data-toggle="tab">Các
+                                        Môn Đã Từng Giảng Dạy</a>
                                 </li>
                             </ul>
                         </div><!-- /.card-header -->
@@ -299,11 +302,10 @@
                                         <!-- /.tab-pane -->
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="cacmongiangday">
-
+                                <div class="tab-pane" id="cacmongiangday" style="height: 400px;overflow-y: scroll;">
                                     <div class="col-md-12">
                                         <ul class="list-group list-group-unbordered mb-3">
-                                            <b>Các Môn Giảng Dạy: </b>
+                                            <b>Các Môn Đang Giảng Dạy: </b>
                                             @foreach($lophocphans
                                             as $lophocphan)
                                             @if ($lophocphan->trang_thai_hoan_thanh == 0)
@@ -316,7 +318,23 @@
                                             @endforeach
                                         </ul>
                                     </div>
-
+                                </div>
+                                <div class="tab-pane" id="cacmondagiangday" style="height: 400px;overflow-y: scroll;">
+                                    <div class="col-md-12">
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <b>Các Môn Đã Từng Giảng Dạy: </b>
+                                            @foreach($lophocphans
+                                            as $lophocphan)
+                                            @if ($lophocphan->trang_thai_hoan_thanh == 1)
+                                            <li class="list-group-item">
+                                                <a class="float-left">
+                                                    {{ $lophocphan->ten_lop_hoc_phan }}
+                                                </a>
+                                            </li>
+                                            @endif
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

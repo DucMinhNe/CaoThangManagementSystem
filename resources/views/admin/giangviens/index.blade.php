@@ -37,7 +37,7 @@ td {
             </div>
             <ul class="nav nav-pills nav-pills-bg-soft ml-auto mb-3">
                 <li class="nav-item mr-1">
-                    <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã
+                    <button id="showInactiveBtn" class="btn btn-primary" type="button" value=''>Hiển thị danh sách đã
                         xóa</button>
                 </li>
                 <li class="nav-item">
@@ -487,7 +487,16 @@ $(function() {
             },
             {
                 data: 'ngay_sinh',
-                name: 'ngay_sinh'
+                name: 'ngay_sinh',
+                render: function(data, type, full, meta) {
+                    if (type === 'display' && data !== null) {
+                        var date = new Date(data);
+                        var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                            date.getFullYear();
+                        return formattedDate;
+                    }
+                    return data;
+                }
             },
             {
                 data: 'noi_sinh',
@@ -697,13 +706,26 @@ $(function() {
             });
         }
     });
+    // $('#showInactiveBtn').click(function() {
+    //     var button = $(this);
+    //     var buttonText = button.text();
+    //     if (buttonText == 'Hiển thị danh sách đã xóa') {
+    //         button.text('Hiển thị danh sách chính');
+    //         table.ajax.url("{{ route('giangvien.getInactiveData') }}").load();
+    //     } else {
+    //         button.text('Hiển thị danh sách đã xóa');
+    //         table.ajax.url("{{ route('giangvien.index') }}").load();
+    //     }
+    // });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
-        var buttonText = button.text();
-        if (buttonText == 'Hiển thị danh sách đã xóa') {
+        var buttonVal = button.val();
+        if (buttonVal == '') {
+            $("#showInactiveBtn").val('1');
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('giangvien.getInactiveData') }}").load();
         } else {
+            $("#showInactiveBtn").val('');
             button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('giangvien.index') }}").load();
         }

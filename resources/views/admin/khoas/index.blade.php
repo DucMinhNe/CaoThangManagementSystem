@@ -69,7 +69,8 @@
                         <div class="form-group">
                             <label for="ten_khoa">Tên Khoa</label>
                             <input type="text" class="form-control" id="ten_khoa" name="ten_khoa" placeholder="Tên Khoa"
-                                value="" required>
+                                value="" required
+                                pattern="^[A-Za-z\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ\-]+$">
                             <div class="invalid-feedback">
                                 Vui lòng nhập chữ cái và khoảng trắng.
                             </div>

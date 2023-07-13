@@ -490,7 +490,7 @@ $(function() {
     });
     var table = $('.data-table').DataTable({
         processing: true,
-        serverSide: false,
+        serverSide: true,
         scrollX: true,
         orderCellsTop: true,
         initComplete: function() {
@@ -566,7 +566,16 @@ $(function() {
             },
             {
                 data: 'ngay_sinh',
-                name: 'ngay_sinh'
+                name: 'ngay_sinh',
+                render: function(data, type, full, meta) {
+                    if (type === 'display' && data !== null) {
+                        var date = new Date(data);
+                        var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                            date.getFullYear();
+                        return formattedDate;
+                    }
+                    return data;
+                }
             },
             {
                 data: 'noi_sinh',
@@ -610,7 +619,7 @@ $(function() {
                 data: 'mat_khau',
                 name: 'mat_khau',
                 render: function(data, type, full, meta) {
-                    return '****';
+                    return '******';
                 }
             },
             {
@@ -784,7 +793,12 @@ $(function() {
                 document.body.removeChild(link);
             },
             error: function(xhr, status, error) {
-
+                Swal.fire({
+                    title: 'Không đủ thông tin để tạo thẻ',
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    if (result.isConfirmed) {}
+                })
             }
         });
     });
@@ -805,7 +819,7 @@ $(function() {
             },
             error: function(xhr, status, error) {
                 Swal.fire({
-                    title: 'Không có hình',
+                    title: 'Không đủ thông tin để tạo thẻ',
                     confirmButtonText: 'Ok',
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -1019,7 +1033,7 @@ $(function() {
             }
             $('#tai_khoan').val(data.tai_khoan);
             // $('#mat_khau').val(data.mat_khau);
-            $('#mat_khau').attr('placeholder', data.so_cmt);
+            $('#mat_khau').attr('placeholder', '*********');
             $('#khoa_hoc').val(data.khoa_hoc);
             $('#bac_dao_tao').val(data.bac_dao_tao).trigger('change');
             $('#he_dao_tao').val(data.he_dao_tao).trigger('change');

@@ -280,17 +280,27 @@ $(function() {
     });
 
     function getEditableCellHtml(columnName, value, id) {
+        if (value === null) {
+            return `<div class="editable-cell" data-column="${columnName}" data-id="${id}" contenteditable></div>`;
+        }
         return `<div class="editable-cell" data-column="${columnName}" data-id="${id}" contenteditable>${value}</div>`;
     }
+    document.addEventListener("keydown", function(event) {
+        var enterKey = 13;
+        var element = event.target;
 
-    $(document).on('keyup', '.editable-cell', function(e) {
-        if (e.keyCode === 13) {
-            var column = $(this).data('column');
-            var id = $(this).data('id');
-            var value = $(this).text();
-            saveCellValue(column, id, value);
+        if (event.keyCode === enterKey && element.classList.contains("editable-cell")) {
+            event.preventDefault();
         }
     });
+    // $(document).on('keyup', '.editable-cell', function(e) {
+    //     if (e.keyCode === 13) {
+    //         var column = $(this).data('column');
+    //         var id = $(this).data('id');
+    //         var value = $(this).text();
+    //         saveCellValue(column, id, value);
+    //     }
+    // });
     $(document).on('blur', '.editable-cell', function() {
         var column = $(this).data('column');
         var id = $(this).data('id');
@@ -300,6 +310,23 @@ $(function() {
 
     function saveCellValue(column, id, value) {
         // Kiểm tra giá trị nhập liệu cho chuyên cần
+        var chuyenCan = parseFloat($('[data-column="chuyen_can"][data-id="' + id + '"]').text().trim()) ||
+            null;
+        var tbkt = parseFloat($('[data-column="tbkt"][data-id="' + id + '"]').text().trim()) || null;
+        var thi1 = parseFloat($('[data-column="thi_1"][data-id="' + id + '"]').text().trim()) || null;
+        var thi2 = parseFloat($('[data-column="thi_2"][data-id="' + id + '"]').text().trim()) || null;
+        if (chuyenCan != null)
+            var valChuyenCan = Math.round(chuyenCan);
+        else var valChuyenCan = null;
+        if (tbkt != null)
+            var valTbkt = Math.round(tbkt * 10) / 10;
+        else var valTbkt = null;
+        if (thi1 != null)
+            var valThi1 = Math.round(thi1 * 10) / 10;
+        else var valThi1 = null;
+        if (thi2 != null)
+            var valThi2 = Math.round(thi2 * 10) / 10;
+        else var valThi2 = null;
         if (column == 'chuyen_can') {
             if (parseFloat(value) < 0 || parseFloat(value) > 10.0) {
                 // Hiển thị thông báo lỗi
@@ -312,11 +339,10 @@ $(function() {
                     showConfirmButton: false,
                     timer: 1500
                 });
-
                 return;
             }
+            $('[data-column="chuyen_can"][data-id="' + id + '"]').text(valChuyenCan);
         }
-
         // Kiểm tra giá trị nhập liệu cho tbkt
         if (column == 'tbkt') {
             if (parseFloat(value) < 0 || parseFloat(value) > 10.0) {
@@ -333,6 +359,7 @@ $(function() {
 
                 return;
             }
+            $('[data-column="tbkt"][data-id="' + id + '"]').text(valTbkt);
         }
 
         // Kiểm tra giá trị nhập liệu cho thi
@@ -350,19 +377,19 @@ $(function() {
                 });
                 return;
             }
+            $('[data-column="thi_1"][data-id="' + id + '"]').text(valThi1);
+            $('[data-column="thi_2"][data-id="' + id + '"]').text(valThi2);
         }
         if (column == 'chuyen_can' || column == 'tbkt' || column == 'thi_1' || column == 'thi_2') {
-            var chuyenCan = parseFloat($('[data-column="chuyen_can"][data-id="' + id + '"]').text().trim()) ||
-                0;
-            var tbkt = parseFloat($('[data-column="tbkt"][data-id="' + id + '"]').text().trim()) || 0;
-            var thi1 = parseFloat($('[data-column="thi_1"][data-id="' + id + '"]').text().trim()) || null;
-            var thi2 = parseFloat($('[data-column="thi_2"][data-id="' + id + '"]').text().trim()) || null;
-            var tongKet1 = chuyenCan * 0.1 + tbkt * 0.4 + thi1 * 0.5;
-            var tongKet2 = chuyenCan * 0.1 + tbkt * 0.4 + thi2 * 0.5;
+            var tongKet1 = valChuyenCan * 0.1 + valTbkt * 0.4 + valThi1 * 0.5;
+            var tongKet2 = valChuyenCan * 0.1 + valTbkt * 0.4 + valThi2 * 0.5;
             var tongKet1Rounded = Math.round(tongKet1 * 10) / 10; // Làm tròn với 1 chữ số sau dấu thập phân
             var tongKet2Rounded = Math.round(tongKet2 * 10) / 10; // Làm tròn với 1 chữ số sau dấu thập phân
-
-            $('[data-column="tong_ket_1"][data-id="' + id + '"]').text(tongKet1Rounded.toFixed(1));
+            var valTongKet1 = tongKet1Rounded.toFixed(1);
+            if (chuyenCan === null && tbkt === null && thi1 === null) {
+                valTongKet1 = null;
+            }
+            $('[data-column="tong_ket_1"][data-id="' + id + '"]').text(valTongKet1);
             if (thi2 !== null) {
                 $('[data-column="tong_ket_2"][data-id="' + id + '"]').text(tongKet2Rounded.toFixed(1));
                 var valTongKet2 = tongKet2Rounded.toFixed(1)
@@ -371,57 +398,120 @@ $(function() {
                 var valTongKet2 = null
             }
         }
-
         // Nếu giá trị nhập liệu hợp lệ, tiếp tục gửi yêu cầu AJAX để lưu giá trị
+        // $.ajax({
+        //     url: "{{ route('nhapdiem.store') }}",
+        //     method: "POST",
+        //     data: {
+        //         _token: "{{ csrf_token() }}",
+        //         id: id,
+        //         column: column,
+        //         value: value
+        //     },
+        //     success: function(response) {
+        //         console.log(response);
+
+        //     },
+        //     error: function(xhr) {
+        //         console.log(xhr.responseText);
+        //     }
+        // });
         $.ajax({
             url: "{{ route('nhapdiem.store') }}",
             method: "POST",
             data: {
                 _token: "{{ csrf_token() }}",
                 id: id,
-                column: column,
-                value: value
+                column: "chuyen_can",
+                value: valChuyenCan
             },
             success: function(response) {
                 console.log(response);
-                $.ajax({
-                    url: "{{ route('nhapdiem.store') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        column: "tong_ket_1",
-                        value: tongKet1Rounded.toFixed(1)
-                    },
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(xhr) {
-                        console.log(xhr.responseText);
-                    }
-                });
-                $.ajax({
-                    url: "{{ route('nhapdiem.store') }}",
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        column: "tong_ket_2",
-                        value: valTongKet2
-                    },
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(xhr) {
-                        console.log(xhr.responseText);
-                    }
-                });
             },
             error: function(xhr) {
                 console.log(xhr.responseText);
             }
         });
-
+        $.ajax({
+            url: "{{ route('nhapdiem.store') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                column: "tbkt",
+                value: valTbkt
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+        $.ajax({
+            url: "{{ route('nhapdiem.store') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                column: "thi_1",
+                value: valThi1
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+        $.ajax({
+            url: "{{ route('nhapdiem.store') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                column: "thi_2",
+                value: valThi2
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+        $.ajax({
+            url: "{{ route('nhapdiem.store') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                column: "tong_ket_1",
+                value: valTongKet1
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+        $.ajax({
+            url: "{{ route('nhapdiem.store') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: id,
+                column: "tong_ket_2",
+                value: valTongKet2
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
     }
 
     // function saveCellValue(column, id, value) {

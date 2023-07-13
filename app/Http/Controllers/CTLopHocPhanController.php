@@ -104,8 +104,8 @@ class CTLopHocPhanController extends Controller
         $request->validate([
             'id_lop_hoc_phan' => 'required',
             'ma_sv' => 'required',
-            'chuyen_can' => 'required|numeric|between:0,1',
-            'tbkt' => 'required|numeric|between:0,4',
+            'chuyen_can' => 'required|numeric|between:0,10',
+            'tbkt' => 'required|numeric|between:0,10',
             'thi_1' => 'required|numeric|between:0,10',
             'thi_2' => 'required|numeric|between:0,10',
             'tong_ket_1' => 'required|numeric|between:0,10',

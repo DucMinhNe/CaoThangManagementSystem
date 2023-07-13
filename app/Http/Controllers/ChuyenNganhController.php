@@ -76,8 +76,8 @@ class ChuyenNganhController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ten_chuyen_nganh' => ['required', 'regex:/^[\p{L}\s]+$/u'],
-            'ma_chu' => 'required',
+            'ten_chuyen_nganh' => ['required', 'regex:/^[A-Za-z\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ\-]+$/'],
+            'ma_chu' => ['required', 'regex:/^[A-Z\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ\-]+$/'],
             'ma_so' => 'required|numeric|digits:2',
             'id_khoa' => 'required'
         ]);

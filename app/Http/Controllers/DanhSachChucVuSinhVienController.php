@@ -112,7 +112,11 @@ class DanhSachChucVuSinhVienController extends Controller
      */
     public function edit($id)
     {
-        $danhsachchucvusinhvien = DanhSachChucVuSinhVien::find($id);
+        // $danhsachchucvusinhvien = DanhSachChucVuSinhVien::find($id);
+        $danhsachchucvusinhvien = DanhSachChucVuSinhVien::leftJoin('sinh_viens', 'danh_sach_chuc_vu_sinh_viens.ma_sv', '=', 'sinh_viens.ma_sv')
+        ->leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
+        ->select('danh_sach_chuc_vu_sinh_viens.*', 'sinh_viens.id_lop_hoc')
+        ->find($id);  
         return response()->json($danhsachchucvusinhvien);
     }
 

@@ -72,7 +72,7 @@
                         <div class="form-group">
                             <label for="ten_bo_mon">Tên Bộ Môn</label>
                             <input type="text" class="form-control" id="ten_bo_mon" name="ten_bo_mon"
-                                placeholder="Tên Bộ Môn" value="" required pattern="[\p{L}\d\s]+">
+                                placeholder="Tên Bộ Môn" value="" required pattern="[\p{L}\d\s\-]+">
                             <div class="invalid-feedback">
                                 Vui lòng nhập chỉ chấp nhận chữ cái, số và khoảng trắng.
                             </div>

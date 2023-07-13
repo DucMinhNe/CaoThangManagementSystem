@@ -119,7 +119,7 @@ class LopHocPhanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ten_lop_hoc_phan' => 'required',
+            'ten_lop_hoc_phan' => ['required', 'regex:/^[A-Za-z0-9\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ\-.]+$/'],
             'mo_dang_ky' => 'required',
             'trang_thai_hoan_thanh' => 'required',
         ]); 

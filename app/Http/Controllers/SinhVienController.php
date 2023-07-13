@@ -166,20 +166,27 @@ class SinhVienController extends Controller
     }
     public function taoBangTen($hoten, $lop)
     {   
-        $image = Image::canvas(800, 350, '#ffffff')->rectangle(6,6, 795, 340, function ($draw) {
-           
-            $draw->border(12, '#0000FF');
+        $maxWidth = 1035 - (2 * 12); 
+        $fontPath = public_path('sinhvien_bangten/calibri.ttf');
+        $fontSize = 165;
+        $image = Image::canvas(1000, 350, '#ffffff')->rectangle(6, 6, 995, 343, function ($draw) {
+        $draw->border(12, '#0000FF');
         });
-        $image->text(mb_strtoupper($hoten), 400, 100, function($font) {
-            $font->file(public_path('sinhvien_bangten/calibri.ttf'));
-            $font->size(131);
+        $textLength = imagettfbbox($fontSize, 0, $fontPath, $hoten)[2];
+        if ($textLength > $maxWidth) {
+        $fontSize = $fontSize * $maxWidth / $textLength;
+        $fontSize = $fontSize + 4;
+        }
+        $image->text(mb_strtoupper($hoten), 500, 110, function($font) use ($fontPath, $fontSize) {
+            $font->file($fontPath);
+            $font->size($fontSize);
             $font->color('#0000FF');
             $font->align('center');
             $font->valign('middle');
         });
-        $image->text($lop, 400, 250, function($font) {
-            $font->file(public_path('sinhvien_bangten/calibri.ttf'));
-            $font->size(100);
+        $image->text(mb_strtoupper($lop), 500, 270, function($font) use ($fontPath, $fontSize) {
+            $font->file($fontPath);
+            $font->size(116);
             $font->color('#0000FF');
             $font->align('center');
             $font->valign('middle');
@@ -227,14 +234,14 @@ class SinhVienController extends Controller
             $font->align('left');
             $font->valign('middle');
         });
-         $image->text('Ngày sinh: '.$sv->ngay_sinh, 250, 180, function($font) {
+        $image->text('Ngày sinh: ' . date('d/m/Y', strtotime($sv->ngay_sinh)), 250, 180, function($font) {
             $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
             $font->size(35);
             $font->color('#0000FF');
             $font->align('left');
             $font->valign('middle');
-        });
-        $image->text('Khóa: '.$sv->khoa_hoc, 250, 250, function($font) {
+        });        
+        $image->text('Khóa: '.$sv->khoa_hoc.' - '.($sv->khoa_hoc+3), 250, 250, function($font) {
             $font->file(public_path('sinhvien_thesinhvien/calibri.ttf'));
             $font->size(35);
             $font->color('#0000FF');
@@ -443,17 +450,10 @@ class SinhVienController extends Controller
         SinhVien::where('ma_sv', $id)->update(['trang_thai' => 1]);
         return response()->json(['success' => 'Xóa Chuyên Ngành Thành Công.']);
     }
-    public function laySinhVienTheoLopHoc(Request $request)
+    public function laySinhVienTheoLopHoc($id_lop_hoc)
     {
-    $lopId = $request->get('lopId');
-    $sinhviens = SinhVien::where('id_lop_hoc', $lopId)->get();
-
-    $options = '';
-    foreach ($sinhviens as $sinhvien) {
-        $options .= '<option value="' . $sinhvien->ma_sv . '">' . $sinhvien->ten_sinh_vien . '</option>';
-    }
-
-    return $options;
+        $sinhviens = SinhVien::where('id_lop_hoc', $id_lop_hoc)->get();
+        return response()->json($sinhviens);
     }
     public function layTongSinhVien()
     {

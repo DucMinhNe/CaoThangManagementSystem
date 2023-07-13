@@ -126,7 +126,8 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
-                                class="fa-regular fa-floppy-disk"></i> Lưu</button>
+                                class="fa-regular fa-floppy-disk"></i>
+                            Lưu</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i
                                 class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
@@ -164,7 +165,8 @@
                         <button class="btn btn-success" type="button" id="themCTQuyetDinhBtn">
                             <i class="fa-solid fa-circle-plus"></i> Thêm
                         </button>
-                        <button id="xemCTQuyetDinhDaXoa" class="btn btn-primary" type="button">Hiển thị danh sách đã xóa</button>
+                        <button id="xemCTQuyetDinhDaXoa" class="btn btn-primary" type="button">Hiển thị danh sách đã
+                            xóa</button>
                         <table id="example2" class="table table-bordered table-striped ctquyetdinh-table"
                             style="width:430px;">
                             <thead>
@@ -245,7 +247,16 @@ $(function() {
             },
             {
                 data: 'ngay_ra_quyet_dinh',
-                name: 'ngay_ra_quyet_dinh'
+                name: 'ngay_ra_quyet_dinh',
+                render: function(data, type, full, meta) {
+                    if (type === 'display' && data !== null) {
+                        var date = new Date(data);
+                        var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                            date.getFullYear();
+                        return formattedDate;
+                    }
+                    return data;
+                }
             },
             {
                 data: 'noi_dung',
@@ -253,11 +264,29 @@ $(function() {
             },
             {
                 data: 'hieu_luc_bat_dau',
-                name: 'hieu_luc_bat_dau'
+                name: 'hieu_luc_bat_dau',
+                render: function(data, type, full, meta) {
+                    if (type === 'display' && data !== null) {
+                        var date = new Date(data);
+                        var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                            date.getFullYear();
+                        return formattedDate;
+                    }
+                    return data;
+                }
             },
             {
                 data: 'hieu_luc_ket_thuc',
-                name: 'hieu_luc_ket_thuc'
+                name: 'hieu_luc_ket_thuc',
+                render: function(data, type, full, meta) {
+                    if (type === 'display' && data !== null) {
+                        var date = new Date(data);
+                        var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' +
+                            date.getFullYear();
+                        return formattedDate;
+                    }
+                    return data;
+                }
             },
             {
                 data: 'action',
@@ -319,11 +348,11 @@ $(function() {
     var ctquyetdinhtable = $('.ctquyetdinh-table').DataTable({
         processing: true,
         serverSide: true,
-        searching: false,
+        searching: true,
         info: false,
         autoWidth: false,
-        paging: false,
-        ajax: "{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh', '') }}/1",
+        paging: true,
+        ajax: "{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh', '') }}/0",
         columns: [{
                 data: 'id',
                 name: 'id',
@@ -354,6 +383,29 @@ $(function() {
                 searchable: false
             },
         ],
+        language: {
+            "sEmptyTable": "Không có dữ liệu",
+            "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+            "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+            "sInfoFiltered": "(được lọc từ _MAX_ tổng số bản ghi)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ",",
+            "sLengthMenu": "Hiển thị _MENU_ bản ghi",
+            "sLoadingRecords": "Đang tải...",
+            "sProcessing": "Đang xử lý...",
+            "sSearch": "Tìm kiếm:",
+            "sZeroRecords": "Không tìm thấy kết quả nào phù hợp",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sLast": "Cuối",
+                "sNext": "Tiếp",
+                "sPrevious": "Trước"
+            },
+            "oAria": {
+                "sSortAscending": ": Sắp xếp tăng dần",
+                "sSortDescending": ": Sắp xếp giảm dần"
+            }
+        },
     });
     $("#filterToggle").on("click", function() {
         $(".filter-row").toggle();
@@ -381,12 +433,14 @@ $(function() {
         var buttonText = button.text();
         if (buttonText == 'Hiển thị danh sách đã xóa') {
             button.text('Hiển thị danh sách chính');
-            ctquyetdinhtable.ajax.url("{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinhDaXoa', '') }}/" + idqd)
-            .load();
+            ctquyetdinhtable.ajax.url(
+                    "{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinhDaXoa', '') }}/" + idqd)
+                .load();
         } else {
             button.text('Hiển thị danh sách đã xóa');
-            ctquyetdinhtable.ajax.url("{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh', '') }}/" + idqd)
-            .load();
+            ctquyetdinhtable.ajax.url("{{ route('ctquyetdinh.getChiTietQuyetDinhByQuyetDinh', '') }}/" +
+                    idqd)
+                .load();
         }
     });
     $('#createNewBtn').click(function() {

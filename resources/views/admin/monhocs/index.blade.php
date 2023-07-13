@@ -75,8 +75,8 @@
                         <div class="form-group">
                             <label for="ten_mon_hoc">Tên Môn Học</label>
                             <input type="text" class="form-control" id="ten_mon_hoc" name="ten_mon_hoc"
-                                placeholder="Tên Môn Học" value="" required>
-                            <div class="invalid-feedback">
+                                placeholder="Tên Môn Học" value="" required pattern="[\p{L}\d\s\.]+">
+                            <div class=" invalid-feedback">
                                 Vui lòng nhập chữ cái số và khoảng trắng.
                             </div>
                         </div>
@@ -115,7 +115,8 @@
                         <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
                                 class="fa-regular fa-floppy-disk"></i> Lưu</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i
-                                class="fa-solid fa-xmark"></i> Hủy</button>
+                                class="fa-solid fa-xmark"></i>
+                            Hủy</button>
                     </div>
                 </form>
             </div>

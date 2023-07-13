@@ -74,11 +74,10 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="id_lop_hoc">Lớp học</label>
-                            <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2" style="width: 100%;"
-                                onchange="loadSinhVienByLop(this.value)">
-                                <option value="">-- Chọn lớp học --</option>
+                            <select name="id_lop_hoc" id="id_lop_hoc" class="form-control select2" style="width: 100%;">
+                                <option value="0">-- Chọn lớp học --</option>
                                 @foreach ($lophocs as $lophoc)
-                                <option value="{{ $lophoc->id }}">{{ $lophoc->ten_lop_hoc }}</option>
+                                <option value="{{$lophoc->id}}">{{ $lophoc->ten_lop_hoc }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -88,7 +87,8 @@
                                 <option value="">-- Chọn sinh viên --</option>
                                 @foreach ($sinhviens as $sinhvien)
                                 @if ($sinhvien->trang_thai == 1)
-                                <option value="{{ $sinhvien->ma_sv }}">{{ $sinhvien->ten_sinh_vien }}</option>
+                                <option value="{{ $sinhvien->ma_sv }}">{{ $sinhvien->ma_sv }} -
+                                    {{ $sinhvien->ten_sinh_vien }}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -266,11 +266,12 @@ $(function() {
         $('#id').val('');
         $('#ma_sv').val('').trigger('change');
         $('#id_chuc_vu').val('').trigger('change');
+        $('#id_lop_hoc').val('0').trigger('change');
         $('#modalForm').trigger("reset");
         $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
-
+    var edit = 0;
     $('body').on('click', '.editBtn', function() {
         $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
@@ -278,10 +279,13 @@ $(function() {
             $('#modelHeading').html("Sửa");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
+            edit = 1;
+            $('#id_lop_hoc').val(data.id_lop_hoc).trigger('change');
             $('#id').val(data.id);
-            $('#ma_sv').val(data.ma_sv).trigger('change');
             $('#id_chuc_vu').val(data.id_chuc_vu).trigger('change');
+            $('#ma_sv').val(data.ma_sv).trigger('change');
         })
+        edit = 0;
     });
 
     $('#savedata').click(function(e) {
@@ -386,24 +390,39 @@ $(function() {
             }
         })
     });
+    $("#id_lop_hoc").change(function() {
+        var selectedLopHocId = $(this).val();
+        if (selectedLopHocId != 0 && edit == 0) {
+            $.ajax({
+                url: "{{ route('lay-sinhvien-theo-lophoc', '') }}/" + selectedLopHocId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $("#ma_sv").empty();
+                    $("#ma_sv").append(
+                        '<option value="">-- Chọn học sinh --</option>');
+                    $.each(response, function(key, value) {
+                        $("#ma_sv").append('<option value="' + value.ma_sv + '">' +
+                            value.ma_sv + ' - ' + value.ten_sinh_vien +
+                            '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#ma_sv").empty();
+            var sinhviens = <?php echo json_encode($sinhviens); ?>;
+            $("#ma_sv").append('<option value="">-- Chọn học sinh --</option>');
+            $.each(sinhviens, function(index, sinhvien) {
+                var option = '<option value="' + sinhvien.ma_sv + '">' + sinhvien.ma_sv +
+                    ' - ' +
+                    sinhvien
+                    .ten_sinh_vien +
+                    '</option>';
+                $("#ma_sv").append(option);
+            });
+            edit = 0;
+        }
+    });
 });
-
-function loadSinhVienByLop(lopId) {
-    if (lopId) {
-        $.ajax({
-            url: '{{ route("lay-sinhvien-theo-lophoc") }}',
-            type: 'GET',
-            data: {
-                lopId: lopId
-            },
-            success: function(data) {
-                $('#ma_sv').html(data);
-            },
-            error: function() {}
-        });
-    } else {
-        $('#ma_sv').empty();
-    }
-}
 </script>
 @endsection

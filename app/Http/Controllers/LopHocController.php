@@ -77,7 +77,7 @@ class LopHocController extends Controller
     public function store(Request $request)
     { 
         $request->validate([
-            'ten_lop_hoc' => ['required', 'regex:/^[\p{L}\d\s]+$/u'],
+            'ten_lop_hoc' => ['required', 'regex:/^[A-Z0-9\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ\-]+$/'],
             'id_chuyen_nganh' => 'required',
         ]);
         LopHoc::updateOrCreate(['id' => $request->id],

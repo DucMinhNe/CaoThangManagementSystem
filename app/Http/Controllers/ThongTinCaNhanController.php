@@ -73,15 +73,12 @@ class ThongTinCaNhanController extends Controller
         
       
         if(!Hash::check($request->mat_khau_cu, auth()->user()->mat_khau)){
-            return response()->json(['success' => false, 'message' => 'Mật Khẩu Không Khớp'], 422);
-
+            return response()->json(['success' => false, 'message' => 'Mật khẩu cũ không khớp'], 422);
         }
 
-        #Update the new Password
         GiangVien::where('ma_gv', auth()->user()->ma_gv)->update([
             'mat_khau' => Hash::make($request->mat_khau_moi)
         ]);
-        
 
         return response()->json(['success' => true, 'message' => 'Cập Nhật Thành Công']);
 

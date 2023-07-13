@@ -78,7 +78,8 @@
                         <div class="form-group">
                             <label for="ten_khoa">Tên Chuyên Ngành</label>
                             <input type="text" class="form-control" id="ten_chuyen_nganh" name="ten_chuyen_nganh"
-                                placeholder="Tên Chuyên Ngành" value="" required pattern="^[\p{L}\s]+$">
+                                placeholder="Tên Chuyên Ngành" value="" required
+                                pattern="^[A-Za-z\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ\-]+$">
                             <div class="invalid-feedback">
                                 Vui lòng nhập chữ cái và khoảng trắng.
                             </div>
@@ -86,9 +87,10 @@
                         <div class="form-group">
                             <label for="ten_khoa">Mã Chữ</label>
                             <input type="text" class="form-control" id="ma_chu" name="ma_chu" placeholder="Mã Chữ"
-                                value="" required>
+                                value="" required
+                                pattern="^[A-Z\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ\-]+$">
                             <div class="invalid-feedback">
-                                Vui lòng nhập chữ.
+                                Vui lòng nhập chữ hoa.
                             </div>
                         </div>
                         <div class="form-group">
@@ -96,7 +98,7 @@
                             <input type="text" class="form-control" id="ma_so" name="ma_so" placeholder="Mã Số "
                                 value="" required pattern="\d{2}">
                             <div class="invalid-feedback">
-                                Vui lòng nhập số
+                                Vui lòng nhập 2 số
                             </div>
                         </div>
                         <div class="form-group">

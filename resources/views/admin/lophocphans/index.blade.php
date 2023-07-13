@@ -96,7 +96,8 @@
                         <div class="form-group">
                             <label for="ten_lop_hoc_phan">Tên Lớp Học Phần</label>
                             <input type="text" class="form-control" id="ten_lop_hoc_phan" name="ten_lop_hoc_phan"
-                                placeholder="Tên Lớp Học Phần" value="" required>
+                                placeholder="Tên Lớp Học Phần" value="" required
+                                pattern="^[A-Za-z0-9\sÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ\-.]+$">
                         </div>
                         <div class="form-group">
                             <label for="id_lop_hoc">Lớp</label>
