@@ -368,6 +368,16 @@
                           </li>
                       </ul>
                   </li>
+                  @php
+                  $isOpen = Request::is('admin/activitylog');
+                  @endphp
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/activitylog') }}"
+                        class="nav-link {{ Request::url() == url('/admin/activitylog') ? 'active' : '' }}">
+                        <i class="fas fa-history"></i>
+                        <p>Lịch sử thay đổi</p>
+                    </a>
+                  </li>
                   <li class="nav-item">
                       <a href="/admin/dangxuat" class="nav-link">
                           <i class="nav-icon fas fa-right-from-bracket"></i>

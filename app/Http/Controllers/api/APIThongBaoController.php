@@ -26,10 +26,13 @@ class APIThongBaoController extends Controller
         $data=[];
 
         foreach($listThongbaos as $thongbao){
-            $giangvien=GiangVien::where('ma_gv',$thongbao->ma_gv)->where('trang_thai',1)->first();
+            $tb=ThongBao::find($thongbao->id_thong_bao);
+            $giangvien=GiangVien::where('ma_gv',$tb->ma_gv)->where('trang_thai',1)->first();
+
             array_push($data,[
                 'id'=>$thongbao->id,
                 'thong_bao'=>$thongbao->thongBao,
+                'giang_vien'=>$giangvien,
                 'ma_sv'=>$ma_sv,
                 'trang_thai_doc'=>$thongbao->trang_thai_doc
             ]);

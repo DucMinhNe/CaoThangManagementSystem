@@ -88,6 +88,7 @@ class MoDangKyMonController extends Controller
                 'dong_dang_ky'=>$request->dong_dang_ky,
             ]
         );
+
         return response()->json(['success' => 'Lưu Thành Công.']);
     }
 
@@ -143,9 +144,14 @@ class MoDangKyMonController extends Controller
         return response()->json(['success' => 'Khôi phục thành công.']);
     }
     public function moDangKyMon(Request $request){
+
         //dd($request->danh_sach_mon_hoc[5]['da_dong']);
         foreach ($request->danh_sach_mon_hoc as $monhoc) {
-            MoDangKyMon::updateOrCreate(
+            $temp=MoDangKyMon::where('id_mon_hoc',$monhoc['id_mon_hoc'])->where('khoa_hoc',$request->khoa_hoc)->first();
+            $oldData=[];
+            if($temp!=null)
+                $oldData=$temp->getAttributes();
+            $modangkymon=MoDangKyMon::updateOrCreate(
                 [
                     'khoa_hoc'=>$request->khoa_hoc,
                     'id_mon_hoc'=>$monhoc['id_mon_hoc']
@@ -156,6 +162,19 @@ class MoDangKyMonController extends Controller
                     'da_dong'=>$monhoc['da_dong'],
                 ]
             );
+
+            $newData=$modangkymon->getAttributes();
+            $mh=MonHoc::find($modangkymon->id_mon_hoc);
+            $differences = array_diff($newData, $oldData);
+
+            activity()
+            ->useLog('Mở đăng ký môn')
+            ->performedOn($modangkymon)
+            ->withProperties(['attributes' => $newData,'old'=>$oldData])
+            ->causedBy(auth()->user())
+            ->log('Thay đổi mở đăng ký môn '.$mh->ten_mon_hoc. " - khóa ".$request->khoa_hoc);
+
+
         }
         return response()->json([
             'message'=>"Lưu thành công",

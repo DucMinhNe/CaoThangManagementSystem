@@ -158,7 +158,7 @@ $(function() {
         var button = $(this);
         var buttonText = button.text();
 
-        if (buttonText === 'Hiển thị Trạng thái 0') {
+        if (buttonText == 'Hiển thị Trạng thái 0') {
             button.text('Hiển thị Trạng thái 1');
             table.ajax.url("{{ route('thoigianbieu.getInactiveData') }}").load();
         } else {
