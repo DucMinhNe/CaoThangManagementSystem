@@ -49,13 +49,22 @@
                             <label for="stt"> Số thứ tự</label>
                             <input type="text" class="form-control" id="stt" name="stt"
                                 placeholder="Số thứ tự" value="" required>
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập số thứ tự.
+                                </div>
                             <div class="cs-form">
                                 <label for="thoi_gian_bat_dau">Thời gian bắt đầu</label>
                                 <input type="time" class="form-control" name="thoi_gian_bat_dau" id="thoi_gian_bat_dau" required/>
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập thời gian bắt đầu.
+                                </div>
                             </div>
                             <div class="cs-form">
                                 <label for="thoi_gian_ket_thuc">Thời gian kết thúc</label>
                                 <input type="time" class="form-control" name="thoi_gian_ket_thuc" id="thoi_gian_ket_thuc" required/>
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập thời gian kết thúc.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -196,22 +205,26 @@ $(function() {
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Sending..');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('thoigianbieu.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('thoigianbieu.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

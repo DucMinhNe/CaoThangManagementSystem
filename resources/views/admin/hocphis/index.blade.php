@@ -57,12 +57,18 @@
                             <label for="hoc_ky">Học kỳ</label>
                             <input type="number" class="form-control" id="hoc_ky" name="hoc_ky" placeholder="Học kỳ"
                                 value="" required>
+                                <div class="invalid-feedback">
+                                    Vui lòng chọn học kỳ.
+                                </div>
                         </div>
 
                         <div class="form-group">
                             <label for="khoa_hoc">Khóa học</label>
                             <input type="number" class="form-control" id="khoa_hoc" name="khoa_hoc"
                                 placeholder="Khóa học" value="" required>
+                                <div class="invalid-feedback">
+                                    Vui lòng chọn khóa học.
+                                </div>
                         </div>
                         <div class="form-group">
                             <label for="id_chuyen_nganh">Chuyên Ngành</label>
@@ -72,21 +78,33 @@
                                 <option value="{{ $chuyennganh->id }}">{{$chuyennganh->ten_chuyen_nganh}}</option>
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn chuyên ngành.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="so_tien">Số tiền</label>
                             <input type="number" class="form-control" id="so_tien" name="so_tien" placeholder="Số tiền"
                                 value="" required>
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập số tiền .
+                                </div>
                         </div>
                         <div class="cs-form">
                             <label for="ngay_bat_dau">Thời gian bắt đầu</label>
                             <input type="datetime-local" class="form-control" name="ngay_bat_dau" id="ngay_bat_dau"
                                 required />
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập thời gian bắt đầu.
+                                </div>
                         </div>
                         <div class="cs-form">
                             <label for="ngay_ket_thuc">Thời gian kết thúc</label>
                             <input type="datetime-local" class="form-control" name="ngay_ket_thuc" id="ngay_ket_thuc"
                                 required />
+                                <div class="invalid-feedback">
+                                    Vui lòng nhập thời gian kết thúc.
+                                </div>
                         </div>
                         <div class="form-group">
                             <label for="mo_dong_hoc_phi">Mở đóng học phí</label>
@@ -216,6 +234,7 @@ $(function() {
                 text: 'Số bản ghi trên trang'
             }
         ],
+        order:[[3,'asc']]
     });
     $('#closeBtn').click(function(){
         $('#modalForm').trigger("reset");
@@ -260,23 +279,27 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
-        $(this).html('Sending..');
-        $.ajax({
-            data: $('#modalForm').serialize(),
-            url: "{{ route('hocphi.store') }}",
-            type: "POST",
-            dataType: 'json',
-            success: function(data) {
-                $('#modalForm').trigger("reset");
-                $('#ajaxModelexa').modal('hide');
-                $('#savedata').html('Lưu');
-                table.draw();
-            },
-            error: function(data) {
-                console.log('Error:', data);
-                $('#savedata').html('Lưu');
-            }
-        });
+        if ($('#modalForm')[0].checkValidity()) {
+            $(this).html('Sending..');
+            $.ajax({
+                data: $('#modalForm').serialize(),
+                url: "{{ route('hocphi.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#modalForm').trigger("reset");
+                    $('#ajaxModelexa').modal('hide');
+                    $('#savedata').html('Lưu');
+                    table.draw();
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#savedata').html('Lưu');
+                }
+            });
+        } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

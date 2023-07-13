@@ -72,6 +72,7 @@
                                 <option value="{{ $khoahoc->khoa_hoc }}">{{$khoahoc->khoa_hoc}}</option>
                                 @endforeach
                             </select>
+
                         </div>
                         <div class="form-group">
                             <label for="id_chuyen_nganh">Ngành</label>
@@ -92,15 +93,21 @@
                         <div class="form-group">
                             <label for="id_lop_hoc_phan">Lớp học phần đăng ký</label>
                             <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2"
-                                style="width: 100%;" disabled>
+                                style="width: 100%;" disabled required>
                                 {{-- <option value="" selected>Chọn lớp học phần</option> --}}
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn lớp học phần cần đăng ký.
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="ma_sv">Sinh viên đăng ký</label>
-                            <select name="ma_sv" id="ma_sv" class="form-control select2" style="width: 100%;" disabled>
+                            <select name="ma_sv" id="ma_sv" class="form-control select2" style="width: 100%;" disabled required>
                                 {{-- <option value="" selected>Chọn sinh viên</option> --}}
                             </select>
+                            <div class="invalid-feedback">
+                                Vui lòng chọn sinh viên đăng ký.
+                            </div>
                         </div>
 
                     </div>
@@ -404,6 +411,7 @@ $(function() {
 
     $('#savedata').click(function(e) {
         e.preventDefault();
+        if ($('#modalForm')[0].checkValidity()) {
         $(this).html('Sending..');
         $.ajax({
             data: $('#modalForm').serialize(),
@@ -421,6 +429,9 @@ $(function() {
                 $('#savedata').html('Lưu');
             }
         });
+    } else {
+            $('#modalForm').addClass('was-validated');
+        }
     });
 
     $('body').on('click', '.deleteBtn', function() {

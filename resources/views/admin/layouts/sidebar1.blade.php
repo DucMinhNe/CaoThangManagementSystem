@@ -375,7 +375,7 @@
                     <a href="{{ url('/admin/activitylog') }}"
                         class="nav-link {{ Request::url() == url('/admin/activitylog') ? 'active' : '' }}">
                         <i class="fas fa-history"></i>
-                        <p>Lịch sử thay đổi</p>
+                        <p>Nhật ký</p>
                     </a>
                   </li>
                   <li class="nav-item">

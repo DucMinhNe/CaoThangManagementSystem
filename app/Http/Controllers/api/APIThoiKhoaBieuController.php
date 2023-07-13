@@ -135,8 +135,8 @@ class APIThoiKhoaBieuController extends Controller
             foreach ($lopDangKyHocPhan as $dangKy) {
                 $count=0;
                 $lichThuocThu=array();
-                $sinhVienDaHoanThanhLopHocPhan=$dangKy->lopHocPhan->chiTietLopHocPhan->where('ma_sv',$ma_sv)->whereNull('tong_ket_1')->whereNull('tong_ket_2')->first();
-                if($sinhVienDaHoanThanhLopHocPhan!=null){
+                // $sinhVienDaHoanThanhLopHocPhan=$dangKy->lopHocPhan->chiTietLopHocPhan->where('ma_sv',$ma_sv)->whereNull('tong_ket_1')->whereNull('tong_ket_2')->first();
+                if($dangKy->lopHocPhan->trang_thai_hoan_thanh==0){
                     $dataLichHoc=array();
                     foreach ($dangKy->lopHocPhan->thoiKhoaBieu as $tkb) {
                         if($tkb->thu_trong_tuan==$day){
@@ -184,10 +184,13 @@ class APIThoiKhoaBieuController extends Controller
                                 // ->join('ct_chuong_trinh_dao_taos','ct_chuong_trinh_dao_taos.id','lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
                                 // ->join('mon_hocs','mon_hocs.id','ct_chuong_trinh_dao_taos.id_mon_hoc')
                                 ->join('phongs','phongs.id','thoi_khoa_bieus.id_phong_hoc')
+                                ->join('thoi_gian_bieus','thoi_gian_bieus.id','thoi_khoa_bieus.id_tiet_bat_dau')
                                 // ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
                                 ->where('id_lop_hoc',$sinhVien->id_lop_hoc)
-                                ->where('lop_hoc_phans.trang_thai_hoan_thanh')
-                                ->where('thoi_khoa_bieus.trang_thai',1);
+                                ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
+                                ->where('thoi_khoa_bieus.trang_thai',1)
+                                ->orderBy('thoi_gian_bieus.stt','asc');
+
 
         // return $thoiKhoaBieu->select('lop_hoc_phans.*')->get();
         $phongHoc= clone $thoiKhoaBieu;

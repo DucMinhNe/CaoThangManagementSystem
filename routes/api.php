@@ -113,6 +113,7 @@ Route::get('/test-array',function(Request $request){
 
 
 Route::get('giang-vien/danh-sach-lop-hoc-phan/{ma_gv}',[APILopHocPhanController::class,'layDanhSachLopHocPhanTheoGiangVien']);
+Route::get('giang-vien/danh-sach-lop-hoc-phan-da-hoan-thanh/{ma_gv}',[APILopHocPhanController::class,'layDanhSachLopHocPhanDaHoanThanhTheoGiangVien']);
 Route::get('/sinh-vien/{ma_sv}',[APISinhVienController::class,'show']);
 Route::post('/xu-ly-dong-hoc-phi-paypal',[APIHocPhiController::class,'xuLyDongHocPhiPaypal']);
 Route::post('/xu-ly-dong-hoc-phi-vnpay',[APIHocPhiController::class,'xuLyDongHocPhiVNPay']);

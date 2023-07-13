@@ -55,15 +55,15 @@ class APILopHocPhanController extends Controller
     public function show($id)
     {
         return LopHocPhan::join('lop_hocs','lop_hocs.id','=','lop_hoc_phans.id_lop_hoc')
-                        ->select('lop_hocs.ten_lop_hoc','lop_hoc_phans.ten_lop_hoc_phan')
+                        ->select('lop_hoc_phans.*','lop_hocs.ten_lop_hoc')
                         ->where('lop_hoc_phans.id',$id)
                         ->first();
-       
+
     }
     public function layLopHoc()
     {
         $data = null;
-        
+
         return $data;
     }
     /**
@@ -88,6 +88,72 @@ class APILopHocPhanController extends Controller
     {
         //
     }
+
+    public function layDanhSachLopHocPhanDaHoanThanhTheoGiangVien($ma_gv,Request $request){
+        $danhSachlopHocPhan=null;
+        if($request->option==1){
+            $lopHocPhan=LopHocPhan::where('id',$request->id_lop_hoc_phan)
+                                          ->where(function($query) use ($ma_gv){
+                                            $query->where('lop_hoc_phans.ma_gv_1',$ma_gv)
+                                            ->orWhere('lop_hoc_phans.ma_gv_2',$ma_gv)
+                                            ->orWhere('lop_hoc_phans.ma_gv_3',$ma_gv);
+                                        })
+                                          ->where('trang_thai',1)
+
+                                          ->first();
+            $danhSachSinhVien=array();
+            if($lopHocPhan==null){
+                return response()->json([
+                    'message'=>"Không tìm thấy lớp học phần của giảng viên này",
+                    'status'=>0
+                ]);
+            }
+            $danhSachChiTietLopHocPhan=CTLopHocPhan::where('id_lop_hoc_phan',$lopHocPhan->id)->where('trang_thai',1)->get();
+            $danhSachSinhVien=array();
+            foreach ($danhSachChiTietLopHocPhan as $chiTietLopHocPhan) {
+                $danhSachSinhVien[]=$chiTietLopHocPhan->sinhVien;
+            }
+            return response()->json([
+                'id_lop_hoc_phan'=>$lopHocPhan->id,
+                'giang_vien_chinh'=>$lopHocPhan->giangVienChinh,
+                'giang_vien_phu'=>$lopHocPhan->giangVienPhu,
+                'mon_hoc'=>$lopHocPhan->chiTietChuongTrinhDaoTao->monHoc,
+                'lop_hoc'=>$lopHocPhan->lopHoc,
+                'danh_sach_sinh_vien'=>$danhSachSinhVien
+                ]
+            );
+
+        }else{
+            $danhSachlopHocPhan=LopHocPhan::
+                where(function($query) use ($ma_gv){
+                $query->where('lop_hoc_phans.ma_gv_1',$ma_gv)
+                ->orWhere('lop_hoc_phans.ma_gv_2',$ma_gv)
+                ->orWhere('lop_hoc_phans.ma_gv_3',$ma_gv);
+                })->where('trang_thai_hoan_thanh',1)
+                ->get();
+                              //return $danhSachlopHocPhan;
+        $data=array();
+        foreach($danhSachlopHocPhan as $lopHocPhan){
+            $danhSachSinhVien=array();
+
+            foreach($lopHocPhan->chiTietLopHocPhan->sortBy('ma_sv') as $chiTietLopHocPhan){
+                $danhSachSinhVien[]=$chiTietLopHocPhan->sinhVien;
+            }
+            $data[]=array(
+                'id_lop_hoc_phan'=>$lopHocPhan->id,
+                'giang_vien_chinh'=>$lopHocPhan->giangVienChinh,
+                'giang_vien_phu'=>$lopHocPhan->giangVienPhu,
+                'mon_hoc'=>$lopHocPhan->chiTietChuongTrinhDaoTao->monHoc,
+                'lop_hoc'=>$lopHocPhan->lopHoc,
+                'danh_sach_sinh_vien'=>$danhSachSinhVien
+            );
+        }
+
+        return $data;
+        }
+
+
+    }
     public function layDanhSachLopHocPhanTheoGiangVien($ma_gv,Request $request){
         $danhSachlopHocPhan=null;
         if($request->option==1){
@@ -98,7 +164,7 @@ class APILopHocPhanController extends Controller
                                             ->orWhere('lop_hoc_phans.ma_gv_3',$ma_gv);
                                         })
                                           ->where('trang_thai',1)
-                                        
+
                                           ->first();
             $danhSachSinhVien=array();
             if($lopHocPhan==null){
@@ -147,14 +213,14 @@ class APILopHocPhanController extends Controller
                 'danh_sach_sinh_vien'=>$danhSachSinhVien
             );
         }
-        
+
         return $data;
         }
 
 
     }
 
-    
+
     public function danhSachLopHocPhanConMoThuocMonHoc($id){
         $lopHocPhan=LopHocPhan::select('lop_hoc_phans.*')
                               ->join('ct_chuong_trinh_dao_taos','lop_hoc_phans.id_ct_chuong_trinh_dao_tao','ct_chuong_trinh_dao_taos.id')

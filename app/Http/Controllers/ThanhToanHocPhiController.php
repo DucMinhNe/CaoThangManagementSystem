@@ -54,7 +54,7 @@ class ThanhToanHocPhiController extends Controller
         $khoahocs=ChuongTrinhDaoTao::where('trang_thai',1)->get();
         $chuyennganhs=ChuyenNganh::where('trang_thai',1)->get();
         $lophocs=LopHoc::where('trang_thai',1)->get();
-        $hocphis=HocPhi::where('hoc_phis.trang_thai',1)->select('hoc_ky','khoa_hoc')->distinct()->get();
+        $hocphis=HocPhi::where('hoc_phis.trang_thai',1)->orderBy('hoc_ky','asc')->orderBy('khoa_hoc','desc')->select('hoc_ky','khoa_hoc')->distinct()->get();
         $sinhviens=SinhVien::where('trang_thai',1)->whereNotIn('ma_sv',ThanhToanHocPhi::select('ma_sv')->where('trang_thai',1)->get())->get();
         $hinhthucthanhtoans=HinhThucThanhToan::where('trang_thai',1)->get();
         return view('admin.thanhtoanhocphis.index',compact('hocphis','sinhviens','hinhthucthanhtoans','chuyennganhs','lophocs'));

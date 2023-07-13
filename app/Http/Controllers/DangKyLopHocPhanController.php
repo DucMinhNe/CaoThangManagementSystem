@@ -194,7 +194,9 @@ class DangKyLopHocPhanController extends Controller
         $chuongtrinhdaotao=ChuongTrinhDaoTao::where('khoa_hoc',$request->khoa_hoc)->where('id_chuyen_nganh',$request->id_chuyen_nganh)->first();
         $ctchuongtrinhdaotao=$chuongtrinhdaotao->ctChuongTrinhDaoTao->where('id_mon_hoc',$request->id_mon_hoc)->where('trang_thai',1)->first();
         $tiendong=$ctchuongtrinhdaotao->so_tin_chi*env('TIEN_MON_HOC_LI_THUYET');
-        DangKyLopHocPhan::updateOrCreate(['id' => $request->id],
+        $lophocphan=LopHocPhan::find($request->id_lop_hoc_phan);
+        $sinhvien=SinhVien::where('ma_sv',$request->ma_sv)->first();
+        $dangkylophocphan=DangKyLopHocPhan::updateOrCreate(['id' => $request->id],
         ['ma_sv' => $request->ma_sv,
            'id_lop_hoc_phan' => $request->id_lop_hoc_phan,
            'tien_dong'=>$tiendong,
@@ -203,6 +205,13 @@ class DangKyLopHocPhanController extends Controller
            'trang_thai',1
         ],
         );
+
+        activity()
+            ->useLog('Thêm đăng ký lớp học phần')
+            ->performedOn($dangkylophocphan)
+            ->withProperties(['attributes' => $dangkylophocphan->getAttributes(),'old'=>[]])
+            ->causedBy(auth()->user())
+            ->log('Thêm đăng ký lớp học phần cho sinh viên '.$sinhvien->ten_sinh_vien.'- Mã '.$sinhvien->ma_sv.' /  Đăng ký lớp: '.$lophocphan->ten_lop_hoc_phan.' - Mã lớp: '.$lophocphan->id ) ;
         return response()->json(['success'=>'Lưu  Thành Công.']);
     }
 
@@ -261,12 +270,22 @@ class DangKyLopHocPhanController extends Controller
     }
     public function review($id)
     {
+
         DangKyLopHocPhan::where('id', $id)->update(['duyet' => 1]);
         $dangkylophocphan=DangKyLopHocPhan::where('id',$id)->where('trang_thai',1)->first();
+        $lophocphan=LopHocPhan::find($request->id_lop_hoc_phan);
+        $sinhvien=SinhVien::where('ma_sv',$request->ma_sv)->first();
         CTLopHocPhan::create([
             'id_lop_hoc_phan'=>$dangkylophocphan->id_lop_hoc_phan,
             'ma_sv'=>$dangkylophocphan->ma_sv,
         ]);
+
+        activity()
+        ->useLog('Duyệt đăng ký lớp học phần')
+        ->performedOn($dangkylophocphan)
+        ->withProperties(['attributes' => $dangkylophocphan->getAttributes(),'old'=>[]])
+        ->causedBy(auth()->user())
+        ->log('Duyệt đăng ký lớp học phần cho sinh viên '.$sinhvien->ten_sinh_vien.'- Mã '.$sinhvien->ma_sv.' /  Đăng ký lớp: '.$lophocphan->ten_lop_hoc_phan.' - Mã lớp: '.$lophocphan->id ) ;
         return response()->json(['success' => 'Duyệt Thành Công.']);
     }
 }
