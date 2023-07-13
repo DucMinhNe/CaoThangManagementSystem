@@ -86,7 +86,7 @@ class APIDangKyLopHocPhanController extends Controller
                                       ->where('ct_chuong_trinh_dao_taos.id_mon_hoc',$request->id_mon_hoc)
                                       ->where('ct_lop_hoc_phans.ma_sv',$sinhvien->ma_sv)
                                       ->where('ct_chuong_trinh_dao_taos.trang_thai',1)
-                                      ->orderBy('ct_lop_hoc_phans.created_at','desc')
+                                      ->orderBy('tong_ket_1','desc')->orderBy('tong_ket_2','desc')
                                     //   ->get();
                                       ->first();
 
@@ -189,8 +189,9 @@ class APIDangKyLopHocPhanController extends Controller
                                   ->where('lop_hoc_phans.trang_thai',1)
                                   ->first();
                 $lichHoc=ThoiKhoaBieu::where('id_lop_hoc_phan',$item->id_lop_hoc_phan)->where('trang_thai',1)->get();
-                $giangVien1=GiangVien::where('ma_gv',$item->ma_gv_1)->where('trang_thai',1)->first();
-                $giangVien2=GiangVien::where('ma_gv',$item->ma_gv_2)->where('trang_thai',1)->first();
+                $giangVien1=GiangVien::where('ma_gv',$item->ma_gv_1)->first();
+                $giangVien2=GiangVien::where('ma_gv',$item->ma_gv_2)->first();
+                $giangVien3=GiangVien::where('ma_gv',$item->ma_gv_3)->first();
                 $arrLichHoc=array();
                 foreach($lichHoc as $lich){
                     $phongHoc=Phong::where('id',$lich->id_phong_hoc)->where('trang_thai',1)->first();
@@ -209,6 +210,7 @@ class APIDangKyLopHocPhanController extends Controller
                     'mon_hoc'=>['id_mon_hoc'=>$monHoc->id_mon_hoc,'ten_mon_hoc'=>$monHoc->ten_mon_hoc],
                     'giang_vien_1'=>$giangVien1,
                     'giang_vien_2'=>$giangVien2,
+                    'giang_vien_3'=>$giangVien3,
                     'lop_hoc'=>$lop,
                     'lich'=>$arrLichHoc,
                     'da_dong_tien'=>$item->da_dong_tien,

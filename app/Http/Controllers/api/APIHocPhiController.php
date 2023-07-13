@@ -156,7 +156,7 @@ class APIHocPhiController extends Controller
             }
 
         }
-        $danhSachHocPhiHocKy=HocPhi::where('mo_dong_hoc_phi',1)->get();
+        $danhSachHocPhiHocKy=HocPhi::where('mo_dong_hoc_phi',1)->orderBy('hoc_ky','asc')->get();
         $dataHocPhiHocKy=array();
         foreach($danhSachHocPhiHocKy as $hocPhiHocKy){
             if(HocPhi::whereIn('id_chuyen_nganh',$idChuyenNganhs)->where('id',$hocPhiHocKy->id)->first()!=null){
