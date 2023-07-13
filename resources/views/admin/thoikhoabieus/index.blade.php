@@ -330,7 +330,7 @@ $('#savedata').click(function(e) {
             type: "POST",
             dataType: 'json',
             success: function(data) {
-                $('#modalForm').trigger("reset");
+                // $('#modalForm').trigger("reset");
                 //$('#ajaxModelexa').modal('hide');
                 $('#savedata').html('Lưu');
                 table.draw();
@@ -400,7 +400,7 @@ $('#add-row-tkb').click(function(){
             data:jsonOject
         }).done(function(response){
             if(response.status==1){
-                text='<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+thu_trong_tuan+'">'+$arrayThu[thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+tiet_ket_thuc.id+'">'+tiet_bat_dau.stt+' -> '+tiet_ket_thuc.stt+'</td><td >'+tiet_bat_dau.thoi_gian_bat_dau+' -> '+tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+phong_hoc.id+'">'+phong_hoc.ten_phong+'</td><td data-hoc-ky="'+hoc_ky+'">'+hoc_ky+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
+                text='<tr data-row-tkb="'+row+'"><td data-thu_trong_tuan="'+thu_trong_tuan+'">'+$arrayThu[thu_trong_tuan-1]+'</td><td data-id-tiet-bat-dau="'+tiet_bat_dau.id+'" data-id-tiet-ket-thuc="'+tiet_ket_thuc.id+'">'+tiet_bat_dau.stt+' &#8594; '+tiet_ket_thuc.stt+'</td><td >'+tiet_bat_dau.thoi_gian_bat_dau+' &#8594; '+tiet_ket_thuc.thoi_gian_ket_thuc+'</td><td data-phong="'+phong_hoc.id+'">'+phong_hoc.ten_phong+'</td><td data-hoc-ky="'+hoc_ky+'">'+hoc_ky+'</td><td><a class="btn btn-warning remove-row" data-row-tkb="'+row+'">Bỏ</a></td></tr>';
                 jsonOject={
                     'thu_trong_tuan':thu_trong_tuan,
                     'tiet_bat_dau':tiet_bat_dau,

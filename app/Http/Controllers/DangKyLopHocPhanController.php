@@ -273,8 +273,8 @@ class DangKyLopHocPhanController extends Controller
 
         DangKyLopHocPhan::where('id', $id)->update(['duyet' => 1]);
         $dangkylophocphan=DangKyLopHocPhan::where('id',$id)->where('trang_thai',1)->first();
-        $lophocphan=LopHocPhan::find($request->id_lop_hoc_phan);
-        $sinhvien=SinhVien::where('ma_sv',$request->ma_sv)->first();
+        $lophocphan=LopHocPhan::find($dangkylophocphan->id_lop_hoc_phan);
+        $sinhvien=SinhVien::where('ma_sv',$dangkylophocphan->ma_sv)->first();
         CTLopHocPhan::create([
             'id_lop_hoc_phan'=>$dangkylophocphan->id_lop_hoc_phan,
             'ma_sv'=>$dangkylophocphan->ma_sv,

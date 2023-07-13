@@ -187,7 +187,7 @@ class APIThoiKhoaBieuController extends Controller
                                 ->join('thoi_gian_bieus','thoi_gian_bieus.id','thoi_khoa_bieus.id_tiet_bat_dau')
                                 // ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
                                 ->where('id_lop_hoc',$sinhVien->id_lop_hoc)
-                                ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
+                                // ->where('lop_hoc_phans.trang_thai_hoan_thanh',0)
                                 ->where('thoi_khoa_bieus.trang_thai',1)
                                 ->orderBy('thoi_gian_bieus.stt','asc');
 
@@ -223,6 +223,7 @@ class APIThoiKhoaBieuController extends Controller
                             'ten_lop_hoc'=>$lophoc->ten_lop_hoc,
                             'giang_vien_chu_nhiem'=>$lophoc->giangVienChuNhiem,
                         ),
+                        'trang_thai_hoan_thanh'=>$lich->lopHocPhan->trang_thai_hoan_thanh,
                         'thu_trong_tuan'=>$lich->thu_trong_tuan,
                         'tiet_bat_dau'=>$tietBatDau->stt,
                         'thoi_gian_bat_dau'=>$tietBatDau->thoi_gian_bat_dau,

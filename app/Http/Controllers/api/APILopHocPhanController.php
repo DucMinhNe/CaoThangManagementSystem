@@ -232,8 +232,9 @@ class APILopHocPhanController extends Controller
         //dd($lopHocPhan);
         $data=array();
         foreach($lopHocPhan as $item){
-            $giangVien1=GiangVien::where('ma_gv',$item->ma_gv_1)->where('trang_thai',1)->first();
-            $giangVien2=GiangVien::where('ma_gv',$item->ma_gv_2)->where('trang_thai',1)->first();
+            $giangVien1=GiangVien::where('ma_gv',$item->ma_gv_1)->first();
+            $giangVien2=GiangVien::where('ma_gv',$item->ma_gv_2)->first();
+            $giangVien3=GiangVien::where('ma_gv',$item->ma_gv_3)->first();
             //dd($giangVien2);
             $thoiKhoaBieu=ThoiKhoaBieu::where('id_lop_hoc_phan',$item->id)->where('trang_thai',1)->get();
             $dataThoiKhoaBieu=array();
@@ -259,7 +260,8 @@ class APILopHocPhanController extends Controller
                 'ten_lop_hoc_phan'=>$item->ten_lop_hoc_phan,
                 'lop_hoc'=>$lop_hoc,
                 'giang_vien_1'=>$giangVien1->ten_giang_vien,
-                'giang_vien_2'=>$giangVien2!=null?$giangVien2->ten_giang_vien:"Empty",
+                'giang_vien_2'=>$giangVien2!=null?$giangVien2->ten_giang_vien:"Trống",
+                'giang_vien_3'=>$giangVien3!=null?$giangVien3->ten_giang_vien:"Trống",
                 'lich_hoc'=>$dataThoiKhoaBieu,
             );
         }
