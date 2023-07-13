@@ -381,6 +381,7 @@ $(function() {
     $('#btnMoDangKyMon').click(function() {
         $('#id').val('');
         $('#modalForm').trigger("reset");
+        $('#openBtn').html('Mở tất cả môn')
         $('#formthemmodangkymon').modal('show');
     })
     $('#createNewBtn').click(function() {
