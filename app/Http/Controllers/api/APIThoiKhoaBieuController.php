@@ -186,6 +186,7 @@ class APIThoiKhoaBieuController extends Controller
                                 ->join('phongs','phongs.id','thoi_khoa_bieus.id_phong_hoc')
                                 // ->where('ct_lop_hoc_phans.ma_sv',$ma_sv)
                                 ->where('id_lop_hoc',$sinhVien->id_lop_hoc)
+                                ->where('lop_hoc_phans.trang_thai_hoan_thanh')
                                 ->where('thoi_khoa_bieus.trang_thai',1);
 
         // return $thoiKhoaBieu->select('lop_hoc_phans.*')->get();

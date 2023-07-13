@@ -57,6 +57,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modelHeading"></h4>
+                <button type="button" class="close" id="closeBtn">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
             <div class="modal-body">
                 <form id="modalForm" name="modalForm" class="form-horizontal">
@@ -316,7 +319,10 @@ $(function() {
         $url = "{{env('SERVER_URL')}}/api/sinhvien/danhsachsinhvientheokhoahocvamonno";
         callAPI($url, $data, 'ma_sv');
     })
-
+    $('#closeBtn').click(function(){
+        $('#modalForm').trigger("reset");
+        $('#ajaxModelexa').modal('hide');
+    })
     $('#createNewBtn').click(function() {
         $('#savedata').val("create-Btn");
         $('#id').val('');

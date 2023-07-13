@@ -25,7 +25,7 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Mã<th>
+                        <th>Mã</th>
                         {{-- <th>Vai trò</th> --}}
                         <th>Tên người thực hiện</th>
                         <th>Nội dung </th>
@@ -41,6 +41,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modelHeading"></h4>
+                <button type="button" class="close" id="closeBtn">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
             <div class="modal-body">
                 <div id="content">
@@ -163,11 +166,14 @@ $(function() {
                 text: 'Số bản ghi trên trang'
             }
         ],
-        order: [[3, 'desc']]
+        order: [[4, 'desc']]
     });
 
 
-
+    $('#closeBtn').click(function(){
+        $('#modalForm').trigger("reset");
+        $('#ajaxModelexa').modal('hide');
+    })
     function formattedDate(data){
         const date = new Date(data);
 
@@ -203,18 +209,37 @@ $(function() {
 
     $('body').on('click', '.deleteBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn xóa?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ route('activitylog.destroy', '') }}/" + id,
-                success: function(data) {
-                    table.draw();
-                },
-                error: function(data) {
-                    console.log('Error:', data);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('activitylog.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        table.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
 
 });

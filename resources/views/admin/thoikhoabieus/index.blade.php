@@ -36,6 +36,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modelHeading"></h4>
+                <button type="button" class="close" id="closeBtn">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
             <div class="modal-body">
                 <form id="modalForm" name="modalForm" class="form-horizontal" enctype="multipart/form-data">
@@ -270,6 +273,10 @@ $('#id_tiet_bat_dau').change(function(){
     $('#id_tiet_ket_thuc').empty();
     $('#id_tiet_ket_thuc').append(text);
 })
+$('#closeBtn').click(function(){
+        $('#modalForm').trigger("reset");
+        $('#ajaxModelexa').modal('hide');
+    })
 $('body').on('click', '.editBtn', function() {
     var id = $(this).data('id');
 

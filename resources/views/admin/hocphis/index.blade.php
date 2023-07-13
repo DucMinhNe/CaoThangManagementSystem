@@ -45,6 +45,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modelHeading"></h4>
+                <button type="button" class="close" id="closeBtn">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
             <div class="modal-body">
                 <form id="modalForm" name="modalForm" class="form-horizontal">
@@ -214,7 +217,10 @@ $(function() {
             }
         ],
     });
-
+    $('#closeBtn').click(function(){
+        $('#modalForm').trigger("reset");
+        $('#ajaxModelexa').modal('hide');
+    })
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonText = button.text();

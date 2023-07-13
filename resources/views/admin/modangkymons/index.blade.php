@@ -15,6 +15,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="modelHeading-them">Mở đăng ký môn theo khóa theo ngành</h4>
+                        <button type="button" class="close" id="closeBtn">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                     </div>
                     <div class="modal-body">
                         <form id="modalFormThem" name="modalForm" class="form-horizontal">
@@ -285,6 +288,10 @@ $(function() {
             }
         ],
     });
+    $('#closeBtn').click(function(){
+        $('#modalForm').trigger("reset");
+        $('#formthemmodangkymon').modal('hide');
+    })
     $('#khoa_hoc').change(function() {
         var chuyennganh = $('#chuyen_nganh').val();
         // $('#table-mo-dang-ky-mon tbody').empty();
