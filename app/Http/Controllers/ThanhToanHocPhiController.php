@@ -26,9 +26,8 @@ class ThanhToanHocPhiController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ThanhToanHocPhi::leftJoin('qua_trinh_hoc_taps','qua_trinh_hoc_taps.ma_sv','thanh_toan_hoc_phis.ma_sv')
-                                   ->leftJoin('sinh_viens','qua_trinh_hoc_taps.ma_sv','sinh_viens.ma_sv')
-                                   ->leftJoin('lop_hocs','qua_trinh_hoc_taps.id_lop_hoc','lop_hocs.id')
+            $data = ThanhToanHocPhi::leftJoin('sinh_viens','sinh_viens.ma_sv','thanh_toan_hoc_phis.ma_sv')
+                                   ->leftJoin('lop_hocs','sinh_viens.id_lop_hoc','lop_hocs.id')
                                    ->leftJoin('hoc_phis','thanh_toan_hoc_phis.id_hoc_phi','hoc_phis.id')
                                    ->leftJoin('chuyen_nganhs','chuyen_nganhs.id','hoc_phis.id_chuyen_nganh')
                                    ->select('thanh_toan_hoc_phis.*','sinh_viens.ten_sinh_vien','sinh_viens.id_lop_hoc','lop_hocs.ten_lop_hoc','hoc_phis.hoc_ky','hoc_phis.so_tien','hoc_phis.khoa_hoc','chuyen_nganhs.ten_chuyen_nganh')
