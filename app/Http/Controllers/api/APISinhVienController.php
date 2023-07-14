@@ -206,7 +206,7 @@ class APISinhVienController extends Controller
                             'diem'=>-1
                         );
                     }else{
-                        //dd($chiTietLopHocPhans->first()->tong_ket_1);
+                        //return $chiTietLopHocPhans->first()->tong_ket_1;
                         $data[]=array(
                         'ten_mon_hoc'=>$monHoc->ten_mon_hoc,
                         'hoc_ky'=>$item->hoc_ky,

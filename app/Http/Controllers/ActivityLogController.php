@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 use App\Models\MonHoc;
 use App\Models\MoDangKyMon;
+use App\Models\CTLopHocPhan;
+use App\Models\SinhVien;
+use App\Models\LopHocPhan;
 use DataTables;
 
 class ActivityLogController extends Controller
@@ -85,6 +88,15 @@ class ActivityLogController extends Controller
                 'mon_hoc'=>MonHoc::find(MoDangKyMon::find($activity->subject_id)->id_mon_hoc),
                 'data'=>$activity->properties,
                 'object'=>'mo_dang_ky_mons',
+            ]);
+        }
+        if($activity->subject_type=="App\Models\CTLopHocPhan"){
+            $ctlophocphan=CTLopHocPhan::where('id',$activity->subject_id)->first();
+            return response()->json([
+                'sinh_vien'=>SinhVien::where('ma_sv',$ctlophocphan->ma_sv)->first(),
+                'lop_hoc_phan'=>LopHocPhan::where('id',$ctlophocphan->id_lop_hoc_phan)->first(),
+                'data'=>$activity->properties,
+                'object'=>'ct_lop_hoc_phans'
             ]);
         }
     }

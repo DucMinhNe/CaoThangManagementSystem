@@ -199,6 +199,9 @@ $(function() {
             temp2=data.data.attributes.da_dong==1?"Đã đóng":"Đang mở";
             text="<p>Tên môn học: "+data.mon_hoc.ten_mon_hoc+"</p><p>Thời gian mở: "+formattedDate(data.data.old.mo_dang_ky)+" &#8594; "+formattedDate(data.data.attributes.mo_dang_ky)+"</p><p>Thời gian đóng: "+formattedDate( data.data.old.dong_dang_ky)+" &#8594; "+formattedDate( data.data.attributes.dong_dang_ky)+"</p> <p>"+temp1+"  &#8594; "+temp2+"</p>"
           }
+          if(data.object=="ct_lop_hoc_phans"){
+            text='<p>Tên sinh viên: '+data.sinh_vien.ten_sinh_vien+' - Mã sinh viên: '+data.sinh_vien.ma_sv+'</p><p> Tên lớp học phần: '+data.lop_hoc_phan.ten_lop_hoc_phan+' - Mã lớp: '+data.lop_hoc_phan.id+'</p><p>Điểm chuyên cần: '+data.data.old.chuyen_can+' &#8594; '+data.data.attributes.chuyen_can+'</p><p> Điểm thi 1: '+data.data.old.thi_1+' &#8594; '+data.data.attributes.thi_1+'</p><p>Điểm thi 2: '+data.data.old.thi_2+' &#8594; '+data.data.attributes.thi_2+'</p><p>Điểm tổng kết 1: '+data.data.old.tong_ket_1+' &#8594; '+data.data.attributes.tong_ket_1+'</p><p>Điểm tổng kết 2: '+data.data.old.tong_ket_2+' &#8594; '+data.data.attributes.tong_ket_2+'</p>';
+          }
           console.log(text);
           $('#content').empty();
           $('#content').append(text);
