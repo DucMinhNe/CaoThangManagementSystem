@@ -54,7 +54,7 @@ class APILopHocPhanController extends Controller
      */
     public function show($id)
     {
-        return LopHocPhan::join('lop_hocs','lop_hocs.id','=','lop_hoc_phans.id_lop_hoc')
+        return LopHocPhan::leftJoin('lop_hocs','lop_hocs.id','=','lop_hoc_phans.id_lop_hoc')
                         ->select('lop_hoc_phans.*','lop_hocs.ten_lop_hoc')
                         ->where('lop_hoc_phans.id',$id)
                         ->first();

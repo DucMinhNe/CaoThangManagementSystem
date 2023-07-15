@@ -8,21 +8,22 @@
 <script src="{{ asset('plugins/summernote/summernote-lite.min.js') }}"></script>
 <textarea id="summernote_post_edit"></textarea>
 <script>
-$('#summernote_post_edit').summernote({
-    disableDragAndDrop: true,
-    placeholder: '',
-    tabsize: 2,
-    height: 150,
-    toolbar: [
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['fontname', ['fontname']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']],
-        ['insert', ['link', ]], // 'picture'
+    $('#summernote_post_edit').summernote({
+
+        placeholder: '',
+        tabsize: 2,
+        height: 150,
+        disableDragAndDrop: true,
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['link', ]], // 'picture'
 
 
-    ],
-});
+        ],
+    });
 </script>

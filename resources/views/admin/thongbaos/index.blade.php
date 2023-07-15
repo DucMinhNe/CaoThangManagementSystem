@@ -4,7 +4,8 @@
         <div class="container">
 
             <ul class="nav nav-pills nav-pills-bg-soft justify-content-sm-end mb-4 ">
-                <a id="showInactiveBtn" class="btn btn-primary" href="#" style="margin-right: 10px">Hiển thị danh sách đã xóa</a>
+                <a id="showInactiveBtn" class="btn btn-primary" href="#" style="margin-right: 10px">Hiển thị danh sách đã
+                    xóa</a>
                 <a class="btn btn-info" href="javascript:void(0)" id="createNewBtn"> Thêm</a>
             </ul>
             <div class="card-body">
@@ -39,9 +40,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modelHeading"></h4>
-                    <button type="button" class="close" id="closeBtn">
+                    <button type="button" class="close closeBtn">
                         <span aria-hidden="true">&times;</span>
-                      </button>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form id="modalForm" name="modalForm" class="form-horizontal" enctype="multipart/form-data"
@@ -64,7 +65,7 @@
                                                 <div class="form-group" style="padding-left:10px;">
                                                     <label for="danh_sach_lop">Danh sách lớp học </label>
                                                     <select name="danh_sach_lop" id="danh_sach_lop"
-                                                        class="form-control select2" style="width: 100%;" >
+                                                        class="form-control select2" style="width: 100%;">
 
 
 
@@ -125,7 +126,7 @@
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="savedata" value="create">Lưu</button>
-                            <a class="btn btn-primary" style="color:white">Huỷ</a>
+                            <a class="btn btn-primary closeBtn" style="color:white">Huỷ</a>
                         </div>
                     </form>
                 </div>
@@ -141,7 +142,7 @@
             $danh_sach_lop_hoc = JSON.parse('{!! json_encode($lop_hoc) !!}');
             $danh_sach_lop_hoc_phan = JSON.parse('{!! json_encode($lop_hoc_phan) !!}');
             $danh_sach_sinh_vien_thuoc_lop = null;
-            $countLoadAPI=1;
+            $countLoadAPI = 1;
             // console.log($danh_sach_lop_hoc);
             // console.log($danh_sach_lop_hoc_phan);
             $.ajaxSetup({
@@ -203,6 +204,7 @@
                         "sSortDescending": ": Sắp xếp giảm dần"
                     }
                 },
+                order: [0, 'desc'],
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'copy',
@@ -230,20 +232,21 @@
                     }
                 ],
             });
-            $('#closeBtn').click(function(){
-                    $('#modalForm').trigger("reset");
-                    $('#ajaxModelexa').modal('hide');
-                })
+            $('.closeBtn').click(function() {
+                $('#modalForm').trigger("reset");
+                $('#ajaxModelexa').modal('hide');
+
+            })
             $('#loai_lop_hoc').change(function() {
                 $loai_lop_hoc = $('#loai_lop_hoc').val();
                 $text = "";
-                firstSelect=0;
+                firstSelect = 0;
                 if ($loai_lop_hoc == 1) {
                     $danh_sach_lop_hoc.forEach(lop_hoc => {
                         $text += "<option value='" + lop_hoc.id + "''>" + lop_hoc.ten_lop_hoc +
                             "</option>";
-                        if(firstSelect==0){
-                            firstSelect=lop_hoc.id;
+                        if (firstSelect == 0) {
+                            firstSelect = lop_hoc.id;
                         }
                     });
 
@@ -252,8 +255,8 @@
                         $text += "<option value='" + lop_hoc_phan.id + "'>" + lop_hoc_phan
                             .ten_lop_hoc_phan +
                             "</option>";
-                            if(firstSelect==0){
-                            firstSelect=lop_hoc_phan.id;
+                        if (firstSelect == 0) {
+                            firstSelect = lop_hoc_phan.id;
                         }
                     });
                 }
@@ -265,61 +268,62 @@
 
             $('#danh_sach_lop').change(function() {
                 console.log($(this).val());
-                if($(this).val()!=null){
+                if ($(this).val() != null) {
                     $.ajax({
-                    type: "GET",
-                    url: "{{ env('SERVER_URL') }}/admin/thongbao/danhsachsinhvienlophoc",
-                    data: {
-                        'loai_lop_hoc': $('#loai_lop_hoc').val(),
-                        'id_lop_hoc': $('#danh_sach_lop').val()
-                    },
-                    dataType: 'Json',
-                }).done(function($response) {
+                        type: "GET",
+                        url: "{{ env('SERVER_URL') }}/admin/thongbao/danhsachsinhvienlophoc",
+                        data: {
+                            'loai_lop_hoc': $('#loai_lop_hoc').val(),
+                            'id_lop_hoc': $('#danh_sach_lop').val()
+                        },
+                        dataType: 'Json',
+                    }).done(function($response) {
 
-                    var text = "";
-                    $danh_sach_sinh_vien_lop_hoc = $response;
-                    $danh_sach_sinh_vien_lop_hoc.forEach(sinh_vien => {
-                        text = text +
-                            ' <li> <label class = "dropdown-item"> <input checked type = "checkbox" class = "form-check-input checked-sv checkbox-item" data-ma-sv = "' +
-                             sinh_vien.ma_sv + '" >  ' +  sinh_vien.ma_sv  + '-' +
-                           sinh_vien.ten_sinh_vien+ ' </label> </li> ';
+                        var text = "";
+                        $danh_sach_sinh_vien_lop_hoc = $response;
+                        $danh_sach_sinh_vien_lop_hoc.forEach(sinh_vien => {
+                            text = text +
+                                ' <li> <label class = "dropdown-item"> <input checked type = "checkbox" class = "form-check-input checked-sv checkbox-item" data-ma-sv = "' +
+                                sinh_vien.ma_sv + '" >  ' + sinh_vien.ma_sv + '-' +
+                                sinh_vien.ten_sinh_vien + ' </label> </li> ';
 
-                    });
+                        });
 
 
-                    $('#danh_sach_sinh_vien').empty();
-                    $('#danh_sach_sinh_vien').append(text);
+                        $('#danh_sach_sinh_vien').empty();
+                        $('#danh_sach_sinh_vien').append(text);
 
-                    if ($danh_sach_sinh_vien_thuoc_lop != null) {
-                        $countLoadAPI++;
-                        $(".checked-sv").each(function() {
+                        if ($danh_sach_sinh_vien_thuoc_lop != null) {
+                            $countLoadAPI++;
+                            $(".checked-sv").each(function() {
 
-                            $mssv = $(this).attr('data-ma-sv');
-                            for (let i = 0; i < $danh_sach_sinh_vien_thuoc_lop
-                                .length; i++) {
-                                if ($mssv == $danh_sach_sinh_vien_thuoc_lop[i].ma_sv) {
-                                    console.log($danh_sach_sinh_vien_thuoc_lop[i].ma_sv);
-                                    $(this).prop('checked', true).trigger('change');
-                                    console.log($(this));
-                                    break;
-                                }else{
-                                    console.log("Khong check")
-                                    console.log($mssv);
-                                    $(this).prop('checked', false).trigger('change');
+                                $mssv = $(this).attr('data-ma-sv');
+                                for (let i = 0; i < $danh_sach_sinh_vien_thuoc_lop
+                                    .length; i++) {
+                                    if ($mssv == $danh_sach_sinh_vien_thuoc_lop[i].ma_sv) {
+                                        console.log($danh_sach_sinh_vien_thuoc_lop[i]
+                                            .ma_sv);
+                                        $(this).prop('checked', true).trigger('change');
+                                        console.log($(this));
+                                        break;
+                                    } else {
+                                        console.log("Khong check")
+                                        console.log($mssv);
+                                        $(this).prop('checked', false).trigger('change');
+                                    }
+
                                 }
 
+                            })
+                            if ($countLoadAPI == 3) {
+                                $danh_sach_sinh_vien_thuoc_lop = null;
                             }
 
-                        })
-                        if($countLoadAPI==3){
-                            $danh_sach_sinh_vien_thuoc_lop = null;
+
                         }
 
 
-                    }
-
-
-                })
+                    })
                 }
 
             })
@@ -348,8 +352,8 @@
                 }
             });
             $('#createNewBtn').click(function() {
-                $('#loai_lop_hoc').prop('disabled',false);
-                $('#danh_sach_lop').prop('disabled',false);
+                $('#loai_lop_hoc').prop('disabled', false);
+                $('#danh_sach_lop').prop('disabled', false);
 
                 $('#savedata').val("create-Btn");
                 $('#id').val('');
@@ -368,7 +372,7 @@
                 $('#modelHeading').html("Sửa")
                 $.get("{{ route('thongbao.index') }}" + '/' + id + '/edit', function(data) {
                     console.log(data);
-                    $('#checkbox-all').prop('checked',false);
+                    $('#checkbox-all').prop('checked', false);
                     $('#loai_lop_hoc').val(data.loai_lop_hoc).trigger('change');
 
                     $danh_sach_sinh_vien_thuoc_lop = data.danh_sach_sinh_vien;
@@ -381,8 +385,8 @@
                     // $('.note-placeholder').attr(data.thong_bao.noi_dung);
 
                     $('.note-editable').html(data.thong_bao.noi_dung);
-                    $('#loai_lop_hoc').prop('disabled',true);
-                    $('#danh_sach_lop').prop('disabled',true);
+                    $('#loai_lop_hoc').prop('disabled', true);
+                    $('#danh_sach_lop').prop('disabled', true);
                     //console.log(data.thong_bao.noi_dung);
                     $('#ajaxModelexa').modal('show');
 
@@ -413,18 +417,16 @@
                 $(".checked-sv").each(function() {
                     $mssv = $(this).attr('data-ma-sv');
                     var sv_obj = {
-                        'ma_sinh_vien': $mssv,
-                        'trang_thai': '',
+                        'ma_sinh_vien': '',
+
 
                     };
                     if ($(this).is(':checked')) {
-                        sv_obj.trang_thai = 1;
+                        sv_obj.ma_sinh_vien = $mssv
+                        json_obj.danh_sach_sinh_vien.push(sv_obj);
 
-
-                    } else {
-                        sv_obj.trang_thai = 0;
                     }
-                    json_obj.danh_sach_sinh_vien.push(sv_obj);
+
                 })
                 if (json_obj.danh_sach_sinh_vien.length == 0) {
                     Swal.fire('Hãy chọn sinh viên để gửi thông báo');

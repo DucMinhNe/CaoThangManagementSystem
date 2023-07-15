@@ -22,32 +22,15 @@ class ThongBaoController extends Controller
     public function danhsachsinhvienlophoc(Request $request)
     {
         $danh_sach_sinh_vien_cua_lop=null;
+        
         if($request->loai_lop_hoc == 1)
         {
-            $tontai_thongbao=ThongBao::where('id_lop_hoc',$request->id_lop_hoc)->first();
-            if($tontai_thongbao==null)
-            {
-                $danh_sach_sinh_vien_cua_lop = SinhVien::select('ma_sv')
-                                                        ->where('id_lop_hoc',$request->id_lop_hoc)
-                                                        ->where('trang_thai',1)->get();
-            }
-            else
-            {
-                $danh_sach_sinh_vien_cua_lop = ThongBao::join('thong_bao_cua_sinh_viens','id_thong_bao','=','bang_thong_baos.id')
-                                                        ->select('ma_sv')
-                                                        ->distinct()
-                                                        ->where('id_lop_hoc',$request->id_lop_hoc)
-                                                        // ->where('bang_thong_baos.trang_thai',1)
-                                                        ->get();
-            }
-            $danhSachSinhVien=array();
+            
+        return SinhVien::where('id_lop_hoc',$request->id_lop_hoc)->where('trang_thai',1)->get();
 
 
-          foreach ($danh_sach_sinh_vien_cua_lop as $sinh_vien) {
-            $danhSachSinhVien[] =SinhVien::where('ma_sv',$sinh_vien->ma_sv)->where('trang_thai',1)->first();
-          }
 
-          return $danhSachSinhVien;
+       
         }
         else
         {
@@ -106,14 +89,17 @@ class ThongBaoController extends Controller
                 );
 
         }
+        ThongBaoCuaSinhVien::where('id_thong_bao',$thongbao->id)->update(
+            [
+                'trang_thai' => 0 
+            ]
+            );
        foreach ($danh_sach_sinh_vien as $sinhvien) {
-            $data = ThongBaoCuaSinhVien::updateOrCreate(
+          ThongBaoCuaSinhVien::create(
             [
-                'id_thong_bao'=>$thongbao->id,
-                 'ma_sv'=>$sinhvien["ma_sinh_vien"]
-            ],
-            [
-                'trang_thai' => $sinhvien['trang_thai']
+                'id_thong_bao' => $thongbao->id,
+                'ma_sv'=> $sinhvien['ma_sinh_vien'],
+                'trang_thai'=>1,
             ]
             );
        }
@@ -255,6 +241,7 @@ public function xulysuaThongBao(Request $request )
     {
         $thongbao = ThongBao::find($id);
         $thongbaocuasinhviens=ThongBaoCuaSinhVien::where('id_thong_bao',$thongbao->id)->where('trang_thai',1)->orderBy('ma_sv')->get();
+  
         return response()->json([
             'thong_bao'=>$thongbao,
             'loai_lop_hoc'=>$thongbao->id_lop_hoc_phan==null?1:2,
