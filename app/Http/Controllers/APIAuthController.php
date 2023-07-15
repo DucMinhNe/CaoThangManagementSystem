@@ -178,7 +178,7 @@ class APIAuthController extends Controller
             'token'=>$token,
             'status' => '1',
         ];
-        return response($response,201);
+        return $response;
     }
     public function dangXuatGiangVien(Request $request){
 
