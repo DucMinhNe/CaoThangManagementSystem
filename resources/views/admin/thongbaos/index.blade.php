@@ -141,6 +141,7 @@
             $danh_sach_lop_hoc = JSON.parse('{!! json_encode($lop_hoc) !!}');
             $danh_sach_lop_hoc_phan = JSON.parse('{!! json_encode($lop_hoc_phan) !!}');
             $danh_sach_sinh_vien_thuoc_lop = null;
+            $countLoadAPI=1;
             // console.log($danh_sach_lop_hoc);
             // console.log($danh_sach_lop_hoc_phan);
             $.ajaxSetup({
@@ -274,37 +275,47 @@
                     },
                     dataType: 'Json',
                 }).done(function($response) {
-                    console.log($response);
+
                     var text = "";
                     $danh_sach_sinh_vien_lop_hoc = $response;
                     $danh_sach_sinh_vien_lop_hoc.forEach(sinh_vien => {
                         text = text +
                             ' <li> <label class = "dropdown-item"> <input checked type = "checkbox" class = "form-check-input checked-sv checkbox-item" data-ma-sv = "' +
-                            sinh_vien.ma_sv + '" >  ' + sinh_vien.ten_sinh_vien + '-' +
-                            sinh_vien.ma_sv + ' </label> </li> ';
+                             sinh_vien.ma_sv + '" >  ' +  sinh_vien.ma_sv  + '-' +
+                           sinh_vien.ten_sinh_vien+ ' </label> </li> ';
 
                     });
 
 
                     $('#danh_sach_sinh_vien').empty();
                     $('#danh_sach_sinh_vien').append(text);
+
                     if ($danh_sach_sinh_vien_thuoc_lop != null) {
+                        $countLoadAPI++;
                         $(".checked-sv").each(function() {
 
                             $mssv = $(this).attr('data-ma-sv');
                             for (let i = 0; i < $danh_sach_sinh_vien_thuoc_lop
                                 .length; i++) {
                                 if ($mssv == $danh_sach_sinh_vien_thuoc_lop[i].ma_sv) {
-                                    $(this).prop('checked', true);
+                                    console.log($danh_sach_sinh_vien_thuoc_lop[i].ma_sv);
+                                    $(this).prop('checked', true).trigger('change');
+                                    console.log($(this));
                                     break;
                                 }else{
-                                    $(this).prop('checked', false);
+                                    console.log("Khong check")
+                                    console.log($mssv);
+                                    $(this).prop('checked', false).trigger('change');
                                 }
 
                             }
 
                         })
-                        $danh_sach_sinh_vien_thuoc_lop = null;
+                        if($countLoadAPI==3){
+                            $danh_sach_sinh_vien_thuoc_lop = null;
+                        }
+
+
                     }
 
 
@@ -350,20 +361,22 @@
                 $('.note-editable').html("");
             });
 
-
             $('body').on('click', '.editBtn', function() {
 
                 var id = $(this).data('id');
                 $('#id').val(id);
                 $('#modelHeading').html("Sửa")
                 $.get("{{ route('thongbao.index') }}" + '/' + id + '/edit', function(data) {
-
+                    console.log(data);
+                    $('#checkbox-all').prop('checked',false);
                     $('#loai_lop_hoc').val(data.loai_lop_hoc).trigger('change');
 
                     $danh_sach_sinh_vien_thuoc_lop = data.danh_sach_sinh_vien;
+
+                    //console.log($danh_sach_sinh_vien_thuoc_lop);
                     $('#danh_sach_lop').val(data.loai_lop_hoc == 1 ? data.thong_bao.id_lop_hoc :
                         data.thong_bao.id_lop_hoc_phan).trigger('change');
-                        console.log($danh_sach_sinh_vien_thuoc_lop);
+
                     $('#tieu_de_post').val(data.thong_bao.tieu_de);
                     // $('.note-placeholder').attr(data.thong_bao.noi_dung);
 
@@ -373,8 +386,8 @@
                     //console.log(data.thong_bao.noi_dung);
                     $('#ajaxModelexa').modal('show');
 
-
                 })
+
 
             });
 
