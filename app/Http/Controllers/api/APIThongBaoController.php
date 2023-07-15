@@ -83,6 +83,7 @@ class APIThongBaoController extends Controller
         if ($request->type == 0 ){
             $listThongbaos=ThongBao::where('id_lop_hoc',$request->id)
                                     ->where('trang_thai',1)
+                                    ->orderBy('created_at','desc')
                                     ->get();
         }
         else

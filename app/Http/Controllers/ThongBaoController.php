@@ -254,7 +254,7 @@ public function xulysuaThongBao(Request $request )
     public function edit($id)
     {
         $thongbao = ThongBao::find($id);
-        $thongbaocuasinhviens=ThongBaoCuaSinhVien::where('id_thong_bao',$thongbao->id)->where('trang_thai',1)->get();
+        $thongbaocuasinhviens=ThongBaoCuaSinhVien::where('id_thong_bao',$thongbao->id)->where('trang_thai',1)->orderBy('ma_sv')->get();
         return response()->json([
             'thong_bao'=>$thongbao,
             'loai_lop_hoc'=>$thongbao->id_lop_hoc_phan==null?1:2,
