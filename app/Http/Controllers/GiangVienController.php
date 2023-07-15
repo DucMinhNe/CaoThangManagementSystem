@@ -177,7 +177,37 @@ class GiangVienController extends Controller
         GiangVien::updateOrCreate(['ma_gv' => $request->ma_gv], $giangVienData);      
         return response()->json(['success'=>'Lưu Thành Công.']);
     }
-
+    public function thongTinCaNhanstore(Request $request)
+    {  
+        $request->validate([
+            'ten_giang_vien' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'email' => ['required', 'email'],
+            'so_dien_thoai' => ['required', 'regex:/^(0|\+84)?([3-9]\d{8})$/'],
+            'so_cmt' => ['required', 'regex:/\d{9}|\d{12}/'],
+            'gioi_tinh' => ['required'],
+            'ngay_sinh' => ['required'],
+            'noi_sinh' => ['required'],
+            'dan_toc' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'ton_giao' => ['required', 'regex:/^[\p{L}\s]+$/u'],
+            'dia_chi_thuong_tru' => ['required'],
+            'dia_chi_tam_tru' => ['required'],
+        ]); 
+        $giangVienData = [
+            'ten_giang_vien' => $request->ten_giang_vien,
+            'email' => $request->email,
+            'so_dien_thoai' => $request->so_dien_thoai,
+            'so_cmt' => $request->so_cmt,
+            'gioi_tinh' => $request->gioi_tinh,
+            'ngay_sinh' => $request->ngay_sinh,
+            'noi_sinh' => $request->noi_sinh,
+            'dan_toc' => $request->dan_toc,
+            'ton_giao' => $request->ton_giao,
+            'dia_chi_thuong_tru' => $request->dia_chi_thuong_tru,
+            'dia_chi_tam_tru' => $request->dia_chi_tam_tru,
+        ];
+        GiangVien::updateOrCreate(['ma_gv' => auth()->user()->ma_gv], $giangVienData);      
+        return response()->json(['success'=>'Lưu Thành Công.']);
+    }
     /**
      * Display the specified resource.
      *

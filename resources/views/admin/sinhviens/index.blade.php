@@ -41,7 +41,7 @@ td {
                         Excel</button>
                 </li>
                 <li class="nav-item mr-1">
-                    <button id="showInactiveBtn" class="btn btn-primary" type="button">Hiển thị danh sách đã
+                    <button id="showInactiveBtn" class="btn btn-primary" type="button" value=''>Hiển thị danh sách đã
                         xóa</button>
                 </li>
                 <li class="nav-item">
@@ -831,11 +831,13 @@ $(function() {
     });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
-        var buttonText = button.text();
-        if (buttonText == 'Hiển thị danh sách đã xóa') {
+        var buttonVal = button.val();
+        if (buttonVal == '') {
+            $("#showInactiveBtn").val('1');
             button.text('Hiển thị danh sách chính');
             table.ajax.url("{{ route('sinhvien.getInactiveData') }}").load();
         } else {
+            $("#showInactiveBtn").val('');
             button.text('Hiển thị danh sách đã xóa');
             table.ajax.url("{{ route('sinhvien.index') }}").load();
         }

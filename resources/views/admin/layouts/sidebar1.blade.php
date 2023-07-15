@@ -379,11 +379,11 @@
                   $isOpen = Request::is('admin/activitylog');
                   @endphp
                   <li class="nav-item">
-                    <a href="{{ url('/admin/activitylog') }}"
-                        class="nav-link {{ Request::url() == url('/admin/activitylog') ? 'active' : '' }}">
-                        <i class="fas fa-history"></i>
-                        <p>Nhật ký</p>
-                    </a>
+                      <a href="{{ url('/admin/activitylog') }}"
+                          class="nav-link {{ Request::url() == url('/admin/activitylog') ? 'active' : '' }}">
+                          <i class="fas fa-history"></i>
+                          <p>Nhật ký</p>
+                      </a>
                   </li>
                   <li class="nav-item">
                       <a href="/admin/dangxuat" class="nav-link">

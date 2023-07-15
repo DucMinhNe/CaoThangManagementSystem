@@ -137,7 +137,7 @@
     </div>
 </div>
 <div class="modal fade" id="ctquyetdinhModal" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="ctquyetdinhmodelHeading"></h4>
@@ -154,7 +154,9 @@
                                 <option value="">-- Chọn Sinh Viên --</option>
                                 @foreach ($sinhviens as $sinhvien)
                                 @if ($sinhvien->trang_thai == 1)
-                                <option value="{{ $sinhvien->ma_sv }}">{{ $sinhvien->ten_sinh_vien }}</option>
+                                <option value="{{ $sinhvien->ma_sv }}">
+                                    {{ $sinhvien->ma_sv }} - {{ $sinhvien->ten_sinh_vien }} -
+                                    {{ $sinhvien->ten_lop_hoc }}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -167,14 +169,13 @@
                         </button>
                         <button id="xemCTQuyetDinhDaXoa" class="btn btn-primary" type="button">Hiển thị danh sách đã
                             xóa</button>
-                        <table id="example2" class="table table-bordered table-striped ctquyetdinh-table"
-                            style="width:430px;">
+                        <table id="example2" class="table table-bordered table-striped ctquyetdinh-table">
                             <thead>
                                 <tr>
                                     <th width="30px">STT</th>
                                     <th>Quyết định</th>
-                                    <th width="200px">Sinh Viên</th>
-                                    <th width="200px">Lớp Học</th>
+                                    <th>Sinh Viên</th>
+                                    <th>Lớp Học</th>
                                     <th width="72px"></th>
                                 </tr>
                             </thead>
@@ -348,7 +349,7 @@ $(function() {
     var ctquyetdinhtable = $('.ctquyetdinh-table').DataTable({
         processing: true,
         serverSide: true,
-        searching: true,
+        searching: false,
         info: false,
         autoWidth: false,
         paging: true,
@@ -356,13 +357,6 @@ $(function() {
         columns: [{
                 data: 'id',
                 name: 'id',
-                render: function(data, type, full, meta) {
-                    var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
-                        data + '" data-original-title="Edit" class="editCTQuyetDinhBtn">' +
-                        data +
-                        '</a>';
-                    return btn;
-                }
             },
             {
                 data: 'id_quyet_dinh',

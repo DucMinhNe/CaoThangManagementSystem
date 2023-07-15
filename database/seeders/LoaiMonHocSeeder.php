@@ -28,10 +28,6 @@ class LoaiMonHocSeeder extends Seeder
                 'id' => '3',
                 'ten_loai_mon_hoc' => 'Đồ Án',
             ],
-            [
-                'id' => '4',
-                'ten_loai_mon_hoc' => 'Mođun',
-            ]
         ]);
     }
 }

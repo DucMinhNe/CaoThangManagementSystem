@@ -20,8 +20,6 @@ class ThongTinCaNhanController extends Controller
     public function index()
     {
         $giangviens = Auth::user();
-       
-        
         $bomons = null;
         $chucvus = null;
         if ($giangviens->id_bo_mon !== null) {

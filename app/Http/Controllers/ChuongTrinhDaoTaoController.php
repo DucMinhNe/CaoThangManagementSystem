@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ChuongTrinhDaoTao;
 use App\Models\CTChuongTrinhDaoTao;
 use App\Models\ChuyenNganh;
+use App\Models\MonHoc;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 class ChuongTrinhDaoTaoController extends Controller
@@ -35,9 +36,13 @@ class ChuongTrinhDaoTaoController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        $chuongtrinhdaotaos = ChuongTrinhDaoTao::all();
+        // $chuongtrinhdaotaos = ChuongTrinhDaoTao::all();
         $chuyennganhs = ChuyenNganh::all();
-        return view('admin.chuongtrinhdaotaos.index', compact('chuyennganhs','chuongtrinhdaotaos'));    
+        $chuongtrinhdaotaos = ChuongTrinhDaoTao::leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
+        ->selectRaw('chuong_trinh_dao_taos.*, CONCAT(chuong_trinh_dao_taos.khoa_hoc, ".", chuyen_nganhs.ten_chuyen_nganh) AS khoa_hoc_chuyen_nganh')
+        ->get();
+        $monhocs = MonHoc::all();
+        return view('admin.chuongtrinhdaotaos.index', compact('chuyennganhs','chuongtrinhdaotaos','monhocs'));    
     }
     public function getChuongTrinhDaoTao()
     {

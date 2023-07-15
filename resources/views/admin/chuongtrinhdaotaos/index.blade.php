@@ -126,12 +126,9 @@
                                 <option value="">-- Chọn --</option>
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
                                 @if ($chuongtrinhdaotao->trang_thai == 1)
-                                <?php $chuyennganh = App\Models\ChuyenNganh::find($chuongtrinhdaotao->id_chuyen_nganh); ?>
-                                @if ($chuyennganh)
                                 <option value="{{ $chuongtrinhdaotao->id }}">
-                                    {{ $chuongtrinhdaotao->khoa_hoc }}. {{ $chuyennganh->ten_chuyen_nganh }}
+                                    {{ $chuongtrinhdaotao->khoa_hoc_chuyen_nganh }}
                                 </option>
-                                @endif
                                 @endif
                                 @endforeach
                             </select>
@@ -143,12 +140,9 @@
                                 <option value="">-- Chọn --</option>
                                 @foreach ($chuongtrinhdaotaos as $chuongtrinhdaotao)
                                 @if ($chuongtrinhdaotao->trang_thai == 1)
-                                <?php $chuyennganh = App\Models\ChuyenNganh::find($chuongtrinhdaotao->id_chuyen_nganh); ?>
-                                @if ($chuyennganh)
                                 <option value="{{ $chuongtrinhdaotao->id }}">
-                                    {{ $chuongtrinhdaotao->khoa_hoc }}. {{ $chuyennganh->ten_chuyen_nganh }}
+                                    {{ $chuongtrinhdaotao->khoa_hoc_chuyen_nganh }}
                                 </option>
-                                @endif
                                 @endif
                                 @endforeach
                             </select>
@@ -162,6 +156,111 @@
                                 class="fa-solid fa-xmark"></i> Hủy</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ctChuongTrinhDaoTaoModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ctChuongTrinhDaoTaoModalHeading"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="ctChuongTrinhDaoTaoForm" name="ctChuongTrinhDaoTaoForm" class="form-horizontal">
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="id_chuong_trinh_dao_tao" id="id_chuong_trinh_dao_tao">
+                    <div class="card-body">
+                        <div class="row d-flex justify-content-center">
+                            <div class="form-group col-md-5">
+                                <label for="hoc_ky">Học Kỳ</label>
+                                <select name="hoc_ky" id="hoc_ky" class="form-control select2" style="width: 100%;">
+                                    <option value="0">-- Chọn học kỳ --</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">Tốt Nghiệp</option>
+                                    <option value="8">Chứng Chỉ</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label for="so_tin_chi">Số Tín Chỉ</label>
+                                <input type="text" class="form-control" id="so_tin_chi" name="so_tin_chi"
+                                    placeholder="Số Tín Chỉ" value="" required pattern="[0-9]+">
+                            </div>
+
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <div class="form-group col-md-5">
+                                <label for="id_mon_hoc">Môn Học</label>
+                                <select name="id_mon_hoc" id="id_mon_hoc" class="form-control select2"
+                                    style="width: 100%;" required>
+                                    <option value="">-- Chọn môn học --</option>
+                                    @foreach ($monhocs as $monhoc)
+                                    @if ($monhoc->trang_thai == 1)
+                                    <option value="{{ $monhoc->id }}">{{ $monhoc->ten_mon_hoc }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label for="so_tiet">Số Tiết</label>
+                                <input type="text" class="form-control" id="so_tiet" name="so_tiet"
+                                    placeholder="Số Tiết" value="" required pattern="[0-9]+">
+                                <div class="row d-flex justify-content-end mt-2">
+                                    <button class="btn btn-success" type="button" id="saveCTChuongTrinhDaoTaoBtn">Thêm
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row d-flex justify-content-start">
+                        <label for="id_hoc_ky_filter" class="col-sm-1 col-form-label">Học Kỳ</label>
+                        <div class="col-sm-3">
+                            <select name="id_hoc_ky_filter" id="id_hoc_ky_filter" class="form-control select2"
+                                style="width: 100%;">
+                                <option value="0">-- Chọn học kỳ --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">Tốt Nghiệp</option>
+                                <option value="8">Chứng Chỉ</option>
+                            </select>
+                        </div>
+                        <button id="xemCTChuongTrinhDaoTaoDaXoa" class="btn btn-primary" type="button" value='1'>Hiển
+                            thị
+                            danh sách
+                            đã
+                            xóa</button>
+                    </div>
+                    <table id="example2" class="table table-bordered table-striped ctchuongtrinhdaotao-table">
+                        <thead>
+                            <tr>
+                                <th style="width:25px">STT</th>
+                                <th>Chương Trinh Đào Tạo</th>
+                                <th>Học Kỳ</th>
+                                <th>Môn Học</th>
+                                <th>Số Tín Chỉ</th>
+                                <th>Số Tiết</th>
+                                <th style="width:28px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="card-footer">
+                <!-- <button type="submit" class="btn btn-primary" id="savedata" value="create"><i
+                                class="fa-regular fa-floppy-disk"></i> Lưu</button> -->
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i>
+                    Hủy</button>
             </div>
         </div>
     </div>
@@ -210,7 +309,8 @@ $(function() {
                 name: 'id',
                 render: function(data, type, full, meta) {
                     var btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="' +
-                        data + '" data-original-title="Edit" class="editBtn">' + data +
+                        data + '" data-original-title="Edit" class="ctChuongTrinhDaoTaoBtn">' +
+                        data +
                         '</a>';
                     return btn;
                 }
@@ -279,6 +379,240 @@ $(function() {
                 text: 'Số dòng trên trang'
             }
         ],
+    });
+    var ctchuongtrinhdaotaotable = $('.ctchuongtrinhdaotao-table').DataTable({
+        processing: true,
+        serverSide: true,
+        orderCellsTop: true,
+        searching: false,
+        info: false,
+        paging: true,
+        autoWidth: false,
+        ajax: "{{route('ctchuongtrinhdaotao.index') }}" + '/getChiTietChuongTrinhDaoByCTDT/' + '1/0/1',
+        columns: [{
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'khoa_hoc_chuyen_nganh',
+                name: 'khoa_hoc_chuyen_nganh'
+            },
+            {
+                data: 'hoc_ky',
+                name: 'hoc_ky'
+            },
+            {
+                data: 'ten_mon_hoc',
+                name: 'ten_mon_hoc'
+            },
+            {
+                data: 'so_tin_chi',
+                name: 'so_tin_chi'
+            },
+            {
+                data: 'so_tiet',
+                name: 'so_tiet'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            },
+        ],
+        language: {
+            "sEmptyTable": "Không có dữ liệu",
+            "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+            "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+            "sInfoFiltered": "(được lọc từ _MAX_ tổng số bản ghi)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ",",
+            "sLengthMenu": "Hiển thị _MENU_ bản ghi",
+            "sLoadingRecords": "Đang tải...",
+            "sProcessing": "Đang xử lý...",
+            "sSearch": "Tìm kiếm:",
+            "sZeroRecords": "Không tìm thấy kết quả nào phù hợp",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sLast": "Cuối",
+                "sNext": "Tiếp",
+                "sPrevious": "Trước"
+            },
+            "oAria": {
+                "sSortAscending": ": Sắp xếp tăng dần",
+                "sSortDescending": ": Sắp xếp giảm dần"
+            }
+        },
+    });
+    $('body').on('click', '.ctChuongTrinhDaoTaoBtn', function() {
+        var id = $(this).data('id');
+        $('#id_chuong_trinh_dao_tao').val(id);
+        $('#ctChuongTrinhDaoTaoModal').modal('show');
+        ctchuongtrinhdaotaotable.ajax.url(
+                "{{ route('ctchuongtrinhdaotao.index') }}" + '/getChiTietChuongTrinhDaoByCTDT/' + id +
+                '/0/1')
+            .load();
+    });
+    $('#saveCTChuongTrinhDaoTaoBtn').click(function(e) {
+        e.preventDefault();
+        $(this).html('Đang gửi ...');
+        $.ajax({
+            data: $('#ctChuongTrinhDaoTaoForm').serialize(),
+            url: "{{ route('ctchuongtrinhdaotao.store') }}",
+            type: "POST",
+            dataType: 'json',
+            success: function(data) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Thành Công',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                $('#saveCTChuongTrinhDaoTaoBtn').html('Thêm');
+                ctchuongtrinhdaotaotable.draw();
+            },
+            error: function(data) {
+                $('#saveCTChuongTrinhDaoTaoBtn').html('Thêm');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true,
+                    icon: 'error',
+                    title: 'Chưa nhập đủ thông tin',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+        $("#ctChuongTrinhDaoTaoForm #id").val('');
+        $('#ctChuongTrinhDaoTaoForm #hoc_ky').val('').trigger('change');
+        $('#ctChuongTrinhDaoTaoForm #id_mon_hoc').val('').trigger('change');
+        $('#ctChuongTrinhDaoTaoForm #so_tin_chi').val('');
+        $('#ctChuongTrinhDaoTaoForm #so_tiet').val('');
+    });
+    $("#id_hoc_ky_filter").change(function() {
+        var selectedHocKyId = $("#ctChuongTrinhDaoTaoForm #id_hoc_ky_filter").val();
+        var idChuongTrinhDaoTao = $("#ctChuongTrinhDaoTaoForm #id_chuong_trinh_dao_tao").val();
+        var idTrangThai = $("#xemCTChuongTrinhDaoTaoDaXoa").val();
+        if (selectedHocKyId != 0) {
+            ctchuongtrinhdaotaotable.ajax.url(
+                    "{{ route('ctchuongtrinhdaotao.index') }}" + '/getChiTietChuongTrinhDaoByCTDT/' +
+                    idChuongTrinhDaoTao + '/' + selectedHocKyId + '/' + idTrangThai)
+                .load();
+        } else {
+            ctchuongtrinhdaotaotable.ajax.url(
+                    "{{ route('ctchuongtrinhdaotao.index') }}" + '/getChiTietChuongTrinhDaoByCTDT/' +
+                    idChuongTrinhDaoTao +
+                    '/0/' + idTrangThai)
+                .load();
+        }
+    });
+    $('body').on('click', '.editCTChuongTrinhDaoTaoBtn', function() {
+        var id = $(this).data('id');
+        $.get("{{ route('ctchuongtrinhdaotao.index') }}" + '/' + id + '/edit', function(data) {
+            $('#saveCTChuongTrinhDaoTaoBtn').val('1');
+            $('#saveCTChuongTrinhDaoTaoBtn').text('Lưu');
+            $("#ctChuongTrinhDaoTaoForm #id").val(data.id);
+            $('#ctChuongTrinhDaoTaoForm #id_chuong_trinh_dao_tao').val(data
+                .id_chuong_trinh_dao_tao);
+            $('#ctChuongTrinhDaoTaoForm #hoc_ky').val(data.hoc_ky).trigger('change');
+            $('#ctChuongTrinhDaoTaoForm #id_mon_hoc').val(data.id_mon_hoc).trigger('change');
+            $('#ctChuongTrinhDaoTaoForm #so_tin_chi').val(data.so_tin_chi);
+            $('#ctChuongTrinhDaoTaoForm #so_tiet').val(data.so_tiet);
+        })
+    });
+    $('#xemCTChuongTrinhDaoTaoDaXoa').click(function() {
+        var button = $(this);
+        var buttonVal = button.val();
+        var selectedHocKyId = $("#ctChuongTrinhDaoTaoForm #id_hoc_ky_filter").val();
+        var idChuongTrinhDaoTao = $("#ctChuongTrinhDaoTaoForm #id_chuong_trinh_dao_tao").val();
+        var buttonText = button.text();
+        if (buttonVal == '1') {
+            $("#xemCTChuongTrinhDaoTaoDaXoa").val('0');
+            button.text('Hiển thị danh sách chính');
+            ctchuongtrinhdaotaotable.ajax.url(
+                    "{{ route('ctchuongtrinhdaotao.index') }}" + '/getChiTietChuongTrinhDaoByCTDT/' +
+                    idChuongTrinhDaoTao + '/' + selectedHocKyId + '/0')
+                .load();
+        } else {
+            $("#xemCTChuongTrinhDaoTaoDaXoa").val('1');
+            button.text('Hiển thị danh sách đã xóa');
+            ctchuongtrinhdaotaotable.ajax.url(
+                    "{{ route('ctchuongtrinhdaotao.index') }}" + '/getChiTietChuongTrinhDaoByCTDT/' +
+                    idChuongTrinhDaoTao + '/' + selectedHocKyId + '/1')
+                .load();
+        }
+    });
+    $('body').on('click', '.deleteCTChuongTrinhDaoTaoBtn', function() {
+        var id = $(this).data("id");
+        Swal.fire({
+            title: 'Bạn Có Muốn Xóa',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "{{ route('ctchuongtrinhdaotao.destroy', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Xóa Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        ctchuongtrinhdaotaotable.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
+    });
+    $('body').on('click', '.restoreCTChuongTrinhDaoTaoBtn', function() {
+        var id = $(this).data("id");
+        Swal.fire({
+            title: 'Bạn Có Muốn Khôi Phục',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác Nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('ctchuongtrinhdaotao.restore', '') }}/" + id,
+                    success: function(data) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Khôi Phục Thành Công',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        ctchuongtrinhdaotaotable.draw();
+                    },
+                    error: function(data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        })
     });
     $("#filterToggle").on("click", function() {
         $(".filter-row").toggle();

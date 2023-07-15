@@ -706,17 +706,6 @@ $(function() {
             });
         }
     });
-    // $('#showInactiveBtn').click(function() {
-    //     var button = $(this);
-    //     var buttonText = button.text();
-    //     if (buttonText == 'Hiển thị danh sách đã xóa') {
-    //         button.text('Hiển thị danh sách chính');
-    //         table.ajax.url("{{ route('giangvien.getInactiveData') }}").load();
-    //     } else {
-    //         button.text('Hiển thị danh sách đã xóa');
-    //         table.ajax.url("{{ route('giangvien.index') }}").load();
-    //     }
-    // });
     $('#showInactiveBtn').click(function() {
         var button = $(this);
         var buttonVal = button.val();

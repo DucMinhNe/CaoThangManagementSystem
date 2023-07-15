@@ -65,6 +65,66 @@ class CTChuongTrinhDaoTaoController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
+    public function getChiTietChuongTrinhDaoByCTDT($id_chuong_trinh_dao_tao,$hoc_ky,$trang_thai)
+    {
+        if($hoc_ky == 0){
+        $data = CTChuongTrinhDaoTao::leftJoin('chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', '=', 'chuong_trinh_dao_taos.id')
+        ->leftJoin('mon_hocs', 'ct_chuong_trinh_dao_taos.id_mon_hoc', '=', 'mon_hocs.id')
+        ->leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
+        ->select('ct_chuong_trinh_dao_taos.*', 'mon_hocs.ten_mon_hoc', DB::raw('CONCAT(chuong_trinh_dao_taos.khoa_hoc, ".", chuyen_nganhs.ten_chuyen_nganh) AS khoa_hoc_chuyen_nganh'))
+        ->where('ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
+        ->where('ct_chuong_trinh_dao_taos.trang_thai', $trang_thai)
+        ->latest()
+        ->get();   
+        if($trang_thai == 1){        
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editCTChuongTrinhDaoTaoBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteCTChuongTrinhDaoTaoBtn"><i class="fa-solid fa-trash"></i></a>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }else { return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editCTChuongTrinhDaoTaoBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreCTChuongTrinhDaoTaoBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);}
+        }else{
+        $data = CTChuongTrinhDaoTao::leftJoin('chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', '=', 'chuong_trinh_dao_taos.id')
+        ->leftJoin('mon_hocs', 'ct_chuong_trinh_dao_taos.id_mon_hoc', '=', 'mon_hocs.id')
+        ->leftJoin('chuyen_nganhs', 'chuong_trinh_dao_taos.id_chuyen_nganh', '=', 'chuyen_nganhs.id')
+        ->select('ct_chuong_trinh_dao_taos.*', 'mon_hocs.ten_mon_hoc', DB::raw('CONCAT(chuong_trinh_dao_taos.khoa_hoc, ".", chuyen_nganhs.ten_chuyen_nganh) AS khoa_hoc_chuyen_nganh'))
+        ->where('ct_chuong_trinh_dao_taos.id_chuong_trinh_dao_tao', $id_chuong_trinh_dao_tao)
+        ->where('ct_chuong_trinh_dao_taos.hoc_ky', $hoc_ky)
+        ->where('ct_chuong_trinh_dao_taos.trang_thai', $trang_thai)
+        ->latest()
+        ->get();           
+        if($trang_thai == 1){        
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editCTChuongTrinhDaoTaoBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteCTChuongTrinhDaoTaoBtn"><i class="fa-solid fa-trash"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+            }else { return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editCTChuongTrinhDaoTaoBtn"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Restore" class="restore btn btn-success btn-sm restoreCTChuongTrinhDaoTaoBtn"><i class="fa-solid fa-trash-can-arrow-up"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);}}
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -148,6 +148,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/chuongtrinhdaotao/restore/{id}', [ChuongTrinhDaoTaoController::class, 'restore'])->name('chuongtrinhdaotao.restore');
         Route::resource('chuongtrinhdaotao', ChuongTrinhDaoTaoController::class);
 
+        Route::get('/ctchuongtrinhdaotao/getChiTietChuongTrinhDaoByCTDT/{id_chuong_trinh_dao_tao}/{hoc_ky}/{trang_thai}', [CTChuongTrinhDaoTaoController::class, 'getChiTietChuongTrinhDaoByCTDT'])->name('ctchuongtrinhdaotao.getChiTietChuongTrinhDaoByCTDT');
         Route::get('/ctchuongtrinhdaotao/getInactiveData', [CTChuongTrinhDaoTaoController::class, 'getInactiveData'])->name('ctchuongtrinhdaotao.getInactiveData');
         Route::get('/ctchuongtrinhdaotao/restore/{id}', [CTChuongTrinhDaoTaoController::class, 'restore'])->name('ctchuongtrinhdaotao.restore');
         Route::resource('ctchuongtrinhdaotao', CTChuongTrinhDaoTaoController::class);
@@ -238,7 +239,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
     Route::resource('thongtincanhan', ThongTinCaNhanController::class);
 
-
+    Route::post('/giangvien/thongTinCaNhanstore', [GiangVienController::class, 'thongTinCaNhanstore'])->name('giangvien.thongTinCaNhanstore');
     Route::get('/get-thong-tin-lop-hoc-phan', [NhapDiemController::class, 'getThongTinLopHocPhan']);
     Route::resource('nhapdiem', NhapDiemController::class);
     Route::get('/lay-sinhvien-theo-lophoc/{id_lop_hoc}', [SinhVienController::class, 'laySinhVienTheoLopHoc'])->name('lay-sinhvien-theo-lophoc');

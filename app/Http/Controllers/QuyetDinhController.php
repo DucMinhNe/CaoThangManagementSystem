@@ -34,7 +34,11 @@ class QuyetDinhController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        $sinhviens = SinhVien::all();
+        // $sinhviens = SinhVien::all();
+        $sinhviens = SinhVien::leftJoin('lop_hocs', 'sinh_viens.id_lop_hoc', '=', 'lop_hocs.id')
+        ->select('sinh_viens.*', 'lop_hocs.ten_lop_hoc')
+        ->latest()
+        ->get();
         $giangviens = GiangVien::all();
         return view('admin.quyetdinhs.index', compact('giangviens','sinhviens'));   
     }

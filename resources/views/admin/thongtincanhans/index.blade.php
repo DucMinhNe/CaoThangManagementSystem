@@ -21,6 +21,11 @@
     height: 35px !important;
 }
 </style>
+<style>
+.select2-selection__arrow b {
+    display: none !important;
+}
+</style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -111,14 +116,14 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="thongtincanhan">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" id="thongtincanhanForm" name="thongtincanhanForm">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <label class="col-sm-5 col-form-label">Mã Giảng Viên</label>
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->ma_gv}}"
+                                                            value="{{auth()->user()->ma_gv}}" name="ma_gv" id="ma_gv"
                                                             placeholder="Mã Giảng Viên" readonly>
                                                     </div>
                                                 </div>
@@ -128,13 +133,14 @@
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ten_giang_vien}}"
+                                                            id="ten_giang_vien" name="ten_giang_vien"
                                                             placeholder="Tên Giảng Viên" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-5 col-form-label">Email</label>
                                                     <div class="col-sm-7">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control" id="email" name="email"
                                                             value="{{auth()->user()->email}}" placeholder="Email"
                                                             readonly>
                                                     </div>
@@ -144,8 +150,8 @@
                                                         Thoại</label>
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->so_dien_thoai}}"
-                                                            placeholder="Số Điện Thoại" readonly>
+                                                            value="{{auth()->user()->so_dien_thoai}}" id="so_dien_thoai"
+                                                            name="so_dien_thoai" placeholder="Số Điện Thoại" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -153,7 +159,7 @@
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->so_cmt}}" placeholder="CMND/CCCD"
-                                                            readonly>
+                                                            id="so_cmt" name="so_cmt" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -162,6 +168,7 @@
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dia_chi_thuong_tru}}"
+                                                            id="dia_chi_thuong_tru" name="dia_chi_thuong_tru"
                                                             placeholder="Đ/C Thường Trú" readonly>
                                                     </div>
                                                 </div>
@@ -177,12 +184,15 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-5 col-form-label">Giới
+                                                    <label class="col-sm-5 col-form-label" for="gioi_tinh">Giới
                                                         Tính</label>
                                                     <div class="col-sm-7">
-                                                        <input type="text" class="form-control"
-                                                            value="{{ auth()->user()->gioi_tinh == 1 ? 'Nam' : 'Nữ' }}"
-                                                            placeholder="Giới Tính" readonly>
+                                                        <select class="form-control select2" id="gioi_tinh"
+                                                            name="gioi_tinh" required disabled>
+                                                            <option value="">-- Chọn Giới Tính --</option>
+                                                            <option value="1">Nam</option>
+                                                            <option value="0">Nữ</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -190,8 +200,8 @@
                                                         Sinh</label>
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
-                                                            value="{{auth()->user()->ngay_sinh}}"
-                                                            placeholder="Ngày Sinh" readonly>
+                                                            value="{{auth()->user()->ngay_sinh}}" id="ngay_sinh"
+                                                            name="ngay_sinh" placeholder="Ngày Sinh" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -200,7 +210,7 @@
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->noi_sinh}}" placeholder="Nơi Sinh"
-                                                            readonly>
+                                                            id="noi_sinh" name="noi_sinh" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -209,7 +219,7 @@
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dan_toc}}" placeholder="Dân Tộc"
-                                                            readonly>
+                                                            id="dan_toc" name="dan_toc" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -218,7 +228,7 @@
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->ton_giao}}" placeholder="Tôn Giáo"
-                                                            readonly>
+                                                            id="ton_giao" name="ton_giao" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -227,6 +237,7 @@
                                                     <div class="col-sm-7">
                                                         <input type="text" class="form-control"
                                                             value="{{auth()->user()->dia_chi_tam_tru}}"
+                                                            id="dia_chi_tam_tru" name="dia_chi_tam_tru"
                                                             placeholder="Đ/C Tạm Trú" readonly>
                                                     </div>
                                                 </div>
@@ -240,6 +251,10 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary" id="saveThongTin"
+                                                value="0">Chỉnh Sửa</button>
                                         </div>
                                     </form>
                                     <!-- /.tab-pane -->
@@ -367,6 +382,14 @@ $(function() {
             }
         });
     });
+    $("#gioi_tinh").val('{{ auth()->user()->gioi_tinh}}');
+    var ngay_sinh = $("#ngay_sinh").val();
+    var inputElement = $("#ngay_sinh");
+    var date = new Date(inputElement.val());
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    inputElement.val(day + "/" + month + "/" + year);
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Đang gửi ...');
@@ -400,6 +423,70 @@ $(function() {
                 });
             }
         });
+    });
+    $('#saveThongTin').click(function(e) {
+        if ($('#saveThongTin').val() == 1) {
+            e.preventDefault();
+            $('#saveThongTin').val(0);
+            $(this).html('Đang gửi ...');
+            $.ajax({
+                data: $('#thongtincanhanForm').serialize(),
+                url: "{{ route('giangvien.thongTinCaNhanstore') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    $('#saveThongTin').html('Chỉnh Sữa');
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Lưu thành công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $('#ten_giang_vien').attr("readonly", "readonly");
+                    $('#email').attr("readonly", "readonly");
+                    $('#so_dien_thoai').attr("readonly", "readonly");
+                    $('#so_cmt').attr("readonly", "readonly");
+                    $('#dia_chi_thuong_tru').attr("readonly", "readonly");
+                    $('#dia_chi_tam_tru').attr("readonly", "readonly");
+                    $('#gioi_tinh').attr("disabled", "disabled");
+                    $('#ngay_sinh').attr("readonly", "readonly");
+                    $('#noi_sinh').attr("readonly", "readonly");
+                    $('#dan_toc').attr("readonly", "readonly");
+                    $('#ton_giao').attr("readonly", "readonly");
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', xhr.responseText);
+                    $('#saveThongTin').val(1);
+                    $('#saveThongTin').html('Lưu');
+                    Swal.fire({
+                        title: 'Không đúng định dạng vui lòng nhập lại',
+                        confirmButtonText: 'Ok',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                        }
+                    })
+                }
+            });
+        } else {
+            e.preventDefault();
+            $('#saveThongTin').html('Lưu');
+            $('#saveThongTin').val(1);
+            $('#ten_giang_vien').removeAttr("readonly");
+            $('#email').removeAttr("readonly");
+            $('#so_dien_thoai').removeAttr("readonly");
+            $('#so_cmt').removeAttr("readonly");
+            $('#dia_chi_thuong_tru').removeAttr("readonly");
+            $('#dia_chi_tam_tru').removeAttr("readonly");
+            $('#gioi_tinh').removeAttr("disabled");
+            $('#ngay_sinh').removeAttr("readonly");
+            $('#noi_sinh').removeAttr("readonly");
+            $('#dan_toc').removeAttr("readonly");
+            $('#ton_giao').removeAttr("readonly");
+        }
     });
 });
 </script>
