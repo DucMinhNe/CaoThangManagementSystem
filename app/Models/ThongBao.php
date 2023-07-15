@@ -14,4 +14,5 @@ class ThongBao extends Model
     {
         return $this->hasMany(ThongBaoCuaSinhVien::class,'id_thong_bao','id');
     }
+
 }

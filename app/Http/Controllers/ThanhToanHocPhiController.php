@@ -26,9 +26,8 @@ class ThanhToanHocPhiController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ThanhToanHocPhi::leftJoin('qua_trinh_hoc_taps','qua_trinh_hoc_taps.ma_sv','thanh_toan_hoc_phis.ma_sv')
-                                   ->leftJoin('sinh_viens','qua_trinh_hoc_taps.ma_sv','sinh_viens.ma_sv')
-                                   ->leftJoin('lop_hocs','qua_trinh_hoc_taps.id_lop_hoc','lop_hocs.id')
+            $data = ThanhToanHocPhi::leftJoin('sinh_viens','sinh_viens.ma_sv','thanh_toan_hoc_phis.ma_sv')
+                                   ->leftJoin('lop_hocs','sinh_viens.id_lop_hoc','lop_hocs.id')
                                    ->leftJoin('hoc_phis','thanh_toan_hoc_phis.id_hoc_phi','hoc_phis.id')
                                    ->leftJoin('chuyen_nganhs','chuyen_nganhs.id','hoc_phis.id_chuyen_nganh')
                                    ->select('thanh_toan_hoc_phis.*','sinh_viens.ten_sinh_vien','sinh_viens.id_lop_hoc','lop_hocs.ten_lop_hoc','hoc_phis.hoc_ky','hoc_phis.so_tien','hoc_phis.khoa_hoc','chuyen_nganhs.ten_chuyen_nganh')
@@ -54,7 +53,7 @@ class ThanhToanHocPhiController extends Controller
         $khoahocs=ChuongTrinhDaoTao::where('trang_thai',1)->get();
         $chuyennganhs=ChuyenNganh::where('trang_thai',1)->get();
         $lophocs=LopHoc::where('trang_thai',1)->get();
-        $hocphis=HocPhi::where('hoc_phis.trang_thai',1)->select('hoc_ky','khoa_hoc')->distinct()->get();
+        $hocphis=HocPhi::where('hoc_phis.trang_thai',1)->orderBy('hoc_ky','asc')->orderBy('khoa_hoc','desc')->select('hoc_ky','khoa_hoc')->distinct()->get();
         $sinhviens=SinhVien::where('trang_thai',1)->whereNotIn('ma_sv',ThanhToanHocPhi::select('ma_sv')->where('trang_thai',1)->get())->get();
         $hinhthucthanhtoans=HinhThucThanhToan::where('trang_thai',1)->get();
         return view('admin.thanhtoanhocphis.index',compact('hocphis','sinhviens','hinhthucthanhtoans','chuyennganhs','lophocs'));
@@ -104,12 +103,14 @@ class ThanhToanHocPhiController extends Controller
         $sinhvien=SinhVien::find($request->ma_sv);
         $hocphi=HocPhi::where('hoc_ky',$request->hoc_ky)->where('khoa_hoc',$request->khoa_hoc)->where('id_chuyen_nganh',$sinhvien->lopHoc->id_chuyen_nganh)->where('trang_thai',1)->first();
         if($hocphi!=null){
+            $thanhtoan=null;
+            $phuongthuc=null;
             if($request->id_hinh_thuc_thanh_toan==1){
                 $searchPayment=PaypalPayment::where('payment_id',$request->payment_id)->where('trang_thai',1)->first();
                 if($searchPayment==null){
 
-                    $paypalPayment=PaypalPayment::create($request->all());
-                    ThanhToanHocPhi::create([
+                    $phuongthuc=$paypalPayment=PaypalPayment::create($request->all());
+                    $thanhtoan=ThanhToanHocPhi::create([
                         'id_hoc_phi'=>$hocphi->id,
                         'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
                         'paypal_payment_id'=>$paypalPayment->id,
@@ -126,8 +127,8 @@ class ThanhToanHocPhiController extends Controller
                 $searchPayment=VnpayPayment::where('vnp_TxnRef',$request->vnp_TxnRef)->where('vnp_PayDate',$request->vnp_PayDate)->where('trang_thai',1)->first();
                 //dd($searchPayment);
                 if($searchPayment==null){
-                    $vnpayPayment=VnpayPayment::create($request->all());
-                    ThanhToanHocPhi::create([
+                    $phuongthuc=$vnpayPayment=VnpayPayment::create($request->all());
+                    $thanhtoan=ThanhToanHocPhi::create([
                         'id_hoc_phi'=>$hocphi->id,
                         'id_hinh_thuc_thanh_toan'=>$request->id_hinh_thuc_thanh_toan,
                         'vnpay_payment_id'=>$vnpayPayment->id,
@@ -140,7 +141,20 @@ class ThanhToanHocPhiController extends Controller
                         'status'=>2
                     ]);
             }
+            $newData=array(
+                'hoc_phi'=>$hocphi,
+                'phuong_thuc'=>$phuongthuc,
+                'thanh_toan'=>$thanhtoan,
+            );
+            activity()
+            ->useLog('Thêm thanh toán học phí')
+            ->performedOn($thanhtoan)
+            ->withProperties(['attributes' => $newData,'old'=>[]])
+            ->causedBy(auth()->user())
+            ->log('Thêm thanh toán học phí cho sinh viên '.$sinhvien->ten_sinh_vien."- mssv".$sinhvien->ma_sv." - lớp ".$sinhvien->lopHoc->ten_lop_hoc. " - khóa ".$request->khoa_hoc) ;
+
             return response()->json(['success' => 'Lưu Thành Công.','status'=>1]);
+
         }
         return response()->json(['error'=>'Không tìm thấy học phí','status'=>0]);
 
@@ -205,22 +219,37 @@ class ThanhToanHocPhiController extends Controller
     {
         ThanhToanHocPhi::where('id', $id)->update(['trang_thai' => 0]);
         $thanhtoanhocphi=ThanhToanHocPhi::where('id',$id)->first();
+        $sinhvien=SinhVien::where('ma_sv',$thanhtoanhocphi->ma_sv)->first();
         if($thanhtoanhocphi->id_hinh_thuc_thanh_toan==1){
             PaypalPayment::where('id',$thanhtoanhocphi->paypal_payment_id)->update(['trang_thai'=>0]);
         }
         if($thanhtoanhocphi->id_hinh_thuc_thanh_toan==2){
             VnpayPayment::where('id',$thanhtoanhocphi->vnpay_payment_id)->update(['trang_thai'=>0]);
         }
+        activity()
+            ->useLog('Hủy thanh toán học phí')
+            ->performedOn($thanhtoanhocphi)
+            ->causedBy(auth()->user())
+            ->log('Hủy thanh toán học phí cho sinh viên '.$sinhvien->ten_sinh_vien."- Mã ".$sinhvien->ma_sv." - Lớp ".$sinhvien->lopHoc->ten_lop_hoc. " - Khóa ".$sinhvien->khoa_hoc) ;
+
         return response()->json(['success' => 'Xóa Thành Công.']);
     }
     public function huyDongHocPhi(Request $request){
         $thanhtoanhocphi=ThanhToanHocPhi::where('id',$request->id)->where('trang_thai',1)->first();
+        $sinhvien=SinhVien::where('ma_sv',$thanhtoanhocphi->ma_sv)->first();
         if($thanhtoanhocphi->id_hinh_thuc_thanh_toan==1){
             PaypalPayment::find($thanhtoanhocphi->paypal_payment_id)->update(['trang_thai'=>0]);
         }else{
             VnpayPayment::find($thanhtoanhocphi->vnpay_payment_id)->update(['trang_thai'=>0]);
         }
+
         $thanhtoanhocphi->update(['trang_thai'=>0]);
+        activity()
+            ->useLog('Hủy thanh toán học phí')
+            ->performedOn($thanhtoanhocphi)
+            ->causedBy(auth()->user())
+            ->log('Hủy thanh toán học phí cho sinh viên '.$sinhvien->ten_sinh_vien."- Mã ".$sinhvien->ma_sv." - Lớp ".$sinhvien->lopHoc->ten_lop_hoc. " - Khóa ".$sinhvien->khoa_hoc) ;
+
         return response()->json(['success' => 'Xóa Thành Công.']);
     }
     public function restore($id)

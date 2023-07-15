@@ -145,9 +145,6 @@ class APIMoDangKyMonController extends Controller
             'status'=>0
         ]);
     }
-    public function danhSachDangKyMonHocTinChiCuaSinhVien($ma_sv){
-
-    }
     public function hienThiDanhSachDangKyMonHocCuaSinhVien($ma_sv){
         $sinhvien=SinhVien::where("ma_sv",$ma_sv)->where('trang_thai',1)->first();
         $chuongTrinhDaoTao=ChuongTrinhDaoTao::where('khoa_hoc',$sinhvien->khoa_hoc)->where('id_chuyen_nganh',$sinhvien->lopHoc->chuyenNganh->id)->where('trang_thai',1)->first();

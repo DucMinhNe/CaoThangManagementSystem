@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api;
 use Illuminate\Http\Request;
 use App\Models\CTLopHocPhan;
 use App\Models\SinhVien;
+use App\Models\GiangVien;
+use App\Models\LopHocPhan;
 class APIChiTietLopHocPhanController extends Controller
 {
     /**
@@ -47,9 +49,11 @@ class APIChiTietLopHocPhanController extends Controller
 
     public function thaydoidiem($id_lop_hoc_phan,Request $request)
     {
-
+        $sinhvien=SinhVien::where('ma_sv',$request->ma_sv)->first();
         $diem_sv = CTLopHocPhan::where('ma_sv',$request->ma_sv)->where('trang_thai',1)->where('id_lop_hoc_phan',$id_lop_hoc_phan)->first();
+        $lophocphan=LopHocPhan::where('id',$id_lop_hoc_phan)->first();
         unset($request['ma_sv']);
+        $oldData=$diem_sv->getAttributes();
         $diem_sv->update([
             'chuyen_can'=> $request->chuyen_can,
             'tbkt' =>$request->tbkt,
@@ -59,6 +63,15 @@ class APIChiTietLopHocPhanController extends Controller
             'tong_ket_2'=>$request->tong_ket_2,
         ]
         );
+        //dd($diem_sv);
+        $giangvien=GiangVien::where('ma_gv',$request->ma_gv)->first();
+        $newData=$diem_sv->getAttributes();
+        activity()
+            ->useLog('Thay đổi điểm sinh viên')
+            ->performedOn($diem_sv)
+            ->withProperties(['attributes' => $newData,'old'=>$oldData])
+            ->causedBy($giangvien)
+            ->log('Thay đổi điểm sinh viên '.$sinhvien->ten_sinh_vien. " - khóa ".$sinhvien->khoa_hoc ."/ Lớp học phần: ".$lophocphan->ten_lop_hoc_phan." - mã lớp ".$lophocphan->id );
         return response()->json([
             'message'=>"Cập nhật điểm thành công",
             'status'=>1

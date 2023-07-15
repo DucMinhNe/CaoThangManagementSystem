@@ -46,7 +46,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modelHeading"></h4>
+                <button type="button" class="close" id="closeBtn">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
+
             <div class="modal-body">
                 <form id="modalForm" name="modalForm" class="form-horizontal">
                     <div class="card-body">
@@ -373,6 +377,10 @@ $(function() {
     //         table.ajax.url("{{ route('thanhtoanhocphi.index') }}").load();
     //     }
     // });
+    $('#closeBtn').click(function(){
+        $('#modalForm').trigger("reset");
+        $('#ajaxModelexa').modal('hide');
+    })
     $('#chon_theo_lop_hoc_hien_tai').click(function(){
         $('#id_hoc_phi').val($('#id_hoc_phi').val()).trigger('change');
         if($(this).is(':checked')){
@@ -802,6 +810,8 @@ $(function() {
             'ma_sv':$('#ma_sv').val(),
         }
         e.preventDefault();
+        if(($('#id_hinh_thuc_thanh_toan').val()==1&&$('#payment_id').val()!="")||($('#id_hinh_thuc_thanh_toan').val()==2&&$('vnp_TxnRef').val()!=""))
+        {
             $(this).html('Sending..');
             console.log("OK");
 
@@ -845,6 +855,14 @@ $(function() {
 
                 }
             });
+        }else{
+            Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi...',
+                        text: "Thông tin truy vấn chưa có",
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                        })
+        }
 
     });
 
