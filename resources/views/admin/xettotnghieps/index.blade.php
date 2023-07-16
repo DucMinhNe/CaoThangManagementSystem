@@ -94,7 +94,55 @@
             </table>
         </div>
 </section>
-
+<div class="modal fade" id="ctCacLopHocPhanModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ctCacLopHocPhanModalHeading"></h4>
+            </div>
+                    <div class="form-group row ml-2">
+                        <label for="id_hoc_ky_filter" class="col-sm-1 col-form-label">Học Kỳ</label>
+                        <div class="col-sm-3">
+                            <select name="id_hoc_ky_filter" id="id_hoc_ky_filter" class="form-control select2"
+                                style="width: 100%;">
+                                <option value="0">-- Chọn học kỳ --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">Tốt Nghiệp</option>
+                                <option value="8">Chứng Chỉ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="ma_sv" id="ma_sv">
+            <div class="modal-body">
+                    <table id="example2" class="table table-bordered table-striped ctCacLopHocPhan-table">
+                        <thead>
+                            <tr>
+                                <th>Tên Lớp Học Phần</th>
+                                <th>Học Kỳ</th>
+                                <th>Chuyên Cần</th>
+                                <th>TBKT</th>
+                                <th>Thi 1</th>
+                                <th>Thi 2</th>
+                                <th>Tổng Kết 1</th>
+                                <th>Tổng Kết 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i>
+                    Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="{{ asset('plugins/jquery/jquery.js') }}"></script>
 <script type="text/javascript">
@@ -197,6 +245,95 @@ $(function() {
                 text: 'Số dòng trên trang'
             }
         ],
+    });
+    var ctCacLopHocPhanTable = $('.ctCacLopHocPhan-table').DataTable({
+        processing: true,
+        serverSide: true,
+        orderCellsTop: true,
+        searching: false,
+        info: false,
+        paging: true,
+        autoWidth: false,
+        ajax: "{{ route('xettotnghiep.index')}}" + '/getCacLopHocPhanByMaSv/0/0',
+        columns: [
+            {
+                data: 'ten_lop_hoc_phan',
+                name: 'ten_lop_hoc_phan'
+            },
+            {
+                data: 'hoc_ky',
+                name: 'hoc_ky'
+            },
+            {
+                data: 'chuyen_can',
+                name: 'chuyen_can'
+            },
+            {
+                data: 'tbkt',
+                name: 'tbkt'
+            },
+            {
+                data: 'thi_1',
+                name: 'thi_1'
+            },
+            {
+                data: 'thi_2',
+                name: 'thi_2'
+            },
+            {
+                data: 'tong_ket_1',
+                name: 'tong_ket_1'
+            },
+            {
+                data: 'tong_ket_2',
+                name: 'tong_ket_2'
+            },
+        ],
+        language: {
+            "sEmptyTable": "Không có dữ liệu",
+            "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+            "sInfoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+            "sInfoFiltered": "(được lọc từ _MAX_ tổng số bản ghi)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ",",
+            "sLengthMenu": "Hiển thị _MENU_ bản ghi",
+            "sLoadingRecords": "Đang tải...",
+            "sProcessing": "Đang xử lý...",
+            "sSearch": "Tìm kiếm:",
+            "sZeroRecords": "Không tìm thấy kết quả nào phù hợp",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sLast": "Cuối",
+                "sNext": "Tiếp",
+                "sPrevious": "Trước"
+            },
+            "oAria": {
+                "sSortAscending": ": Sắp xếp tăng dần",
+                "sSortDescending": ": Sắp xếp giảm dần"
+            }
+        },
+    });
+    $("#id_hoc_ky_filter").change(function() {
+        var selectedHocKyId = $("#id_hoc_ky_filter").val();
+        var masinhvien = $("#ma_sv").val();
+        if (selectedHocKyId != 0) {
+            ctCacLopHocPhanTable.ajax.url(
+                "{{ route('xettotnghiep.index')}}" + '/getCacLopHocPhanByMaSv/'+masinhvien+'/'+selectedHocKyId)
+            .load();
+        } else {
+            ctCacLopHocPhanTable.ajax.url(
+                "{{ route('xettotnghiep.index')}}" + '/getCacLopHocPhanByMaSv/'+masinhvien+'/0')
+            .load();
+        }
+    });
+    $('body').on('click', '.editBtn', function() {
+        var id = $(this).data('id');
+        $('#ctCacLopHocPhanModal').modal('show');
+        $('#ma_sv').val(id);
+        $('#ctCacLopHocPhanModalHeading').html(id);
+        ctCacLopHocPhanTable.ajax.url(
+                "{{ route('xettotnghiep.index')}}" + '/getCacLopHocPhanByMaSv/'+id+'/0')
+            .load();
     });
     $('#xemBtn').click(function() {
         var selectedKhoaId = $("#id_khoa_filter").val();

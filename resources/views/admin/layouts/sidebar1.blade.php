@@ -204,17 +204,17 @@
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="{{ url('/admin/loaimonhoc') }}"
-                                  class="nav-link {{ Request::url() == url('/admin/loaimonhoc') ? 'active' : '' }}">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Loại Môn Học</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
                               <a href="{{ url('/admin/monhoc') }}"
                                   class="nav-link {{ Request::url() == url('/admin/monhoc') ? 'active' : '' }}">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Môn Học</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a href="{{ url('/admin/loaimonhoc') }}"
+                                  class="nav-link {{ Request::url() == url('/admin/loaimonhoc') ? 'active' : '' }}">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>Loại Môn Học</p>
                               </a>
                           </li>
                       </ul>
@@ -260,7 +260,7 @@
                       <a href="{{ url('/admin/xettotnghiep') }}"
                           class="nav-link {{ Request::url() == url('/admin/xettotnghiep') ? 'active' : '' }}">
                           <i class="nav-icon fas fa-user-graduate"></i>
-                          <p>Xét tốt nghiệp</p>
+                          <p>Kết Quả Học Tập</p>
                       </a>
                   </li>
                   <li class="nav-item">

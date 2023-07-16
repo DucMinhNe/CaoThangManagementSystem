@@ -15,29 +15,29 @@ class SinhVienSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('sinh_viens')->insert([
-            [
-                'ma_sv' => '0307201123',
-                'ten_sinh_vien' => 'Lê Đức Minh',
-                'email' => '0306201123@gmail.com',
-                'so_dien_thoai' => '0906913419',
-                'so_cmt' => '215587193',
-                'gioi_tinh' => true,
-                'ngay_sinh' => '2002-04-04',
-                'noi_sinh' => 'TP.HCM',
-                'dan_toc' => 'Kinh',
-                'ton_giao' => 'Không',
-                'dia_chi_thuong_tru' => '479 tỉnh lộ 15, ấp 7, xã tân thạnh đông, huyện củ chi',
-                'dia_chi_tam_tru' => '479 tỉnh lộ 15, ấp 7, xã tân thạnh đông, huyện củ chi',
-                'hinh_anh_dai_dien' => '0306201123.jpg',
-                'tai_khoan' => 'test',
-                'mat_khau' => Hash::make('123'),
-                'khoa_hoc' => '2020',
-                'bac_dao_tao' => 'Cao đẳng ngành',
-                'he_dao_tao' => 'Chính quy',
-                'id_lop_hoc' => 1,
-                 'tinh_trang_hoc' => 'Đang học',
-            ],
+        // DB::table('sinh_viens')->insert([
+        //     [
+        //         'ma_sv' => '0307201123',
+        //         'ten_sinh_vien' => 'Lê Đức Minh',
+        //         'email' => '0306201123@gmail.com',
+        //         'so_dien_thoai' => '0906913419',
+        //         'so_cmt' => '215587193',
+        //         'gioi_tinh' => true,
+        //         'ngay_sinh' => '2002-04-04',
+        //         'noi_sinh' => 'TP.HCM',
+        //         'dan_toc' => 'Kinh',
+        //         'ton_giao' => 'Không',
+        //         'dia_chi_thuong_tru' => '479 tỉnh lộ 15, ấp 7, xã tân thạnh đông, huyện củ chi',
+        //         'dia_chi_tam_tru' => '479 tỉnh lộ 15, ấp 7, xã tân thạnh đông, huyện củ chi',
+        //         'hinh_anh_dai_dien' => '0306201123.jpg',
+        //         'tai_khoan' => 'test',
+        //         'mat_khau' => Hash::make('123'),
+        //         'khoa_hoc' => '2020',
+        //         'bac_dao_tao' => 'Cao đẳng ngành',
+        //         'he_dao_tao' => 'Chính quy',
+        //         'id_lop_hoc' => 1,
+        //          'tinh_trang_hoc' => 'Đang học',
+        //     ],
             // [
             //     'ma_sv' => '0306201124',
             //     'ten_sinh_vien' => 'Lê Văn B',
@@ -104,6 +104,6 @@ class SinhVienSeeder extends Seeder
             //     'id_lop_hoc' => 1,
             //     // 'tinh_trang_hoc' => null,
             // ],
-        ]);
+        // ]);
     }
 }

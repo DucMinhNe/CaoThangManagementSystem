@@ -350,7 +350,7 @@ td {
                                 <div class="form-group">
                                     <label for="mat_khau">Mật Khẩu</label>
                                     <input type="text" class="form-control" id="mat_khau" name="mat_khau"
-                                        placeholder="Mật Khẩu" value="" readonly required>
+                                        placeholder="Mật Khẩu" value="" required>
                                     <div class="invalid-feedback">
                                         Mật khẩu phải khớp với số chứng minh thư.
                                     </div>

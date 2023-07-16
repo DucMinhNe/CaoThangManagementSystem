@@ -217,7 +217,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row d-flex justify-content-start">
+                    <div class="form-group row">
                         <label for="id_hoc_ky_filter" class="col-sm-1 col-form-label">Học Kỳ</label>
                         <div class="col-sm-3">
                             <select name="id_hoc_ky_filter" id="id_hoc_ky_filter" class="form-control select2"

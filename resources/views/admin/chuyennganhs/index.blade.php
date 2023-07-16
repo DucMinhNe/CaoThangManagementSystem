@@ -277,7 +277,7 @@ $(function() {
         $('#id').val('');
         $('#id_khoa').val('').trigger('change');
         $('#modalForm').trigger("reset");
-        $('#modelHeading').html("Thêm Chuyên Ngành");
+        $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 

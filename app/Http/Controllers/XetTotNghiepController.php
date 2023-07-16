@@ -7,6 +7,8 @@ use App\Models\SinhVien;
 use App\Models\Khoa;
 use App\Models\ChuyenNganh;
 use App\Models\LopHoc;
+use App\Models\LopHocPhan;
+use App\Models\CtChuongTrinhDaoTao;
 use DataTables;
 use Illuminate\Support\Facades\DB;
 class XetTotNghiepController extends Controller
@@ -151,6 +153,42 @@ class XetTotNghiepController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->make(true);
+    }
+    public function getCacLopHocPhanByMaSv($ma_sv,$hoc_ky)
+    {
+        if($hoc_ky != 0){
+        $cacLopHocPhan = LopHocPhan::leftJoin('ct_lop_hoc_phans', 'lop_hoc_phans.id', '=', 'ct_lop_hoc_phans.id_lop_hoc_phan')
+        ->leftJoin('ct_chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id', '=', 'lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
+        ->where('ct_lop_hoc_phans.ma_sv', $ma_sv)
+        ->select(
+            'lop_hoc_phans.ten_lop_hoc_phan',
+            'ct_chuong_trinh_dao_taos.hoc_ky',
+            'ct_lop_hoc_phans.chuyen_can',
+            'ct_lop_hoc_phans.tbkt',
+            'ct_lop_hoc_phans.thi_1',
+            'ct_lop_hoc_phans.thi_2',
+            'ct_lop_hoc_phans.tong_ket_1',
+            'ct_lop_hoc_phans.tong_ket_2'
+        )
+        ->where('ct_chuong_trinh_dao_taos.hoc_ky', $hoc_ky)
+        ->get();
+    }else { $cacLopHocPhan = LopHocPhan::leftJoin('ct_lop_hoc_phans', 'lop_hoc_phans.id', '=', 'ct_lop_hoc_phans.id_lop_hoc_phan')
+        ->leftJoin('ct_chuong_trinh_dao_taos', 'ct_chuong_trinh_dao_taos.id', '=', 'lop_hoc_phans.id_ct_chuong_trinh_dao_tao')
+        ->where('ct_lop_hoc_phans.ma_sv', $ma_sv)
+        ->select(
+            'lop_hoc_phans.ten_lop_hoc_phan',
+            'ct_chuong_trinh_dao_taos.hoc_ky',
+            'ct_lop_hoc_phans.chuyen_can',
+            'ct_lop_hoc_phans.tbkt',
+            'ct_lop_hoc_phans.thi_1',
+            'ct_lop_hoc_phans.thi_2',
+            'ct_lop_hoc_phans.tong_ket_1',
+            'ct_lop_hoc_phans.tong_ket_2'
+        )
+        ->get();}
+    return Datatables::of($cacLopHocPhan)
+        ->addIndexColumn()
+        ->make(true);
     }
     /**
      * Show the form for creating a new resource.

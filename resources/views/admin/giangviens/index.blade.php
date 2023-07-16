@@ -434,7 +434,7 @@ $(function() {
                     });
                 }
             });
-            table.api().columns([2, 3, 4, 7, 8, 9, 10, 11, 13, 14]).visible(
+            table.api().columns([2, 3, 4, 7, 8, 9, 10, 11, 13, 14,17]).visible(
                 false);
         },
         ajax: "{{ route('giangvien.index') }}",

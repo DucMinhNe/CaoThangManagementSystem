@@ -23,7 +23,7 @@ class DangNhapController extends Controller
     ];
     if (Auth::attempt($credentials, true)) {
         $user = Auth::user();
-        if ($user->trang_thai == 0) {
+        if ($user->trang_thai == 0 || $user->tinh_trang_lam_viec == 0) {
             Auth::logout();
             return redirect('/admin/dangnhap')->with('error', 'Tài khoản của bạn đã bị vô hiệu hóa.');
         }

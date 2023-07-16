@@ -82,6 +82,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     });
     Route::group(['middleware' => 'checkchucvu:1|2'], function () {
 
+        Route::get('/xettotnghiep/getCacLopHocPhanByMaSv/{ma_sv}/{hoc_ky}', [XetTotNghiepController::class, 'getCacLopHocPhanByMaSv'])->name('xettotnghiep.getCacLopHocPhanByMaSv');
         Route::get('/xettotnghiep/getSinhVienByIdKhoa/{id_khoa}', [XetTotNghiepController::class, 'getSinhVienByIdKhoa'])->name('xettotnghiep.getSinhVienByIdKhoa');
         Route::get('/xettotnghiep/getSinhVienByIdChuyenNganh/{id_chuyen_nganh}', [XetTotNghiepController::class, 'getSinhVienByIdChuyenNganh'])->name('xettotnghiep.getSinhVienByIdChuyenNganh');
         Route::get('/xettotnghiep/getSinhVienByIdLop/{id_lop_hoc}', [XetTotNghiepController::class, 'getSinhVienByIdLop'])->name('xettotnghiep.getSinhVienByIdLop');

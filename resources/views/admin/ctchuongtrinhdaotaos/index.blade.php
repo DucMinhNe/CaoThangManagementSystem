@@ -167,7 +167,7 @@ $(function() {
                 var column = this;
                 if (column.index() !== 0 && column.index() !== 6) {
                     var select = $(
-                            '<select class="form-control select2"><option value="">--Chọn--</option></select>'
+                            '<select class="form-control select2"><option value="">--</option></select>'
                         ).appendTo($(table.api().table().container()).find(
                             '.filter-row th:eq(' + column.index() + ')'))
                         .on('change', function() {

@@ -347,8 +347,8 @@ $(function() {
                             mon_hoc.mo_dang_ky +
                             '" min="{{ date("Y-m-d\TH:i") }}" /></td> <td><input type="datetime-local" class="form-control ngay_dong_dang_ky_mon" name="ngay_dong_dang_ky_mon" value="' +
                             mon_hoc.dong_dang_ky +
-                            '"/></td><td><input type="checkbox" checked class="chon_mo_lop" data-id-mon-hoc="' +
-                            mon_hoc.mon_hoc.id + '" min="{{ date("Y-m-d\TH:i") }}"></td></tr>';
+                            '" min="{{ date("Y-m-d\TH:i") }}" /></td><td><input type="checkbox" checked class="chon_mo_lop" data-id-mon-hoc="' +
+                            mon_hoc.mon_hoc.id + '" ></td></tr>';
                     } else {
                         text = text + '<tr><td>' + i + '</td><td>' + mon_hoc.mon_hoc
                             .ten_mon_hoc +
@@ -507,8 +507,13 @@ $(function() {
 
     $('body').on('click', '.closeBtn', function() {
         var id = $(this).data("id");
-        if (confirm("Bạn có muốn đóng?")) {
-            $.ajax({
+        Swal.fire({
+                        title: 'Bạn có muốn đóng?',
+                        confirmButtonText: 'Ok',
+                        showCancelButton: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
                 type: "POST",
                 url: "{{ route('modangkymon.close', '') }}/" + id,
                 success: function(data) {
@@ -519,6 +524,7 @@ $(function() {
                 }
             });
         }
+        });
     });
     // $('body').on('click', '.restoreBtn', function() {
     //     var id = $(this).data("id");

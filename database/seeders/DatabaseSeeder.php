@@ -20,16 +20,16 @@ class DatabaseSeeder extends Seeder
             ChucVuSinhVienSeeder::class,
            ChucVuGiangVienSeeder::class,
           
-            KhoaSeeder::class,
-          ChuyenNganhSeeder::class,
-            LoaiMonHocSeeder::class,
-           BoMonSeeder::class,
+            // KhoaSeeder::class,
+          // ChuyenNganhSeeder::class,
+            // LoaiMonHocSeeder::class,
+          //  BoMonSeeder::class,
            GiangVienSeeder::class,
-           MonHocSeeder::class,
-          LopHocSeeder::class,
+          //  MonHocSeeder::class,
+          // LopHocSeeder::class,
           SinhVienSeeder::class,
-            ChuongTrinhDaoTaoSeeder::class,
-           CTChuongTrinhDaoTaoSeeder::class,
+            // ChuongTrinhDaoTaoSeeder::class,
+          //  CTChuongTrinhDaoTaoSeeder::class,
         ]);
     }
 }

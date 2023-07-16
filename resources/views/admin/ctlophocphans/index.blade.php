@@ -220,7 +220,7 @@ $(function() {
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        scrollX: 500,
+        scrollX: true,
         orderCellsTop: true,
         initComplete: function() {
             var table = this;
@@ -228,7 +228,7 @@ $(function() {
                 var column = this;
                 if (column.index() !== 0 && column.index() !== 9) {
                     var select = $(
-                            '<select class="form-control select2"><option value="">--Chọn--</option></select>'
+                            '<select class="form-control select2"><option value="">--</option></select>'
                         ).appendTo($(table.api().table().container()).find(
                             '.filter-row th:eq(' + column.index() + ')'))
                         .on('change', function() {
@@ -242,6 +242,10 @@ $(function() {
                     });
                     $(".filter-row").toggle();
                     select.select2();
+                    select.select2({
+                        width: 'auto',
+                        dropdownAutoWidth: true
+                    });
                 }
             });
         },

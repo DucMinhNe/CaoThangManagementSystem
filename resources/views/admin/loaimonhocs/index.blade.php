@@ -220,7 +220,7 @@ $(function() {
         $('#savedata').val("create-Btn");
         $('#id').val('');
         $('#modalForm').trigger("reset");
-        $('#modelHeading').html("Thêm Khoa");
+        $('#modelHeading').html("Thêm");
         $('#ajaxModelexa').modal('show');
     });
 
@@ -228,7 +228,7 @@ $(function() {
         $('#modalForm').removeClass('was-validated');
         var id = $(this).data('id');
         $.get("{{ route('loaimonhoc.index') }}" + '/' + id + '/edit', function(data) {
-            $('#modelHeading').html("Sửa Khoa");
+            $('#modelHeading').html("Sửa ");
             $('#savedata').val("edit-Btn");
             $('#ajaxModelexa').modal('show');
             $('#id').val(data.id);
