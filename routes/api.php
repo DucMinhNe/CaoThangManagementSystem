@@ -101,11 +101,12 @@ Route::post('/login-giang-vien',[APIAuthController::class,'DangNhapGiangVien']);
 Route::get('/danh-sach-sinh-vien-lhp/{id}',[APILopHocPhanController::class,'laydssinhvien_lophocphan']);
 Route::get('/giang-vien/lop-hoc-phan/{id}',[APILopHocPhanController::class,'show']);
 Route::get('/giang-vien/lop-hoc/{id}',[APILopHocController::class,'show']);
+Route::get('giang-vien/danh-sach-lop-chu-nhiem/{ma_gv}',[APILopHocController::class,'lopChuNhiem']);
 Route::group(['middleware'=>'auth:sanctum'],function(){
      Route::post('/dang-xuat-giang-vien',[APIAuthController::class,'dangXuatGiangVien'])->name('dang-xuat-gv');
      Route::get('/kiem-tra-dang-nhap-gv',[APIAuthController::class,'kiemtraDangNhap_GiangVien']);
 
-    Route::get('giang-vien/danh-sach-lop-chu-nhiem/{ma_gv}',[APILopHocController::class,'lopChuNhiem']);
+   
 
 
      Route::get('/danh-sach-sinh-vien-chu-nhiem/{id_lop_hoc}',[APILopHocController::class,'danhsachSinhvienlopChuNhiem']);
