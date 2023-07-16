@@ -48,7 +48,6 @@ use App\Http\Controllers\HocPhiController;
 use App\Http\Controllers\ThanhToanHocPhiController;
 use App\Http\Controllers\ThanhToanDangKyLopHocPhan;
 use App\Http\Controllers\ActivityLogController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +66,10 @@ Route::get('khongcoquyen', function () {
     return view('errors.403');
 })->name('khongcoquyen');
 
+Route::get('/admin/quenmatkhau', [DangNhapController::class,'hienFormGuiEmail'])->name('password.request');
+Route::post('/admin/quenmatkhau', [DangNhapController::class,'guiEmailReset'])->name('password.email');
+Route::get('/admin/datlaimatkhau/{token}', [DangNhapController::class,'hienFormDatLai'])->name('password.reset');
+Route::post('/admin/datlaimatkhau', [DangNhapController::class,'reset'])->name('password.update');
 
 Route::get('/admin/dangnhap', [DangNhapController::class,'dangNhap'])->name('login');
 Route::post('/admin/dangnhap', [DangNhapController::class,'kiemTraDangNhap']);

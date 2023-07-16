@@ -9,6 +9,7 @@ use App\Models\GiangVien;
 use App\Models\BoMon;
 use App\Models\LopHoc;
 use App\Models\ChucVuGiangVien;
+use App\Models\DanhSachChucVuGiangVien;
 use App\Models\LopHocPhan;
 class ThongTinCaNhanController extends Controller
 {
@@ -36,7 +37,10 @@ class ThongTinCaNhanController extends Controller
         ->orWhere('ma_gv_2', $giangviens->ma_gv)
         ->orWhere('ma_gv_3', $giangviens->ma_gv)
         ->get();
-        return view('admin.thongtincanhans.index', compact('giangviens','bomons','chucvus','chunhiems','lophocphans'));  
+        $danhsachchucvugiangviens = DanhSachChucVuGiangVien::leftJoin('chuc_vu_giang_viens', 'danh_sach_chuc_vu_giang_viens.id_chuc_vu', '=', 'chuc_vu_giang_viens.id')
+        ->select('danh_sach_chuc_vu_giang_viens.*', 'chuc_vu_giang_viens.ten_chuc_vu')
+        ->where('ma_gv', $giangviens->ma_gv)->get();
+        return view('admin.thongtincanhans.index', compact('giangviens','bomons','chucvus','chunhiems','lophocphans','danhsachchucvugiangviens'));  
     }
 
     /**

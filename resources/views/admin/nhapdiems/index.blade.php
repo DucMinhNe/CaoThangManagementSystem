@@ -385,7 +385,8 @@ $(function() {
         //         $('[data-column="tong_ket_2"][data-id="' + id + '"]').text('');
         //         }
         //     }
-        if (column == 'chuyen_can' || column == 'tbkt' || column == 'thi_1' || column == 'thi_2' || column == 'tong_ket_1'|| column == 'tong_ket_2') {
+        if (column == 'chuyen_can' || column == 'tbkt' || column == 'thi_1' || column == 'thi_2' || column ==
+            'tong_ket_1' || column == 'tong_ket_2') {
             var tongKet1 = valChuyenCan * 0.1 + valTbkt * 0.4 + valThi1 * 0.5;
             var tongKet2 = valChuyenCan * 0.1 + valTbkt * 0.4 + valThi2 * 0.5;
             var tongKet1Rounded = Math.round(tongKet1 * 10) / 10; // Làm tròn với 1 chữ số sau dấu thập phân
@@ -395,11 +396,10 @@ $(function() {
                 valTongKet1 = null;
             }
             $('[data-column="tong_ket_1"][data-id="' + id + '"]').text(valTongKet1);
-            if(column == 'thi_2'){
-                if(valTongKet1>=5){
+
+            if (valTongKet1 >= 5) {
                 $('[data-column="thi_2"][data-id="' + id + '"]').text('');
                 valThi2 = null;
-            }
             }
             if (valThi2 !== null) {
                 $('[data-column="tong_ket_2"][data-id="' + id + '"]').text(tongKet2Rounded.toFixed(1));

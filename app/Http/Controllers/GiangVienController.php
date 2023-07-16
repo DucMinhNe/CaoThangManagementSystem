@@ -134,7 +134,8 @@ class GiangVienController extends Controller
             }
             $files = $request->file('hinh_anh_dai_dien');
             $destinationPath = 'giangvien_img/'; // Đường dẫn lưu trữ ảnh
-            $profileImage = $request->ma_gv . "." . $files->getClientOriginalExtension();
+            // $profileImage = $request->ma_gv . "." . $files->getClientOriginalExtension();
+            $profileImage = $request->ma_gv . "_" . time() . ".jpg";
             $files->move($destinationPath, $profileImage);
         }
         $request->validate([

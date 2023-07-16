@@ -55,34 +55,22 @@
                             <h3 class="profile-username text-center">{{auth()->user()->ten_giang_vien}}</h3>
 
                             <p class="text-muted text-center"> {{ $chucvus ? $chucvus->ten_chuc_vu : '' }}</p>
-
-                            <ul class="list-group list-group-unbordered mb-3">
-                                <li class="list-group-item">
-                                    <b>Chủ Nhiệm Lớp</b> <a class="float-right">@foreach($chunhiems as $chunhiem)
-                                        <p>{{ $chunhiem->ten_lop_hoc }}</p>
-                                        @endforeach
-                                    </a>
-                                </li>
-                                <!-- <div class="form-group">
-                                    <label for="id_lop_hoc_phan">Chủ Nhiệm Lớp</label>
-                                    <select name="id_lop_hoc_phan" id="id_lop_hoc_phan" class="form-control select2"
-                                        style="width: 100%;">
-                                        @foreach ($chunhiems as $chunhiem)
-                                        @if ($chunhiem->trang_thai == 1)
-                                        <option value="{{ $chunhiem->id }}">{{ $chunhiem->ten_lop_hoc}}
-                                        </option>
-                                        @endif
-                                        @endforeach
-                                    </select>
-                                </div> -->
-                                <!-- <li class="list-group-item">
-                                    <b>Following</b> <a class="float-right">543</a>
-                                </li>
-                                <li class="list-group-item">
-                                    <b>Friends</b> <a class="float-right">13,287</a>
-                                </li> -->
-                            </ul>
-
+                            <div style="height: 250px">
+                                <ul class="list-group list-group-unbordered mb-3">
+                                    <li class="list-group-item">
+                                        <b>Chủ Nhiệm Lớp</b>
+                                        <div class="float-right" style="height: 150px;overflow-y: scroll;">
+                                            <a>
+                                                @foreach($chunhiems as $chunhiem)
+                                                @if ($chunhiem->trang_thai == 1)
+                                                <p class="mr-3">{{ $chunhiem->ten_lop_hoc }}</p>
+                                                @endif
+                                                @endforeach
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                             <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
                         </div>
                         <!-- /.card-body -->
@@ -105,11 +93,15 @@
                                 <li class="nav-item"><a class="nav-link" href="#doimatkhau" data-toggle="tab">Đổi Mật
                                         Khẩu</a>
                                 </li>
+                                <li class="nav-item"><a class="nav-link" href="#cacchucvudangdamnhiem"
+                                        data-toggle="tab">Các
+                                        Chức Vụ Đang Đảm Nhiệm</a>
+                                </li>
                                 <li class="nav-item"><a class="nav-link" href="#cacmongiangday" data-toggle="tab">Các
-                                        Môn Đang Giảng Dạy</a>
+                                        Lớp Đang Giảng Dạy</a>
                                 </li>
                                 <li class="nav-item"><a class="nav-link" href="#cacmondagiangday" data-toggle="tab">Các
-                                        Môn Đã Từng Giảng Dạy</a>
+                                        Lớp Đã Từng Giảng Dạy</a>
                                 </li>
                             </ul>
                         </div><!-- /.card-header -->
@@ -189,7 +181,6 @@
                                                     <div class="col-sm-7">
                                                         <select class="form-control select2" id="gioi_tinh"
                                                             name="gioi_tinh" required disabled>
-                                                            <option value="">-- Chọn Giới Tính --</option>
                                                             <option value="1">Nam</option>
                                                             <option value="0">Nữ</option>
                                                         </select>
@@ -199,7 +190,7 @@
                                                     <label class="col-sm-5 col-form-label">Ngày
                                                         Sinh</label>
                                                     <div class="col-sm-7">
-                                                        <input type="text" class="form-control"
+                                                        <input type="date" class="form-control"
                                                             value="{{auth()->user()->ngay_sinh}}" id="ngay_sinh"
                                                             name="ngay_sinh" placeholder="Ngày Sinh" readonly>
                                                     </div>
@@ -317,18 +308,38 @@
                                         <!-- /.tab-pane -->
                                     </div>
                                 </div>
+                                <div class="tab-pane" id="cacchucvudangdamnhiem"
+                                    style="height: 400px;overflow-y: scroll;">
+                                    <div class="col-md-12">
+                                        <ul class="list-group list-group-unbordered mb-3">
+                                            <b>Các Chức Vụ Đang Đảm Nhiệm: </b>
+                                            @foreach($danhsachchucvugiangviens
+                                            as $danhsachchucvugiangvien)
+                                            @if ($danhsachchucvugiangvien->trang_thai == 1)
+                                            <li class="list-group-item">
+                                                <a class="float-left">
+                                                    {{ $danhsachchucvugiangvien->ten_chuc_vu }}
+                                                </a>
+                                            </li>
+                                            @endif
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div class="tab-pane" id="cacmongiangday" style="height: 400px;overflow-y: scroll;">
                                     <div class="col-md-12">
                                         <ul class="list-group list-group-unbordered mb-3">
-                                            <b>Các Môn Đang Giảng Dạy: </b>
+                                            <b>Các Lớp Đang Giảng Dạy: </b>
                                             @foreach($lophocphans
                                             as $lophocphan)
                                             @if ($lophocphan->trang_thai_hoan_thanh == 0)
+                                            @if ($lophocphan->trang_thai == 1)
                                             <li class="list-group-item">
                                                 <a class="float-left">
                                                     {{ $lophocphan->ten_lop_hoc_phan }}
                                                 </a>
                                             </li>
+                                            @endif
                                             @endif
                                             @endforeach
                                         </ul>
@@ -337,7 +348,7 @@
                                 <div class="tab-pane" id="cacmondagiangday" style="height: 400px;overflow-y: scroll;">
                                     <div class="col-md-12">
                                         <ul class="list-group list-group-unbordered mb-3">
-                                            <b>Các Môn Đã Từng Giảng Dạy: </b>
+                                            <b>Các Lớp Đã Từng Giảng Dạy: </b>
                                             @foreach($lophocphans
                                             as $lophocphan)
                                             @if ($lophocphan->trang_thai_hoan_thanh == 1)
@@ -383,13 +394,7 @@ $(function() {
         });
     });
     $("#gioi_tinh").val('{{ auth()->user()->gioi_tinh}}');
-    var ngay_sinh = $("#ngay_sinh").val();
-    var inputElement = $("#ngay_sinh");
-    var date = new Date(inputElement.val());
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    inputElement.val(day + "/" + month + "/" + year);
+    $('#ngay_sinh').val('{{auth()->user()->ngay_sinh}}');
     $('#savedata').click(function(e) {
         e.preventDefault();
         $(this).html('Đang gửi ...');

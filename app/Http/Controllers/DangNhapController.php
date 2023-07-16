@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Hash;
 use App\Models\GiangVien;
+use Illuminate\Support\Facades\Password;
 class DangNhapController extends Controller
 {
     public function dangNhap(){
@@ -35,4 +36,49 @@ class DangNhapController extends Controller
         Auth::logout();
         return redirect(url('/admin/dangnhap'));
      }
+    public function hienFormGuiEmail()
+    {
+        if(!empty(Auth::check()))
+        {
+            return redirect('/admin');
+        }
+        return view('admin.dangnhaps.quenmatkhau');
+    }
+    public function guiEmailReset(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+        return $status === Password::RESET_LINK_SENT
+        ? back()->with(['status' => 'success', 'message' => __('Đường link đặt lại mật khẩu đã được gửi qua email của bạn.')])
+            : back()->withErrors(['email' => __($status)]);
+    }
+    public function hienFormDatLai(Request $request, $token = null)
+    {
+        return view('admin.dangnhaps.datlaimatkhau', ['token' => $token, 'email' => $request->email]);
+    }
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => $password,
+                ]);
+
+                $user->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
+    }
 }

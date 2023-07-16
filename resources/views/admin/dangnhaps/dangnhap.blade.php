@@ -143,6 +143,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-end">
+                    <a href="/admin/quenmatkhau" class="btn btn-primary">Yêu cầu đặt lại mật khẩu</a>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-xmark"></i>
                         Đóng</button>
                 </div>

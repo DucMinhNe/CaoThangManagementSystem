@@ -350,7 +350,8 @@ class SinhVienController extends Controller
             }
             $files = $request->file('hinh_anh_dai_dien');
             $destinationPath = 'sinhvien_img/'; // Đường dẫn lưu trữ ảnh
-            $profileImage = $request->ma_sv . "." . $files->getClientOriginalExtension();
+            // $profileImage = $request->ma_sv . "." . $files->getClientOriginalExtension();
+            $profileImage = $request->ma_sv . "_" . time() . ".jpg";
             $files->move($destinationPath, $profileImage);
         }
         $request->validate([
