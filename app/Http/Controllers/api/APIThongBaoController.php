@@ -22,7 +22,7 @@ class APIThongBaoController extends Controller
     }
 
     public function layDanhSachThongBaoCuaSinhVien($ma_sv){
-        $listThongbaos=ThongBaoCuaSinhVien::where('ma_sv',$ma_sv)->where('trang_thai',1)->get();
+        $listThongbaos=ThongBaoCuaSinhVien::where('ma_sv',$ma_sv)->where('trang_thai',1)->orderBy('created_at','desc')->get();
         $data=[];
 
         foreach($listThongbaos as $thongbao){
@@ -83,6 +83,7 @@ class APIThongBaoController extends Controller
         if ($request->type == 0 ){
             $listThongbaos=ThongBao::where('id_lop_hoc',$request->id)
                                     ->where('trang_thai',1)
+                                    ->orderBy('created_at','desc')
                                     ->get();
         }
         else
