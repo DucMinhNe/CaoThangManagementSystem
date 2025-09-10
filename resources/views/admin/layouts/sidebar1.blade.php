@@ -4,7 +4,7 @@
       <a href="/" class="brand-link">
           <img src="{{ asset('dist/img/logo_caothang.jpg') }}" alt="AdminLTE Logo" class="brand-image img elevation-3"
               style="opacity: .8 ;width: 25px; height: 45px">
-          <span class="brand-text font-weight-light">Cao Thắng</span>
+          <span class="brand-text font-weight-light">Education</span>
       </a>
 
       <!-- Sidebar -->

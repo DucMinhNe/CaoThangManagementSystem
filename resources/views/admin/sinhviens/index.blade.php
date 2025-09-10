@@ -361,8 +361,8 @@ td {
                                     <label for="bac_dao_tao">Bậc Đào Tạo</label>
                                     <select class="form-control select2" id="bac_dao_tao" name="bac_dao_tao" required>
                                         <option value="">-- Chọn Bậc Đào Tạo--</option>
-                                        <option value="Cao đẳng ngành">Cao đẳng ngành</option>
-                                        <option value="Cao đẳng nghề">Cao đẳng nghề</option>
+                                        <option value="Đại Học">Đại Học</option>
+                                        <option value="Cao Học">Cao Học</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Vui lòng chọn bậc đào tạo.

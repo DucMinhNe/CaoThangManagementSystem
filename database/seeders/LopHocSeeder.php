@@ -17,25 +17,25 @@ class LopHocSeeder extends Seeder
         DB::table('lop_hocs')->insert([
             [
                 'id' => '1',
-                'ten_lop_hoc' => 'CĐ TH 20B',
+                'ten_lop_hoc' => 'CN23SG1',
                 'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],
             [
                 'id' => '2',
-                'ten_lop_hoc' => 'CĐ TH 21A',
+                'ten_lop_hoc' => 'CN23SG2',
                 'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],
             [
                 'id' => '3',
-                'ten_lop_hoc' => 'CĐ TH 22C',
+                'ten_lop_hoc' => 'CN23SG3',
                 'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],
             [
                 'id' => '4',
-                'ten_lop_hoc' => 'CĐ TH 23D',
+                'ten_lop_hoc' => 'CN23SG4',
                 'id_chuyen_nganh' => 5,
                 'ma_gv_chu_nhiem' => null,
             ],

@@ -25,7 +25,7 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="/" class="h1"><b>Cao Thắng</b></a>
+                <a href="/" class="h1"><b>Education</b></a>
             </div>
             <div style="text-align: center;margin:1rem">
                 <img src="{{ asset('dist/img/caothang.png') }}" alt=""

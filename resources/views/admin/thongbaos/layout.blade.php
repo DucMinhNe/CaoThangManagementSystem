@@ -14,7 +14,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Cao Thắng</a></li>
+                        <li class="breadcrumb-item"><a href="#">Education</a></li>
                         <li class="breadcrumb-item active">Trang Chủ</li>
                     </ol>
                 </div><!-- /.col -->
