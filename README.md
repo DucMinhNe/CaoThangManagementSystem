@@ -87,7 +87,8 @@ cd CaoThangManagementSystem
 # 2. PHP dependencies
 composer install
 
-# 3. App key (a .env preconfigured for local MySQL is included — review it first)
+# 3. Environment config
+cp .env.example .env
 php artisan key:generate
 
 # 4. Create the database, then migrate and seed
@@ -106,7 +107,8 @@ php artisan serve
 The admin portal lives at `http://localhost:8000/admin` (login at `/admin/dangnhap`); the REST API is rooted at `http://localhost:8000/api`.
 
 > **Notes**
-> - The repository ships a committed `.env` targeting a local MySQL database named `ems_db` (user `root`, empty password) — adjust `DB_*` to your environment. The included PayPal/VNPay credentials are **sandbox** values; supply your own for any real deployment.
+> - `.env.example` targets a local MySQL database named `ems_db` (user `root`, empty password) — adjust `DB_*` to your environment after copying it to `.env`.
+> - To test online tuition payment, put your own **sandbox** credentials in `.env`: the PayPal REST app client ID/secret go in `PAYPAL_SANDBOX_CLIENT_ID` / `PAYPAL_SANDBOX_CLIENT_SECRET` (with `PAYPAL_MODE=sandbox`), and the VNPay merchant code and hash secret go in `VNP_TMNCODE` / `VNP_HASHSECRET`.
 > - Password-reset emails default to a local MailHog SMTP config (`MAIL_HOST=mailhog`, port 1025).
 > - Generated student photos, ID cards, and name badges are written to `public/sinhvien_img`, `public/sinhvien_thesinhvien`, and `public/sinhvien_bangten`.
 
