@@ -160,3 +160,7 @@ The admin portal lives at `http://localhost:8000/admin` (login at `/admin/dangnh
 - **Authorization by position.** Authentication is backed by the `GiangVien` (lecturer) model; the `CheckChucVu` middleware reads the user's position ID and gates entire route groups (`checkchucvu:1|2` for admin modules, `checkchucvu:1` for super-admin-only modules).
 - **Payments are verified, not trusted.** PayPal captures are checked with an HMAC-SHA256 signature; VNPay callbacks are validated against `vnp_SecureHash` with duplicate-transaction detection before any tuition record is marked paid.
 - **Nothing is hard-deleted.** Every module flips a `trang_thai` flag and offers an inactive-records view with restore, keeping historical data intact for the activity log.
+
+## License
+
+Released under the [MIT License](LICENSE).
