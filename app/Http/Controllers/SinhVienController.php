@@ -320,7 +320,7 @@ class SinhVienController extends Controller
                 DB::raw('AVG(CASE WHEN ct_chuong_trinh_dao_taos.hoc_ky = 6 THEN GREATEST(COALESCE(ct_lop_hoc_phans.tong_ket_1, 0), COALESCE(ct_lop_hoc_phans.tong_ket_2, 0)) END) AS trung_binh_hk6'),
                 DB::raw('CASE
                     WHEN AVG(CASE WHEN ct_chuong_trinh_dao_taos.hoc_ky <= 6 AND (ct_lop_hoc_phans.tong_ket_1 >= 5 OR ct_lop_hoc_phans.tong_ket_2 >= 5) THEN GREATEST(COALESCE(ct_lop_hoc_phans.tong_ket_1, 0), COALESCE(ct_lop_hoc_phans.tong_ket_2, 0)) END) < 5 THEN "Không đạt"
-                    WHEN COUNT(CASE WHEN (ct_lop_hoc_phans.tong_ket_1 < 5 OR ct_lop_hoc_phans.tong_ket_2 < 5) AND (ct_lop_hoc_phans.tong_ket_1 IS NOT NULL OR ct_lop_hoc_phans.tong_ket_2 IS NOT NULL) THEN 1 END) > 0 THEN "Không đạt"
+                    WHEN COUNT(CASE WHEN (ct_lop_hoc_phans.tong_ket_1 IS NOT NULL OR ct_lop_hoc_phans.tong_ket_2 IS NOT NULL) AND GREATEST(COALESCE(ct_lop_hoc_phans.tong_ket_1, 0), COALESCE(ct_lop_hoc_phans.tong_ket_2, 0)) < 5 THEN 1 END) > 0 THEN "Không đạt"
                     ELSE "Đạt"
                 END AS tot_nghiep')
             )
